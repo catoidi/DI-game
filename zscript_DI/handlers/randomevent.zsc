@@ -1,0 +1,47 @@
+class DIEventHandler : EventHandler //you see the joke here is that this eventhandler is the one that handles DI's random events.
+{
+	bool dobulletdeath; //enables the bullet death event.
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		//go check out 'zscript_DI/handlers/main/wave.zsc' for more info on how these network processes get sent.
+		//all of DI's random events are lowercase, FYI.
+		//to avoid potential naming conflicts, i'll make all random events start with "dievent".
+		if (e.Name == "dievent_bulletdeath")
+		{
+			dobulletdeath = true;
+		}
+	}
+	
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			//stuff
+		}
+		
+		if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
+		{
+			ResetRandomEvents();
+		}
+	}
+	
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			DI_Monster thingy = DI_Monster(e.Thing);
+			if (dobulletdeath) {BulletDeath(thingy);}
+		}
+	}
+	
+	virtual void ResetRandomEvents()
+	{
+		dobulletdeath = false;
+	}
+	
+	virtual void BulletDeath(DI_Monster mon)
+	{
+		mon.A_SpawnItemEX("DI_BulletSpawner", 0, 0, mon.Height / 2, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
+	}
+}

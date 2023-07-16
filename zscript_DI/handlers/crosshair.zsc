@@ -1,0 +1,93 @@
+//zscript_DI/handlers/crosshair.zsc
+
+//keeping UI related eventhandler stuff in it's own separate class for no reason other than it looks nicer to me.
+
+class DIXHairHandler : EventHandler
+{
+	TextureID xhair_tex; //crosshair textures.
+	transient ui cvar xhair_toggle;
+	transient ui cvar xhair_scale;
+	transient ui cvar xhair_alpha;
+	transient ui cvar xhair_color;
+	transient ui cvar xhair_precise;
+	transient ui double xspread, curspread;
+	transient ui double xhair_startalpha;
+	transient ui string diwep_name;
+	transient double wep_acc; //base weapon accuracy.
+	transient double wep_rec; //current weapon recoil.
+	transient DI_Weapon diwep; //the player's current weapon.
+	transient DI_PlayerBase diplayer; //the current console player.
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		xhair_tex = TexMan.CheckForTexture("dixhair");
+	}
+
+	override void WorldTick()
+	{
+		GetWeaponAccuracy();
+		Super.WorldTick();
+	}
+	
+	override void UITick()
+	{
+		if (diwep && diplayer)
+		{
+			if ((diplayer.Health > 0) & (xhair_startalpha < 1.0)) {xhair_startalpha += 0.1;}
+			else if (xhair_startalpha > 0.01) {xhair_startalpha -= 0.02;}
+			if (diwep_name != diwep.GetClassName()) {xhair_startalpha = 0.0;}
+			diwep_name = diwep.GetClassName();
+			
+			if (curspread ~== xspread) {xspread = curspread;}
+			else if (curspread > xspread) {xspread += (curspread - xspread) / 3.0;}
+			else if (curspread < xspread) {xspread -= (xspread - curspread) / 3.0;}
+		}
+		Super.UITick();
+	}
+	
+	void GetWeaponAccuracy()
+	{
+		if (players[consoleplayer].ReadyWeapon is "DI_Weapon")
+		{
+			diwep = DI_Weapon(players[consoleplayer].ReadyWeapon);
+			diplayer = DI_PlayerBase(players[consoleplayer].mo);
+			
+			wep_acc = diwep.wpn_accuracy; //weapon's base accuracy.
+			wep_rec = diwep.current_recoil; //calculation of weapon's current recoil.
+		}
+		else {diwep = null;}
+	}
+	
+	override void RenderUnderlay(RenderEvent e)
+	{
+		xhair_toggle = CVar.GetCVar("di_xhair_toggle", players[consoleplayer]);
+		xhair_scale = CVar.GetCVar("di_xhair_scale", players[consoleplayer]);
+		xhair_alpha = CVar.GetCVar("di_xhair_alpha", players[consoleplayer]);
+		xhair_color = CVar.GetCVar("di_xhair_color", players[consoleplayer]);
+		xhair_precise = CVar.GetCVar("pc_y", players[consoleplayer]);
+	
+		if ((diwep) && (diplayer) && (xhair_toggle.GetInt() > 0))
+		{
+			double cenx = screen.GetWidth() / 2;
+			double ceny = screen.GetHeight() / 2;
+			if (xhair_precise != null) {ceny = xhair_precise.GetFloat();} //mod compatibility with Precise Crosshair.
+			
+			double pfov = diplayer.player.fov;
+			
+			double xscale = xhair_scale.GetFloat();
+			double accnum = wep_acc;
+			if (xhair_toggle.GetInt() == 2) {accnum += wep_rec;}
+			curspread = (3.0 * xscale) + (accnum * ((screen.GetWidth() / screen.GetAspectRatio()) / pfov));
+			double xalpha = ((1.0 - (wep_rec / ((pfov / 2) - wep_acc))) * xhair_alpha.GetFloat()) * xhair_startalpha;
+			let xcolor = Translation.GetID("DamWhite");
+			if (diplayer.CanFreshKill()) {xcolor = Translation.GetID("IsFresh");}
+			else if ((diplayer.LastKillTimer >= 1) && (diplayer.LastWeaponKill == diwep.GetClassName())) {xcolor = Translation.GetID("DamDarkGrey");}
+			else if (diplayer.LastKillTimer < 1) {xcolor = Translation.GetID("NotFresh");}
+			
+			Screen.DrawTexture(xhair_tex, false, cenx + xspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
+			Screen.DrawTexture(xhair_tex, false, cenx - xspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
+			Screen.DrawTexture(xhair_tex, false, cenx, ceny + xspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0);
+			Screen.DrawTexture(xhair_tex, false, cenx, ceny - xspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0);
+		}
+	}
+}

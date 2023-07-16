@@ -1,0 +1,205 @@
+//zscript_DI/ui/newgame/handler.zsc"
+
+Class DINewGameHandler : boxparty_ZF_Handler
+{
+	DINewGameMenu link;
+	
+	cvar tutorialcheck;
+	
+	int currentclass, currentlvl, currentskill;
+	
+	bool stayonpage; //prevents handler from advancing to the next page.
+	
+	enum dimenu_key
+	{
+		dimenu_key_up,
+		dimenu_key_down,
+		dimenu_key_left,
+		dimenu_key_right,
+		dimenu_key_pgup,
+		dimenu_key_pgdown,
+		dimenu_key_enter,
+		dimenu_key_back
+	}
+	
+	override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
+    {
+		link.MenuSound("menu/activate");
+	
+		string cmd = command;
+		cmd = cmd.MakeLower();
+		if (cmd == "dotutorial")
+		{
+			if (stayonpage == false)
+			{
+				tutorialcheck = link.tutcvar;
+				tutorialcheck.SetBool(true);
+				Menu.SetMenu("EpisodeMenu", 0);    	// Class Selection Response
+				Menu.SetMenu("SkillMenu", 0);    	// Episode Selection Response
+				Menu.SetMenu("StartGame", 0);     	// Skill Selection Response (Starts Game), Use StartgameConfirm for Nightmare skills
+			}
+		}
+		else if (cmd == "skiptutorial")
+		{
+			if (stayonpage == false)
+			{
+				tutorialcheck = link.tutcvar;
+				tutorialcheck.SetBool(true);
+				link.pagenum = 0;
+				link.UpdatePage();
+			}
+		}
+        else if (cmd.Left(12) == "lockedplayer")
+		{
+			let plrstr = cmd.Mid(12);
+			let plrnum = plrstr.ToInt(10);
+			string plrclass = link.plrlabels[plrnum].GetText();
+			plrclass.Replace(" ", "_");
+			string plrlocked = Stringtable.Localize(String.Format("$dimenu_locked_player_%s", plrclass));
+			link.UpdateTopLabel(String.Format("%s", "\cgthis character is locked."), plrlocked);
+			currentclass = -1;
+			link.SetKeyPos(plrnum);
+			//link.UpdateKeySelect();
+		}
+		else if (cmd.Left(6) == "player")
+		{
+			let plrstr = cmd.Mid(6);
+			let plrnum = plrstr.ToInt(10);
+			string plrclass = link.plrlabels[plrnum].GetText();
+			string infopic = String.Format("%s%s.png", "graphics/info_", plrclass);
+			//console.printf("%s", infopic);
+			link.plrinfo.SetImage(infopic);
+			link.UpdateTopLabel(String.Format("\cnselected: %s", plrclass)); 
+			if (currentclass == plrnum) {link.pagenum = 1;}
+			currentclass = plrnum;
+			link.SetKeyPos(plrnum);
+			//link.UpdateKeySelect();
+		}
+		else if (cmd.Left(11) == "lockedlevel")
+		{
+			let lvlstr = cmd.Mid(11);
+			let lvlnum = lvlstr.ToInt(10);
+			string lvlclass = link.levelpool[lvlnum];
+			string lvllocked = Stringtable.Localize(String.Format("$dimenu_locked_level_%s", lvlclass));
+			link.UpdateTopLabel(String.Format("%s", "\cgthis level is locked."), lvllocked);
+			currentlvl = -1;
+			link.SetKeyPos(lvlnum);
+			//link.UpdateKeySelect();
+		}
+		else if (cmd.Left(5) == "level")
+		{
+			let lvlstr = cmd.Mid(5);
+			let lvlnum = lvlstr.ToInt(10);
+			string lvlclass = link.lvllabels[lvlnum].GetText();
+			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass)); 
+			//console.printf("%s", lvlclass);
+			if (currentlvl == lvlnum) {PlayDI(currentclass, currentlvl, 2);} //{link.pagenum = 2;}
+			else {link.SetKeyPos(lvlnum);}
+			currentlvl = lvlnum;
+			//link.UpdateKeySelect();
+		}
+		else if (cmd.Left(11) == "lockedskill")
+		{
+		
+		}
+		else if (cmd.Left(5) == "skill")
+		{
+		
+		}
+		else {console.printf("%s'%s'", "epic line failure: ", cmd);}
+    }
+	
+	virtual void doKeyPress(int keytype)
+	{
+		link.MenuSound("menu/choose");
+		if (link.keyboardselect) {link.keyboardselect.SetAlpha(1.0);}
+		
+		switch(link.pagenum)
+		{
+			case -1: //tutorial menu
+				if (link.keypos == -1) {link.keypos = 0;}
+				switch(keytype)
+				{
+					case dimenu_key_up:
+						--link.keypos;
+						if (link.keypos < 0) {link.keypos = 1;}
+						stayonpage = true;
+						buttonClickCommand(link.tutbuttons[link.keypos], link.tutbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_down:
+						++link.keypos;
+						if (link.keypos > 1) {link.keypos = 0;}
+						stayonpage = true;
+						buttonClickCommand(link.tutbuttons[link.keypos], link.tutbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_enter:
+						buttonClickCommand(link.tutbuttons[link.keypos], link.tutbuttons[link.keypos].getcommand());
+						break;
+				}
+				break;
+			case 0: //player select menu
+				if (link.keypos == -1) {link.keypos = 0;}
+				switch(keytype)
+				{
+					case dimenu_key_up:
+						--link.keypos;
+						if (link.keypos < 0) {link.keypos = link.plrbuttons.Size() - 1;}
+						stayonpage = true;
+						buttonClickCommand(link.plrbuttons[link.keypos], link.plrbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_down:
+						++link.keypos;
+						if (link.keypos > link.plrbuttons.Size() - 1) {link.keypos = 0;}
+						stayonpage = true;
+						buttonClickCommand(link.plrbuttons[link.keypos], link.plrbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_enter:
+						buttonClickCommand(link.plrbuttons[link.keypos], link.plrbuttons[link.keypos].getcommand());
+						break;
+				}
+				break;
+			case 1: //level select menu
+				if (link.keypos == -1) {link.keypos = 0;}
+				switch(keytype)
+				{
+					case dimenu_key_up:
+						--link.keypos;
+						if (link.keypos < 0) {link.keypos = link.lvlbuttons.Size() - 1;}
+						stayonpage = true;
+						buttonClickCommand(link.lvlbuttons[link.keypos], link.lvlbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_down:
+						++link.keypos;
+						if (link.keypos > link.lvlbuttons.Size() - 1) {link.keypos = 0;}
+						stayonpage = true;
+						buttonClickCommand(link.lvlbuttons[link.keypos], link.lvlbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_enter:
+						buttonClickCommand(link.lvlbuttons[link.keypos], link.lvlbuttons[link.keypos].getcommand());
+						break;
+				}
+				break;
+			case 2: //skill select menu
+				break;
+		}
+	}
+	
+	virtual void PlayDI(int cl = 0, int ep = 0, int sk = 0)
+	{
+		Menu.SetMenu("EpisodeMenu", cl);    	// Class Selection Response
+		Menu.SetMenu("SkillMenu", ep);    	// Episode Selection Response
+		Menu.SetMenu("StartGame", sk);     	// Skill Selection Response (Starts Game), Use StartgameConfirm for Nightmare skills
+	}
+}

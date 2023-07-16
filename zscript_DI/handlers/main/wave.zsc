@@ -1,0 +1,366 @@
+extend class DIHandler
+{
+	virtual void ParseDIWAVE(WorldEvent e)
+	{
+		//write down all the data from the DIWAVE file(s) into stuff that we can actually use.
+	
+		int ThisLump = Wads.FindLump("DIWAVE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIWAVE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIWAVE", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			//if (filedata[i].Length() < 3) {continue;}
+			filedata[i].Replace("	", "");
+			filedata[i].Replace(" ", "");
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+		}
+		
+		string levelstring = "sorry nothing";
+		string currentlevel = Level.MapName;
+		currentlevel = currentlevel.MakeLower();
+		int bracketnum;
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(5) == "Level")
+			{
+				levelstring = filedata[i];
+				levelstring.Replace("Level", "");
+				levelstring = levelstring.Left(levelstring.IndexOf(";"));
+				levelstring = levelstring.MakeLower();
+			}
+			else if (levelstring == "sorry nothing") {continue;}
+			else if (levelstring == currentlevel)
+			{
+				if (filedata[i].Left(1) == "}") {--bracketnum;}
+				if (bracketnum > 0) {leveldata.Push(filedata[i]);}
+				if (filedata[i].Left(1) == "{") {++bracketnum;}
+			}
+		}
+	}
+	
+	virtual void GetWaveData(WorldEvent e)
+	{
+		//reset wave-specific data, then grab all data for this specific wave.
+	
+		int wavelumpnum;
+		int bracketnum;
+		
+		wavedata.Clear();
+		spawnqueue.Clear();
+		spawnqueue_spawner.Clear();
+		
+		enemymax = 0;
+		spawnamount = 0;
+		spawntime = 0;
+		batchnum = 0;
+		waitcurrent = 0;
+		waitnum = 0;
+		finalwave = 0;
+		
+		enemycount = 0;
+		enemycounted = false;
+		
+		bool getendless;
+		
+		//the endless wave data gets added to the array everytime the final wave is completed.
+		for (int i = 0; i < leveldata.Size(); i++)
+		{
+			//grab endless wave data BEFORE getting regular wave data.
+			if (leveldata[i].Left(4) == "Wave") 
+			{
+				++finalwave;
+			}
+			else if ((leveldata[i].Left(7) == "Endless") && (fakewavenum > finalwave))
+			{
+				//console.printf("%d", finalwave);
+				++endlessnum;
+				getendless = true;
+				if (leveldata[i].Mid(7) == "Restart")
+				{
+					//add endless data, then return to wave 1.
+					fakewavenum = 1;
+				}
+				else if (leveldata[i].Mid(7) == "Repeat")
+				{
+					//add endless data, then go back the specified amount of waves.
+					string lds = leveldata[i].Mid(13);
+					int ldi = lds.ToInt(10);
+					fakewavenum -= ldi;
+				}
+			}
+			else if (getendless == true)
+			{
+				if (leveldata[i].Left(1) == "}") {--bracketnum;}
+				if (bracketnum > 0) 
+				{
+					endlessdata.Push(leveldata[i]);
+				}
+				if (leveldata[i].Left(1) == "{") {++bracketnum;}
+				
+				if (bracketnum == 0)
+				{
+					getendless = false;
+				}
+			}
+		}
+	
+		for (int i = 0; i < leveldata.Size(); i++)
+		{
+			
+			if (leveldata[i].Left(4) == "Wave") 
+			{
+				string lds = leveldata[i].Mid(4);
+				int ldi = lds.ToInt(10);
+				wavelumpnum = ldi;
+			}
+			else if (leveldata[i].Left(7) == "Endless") {++wavelumpnum;}
+			else if (wavelumpnum == fakewavenum)
+			{
+				if (leveldata[i].Left(1) == "}") {--bracketnum;}
+				if (bracketnum > 0) 
+				{
+					wavedata.Push(leveldata[i]); 
+					//console.printf("%s", leveldata[i]);
+				}
+				if (leveldata[i].Left(1) == "{") {++bracketnum;}
+			}
+		}
+		
+		if (wavedata.Size() == 0) {console.printf("%s", "failed to get wave data");}
+	}
+	
+	virtual void ParseWaveData(WorldEvent e)
+	{
+		//take the stuff from GetWaveData and get it ready for usage for the current wave/batch.
+	
+		int batchdata = 0;
+		
+		//again, run the endless wave data BEFORE the regular wave data.
+		for (int i = 0; i < endlessdata.Size(); i++)
+		{
+			if (endlessdata[i].Left(7) == "MultCap")
+			{
+				string cap_string = endlessdata[i].Mid(7);
+				int cap_int = cap_string.ToInt(10);
+				endless_capmult += cap_int;
+				continue;
+			}
+			else if (endlessdata[i].Left(8) == "MultRate")
+			{
+				string rate_string = endlessdata[i].Mid(8);
+				int rate_int = rate_string.ToInt(10);
+				endless_ratemult += rate_int;
+				continue;
+			}
+			else if (endlessdata[i].Left(9) == "MultSpawn")
+			{
+				string spawn_string = endlessdata[i].Mid(9);
+				int spawn_int = spawn_string.ToInt(10);
+				endless_spawnmult += spawn_int;
+				continue;
+			}
+			else if (endlessdata[i].Left(10) == "MultHealth")
+			{
+				string health_string = endlessdata[i].Mid(10);
+				int health_int = health_string.ToInt(10);
+				endless_healthmult += health_int;
+				continue;
+			}
+			else if (endlessdata[i].Left(10) == "MultDamage")
+			{
+				string damage_string = endlessdata[i].Mid(10);
+				int damage_int = damage_string.ToInt(10);
+				endless_damagemult += damage_int;
+				continue;
+			}
+		}
+		
+		//calculate the number of enemies before doing anything else.
+		if (enemycounted == false)
+		{
+			for (int i = 0; i < wavedata.Size(); i++)
+			{
+				if (wavedata[i].Left(5) == "Spawn") 
+				{
+					string spawn_string = wavedata[i].Mid(5);
+					array<string> spawn_array;
+					spawn_string.Split(spawn_array, ",");
+				
+					int spawn_array_int = spawn_array[1].ToInt(10);
+					spawn_array_int *= endless_spawnmult;
+				
+					for (int j = 0; j < spawn_array_int; j++) {++enemycount;}
+					continue;
+				}
+			}
+			enemycounted = true;
+		}
+	
+		//now it's time to actually get the current wave's data.
+		for (int i = 0; i < wavedata.Size(); i++)
+		{
+			if (wavedata[i].Left(4) == "Wait")
+			{
+				++batchdata;
+				if (batchdata != batchnum + 1) {continue;}
+				string batch_string = wavedata[i].Mid(4);
+				int batch_int = batch_string.ToInt(10);
+				waitnum = batch_int;
+				continue;
+			}
+			else if (batchdata != batchnum) {continue;}
+			else if (wavedata[i].Left(3) == "Cap") 
+			{
+				string cap_string = wavedata[i].Mid(3);
+				int cap_int = cap_string.ToInt(10);
+				enemymax = cap_int * endless_capmult;
+				continue;
+			}
+			else if (wavedata[i].Left(4) == "Rate") 
+			{
+				string rate_string = wavedata[i].Mid(4);
+				int rate_int = rate_string.ToInt(10);
+				spawnamount = rate_int * endless_ratemult;
+				continue;
+			}
+			else if (wavedata[i].Left(4) == "Time") 
+			{
+				string time_string = wavedata[i].Mid(4);
+				int time_int = time_string.ToInt(10);
+				spawntime = time_int;
+				continue;
+			}
+			else if (wavedata[i].Left(5) == "Spawn") 
+			{
+				string spawn_string = wavedata[i].Mid(5);
+				bool hasspawner = false;
+				array<string> spawn_array;
+				spawn_string.Split(spawn_array, ",");
+				
+				if (spawn_array.Size() == 2)
+				{
+					spawn_array.Push("DISpawnerSpot");
+				}
+				else if ((spawn_array.Size() < 2) || (spawn_array.Size() > 3)) {ThrowAbortException("\crDIWAVE ERROR: \clInvalid Spawn Command '\ck%s\cl' at Line %d.", spawn_string, i);}
+				
+				int spawn_array_int = spawn_array[1].ToInt(10);
+				spawn_array_int *= endless_spawnmult;
+				
+				for (int j = 0; j < spawn_array_int; j++) 
+				{
+					spawnqueue.Push(spawn_array[0]);
+					spawnqueue_spawner.Push(spawn_array[2]);
+				}
+				continue;
+			}
+			else if (wavedata[i].Left(6) == "Script")
+			{
+				string spawn_string = wavedata[i].Mid(6);
+				array<string> spawn_array;
+				spawn_string.Split(spawn_array, ",");
+				if (spawn_array.Size() != 5) {ThrowAbortException("\crDIWAVE ERROR: \clInvalid Script Command '\ck%s\cl' at Line %d.", spawn_string, i);}
+				int spawn_array_arg1 = spawn_array[1].ToInt(10);
+				int spawn_array_arg2 = spawn_array[2].ToInt(10);
+				int spawn_array_arg3 = spawn_array[3].ToInt(10);
+				int spawn_array_arg4 = spawn_array[4].ToInt(10);
+				
+				e.Thing.ACS_ScriptCall(spawn_array[0], spawn_array_arg1, spawn_array_arg2, spawn_array_arg3, spawn_array_arg4);
+			}
+			else {console.printf("\crDIWAVE ERROR: \clcouldn't parse this line: %s", wavedata[i]);}
+		}
+		
+		e.Thing.ACS_ScriptCall("EnemyCount", enemycount);
+		
+		currentspawners = e.Thing.ACS_ScriptCall("CheckSpawner", spawnamount, spawntime);
+	}
+	
+	virtual void DoWaveEvent(WorldEvent e)
+	{
+		if (eventdata.Size() == 0)
+		{
+			Array<string> dieventlines;
+			int ThisLump = Wads.FindLump("DIEVENT", 0, Wads.ANYNAMESPACE);
+			int NextLump = Wads.FindLump("DIEVENT", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+			while (ThisLump != -1)
+			{
+				Wads.ReadLump(ThisLump).Split(dieventlines, "\n", TOK_SKIPEMPTY);
+				ThisLump = NextLump;
+				NextLump = Wads.FindLump("DIEVENT", ThisLump + 1, 1);
+			}
+		
+			for (int i = 0; i < dieventlines.Size(); i++)
+			{
+				if (dieventlines[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+				if (dieventlines[i].Length() < 3) {continue;}
+				dieventlines[i].Replace("	", "");
+				dieventlines[i].Replace(" ", "");
+				dieventlines[i] = dieventlines[i].Left(dieventlines[i].IndexOf(";"));
+				dieventlines[i] = dieventlines[i].MakeLower();
+			}
+		
+			string currentlevel = Level.MapName;
+			currentlevel = currentlevel.MakeLower();
+		
+			for (int i = 0; i < dieventlines.Size(); i++)
+			{
+				int levellength = currentlevel.Length();
+				if (dieventlines[i].Left(levellength) == currentlevel)
+				{
+					eventdata.Push(dieventlines[i]);
+				}
+			}
+		}
+		
+		if (eventdata.Size() > 0)
+		{
+			Array<string> currentevents;
+			
+			for (int i = 0; i < eventdata.Size(); i++)
+			{
+				Array<string> eventline;
+				eventdata[i].Split(eventline, ",", TOK_SKIPEMPTY);
+				if (eventline.Size() != 5) {continue;} //sanity check
+				int eventwave = eventline[4].ToInt(10);
+				if (eventwave > wavenum) {continue;} //don't do this event if the minimum wave check is not met.
+				int eventchance = eventline[3].ToInt(10);
+				if (eventchance < 0) {eventchance = 0;}
+				if (random(0, eventchance) <= lastevent) //only run this part if the RNG check passes.
+				{
+					currentevents.Push(eventdata[i]);
+				}
+			}
+			
+			if (currentevents.Size() > 0)
+			{
+				int eventnum = random(1, currentevents.Size()) - 1;
+				Array<string> eventline;
+				currentevents[eventnum].Split(eventline, ",", TOK_SKIPEMPTY);
+				if (eventline[1] == "acs") //activate an ACS script.
+				{
+					e.Thing.ACS_ScriptCall(eventline[2], 0, 0, 0, 0);
+				}
+				else if (eventline[1] == "event") //activate an Event Handler script.
+				{
+					EventHandler.SendNetworkEvent(eventline[2]);
+				}
+				
+				lastevent = 0;
+				
+				e.Thing.ACS_ScriptCall("EventIsStarting", 0, 0, 0, 0);
+				
+				console.printf("%s", "\ciRandom Event is activating!!!");
+			}
+			else {++lastevent;}
+		}
+	}
+}

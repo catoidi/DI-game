@@ -1,0 +1,378 @@
+//zscript_DI/ui/NewGame.zsc
+
+Class DINewGameMenu : boxparty_ZF_GenericMenu
+{
+	//so fun fact: this menu is actually 4 separate menus in one!
+	//this was so i wouldn't have to worry about passing important data from one menu to another, when they all function basically the same.
+	//also also: against all odds, and some may call this an affront to god, but this menu has full keyboard/controller support!
+	//there's parts of this code i like a lot. other parts are full of sin. you've been warned.
+
+	DINewGameHandler handler;
+	
+	cvar tutcvar; //tutorial check
+	
+	bool pageupdate, justkeyed;
+	
+	int pagenum, pagenum_tick, keypos, curkey;
+	
+	Font bigFont, smallFont;
+	boxparty_ZF_Image background, plrinfo;
+	string TopLabel_text, TopLabel2_text;
+	boxparty_ZF_Label TopLabel, TopLabel2;
+	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
+	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages;
+	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels;
+    Array<boxparty_ZF_Button> tutbuttons, plrbuttons, lvlbuttons;
+	
+	boxparty_ZF_BoxImage keyboardselect;
+	
+	Array<String> filedata; //all the lines from DIGAME.
+	Array<String> playerpool, playerlock, levelpool, levellock; //all available players. does not include players that are locked.
+	
+	transient cvar currentcvar;
+	
+	override void init(menu parent)
+	{
+		super.init(parent);
+		setbaseresolution((640, 400));
+		bigFont = Font.GetFont("BigFont");
+		smallFont = Font.GetFont("SmallFont");
+		
+        handler = new('DINewGameHandler');
+        handler.link = self;
+		handler.currentclass = -1;
+		handler.currentlvl = -1;
+		handler.currentskill = -1;
+		
+		keypos = -1;
+		curkey = -1;
+		
+		let plr = players[consoleplayer];
+		tutcvar = cvar.FindCVAR("di_menu_asktutorial");
+		
+		background = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/NEWGAMEBACK.png", imagescale: (2, 2));
+		background.Pack(mainFrame);
+		
+		plrinfo = boxparty_ZF_Image.Create((336, 116), (216, 208), "", imagescale: (2, 2));
+		plrinfo.Pack(mainFrame);
+		
+		GetDIGAMEData();
+		CreateTopLabel();
+		if ((tutcvar.GetBool() == true) || (players[consoleplayer].mo) != null)
+		{
+			CreatePlayerList();
+		}
+		else 
+		{
+			CreateTutorial(); //only show tutorial if player hasn't seen it yet. also don't show tutorial if player is already in game.
+		}
+	}
+	
+	override void Ticker ()
+    {
+		if (pagenum != pagenum_tick) 
+		{
+			if (pagenum > pagenum_tick) {keypos = -1;}
+			UpdatePage(); 
+			UpdateKeySelect(true); 
+			pagenum_tick = pagenum;
+		}
+		else {UpdateKeySelect();}
+		if ((justkeyed == false) && (curkey != -1)) {curkey = -1;}
+		justkeyed = false;
+		Super.Ticker();
+	}
+	
+	virtual void UpdatePage()
+	{
+		DestroyTutorial();
+		DestroyPlayerList();
+		DestroyLevelList();
+		
+		plrinfo.SetImage("");
+		
+		//console.printf("%s", "page updated");
+		
+		switch(pagenum)
+		{
+			case 0: 
+				CreatePlayerList(); 
+				handler.currentclass = -1;
+				if (keypos != -1) {handler.buttonClickCommand(plrbuttons[keypos], plrbuttons[keypos].getcommand());}
+				break;
+			case 1: 
+				CreateLevelList(); 
+				handler.currentlvl = -1;
+				if (keypos != -1) {handler.buttonClickCommand(lvlbuttons[keypos], lvlbuttons[keypos].getcommand());}
+				break;
+			case 2:
+				break;
+		}
+		
+		//UpdateKeySelect(true);
+	}
+	
+	override void handleBack()
+	{
+		if (pagenum > 0) 
+		{
+			--pagenum;
+			keypos = -1;
+			//if (pagenum == 0) {keypos = handler.currentclass;}
+			//else if (pagenum == 1) {keypos = handler.currentlvl;}
+			let m = GetCurrentMenu();
+			MenuSound(m != null ? "menu/backup" : "menu/clear");
+		}
+		else {Super.handleBack();}
+	}
+	
+	override bool menuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey != curkey)
+		{
+			switch (mkey) 
+			{
+				case MKEY_Up: handler.doKeyPress(0); break;
+				case MKEY_Down: handler.doKeyPress(1); break;
+				case MKEY_Left: handler.doKeyPress(2); break;
+				case MKEY_Right: handler.doKeyPress(3); break;
+
+				case MKEY_PageUp: handler.doKeyPress(4); break;
+				case MKEY_PageDown: handler.doKeyPress(5); break;
+
+				case MKEY_Enter: handler.doKeyPress(6); break;
+				case MKEY_Back: handler.doKeyPress(7); break;
+			}
+			
+			curkey = mkey;
+			justkeyed = true;
+		}
+		
+		
+	
+		return super.menuEvent(mkey, fromcontroller);
+	}
+	
+	virtual void CreateTopLabel()
+	{
+		TopLabel_text = "";
+		TopLabel2_text = "";
+	
+		TopLabel = boxparty_ZF_Label.Create
+        (
+			// Position.
+			(
+                // Horizontal position.
+                320 - (bigFont.StringWidth(TopLabel_text) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                40
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                bigFont.StringWidth (TopLabel_text),
+                // Get the font's height.
+                bigFont.GetHeight()
+            ),
+            // The label's text.
+            text: TopLabel_text,
+            // The font to use.
+            fnt: bigFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: true,
+            // The text's colour.
+			textColor: Font.CR_WHITE
+        );
+		TopLabel.Pack (mainFrame);
+		
+		TopLabel2 = boxparty_ZF_Label.Create
+        (
+			// Position.
+			(
+                // Horizontal position.
+                320 - (smallFont.StringWidth(TopLabel2_text) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                40 + bigFont.GetHeight()
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (TopLabel2_text),
+                // Get the font's height.
+                smallFont.GetHeight()
+            ),
+            // The label's text.
+            text: TopLabel2_text,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: true,
+            // The text's colour.
+			textColor: Font.CR_WHITE
+        );
+		TopLabel2.Pack (mainFrame);
+	}
+	
+	virtual void UpdateTopLabel(string newtext, string newtext2 = "")
+	{
+		TopLabel_text = newtext;
+		TopLabel.SetBox((320 - (bigFont.StringWidth(TopLabel_text) / 2), 40), (bigFont.StringWidth (TopLabel_text), bigFont.GetHeight()));
+		TopLabel.SetText(TopLabel_text);
+		
+		TopLabel2_text = newtext2;
+		TopLabel2.SetBox((320 - (smallFont.StringWidth(TopLabel2_text) / 2), 40 + bigFont.GetHeight()), (smallFont.StringWidth (TopLabel2_text), smallFont.GetHeight()));
+		TopLabel2.SetText(TopLabel2_text);
+	}
+	
+	virtual void GetDIGAMEData()
+	{
+		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
+		filedata.Clear();
+		playerpool.Clear();
+		playerlock.Clear();
+	
+		int ThisLump = Wads.FindLump("DIGAME", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIGAME", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISHOP", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i] = filedata[i].MakeLower();
+			filedata[i].Split(currentline, ", ", TOK_SKIPEMPTY);
+			if (currentline[0] == "add")
+			{
+				if ((currentline[1] == "player") && (currentline[2]))
+				{
+					playerpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {playerlock.Push(currentline[3]);}
+					else {playerlock.Push("u");}
+					//console.printf("%s", currentline[2]);
+				}
+				else if ((currentline[1] == "level") && (currentline[2]))
+				{
+					levelpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {levellock.Push(currentline[3]);}
+					else {levellock.Push("u");}
+					//console.printf("%s", currentline[2]);
+				}
+			}
+			else if (currentline[0] == "delete")
+			{
+				console.printf("%s", "'delete' feature not implemented yet.");
+			}
+			else {console.printf("failed: %s", currentline[0]);}
+		}
+	}
+	
+	virtual void UpdateKeySelect(bool newpage = false)
+	{
+		//NOTE: this is causing buttons to not be clickable.
+		//maybe i should try forcing the buttons hover toggle on instead?
+	
+		string keystring;
+		vector2 keysize;
+		vector2 keyspot;
+		
+		int newkey = keypos;
+		
+		if (newkey < 0) {newkey = 0;}
+		
+		//console.printf("pagenum: %d, newkey: %d, justkeyed: %d", pagenum, newkey, justkeyed);
+	
+		if ((newpage == true) && (keyboardselect))
+		{
+			keyboardselect.Unpack();
+			keyboardselect.Pack(mainFrame);
+		}
+	
+		if (1 == 1)
+		{
+			switch(pagenum)
+			{
+				case -1:
+					keystring = "graphics/catalog/ITEMBAR_HOVER_BIG.png";
+					keysize = (252, 21);
+					if (tutboximages.Size() > 0) {keyspot = tutboximages[newkey].GetPos();}
+					break;
+				case 0:
+					keystring = "graphics/catalog/ITEMBAR_HOVER.png";
+					keysize = (144, 12);
+					if (plrboximages.Size() > 0) {keyspot = plrboximages[newkey].GetPos();}
+					break;
+				case 1:
+					keystring = "graphics/level/HOVER_ICON.png";
+					keysize = (128, 96);
+					if (lvlboximages.Size() > 0) {keyspot = lvlboximages[newkey].GetPos();}
+					break;
+				case 2:
+					keystring = "graphics/catalog/ITEMBAR_HOVER_BIG.png";
+					keysize = (252, 21);
+					keyspot = (194, 80 + (21 * newkey));
+					break;
+			}
+			
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(keystring, (0, 0), keysize, false, false);
+			if (!keyboardselect)
+			{
+				keyboardselect = boxparty_ZF_BoxImage.Create(keyspot, keysize, boxTexture);
+				keyboardselect.Pack(mainFrame);
+				keyboardselect.SetAlpha(0.8);
+			}
+			else
+			{
+				keyboardselect.SetPos(keyspot);
+				keyboardselect.SetSize(keysize);
+				keyboardselect.SetBoxTex(boxTexture);
+				keyboardselect.SetAlpha(0.8);
+			}
+			
+			switch(pagenum)
+			{
+				//this HAS to be run after the keyboardselect stuff is finished.
+				case -1:
+					if (tutbuttons.Size() > 0)
+					{
+						tutbuttons[newkey].Unpack();
+						tutbuttons[newkey].Pack(mainFrame);
+					}
+					break;
+				case 0:
+					if (plrbuttons.Size() > 0)
+					{
+						plrbuttons[newkey].Unpack();
+						plrbuttons[newkey].Pack(mainFrame);
+					}
+					break;
+				case 1:
+					if (lvlbuttons.Size() > 0)
+					{
+						lvlbuttons[newkey].Unpack();
+						lvlbuttons[newkey].Pack(mainFrame);
+					}
+					break;
+				case 2:
+					break;
+			}
+		}
+	}
+	
+	virtual void SetKeyPos(int newpos) {keypos = newpos;}
+	virtual int GetKeyPos() {return keypos;}
+}

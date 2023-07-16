@@ -1,0 +1,539 @@
+Class DI_PlayerBase : PlayerPawn abstract
+{
+	mixin DI_ActorMixin;
+
+	Default
+	{
+		Speed 0.7;
+		Health 100;
+		Radius 16;
+		Height 56;
+		Mass 100;
+		PainChance 255;
+		SelfDamageFactor 0.05;
+		Player.ViewBob 0.4;
+		Player.JumpZ 11;
+		Player.CrouchSprite "PLYC";
+		Player.ColorRange 144, 189;
+		Player.Colorset 0, "$TXT_COLOR_GREEN", 144, 191, 144;
+		Player.Colorset 1, "$TXT_COLOR_RED", 96, 143, 96;
+		Player.Colorset 2, "$TXT_COLOR_BLUE", 192, 239, 192;
+		//Player.DisplayName "Fredrick";
+		//Player.WeaponSlot 1, "StarPistol";
+		//Player.StartItem "StarPistol";
+		//Player.StartItem "StarPistolAmmo", 13;
+		//Player.ViewHeight 33;
+	}
+	
+	bool diefade;
+	int combonum;
+	int combonum_bonus;
+	int combodrain;
+	bool hpupdate;
+	int prevhp;
+	int cointimer;
+	string LastWeaponKill;
+	string CurrentWeaponKill;
+	int LastKillTimer, LastKillTimer_Max, LastKillTimer_Count;
+	bool JustKilled;
+	Array<String> wavewipe; //a list of items to wipe every wave.
+	Array<String> wavekeep; //any items you've purchased that should not be wiped every wave.
+	Array<String> renteditems; //a list of all items you've rented this round.
+	int boxammonum;
+	
+	int lastscore; //the score you had last round.
+	
+	Vector2 OldMove;
+	
+	int weaponnum;
+	int ExtraBaseDamage;
+	int ExtraExtraCoin;
+	int ExtraFreshBonus;
+	int ExtraFreshCharge;
+	double ExtraAccuracy;
+	int ExtraProjectiles;
+	double ExtraDamageMult;
+	
+	int chance_ice; //chance of your attack dealing this damage type.
+	int chance_fire;
+	int chance_lightning;
+	int chance_poison;
+	string statusreplace; //this tells bullets/projectiles to replace their damage type with this.
+	
+	bool freshmsg;
+	
+	override void PostBeginPlay(void)
+	{
+		Super.PostBeginPlay();
+		
+		int ThisLump = Wads.FindLump("DIWIPE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIWIPE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(wavewipe, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIWIPE", ThisLump + 1, 1);
+		}
+	}
+	
+	override void Tick(void)
+	{
+		Super.Tick();
+		
+		if (self.health > 0)
+		{
+			ScaleSquish();
+			ComboCounter();
+			BoxAmmoChecker();
+			ExtraWeaponValues();
+			StatusChance();
+			AutoOffset();
+			weaponnum = 0;
+			
+			JustKilled = false;
+			
+			if (prevhp != self.health) {hpupdate = true;}
+			else if (hpupdate == true)  //delayed by 1 tic.
+			{
+				if (prevhp < self.health - 50) {prevhp = self.health - 50;} //capped to prevent extreme scaling issues.
+				else {prevhp = self.health;}
+			}
+			
+			if (cointimer > 50) {cointimer *= 0.98;}
+			else if (cointimer > 0) {--cointimer;}
+		}
+	}
+	
+	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)
+	{
+		if ((damage > 0) && (player.ReadyWeapon is "DI_Weapon"))
+		{
+			DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
+			//add recoil to the current weapon upon taking damage.
+			double addrecoil = 3 + (damage / 2.5);
+			if (addrecoil > 20) (addrecoil = 20.0);
+			diwep.current_recoil += addrecoil / diwep.wpn_recoil_offset;
+		}
+		
+		Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
+		
+		return damage;
+	}
+	
+	static void PlayerDoUnlock(string uncvar, int plrnum = 0)
+	{
+		uncvar = string.format("diunlock_%s", uncvar);
+		EventHandler.SendInterfaceEvent(plrnum, uncvar);
+	}
+	
+	clearscope virtual bool CanFreshKill(void)
+	{
+		if ((LastWeaponKill != player.ReadyWeapon.GetClassName()) && (LastKillTimer < 1)) {return true;}
+		else if (JustKilled == true) {return true;}
+		else {return false;}
+	}
+	
+	virtual void IsFreshKill(void)
+	{
+		LastWeaponKill = CurrentWeaponKill;
+		LastKillTimer = 35 * (1 + LastKillTimer_Count);
+		if (score > 0) {LastKillTimer += score;}
+		LastKillTimer_Max = LastKillTimer;
+		JustKilled = true;
+		A_StartSound("combord", 0);
+		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
+		int diwep_fresh = diwep.wpn_freshbonus;
+		++LastKillTimer_Count;
+		ACS_ScriptCall("dofreshflash");
+		console.printf("\cnfresh weapon bonus! (+%d)", diwep_fresh);
+	}
+	
+	virtual void DIMonsterKilled(bool notweapon = false)
+	{
+		CurrentWeaponKill = player.ReadyWeapon.GetClassName();
+		DI_Weapon curwpn = DI_Weapon(player.ReadyWeapon);
+		
+		int freshnum = 1;
+		if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
+		if (notweapon == true) {freshnum = 0;}
+		
+		int freshcharge = 1 + CountInv("DI_FreshBonusCharger");
+		
+		int islastweapon = 1;
+		if (CurrentWeaponKill == LastWeaponKill) {islastweapon = 2;}
+		
+		int killbonus = ((combonum * 10) + (freshnum * 3) * islastweapon) + (freshcharge * 15);
+		
+		LastKillTimer -= killbonus;
+		if (LastKillTimer < 1) {LastKillTimer = 0;}
+	}
+	
+	virtual void BoxAmmoChecker(void)
+	{
+		boxammonum = 0;
+		if (FindInventory("LaserPointer")) {++boxammonum;}
+		if (FindInventory("PartyShotty")) {++boxammonum;}
+		if (FindInventory("PopcornGun")) {++boxammonum;}
+	}
+	
+	virtual void ExtraWeaponValues(void)
+	{
+		int painstarnum = CountInv("DI_PainStar") * 6;
+		painstarnum -= CountInv("DI_PainStar") * combonum;
+		if (painstarnum < 0) {painstarnum = 0;}
+	
+		ExtraBaseDamage = 
+			CountInv("DI_BaseDamageGiver") 
+			+ (CountInv("DI_ComboDamage") * (combonum - 1)) 
+			- (CountInv("DI_TooManyBullets") * 5)
+			+ painstarnum
+			+ (weaponnum * CountInv("DI_Gunslinger")); //i am very aware that DamageFactor exists.
+		ExtraExtraCoin = CountInv("DI_ExtraCoinGiver");
+		ExtraFreshBonus = CountInv("DI_FreshBonusGiver");
+		ExtraFreshCharge = CountInv("DI_FreshBonusCharger");
+		ExtraAccuracy = (CountInv("DI_BulletSplitter") * 3);
+		ExtraProjectiles = CountInv("DI_BulletSplitter");
+	}
+	
+	virtual void StatusChance(void)
+	{
+		int statuschance4 = chance_ice + chance_fire + chance_lightning + chance_poison;
+		if (statuschance4 > 0)
+		{
+			int randomchance = random(-4, statuschance4);
+			if (randomchance <= 0) {statusreplace = "";}
+			else if (randomchance <= chance_ice) {statusreplace = "Ice";}
+			else if (randomchance <= chance_ice + chance_fire) {statusreplace = "Fire";}
+			else if (randomchance <= chance_ice + chance_fire + chance_lightning) {statusreplace = "Lightning";}
+			else if (randomchance <= statuschance4) {statusreplace = "Poison";}
+			else {statusreplace = "";}
+		}
+		else {statusreplace = "";}
+		
+		chance_ice = 0;
+		chance_fire = 0;
+		chance_lightning = 0;
+		chance_poison = 0;
+	}
+	
+	virtual void ComboCounter(void)
+	{
+		combodrain = 0;
+		if (CountInv("DI_TokenComboTimer") > 42000) {combonum = 9; combodrain = 110;}
+		else if (CountInv("DI_TokenComboTimer") > 21000) {combonum = 8; combodrain = 55;}
+		else if (CountInv("DI_TokenComboTimer") > 10500) {combonum = 7; combodrain = 36;}
+		else if (CountInv("DI_TokenComboTimer") > 5250) {combonum = 6; combodrain = 21;}
+		else if (CountInv("DI_TokenComboTimer") > 3500) {combonum = 5; combodrain = 10;}
+		else if (CountInv("DI_TokenComboTimer") > 2100) {combonum = 4; combodrain = 6;}
+		else if (CountInv("DI_TokenComboTimer") > 1050) {combonum = 3; combodrain = 3;}
+		else if (CountInv("DI_TokenComboTimer") > 350) {combonum = 2; combodrain = 1;}
+		else {combonum = 1;}
+		
+		if (score < 0) {combodrain -= (score / 100);} //punish player for having negative score.
+		
+		if (combodrain == 0) {combodrain = combonum;}
+		
+		combonum_bonus = combonum;
+		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
+		combonum_bonus += diwep.wpn_extracoin;
+		if (CanFreshKill())
+		{
+			if (player.ReadyWeapon is "DI_Weapon")
+			{
+				combonum_bonus += diwep.wpn_freshbonus;
+			}
+			else {combonum_bonus += combonum + 1;}
+		}
+		
+		if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
+		{
+			A_TakeInventory("DI_TokenComboTimer", combodrain);
+			if (LastKillTimer > 0) {LastKillTimer -= 1 + ExtraFreshCharge;}
+			if (LastKillTimer < 0) {LastKillTimer = 0;}
+			
+			if ((LastKillTimer == 0) && (freshmsg == false))
+			{
+				ACS_ScriptCall("FreshReadyMSG", 0, 0, 0, 0);
+				freshmsg = true;
+			}
+			else if ((LastKillTimer > 0) && (freshmsg == true)) {freshmsg = false;}
+		}
+		A_SetInventory("DI_TokenCombo", combonum_bonus);
+	}
+	
+	virtual void ScaleSquish(void)
+	{
+		if (self.scale.X < self.default.scale.X) {A_DIScale(0.01, 0);}
+		if (self.scale.Y < self.default.scale.Y) {A_DIScale(0, 0.01);}
+		if (self.scale.X > self.default.scale.X) {A_DIScale(-0.01, 0);}
+		if (self.scale.Y > self.default.scale.Y) {A_DIScale(0, -0.01);}
+		
+		if (self.scale.X < self.default.scale.X / 4) {self.scale.X = self.default.scale.X / 4;}
+		if (self.scale.Y < self.default.scale.Y / 4) {self.scale.Y = self.default.scale.Y / 4;}
+		if (self.scale.X > self.default.scale.X * 1.5) {self.scale.X = self.default.scale.X * 1.5;}
+		if (self.scale.Y > self.default.scale.Y * 1.5) {self.scale.Y = self.default.scale.Y * 1.5;}
+			
+		if (diefade == true)
+		{
+			A_FadeTo(1.0, 99999.0);
+			diefade = false;
+		}
+	}
+	
+	action void BuyPermaItem(string itemsave)
+	{
+		//note: this could've also been done by deleting the item from the wipe array,
+		//but i'd rather keep this separate so that perma items can potentially be removed by something.
+	
+		string pushstring;
+		bool alreadyadded = false;
+		for (int j = 0; j < invoker.wavekeep.Size(); j++) //side note: i hate this code
+		{
+			int itemlength = itemsave.Length();
+			if (invoker.wavekeep[j].Left(itemlength) == itemsave)
+			{
+				string oldamount_str = invoker.wavekeep[j].Mid(itemlength + 1);
+				//console.printf("old num: %s", oldamount_str);
+				int oldamount = oldamount_str.ToInt(10);
+				++oldamount;
+				pushstring = string.format("%s,%d", itemsave, oldamount);
+				invoker.wavekeep[j] = pushstring;
+				alreadyadded = true;
+				j = invoker.wavekeep.Size();
+			}
+		}
+		if ((alreadyadded == false) || (invoker.wavekeep.Size() == 0))
+		{
+			pushstring = string.format("%s,1", itemsave);
+		
+			invoker.wavekeep.Push(pushstring);
+		}
+	}
+	
+	action void DIWave_Start(void)
+	{
+		invoker.lastscore = invoker.score; //track how many points you start the wave with.
+	}
+	
+	action void DIWave_End(void)
+	{
+		Array<String> keeparray;
+		
+		for (int i = 0; i < invoker.wavekeep.Size(); i++) //return any permanent items that were lost during wave
+		{
+			keeparray.Clear();
+			invoker.wavekeep[i].Split(keeparray, ",");
+			int keepnum = keeparray[1].ToInt(10);
+			
+			if (invoker.CountInv(keeparray[0]) < keepnum)
+			{
+				invoker.A_SetInventory(keeparray[0], keepnum);
+			}
+		}
+	
+		for (int i = 0; i < invoker.wavewipe.Size(); i++) //wipe all rented items, but keep any permanent items bought.
+		{
+			Array<String> currentwipe;
+			invoker.wavewipe[i].Split(currentwipe, ";");
+			
+			int saveitemnum = 0;
+			
+			for (int i = 0; i < invoker.wavekeep.Size(); i++)
+			{
+				int itemlength = currentwipe[0].Length();
+				if (invoker.wavekeep[i].Left(itemlength) == currentwipe[0])
+				{
+					keeparray.Clear();
+					invoker.wavekeep[i].Split(keeparray, ",");
+					saveitemnum = keeparray[1].ToInt(10);
+					i = invoker.wavekeep.Size();
+				}
+			}
+			
+			invoker.A_SetInventory(currentwipe[0], saveitemnum);
+		}
+			
+		invoker.renteditems.Clear();
+		
+		//reset fresh weapon bonus
+		invoker.LastKillTimer = 0;
+		invoker.LastWeaponKill = "";
+		invoker.LastKillTimer_Count = 0;
+		
+		console.printf("%s", "\cxReturning any rented items...");
+		
+		int scoregained = invoker.score - invoker.lastscore;
+		console.printf("\cxYou earned %d coins this round.", scoregained);
+		
+		if (invoker.score < -25)
+		{
+			invoker.score += 25;
+			invoker.score *= 0.75;
+			console.printf("%s", "\cxYour debts have been reduced.");
+		}
+		else if (invoker.score < 0)
+		{
+			invoker.score = 0;
+			console.printf("%s", "\cxYour debts have been forgiven.");
+		}
+	}
+
+	action void A_DIPlayerPain(bool noblood = false)
+	{
+		A_Pain();
+		A_RemoveLight("shoot");
+		A_DIScale(0.05, -0.05);
+		A_TakeInventory("DI_TokenComboTimer", 35 * invoker.combodrain);
+		double diX = frandom(-self.Radius, self.Radius);
+		double diY = frandom(-self.Radius, self.Radius);
+		double diZ = frandom(self.Height / 2, self.Height);
+		if (noblood == false) {A_SpawnItemEX(self.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);}
+	}
+	
+	action void AutoOffset()
+	{
+		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
+		
+		//when enabled, auto adjust weapon sprite's offset based off current recoil and player's relative velocity.
+		//this setup cannot be used with the default weapon bobbing enabled, as it will cause visual issues.
+		//you can disable autooffset in the weapon's properties.
+		
+		if (diwep.wpn_autooffset == true)
+		{
+			//recoil part
+			double newoffset = diwep.current_recoil * diwep.wpn_recoil_offset;
+			if (newoffset != diwep.autooffset_prev)
+			{
+				Vector2 shootoffset = 
+				(
+					(newoffset - diwep.autooffset_prev) * diwep.wpn_recoil_offset_x,
+					(newoffset - diwep.autooffset_prev) * diwep.wpn_recoil_offset_y
+				);
+			
+				A_WeaponOffset(shootoffset.x, shootoffset.y, WOF_ADD);
+			
+				diwep.autooffset_prev = newoffset;
+			}
+			
+			//velocity part
+			Vector3 CVel = invoker.Vel;
+			double CAng = invoker.Angle;
+			Vector2 NewMove =
+			(
+				(CVel.X * sin(CAng)) - (CVel.Y * cos(CAng)), //right/left movement relative to angle
+				((CVel.Y * sin(CAng)) + (CVel.X * cos(CAng))) + CVel.Z //forward/backward movement relative to angle, plus Z velocity
+				//had to pull out the graphing calculator to get this one right
+			);
+			
+			if (NewMove != invoker.OldMove) 
+			{
+				Vector2 moveoffset = 
+				(
+					//velocity affects horizontal offset more than vertical offset
+					(NewMove.X - invoker.OldMove.X) * 1.5,
+					(NewMove.Y - invoker.OldMove.Y) * 0.67
+				);
+				
+				A_WeaponOffset(moveoffset.x, moveoffset.y, WOF_ADD);
+				
+				invoker.OldMove = NewMove;
+			}
+		}
+	}
+
+	States
+	{
+		Spawn:
+			PLAY A -1;
+			Loop;
+		See:
+			#### AB 8;
+			Loop;
+		Missile:
+			#### # 1;
+			#### # 11;
+			Goto Spawn;
+		Melee:
+			#### # 1 BRIGHT {A_DIScale(0.05, -0.05); A_AttachLightDef("shoot", "BULLETSHOOT");}
+			#### # 3 BRIGHT;
+			#### # 2 A_RemoveLight("shoot");
+			#### # 0 A_DIScale(-0.05, 0.05);
+			Goto Missile;
+		Pain:
+			#### # 8 A_DIPlayerPain();
+			Goto Spawn;
+		Pain.Lightning:
+			#### # 0
+			{
+				A_DIShocked();
+				A_DIShocked();
+				A_DIShocked();
+				invoker.Vel = (0, 0, 0);
+			}
+			#### # 0 A_Jump(256, "Pain");
+			Goto Pain;
+		Death:
+			#### # 0 {self.Alpha *= 0.5;}
+			#### ### 0 
+			{
+				A_PlayerScream();
+				A_NoBlocking();
+				A_RemoveLight("shoot");
+				double diX = frandom(-self.Radius, self.Radius);
+				double diY = frandom(-self.Radius, self.Radius);
+				double diZ = frandom(self.Height / 2, self.Height);
+				A_SpawnItemEX(self.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);
+			}
+			#### ################################# 1 
+			{
+				diefade = true;
+				A_DIScale(1.01, 0.95, true);
+				A_FadeOut(0.03);
+			}
+			#### # -1;
+			Stop;
+	}
+}
+
+Class DI_PlayerTeleSwap : DI_Actor
+{
+	Default {+INVISIBLE; +NOINTERACTION;}
+	
+	States
+	{
+		Spawn:
+			PLAY A -1;
+			Stop;
+	}
+}
+
+Class DI_Token : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+Inventory.UNDROPPABLE;
+		+Inventory.PERSISTENTPOWER;
+		+Inventory.UNTOSSABLE;
+		+INVENTORY.ALWAYSPICKUP;
+	}
+}
+
+Class DI_TokenCombo : DI_Token //the player's current combo multiplier.
+{
+	Default
+	{
+		Inventory.MaxAmount 100;
+	}
+}
+
+Class DI_TokenComboTimer : DI_Token //the player's current combo timer.
+{
+	Default
+	{
+		Inventory.MaxAmount 84000;
+	}
+}
+
+Class DI_TokenComboFreeze : DI_Token {}

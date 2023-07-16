@@ -1,0 +1,138 @@
+extend class DIHandler
+{
+	override void WorldLoaded(WorldEvent e)
+	{	
+		++wavenum;
+		++fakewavenum;
+		
+		++endless_capmult;
+		++endless_ratemult;
+		++endless_spawnmult;
+		++endless_healthmult;
+		++endless_damagemult;
+		
+		ParseDIWAVE(e);
+		//GetWaveData(e);
+		//ParseWaveData(e);
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing is "DISpawner") {SpawnerSpawned(e);}
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e);}
+			if ((e.Thing.target != null) && (e.Thing.target is "PlayerPawn"))
+			{
+				if (e.Thing is "DI_Drop") {CoinDropper(e);}
+			}
+			if (e.Thing.GetClassName() == "DI_WaveStarter") //if it ain't broke don't fix it
+			{
+				GetWaveData(e);
+				ParseWaveData(e);
+				waveinprogress = true;
+				for (int i = 0; i < 8; ++i)
+				{
+					let p = players[i].mo;
+					if ((p is "DI_PlayerBase") && (playeringame[i]))
+					{
+						DI_PlayerBase plr = DI_PlayerBase(p);
+						plr.DIWave_Start();
+					}
+				}
+				DoWaveEvent(e);
+			}
+			if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
+			{
+				for (int i = 0; i < 8; ++i)
+				{
+					let p = players[i].mo;
+					if ((p is "DI_PlayerBase") && (playeringame[i]))
+					{
+						DI_PlayerBase plr = DI_PlayerBase(p);
+						plr.DIWave_End();
+					}
+				}
+			}
+			if (e.Thing is "DI_Monster")
+			{
+				DIMonsterHandler(e);
+			}
+			if (e.Thing is "DIShop")
+			{
+				shoparray.Push(e.Thing);
+			}
+		}
+	}
+	
+	override void WorldThingRevived(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e);}
+		}
+	}
+	
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing.bIsMonster == true) {DIMonsterDied(e);}
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e, false);}
+			if (e.Thing.target != null) 
+			{
+				if (e.Thing is "DI_Monster")
+				{
+					DI_Monster dimon = DI_Monster(e.Thing);
+					bool notweapon = dimon.di_notweapon;
+					GivePlayerCombo(e, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
+					if (e.Thing.target is "DI_PlayerBase")
+					{
+						DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
+						BoxDrops(e, plr, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
+						BonusArmorDrop(e, plr);
+					}
+				}
+			}
+		}
+	}
+	
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e, false);}
+			if (e.Thing is "DIShop") 
+			{
+				int removeshop;
+				foreach(shopmo : shoparray)
+				{
+					if (shoparray.Find(shopmo) < shoparray.Size()) {removeshop = shoparray.Find(shopmo);}
+				}
+				shoparray.Delete(removeshop);
+			}
+		}
+	}
+	
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "DIRerollShops")
+		{
+			foreach(shopmo : shoparray)
+			{
+				if (shopmo)
+				{
+					shopmo.SetStateLabel("Reroll");
+				}
+			}
+		}
+		else if (e.Name == "dieventtest")
+		{
+			console.printf("%s", "SWAG EVENT ACTIVATED!!!!!!!!!!");
+		}
+		else if (e.Name == "diaddenemycount") //allows other scripts to add to the handler's estimated enemy count.
+		{
+			enemycount += e.Args[0];
+		}
+	}
+}

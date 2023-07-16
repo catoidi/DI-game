@@ -1,0 +1,80 @@
+extend class DIHandler
+{
+	virtual void CoinDropper(WorldEvent e)
+	{
+		DI_Drop dropper = DI_Drop(e.Thing);
+		int combo;
+		DI_PlayerBase plr;
+		
+		if (e.Thing.target is "DI_PlayerBase")
+		{
+			plr = DI_PlayerBase(dropper.target);
+			if (dropper.di_notweapon == true) {combo = plr.combonum;}
+			else {combo = plr.CountInv("DI_TokenCombo");}
+		}
+		else {combo = 1;}
+		
+		for (int i = 0; i < combo; ++i)
+		{
+			dropper.A_SpawnItemEx(dropper.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+		}
+		
+		if ((plr) && (dropper.di_notweapon == false))
+		{
+			if (plr.CanFreshKill())
+			{
+				plr.IsFreshKill();
+			}
+		}
+	}
+	
+	virtual void GivePlayerCombo(WorldEvent e, bool notweapon = false)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			if (playeringame[i])
+			{
+				bool iskiller = false;
+				DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
+				DI_PlayerBase cplr = DI_PlayerBase(players[i].mo);
+					
+				if (cplr == plr) {iskiller = true;}
+			
+				int compoint = 120 + e.Thing.default.Health;
+				if ((iskiller == true) && (plr.CanFreshKill()) && (notweapon == false)) {compoint += (30 * (plr.CountInv("DI_TokenCombo") + 2)) + plr.score;}
+				cplr.GiveInventory("DI_TokenComboTimer", compoint);
+				if (iskiller == true) {plr.DIMonsterKilled(notweapon);}
+			
+			}
+		}
+	}
+	
+	virtual void BoxDrops(WorldEvent e, DI_PlayerBase plr, bool notweapon = false)
+	{
+		int boxchance = plr.boxammonum;
+		int boxammomin = plr.GetAmmoCapacity("BoxAmmo") / 4;
+		if (plr.CountInv("BoxAmmo") > boxammomin) {boxchance *= 0;} //no chance of getting box ammo when you have more than 1/4th of the ammo.
+	
+		if ((plr.boxammonum > 0) && (random(1, 24) <= boxchance))
+		{
+			e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+		}
+		if (plr is "DI_PlayerBox")
+		{
+			if ((plr.CanFreshKill() == true) && (notweapon == false))
+			{
+				e.Thing.A_SpawnItemEx("GlowstickAmmoDrop", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
+		}
+	}
+	
+	virtual void BonusArmorDrop(WorldEvent e, DI_PlayerBase plr)
+	{
+		int armorchance = plr.CountInv("DI_BonusArmor");
+		
+		for (int i = 0; i < armorchance; ++i)
+		{
+			e.Thing.A_SpawnItemEx("DI_BonusArmorPickup", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION, 128);
+		}
+	}
+}

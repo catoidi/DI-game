@@ -1,0 +1,438 @@
+//ripped straight from my Box Party HUD Mod.
+//simplified to better fit this game.
+
+class DI_HUD : BaseStatusBar
+{
+	HUDFont SmallFont; //default smallfont font.
+	InventoryBarState invbar;
+	
+	//stuff
+	bool HasAmmo1;
+	bool HasAmmo2;
+	const ArmorMax = 100;
+	
+	//score
+	double ScoreFadeTime;
+	double ComboFade;
+	int PrevScore;
+	bool ScoreRespawn;
+	bool showscore;
+	cvar freshtimer;
+
+	//the interpolators interpolate the numbers.
+	DynamicValueInterpolator BoxHealthInterpolator;
+	DynamicValueInterpolator BoxArmorInterpolator;
+	DynamicValueInterpolator BoxAmmoInterpolator;
+	DynamicValueInterpolator BoxAmmo2Interpolator;
+	DynamicValueInterpolator BoxScoreInterpolator;
+	
+	//water stuff
+	bool IsUnderwater; //bruh
+	int OxygenLevel; //how much oxygen u got
+	int MaxOxygen; //maximum oxygen
+	int OxygenNumber; //number displayed on HUD
+	int OxygenColor;
+	const AirAmount = 20; //i dont see any reason why someone would change how many seconds u can breathe underwater, but whatever
+	
+	//screen shake
+	vector2 CustomOffset; //offset for modded stuff
+	vector2 ShakeOffset; //offset for hud shake
+	vector2 GlobalOffset; //offset of all hud elements
+	int OffsetHealth; //used to calculate hud shake effect
+	cvar shakecvar; //used to control hud shake effect
+	
+	//more offset
+	vector2 ArmorOffset; //move hud elements up if armor is active
+	vector2 Ammo1Offset; //move hud elements up if ammo1 is active
+	vector2 Ammo2Offset;
+	vector2 PrismOffset; //move hp bar so that larger hp bar will show up right
+	
+	bool HideAmmo2;
+	
+	int leveltime;
+
+	override void Init()
+	{
+		Super.Init();
+		SetSize(0, 320, 240);
+		
+		//smallbox is used for health/ammo bar numbers, smallfont is for everything else
+		SmallFont = HUDFont.Create("SmallFont");
+		
+		//set max air capacity
+		MaxOxygen = AirAmount * 35;
+		
+		BoxHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+		BoxArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
+		BoxAmmoInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
+		BoxAmmo2Interpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
+		BoxScoreInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 9999999);
+		
+		invbar = InventoryBarState.Create();
+		
+		shakecvar = cvar.findcvar("box_hudshake");
+		freshtimer = cvar.findcvar("di_showfreshtimer");
+	}
+
+	override void NewGame()
+	{
+		Super.NewGame();
+
+		//reset numbers back to 0 on new game
+		BoxHealthInterpolator.Reset(0);
+		BoxArmorInterpolator.Reset(0);
+		BoxAmmoInterpolator.Reset(0);
+		BoxAmmo2Interpolator.Reset(0);
+		BoxScoreInterpolator.Reset(0);
+		
+		ScoreFadeTime = 2.75;
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		//update interpolated numbers
+		BoxInterpolate();
+		
+		leveltime = level.maptime / 35;
+		
+		Ammo ammo1, ammo2;
+		int ammomax;
+		int ammocount1, ammocount2;
+		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
+		if (BoxAmmoInterpolator.GetValue() > ammocount1) {BoxAmmoInterpolator.Reset(ammocount1);} else {BoxAmmoInterpolator.Update(ammocount1);}
+		if (BoxAmmo2Interpolator.GetValue() > ammocount2) {BoxAmmo2Interpolator.Reset(ammocount2);} else {BoxAmmo2Interpolator.Update(ammocount2);}
+		
+		//screen shake effect
+		int OffsetAmount = 0;
+		if (cplayer.health > 0) //only shake if alive
+		{
+			if (!OffsetHealth > 0) {OffsetHealth = cplayer.health;} //offsethealth should never reach 0 after start
+			else if (OffsetHealth > cplayer.health) //health lowered, start shaking
+			{
+				if (OffsetHealth > 200 + cplayer.health) {OffsetHealth = 200 + cplayer.health;}
+				OffsetAmount = (((OffsetHealth - cplayer.health) * (shakecvar.GetInt())) / 20); //shakes 1 pixel per 10 damage
+				if (OffsetAmount > 9) {OffsetAmount = 9;} //cap shake amount
+				ShakeOffset = (randompick[boxhud](-OffsetAmount, OffsetAmount), randompick[boxhud](-OffsetAmount, OffsetAmount));
+				OffsetHealth += -1;
+			}
+			else //health raised/stagnated, stop shaking
+			{
+				OffsetHealth = cplayer.health;
+				ShakeOffset = (0, 0);
+			}
+		}
+		else {ShakeOffset = (0, 0);} //reset position if dead
+		
+		//update oxygenlevel
+		if ((cplayer.mo.waterlevel == 3) && !(cplayer.cheats & CF_GODMODE) && !(cplayer.cheats & CF_GODMODE2))
+		{
+			if (IsUnderwater == true) {OxygenLevel += -1;}
+			if (IsUnderwater == false)
+			{
+				OxygenLevel = MaxOxygen;
+				IsUnderwater = true;
+			}
+			OxygenNumber = OxygenLevel / 7;
+			if (OxygenNumber <= 25) {OxygenColor = Font.CR_DARKRED;} else {OxygenColor = Font.CR_DARKGRAY;}
+		}
+		else {IsUnderwater = false;}
+		
+		//update score
+		if (ScoreRespawn == true)
+		{
+			if (ScoreFadeTime > 0.0) {ScoreFadeTime += -0.01;}
+			if (CPlayer.mo.score > PrevScore) {ScoreFadeTime = 2.75;}
+		}
+		PrevScore = CPlayer.mo.score;
+		
+		shakecvar = cvar.findcvar("box_hudshake");
+		
+		ScoreRespawn = true;
+		GlobalOffset = ShakeOffset + CustomOffset;
+	}
+	
+	override void Draw(int state, double TicFrac)
+	{
+		Super.Draw(state, TicFrac);
+		
+		if (state == HUD_Fullscreen) //render HUD in fullscreen mode
+		{
+			BeginHUD();
+			DrawBoxHUD(TicFrac);
+		}
+	}
+	
+	override void DrawAutomapHUD(double TicFrac)
+	{
+		Super.DrawAutomapHUD(TicFrac);
+		
+		BeginHUD(0.5);
+		DrawBoxHUD(TicFrac);
+	}
+	
+	void DrawBoxHUD(double TicFrac)
+	{
+		DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+	
+		int regenamount = GetAmount("DI_Regen") + CPlayer.health;
+		
+		if (GetAmount("DI_Regen") > 0)
+		{
+			DrawBar("graphics/boxhud/HUDBARB1.png", "graphics/boxhud/HUDBARA.png", regenamount, cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARB0.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+		}
+		else 
+		{
+			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARA.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+		}
+		
+		if (BoxHealthInterpolator.GetValue() > cplayer.mo.GetMaxHealth(true))
+		{
+			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - cplayer.mo.GetMaxHealth(true), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+		}
+		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+		if (GetAmount("DI_Regen") > 0)
+		{
+			DrawString(SmallFont, FormatNumber(GetAmount("DI_Regen"), 0), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, Font.CR_GREEN, 0.5);
+		}
+		
+		//DrawTexture(GetMugShot(5), GlobalOffset + (-36, -36), DI_ITEM_OFFSETS);
+		
+		if (GetArmorAmount() > 0) //show armor when not empty
+		{
+			BasicArmor curarmor = BasicArmor(CPlayer.mo.FindInventory('BasicArmor'));
+		
+			DrawBar("graphics/boxhud/HUDBARH.png", "graphics/boxhud/HUDBARG.png", BoxArmorInterpolator.GetValue(), ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			if (BoxArmorInterpolator.GetValue() > ArmorMax)
+			{
+				DrawBar("graphics/boxhud/HUDBARK.png", "graphics/boxhud/HUDBARH.png", BoxArmorInterpolator.GetValue() - ArmorMax, ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			}
+			DrawString(SmallFont, FormatNumber(GetArmorAmount(), 0), GlobalOffset + (-48, -49), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
+			
+			DrawInventoryIcon(curarmor, GlobalOffset + (-24, -36), DI_ITEM_OFFSETS);
+		}
+		
+		//AMMO BARS
+		Ammo ammo1, ammo2;
+		int ammo1max, ammo2max, ammocount1, ammocount2;
+		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
+		textureid ammo1icon, ammo2icon;
+		
+		if (GetArmorAmount() > 0) {ArmorOffset = (0, -24);} //do armor offset if armor > 0
+		else {ArmorOffset = (0, 0);}
+		Ammo1Offset = (0, -20 * HasAmmo1);
+		Ammo2Offset = (0, -20 * HasAmmo2);
+		
+		bool noammo1, noammo2;
+		if (ammocount1 == 0) {noammo1 = true;} else {noammo1 = false;}
+		if (ammocount2 == 0) {noammo2 = true;} else {noammo2 = false;}
+		if (ammo1 == ammo2) {HideAmmo2 = true;} else {HideAmmo2 = false;}
+		
+		//double freshalpha = 1.0;
+		//if (diplayer.LastWeaponKill == CPlayer.ReadyWeapon.GetClassName()) {freshalpha = 0.5;}
+		
+		DI_Weapon readydiweapon;
+		if (cplayer.readyweapon is "DI_Weapon") {readydiweapon = DI_Weapon(cplayer.readyweapon);}
+		
+		if (ammo1 != null)
+		{
+			string ammo1bar = "graphics/boxhud/HUDBARF";
+			int ammo1bar_num = 0;
+			if (readydiweapon) {ammo1bar_num = readydiweapon.wpn_ammo1hud;}
+			switch (ammo1bar_num)
+			{
+				default: ammo1bar.AppendFormat("%s", ".png"); break;
+				case 1: ammo1bar.AppendFormat("%s", "_1.png"); break;
+				case 2: ammo1bar.AppendFormat("%s", "_2.png"); break;
+				case 3: ammo1bar.AppendFormat("%s", "_3.png"); break;
+				case 4: ammo1bar.AppendFormat("%s", "_4.png"); break;
+			}
+		
+			ammo1max = CPlayer.ReadyWeapon.Ammo1.MaxAmount;
+			ammo1icon = GetIcon(cplayer.readyweapon.ammo1, 0);
+			DrawBar(ammo1bar, "graphics/boxhud/HUDBARE.png", BoxAmmoInterpolator.GetValue(), ammo1max, GlobalOffset + ArmorOffset + (-136, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawString(SmallFont, FormatNumber(ammocount1, 1), GlobalOffset + ArmorOffset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
+			
+			/*
+			DrawBar("graphics/boxhud/AMMOW0.png", "graphics/boxhud/AMMOZ0.png", diplayer.LastKillTimer_Max - diplayer.LastKillTimer, diplayer.LastKillTimer_Max, GlobalOffset + ArmorOffset + (-32, -52), 1, SHADER_VERT, DI_ITEM_OFFSETS, freshalpha);
+			if (diplayer.CanFreshKill() == true)
+			{
+				DrawImage("graphics/boxhud/AMMOV0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
+			}
+			else if (diplayer.LastKillTimer == 0)
+			{
+				DrawImage("graphics/boxhud/AMMOX0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
+			}
+			*/
+			
+			//insert ammo icon here
+			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
+			DrawImage("graphics/boxhud/AMMOA0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
+			HasAmmo1 = true;
+		}
+		else {HasAmmo1 = false;}
+		if ((ammo2 != null) && (HideAmmo2 == false))
+		{
+			string ammo2bar = "graphics/boxhud/HUDBARF";
+			int ammo2bar_num = 0;
+			if (readydiweapon) {ammo2bar_num = readydiweapon.wpn_ammo2hud;}
+			switch (ammo2bar_num)
+			{
+				default: ammo2bar.AppendFormat("%s", ".png"); break;
+				case 1: ammo2bar.AppendFormat("%s", "_1.png"); break;
+				case 2: ammo2bar.AppendFormat("%s", "_2.png"); break;
+				case 3: ammo2bar.AppendFormat("%s", "_3.png"); break;
+				case 4: ammo2bar.AppendFormat("%s", "_4.png"); break;
+			}
+		
+			ammo2max = cplayer.readyweapon.ammo2.maxamount;
+			ammo2icon = GetIcon(cplayer.readyweapon.ammo2, 0);
+			DrawBar(ammo2bar, "graphics/boxhud/HUDBARE.png", BoxAmmo2Interpolator.GetValue(), ammo2max, GlobalOffset + ArmorOffset + Ammo1Offset + (-136, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawString(SmallFont, FormatNumber(ammocount2, 1), GlobalOffset + ArmorOffset + Ammo1Offset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
+			
+			/*
+			DrawBar("graphics/boxhud/AMMOW0.png", "graphics/boxhud/AMMOZ0.png", diplayer.LastKillTimer_Max - diplayer.LastKillTimer, diplayer.LastKillTimer_Max, GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), 1, SHADER_VERT, DI_ITEM_OFFSETS, freshalpha);
+			if (diplayer.CanFreshKill() == true)
+			{
+				DrawImage("graphics/boxhud/AMMOV0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
+			}
+			else if (diplayer.LastKillTimer == 0)
+			{
+				DrawImage("graphics/boxhud/AMMOX0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
+			}
+			*/
+			
+			//insert ammo2 icon here
+			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
+			DrawImage("graphics/boxhud/AMMOA0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
+			HasAmmo2 = true;
+		}
+		else {HasAmmo2 = false;}
+		
+		if ((freshtimer.GetBool() == true) && (diplayer.LastKillTimer > 35))
+		{
+			DrawString(SmallFont, FormatNumber(diplayer.LastKillTimer / 35, 1), GlobalOffset + ArmorOffset + (-140, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE, 0.1);
+		}
+		
+		//score
+		//DrawImage("graphics/boxhud/SCOREBAR.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-74, -36));
+		if (1 == 1)
+		{
+			//dont show score until you've killed your first enemy.
+			showscore = true;
+		}
+		
+		if (showscore == true)
+		{
+			DrawBar("graphics/boxhud/SCOREBAA.png", "graphics/boxhud/SCOREBAR.png", GetAmount("DI_TokenComboTimer"), 350, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			string comboicon = "graphics/boxhud/COMBO1.png";
+			if (GetAmount("DI_TokenComboTimer") >= 350)
+			{
+				DrawBar("graphics/boxhud/SCOREBAB.png", "graphics/boxhud/SCOREBAA.png", GetAmount("DI_TokenComboTimer") - 350, 700, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO2.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 1050)
+			{
+				DrawBar("graphics/boxhud/SCOREBAC.png", "graphics/boxhud/SCOREBAB.png", GetAmount("DI_TokenComboTimer") - 1050, 1050, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO3.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 2100)
+			{
+				DrawBar("graphics/boxhud/SCOREBAD.png", "graphics/boxhud/SCOREBAC.png", GetAmount("DI_TokenComboTimer") - 2100, 1400, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO4.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 3500)
+			{
+				DrawBar("graphics/boxhud/SCOREBAE.png", "graphics/boxhud/SCOREBAD.png", GetAmount("DI_TokenComboTimer") - 3500, 1750, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO5.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 5250)
+			{
+				DrawBar("graphics/boxhud/SCOREBAF.png", "graphics/boxhud/SCOREBAE.png", GetAmount("DI_TokenComboTimer") - 5250, 5250, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO6.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 10500)
+			{
+				DrawBar("graphics/boxhud/SCOREBAG.png", "graphics/boxhud/SCOREBAF.png", GetAmount("DI_TokenComboTimer") - 10500, 10500, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO7.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 21000)
+			{
+				DrawBar("graphics/boxhud/SCOREBAH.png", "graphics/boxhud/SCOREBAG.png", GetAmount("DI_TokenComboTimer") - 21000, 21000, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO8.png";
+			}
+			if (GetAmount("DI_TokenComboTimer") >= 42000)
+			{
+				DrawBar("graphics/boxhud/SCOREBAI.png", "graphics/boxhud/SCOREBAH.png", GetAmount("DI_TokenComboTimer") - 42000, 42000, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+				comboicon = "graphics/boxhud/COMBO9.png";
+			}
+			if (!(GetAmount("DI_TokenComboFreeze") == 0) || !(Level.Total_Monsters > Level.Killed_Monsters))
+			{
+				DrawImage("graphics/boxhud/SCOREBAR_GLOW.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), DI_ITEM_OFFSETS);
+			}
+			
+			let scorecolor = Font.CR_WHITE;
+			if (BoxScoreInterpolator.GetValue() < 0) {scorecolor = Font.CR_RED;}
+			
+			DrawString(SmallFont, FormatNumber(BoxScoreInterpolator.GetValue()), GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-44, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, scorecolor);
+			DrawImage(comboicon, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-32, -52), DI_ITEM_OFFSETS);
+			
+			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/AMMOW0.png", "graphics/boxhud/AMMOZ0.png", diplayer.LastKillTimer_Max - diplayer.LastKillTimer, diplayer.LastKillTimer_Max, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), 1, SHADER_VERT, DI_ITEM_OFFSETS);
+			if (diplayer.CanFreshKill() == true)
+			{
+				DrawImage("graphics/boxhud/FRESHFACE2.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
+				DrawImage("graphics/boxhud/AMMOV0.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
+			}
+			else if (diplayer.LastKillTimer == 0)
+			{
+				DrawImage("graphics/boxhud/FRESHFACE1.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
+				DrawImage("graphics/boxhud/AMMOX0.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
+			}
+			else if (diplayer.LastWeaponKill == CPlayer.ReadyWeapon.GetClassName()) 
+			{DrawImage("graphics/boxhud/FRESHFACE1.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS, 0.5);}
+		}
+		
+		//KEYS
+		Vector2 keypos = (10, -2);
+		for(let i = CPlayer.mo.Inv; i != null; i = i.Inv)
+		{
+			if (i is "Key" && i.Icon.IsValid())
+			{
+				DrawTexture(i.Icon, keypos, DI_SCREEN_LEFT_BOTTOM|DI_ITEM_RIGHT_BOTTOM);
+				Vector2 size = TexMan.GetScaledSize(i.Icon);
+				keypos.X += size.X + 2;
+			}
+		}
+	
+		//oxygen meter
+		if (IsUnderwater == true)
+		{
+			DrawBar("graphics/boxhud/HUDBARJ.png", "graphics/boxhud/HUDBARI.png", OxygenLevel, MaxOxygen, GlobalOffset + (-142, 32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawImage("graphics/boxhud/AIRICON.png", GlobalOffset + (-32, 32), DI_ITEM_OFFSETS);
+			DrawString(SmallFont, FormatNumber(OxygenNumber), GlobalOffset + (-48, 36), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, OxygenColor);
+		}
+		
+		//inventory bar
+		if (CPlayer.mo.InvSel != null && !Level.NoInventoryBar && isInventoryBarVisible() == false)
+		{
+			DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED);
+			DrawString(SmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), GlobalOffset + (-149, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+		}
+		if (isInventoryBarVisible())
+		{
+			DrawInventoryBar(invbar, GlobalOffset + (-268, -40), 3, DI_ITEM_LEFT_TOP);
+		}
+	}
+	
+	virtual void BoxInterpolate() 
+	{
+		BoxHealthInterpolator.Update(CPlayer.health);
+		BoxArmorInterpolator.Update(GetArmorAmount());
+		BoxScoreInterpolator.Update(CPlayer.mo.score);
+	}
+}

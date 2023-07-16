@@ -1,0 +1,95 @@
+extend class DIHandler
+{
+	virtual void SpawnerSpotUpdate(WorldEvent e, bool addspot = true)
+	{
+		actor spotr = e.Thing;
+		
+		if (addspot == true)
+		{
+			if (spotarray.Find(spotr) == spotarray.Size())
+			{
+				spotarray.Push(spotr);
+				//console.printf("%s", "array push success");
+			}
+			//else console.printf("%s", "epic array failure");
+		}
+		else
+		{
+			if (spotarray.Find(spotr) != spotarray.Size())
+			{
+				spotarray.Delete(spotarray.Find(spotr));
+				//console.printf("%s", "spot removed successfully");
+				//console.printf("remaining spots: %d", spotarray.Size());
+			}
+			//else console.printf("%s", "failed epicly to remove the spot");
+		}
+	}
+	
+	virtual void SpawnerSpawned(WorldEvent e)
+	{
+		DISpawner spwnr = DISpawner(e.Thing);
+		currentspawners = e.Thing.ACS_ScriptCall("CheckSpawner", spawnamount, spawntime);
+		
+		array<string> spotarray_names;
+		for (int i = 0; i < spotarray.Size(); ++i) {spotarray_names.Push(spotarray[i].GetClassName());}
+		
+		int alivemons = Level.Total_Monsters - Level.Killed_Monsters;
+		if (!(alivemons + currentspawners < enemymax) || !(spotarray.Size() > 0) || !(spawnqueue.Size() > 0)) {spwnr.Die(null, null); return;} //don't run the below code if any of these checks fail.
+		//console.printf("spawner: %d, %d", alivemons + currentspawners, enemymax);
+		
+		//check if there's a spot available for any enemies in the spawnqueue.
+		bool foundspot;
+		for (int i = 0; i < spawnqueue_spawner.Size(); ++i)
+		{
+			if (spotarray_names.Find(spawnqueue_spawner[i]) != spotarray_names.Size()) {foundspot = true;}
+		}
+		
+		if (foundspot == true)
+		{	
+			//Choose the enemy to spawn.
+			int spawnnum = -1;
+			do {spawnnum = random(0, spawnqueue.Size() - 1);} //choose a random available enemy.
+			while (spotarray_names.Find(spawnqueue_spawner[spawnnum]) == spotarray_names.Size()); //reroll the random number until we get a valid spot.
+			name nextenemy = spawnqueue[spawnnum]; //record the enemy class name for future use.
+			name nextspawner = spawnqueue_spawner[spawnnum]; //record the spot the enemy wants to spawn from.
+			
+			array<int> spotmatch;
+			
+			//console.printf("\cfLooking for: '%s'... Spot Array Size: %d", nextspawner, spotarray.Size());
+		
+			for (int i = 0; i < spotarray_names.Size(); ++i)
+			{
+				name currentspot = spotarray_names[i];
+				//console.printf("Current Spot: '%s'", currentspot);
+			
+				if (currentspot == nextspawner)
+				{
+					//console.printf("Added to Spot Pool: %s #%d", currentspot, i);
+					spotmatch.Push(i);
+				}
+				//else {console.printf("Cannot Spawn at %s #%d", currentspot, i);}
+			}
+			
+			if (spotmatch.Size() != 0) 
+			{
+				int spotchoice = random(0, spotmatch.Size() - 1); //choose a random available spot.	
+				int spotchoice_int = spotmatch[spotchoice];
+				//console.printf("Spawning at: %s #%d", nextspawner, spotmatch[spotchoice]);
+				DISpawnerSpot chosenspot = DISpawnerSpot(spotarray[spotchoice_int]); //create a pointer to the chosen spot.
+			
+				//Move to the spot, then activate the spot.
+				spwnr.SetOrigin(chosenspot.Pos, false); //move the spawner to the pointer's position.
+				chosenspot.SpawnDelay = 100 + spotdelay; //how long this spot will be unavailable for. minimum is just under 3 seconds.
+				chosenspot.Die(spwnr, spwnr, 0, "Spawner"); //prevents other spawners from choosing this current spot.
+			
+				//Do the enemy spawning stuff.
+				spwnr.SpawnChoice = nextenemy; //this tells the spawner what enemy to spawn.
+				spawnqueue.Delete(spawnnum); //removes the enemy from the queue.
+				spawnqueue_spawner.Delete(spawnnum);	
+				if (spawnqueue.Size() == 0) {spwnr.ACS_ScriptCall("spawnqueuedone");}
+			}
+			else {spwnr.Die(null, null);}
+		}
+		else {spwnr.Die(null, null);} //despawn self if there's no spot or enemy available.
+	}
+}

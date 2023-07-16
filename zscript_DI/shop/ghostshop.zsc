@@ -1,0 +1,22 @@
+//zscript_DI/shop/ghostshop.zsc
+
+//this is not a shop. this is used to show which shops will appear on the next shop upgrade.
+
+class DI_GhostShop : DI_Actor
+{
+	Default
+	{
+		RenderStyle "Translucent";
+		Radius 20;
+		Height 96;
+		+VISIBILITYPULSE;
+		-SOLID;
+	}
+	
+	States
+	{
+		Spawn:
+			SHOP Z -1;
+			Stop;
+	}
+}

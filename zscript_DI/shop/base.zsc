@@ -1,0 +1,78 @@
+Class DIShop_Base : SwitchableDecoration abstract
+{
+	mixin DI_ActorMixin;
+	
+	string user_currentsprite, shop_currentsprite; //the sprite of the current item.
+	int user_itemstock, shop_itemstock; //how many items this shop can sell per round. set to -1 for unlimited stock. defaults to 1.
+	bool user_allowdebt; //allow the player to buy from this shop even if they're in debt.
+	
+	property AllowDebt: user_allowdebt;
+	
+	int currentprice; //how much the price has increased.
+	int lastpurchased; //checks how many rounds ago the last purchase was.
+	int curround; //the current round.
+	int checkcount; //timer for checking round.
+	int saleamount; //total price gets divided by this.
+	int lastsale; //how many rounds ago the last sale was.
+	bool canshop;
+	
+	PlayerPawn plr; //the player who is attempting to make a purchase.
+	
+	override void PostBeginPlay()
+	{
+		SpawnShopExtras();
+	}
+	
+	virtual void SpawnShopExtras(void)
+	{
+		A_SpawnItemEX("DIShop_Item", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number1", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number2", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number3", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number4", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number5", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number6", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEX("DIShop_Number7", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+	}
+	
+	abstract void PurchaseShopItem();
+	
+	abstract void RerollShopItem();
+	
+	abstract clearscope int GetShopPrice();
+	
+	abstract clearscope int GetShopBasePrice();
+	
+	abstract clearscope string GetShopItem();
+	
+	Default
+	{
+		Radius 20;
+		Height 96;
+		Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
+		+SOLID;
+		+USESPECIAL;
+	}
+	
+	States
+	{
+		Spawn:
+			SHOP A -1;
+			Stop;
+		Inactive:
+		Active:
+			SHOP A 1 A_Jump(256, "Purchase");
+		Purchase:
+			#### # 1 PurchaseShopItem();
+			#### # 0 A_Jump(256, "Squish");
+			Stop;
+		Reroll:
+			#### # 1 RerollShopItem();
+			#### # 0 A_Jump(256, "Squish");
+			Stop;
+		Squish:
+			#### ########## 1 A_DIScale(-0.025, 0.025);
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+	}
+}

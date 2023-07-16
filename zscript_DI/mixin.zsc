@@ -1,0 +1,197 @@
+//zscript_DI/mixin.zsc
+
+mixin class DI_ActorMixin
+{
+	bool di_notweapon;
+	property IgnoreWeapon: di_notweapon; //used for throwable consumables. tells certain functions that this actor did not originate from a weapon.
+	
+	action void A_DIScale (double ScaleAmountX, double ScaleAmountY, bool IsMultiply = false, bool DoSize = false)
+	{
+	
+		if (invoker)
+		{
+			if (IsMultiply == false)
+			{
+				//don't ask.
+				invoker.Scale.X += ScaleAmountX;
+				invoker.Scale.Y += ScaleAmountY;
+			}
+			else
+			{
+				invoker.Scale.X = invoker.Scale.X * ScaleAmountX;
+				invoker.Scale.Y = invoker.Scale.Y * ScaleAmountY;
+			}
+			
+			if (DoSize == true)
+			{
+				double r = invoker.Scale.X * invoker.default.Radius;
+				double h = invoker.Scale.Y * invoker.default.Height;
+				invoker.A_SetSize(r, h);
+			}
+		}
+	}
+	
+	action void A_ResetScale (void)
+	{
+		invoker.Scale.X = invoker.default.Scale.X;
+		invoker.Scale.Y = invoker.default.Scale.Y;
+	}
+	
+	action void A_DIScream (void)
+	{
+		if (random(0, 5000) == 5000) {A_StartSound("wilhelm");}
+		else {A_Scream();}
+	}
+	
+	//there's some duplicate functions here, i know. maybe one day i will fix it. but today is not that day.
+	
+	action void A_DIFakeStatusPuff (double shosize = 1.0, int stattype = 0)
+	{
+		string shockstr;
+		int ht = invoker.height;
+		int rd = invoker.radius;
+		int stroll = -1;
+		
+		switch(stattype)
+		{
+			case 1: shockstr = "PUFFD0"; break; //ice
+			case 2: shockstr = "PUFFE0"; break; //fire
+			case 3: shockstr = "PUFFF0"; break; //lightning
+			case 4: shockstr = "PUFFG0"; break; //poison
+		}
+		if (stroll == -1) {stroll = random(0, 359);}
+		
+		if (stattype != 0) {A_SpawnParticleEX("White", TexMan.CheckForTexture(shockstr), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-rd, rd), random(-rd, rd), random(ht / 2, ht), random(-2, 2), 0, random(-1, 1), 0, 0, 0, 1.0, -1, 0, stroll);}
+	}
+	
+	action void A_DIShocked (double shosize = 1.0, string newspr = "", int stroll = -1)
+	{
+		string shockstr;
+		int ht = invoker.height;
+		int rd = invoker.radius;
+		switch(random(0, 2))
+		{
+			case 0: shockstr = "ELECA0"; break;
+			case 1: shockstr = "ELECB0"; break;
+			case 2: shockstr = "ELECC0"; break;
+		}
+		if (newspr != "") {shockstr = newspr;}
+		if (stroll == -1) {stroll = random(0, 359);}
+		
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(shockstr), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-rd, rd), random(-rd, rd), random(ht / 2, ht), random(-2, 2), 0, random(-1, 1), 0, 0, 0, 1.0, -1, 0, stroll);
+	}
+	
+	action void A_DISmokin (double shosize = 1.0)
+	{
+		//like A_DIShocked but for smoke.
+		
+		int ht = invoker.height;
+		int rd = invoker.radius;
+		
+		A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), 0, SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-rd, rd), random(-rd, rd), random(ht / 2, ht), 0, 0, frandom(0.5, 3), 0, 0, 0, 1.0, -1, 0, random(0, 359));
+	}
+	
+	action void A_DIIced (int inum = 1, double shosize = 0.25, bool isdead = false)
+	{
+		double ht = invoker.height;
+		double rd = invoker.radius;
+		
+		if (isdead) {ht *= 4;}
+		
+		for (int i = 0; i < inum; ++i)
+		{
+			A_SpawnParticle("White", SPF_FULLBRIGHT | SPF_RELPOS, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-rd, rd), random(-rd, rd), random(ht / 2, ht), 0, 0, frandom(-0.25, -1.25));
+		}
+	}
+	
+	action void A_DIBurned (int inum = 1, double shosize = 0.25, bool isdead = false)
+	{
+		double ht = invoker.height;
+		double rd = invoker.radius;
+		
+		if (isdead) {ht *= 4;}
+		
+		for (int i = 0; i < inum; ++i)
+		{
+			A_SpawnParticleEX("White", TexMan.CheckForTexture("PUFFE0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-rd, rd), random(-rd, rd), random(0, ht / 2), 0, 0, frandom(0.5, 3), 0, 0, 0, 1.0, -1, 0, 180);
+		}
+	}
+	
+	action void A_DIPoisoned (int inum = 1, double shosize = 0.25, bool isdead = false)
+	{
+		double ht = invoker.height;
+		double rd = invoker.radius;
+		
+		if (isdead) {ht *= 4;}
+		
+		for (int i = 0; i < inum; ++i)
+		{
+			A_SpawnParticleEX("White", TexMan.CheckForTexture("PUFFG0"), 0, SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-rd, rd), random(-rd, rd), random(ht / 2, ht), 0, 0, frandom(-0.1, -1.0), 0, 0, 0, 1.0, -1, 0, random(0, 359));
+		}
+	}
+	
+	action void A_DIStatusLight (int curstatus = 0)
+	{
+		let lighttype = DynamicLight.PointLight;
+		Color lightcolor = Color(0, 0, 0, 0);
+		bool smalllight = false;
+		
+		switch(curstatus)
+		{
+			default: break;
+			case 1: 
+				lighttype = DynamicLight.FlickerLight; 
+				lightcolor = Color(255, 255, 235, 0);
+				break; //shocked
+			case 2: 
+				lighttype = DynamicLight.FlickerLight; 
+				lightcolor = Color(255, 255, 79, 0);
+				break; //burned
+			case 3: 
+				lightcolor = Color(255, 85, 196, 0);
+				smalllight = true;
+				break; //poisoned
+			//ice does not emit light, so it's not one of the options.
+		}
+	
+		if (curstatus != 0) 
+		{
+			int size1 = invoker.radius;
+			if (smalllight == false) {size1 *= 1.5;}
+			int size2 = size1 * 0.75;
+			int lightoffset = invoker.height / 2;
+			
+		
+			A_AttachLight("statuslight", lighttype, lightcolor, size1, size2, 0, (0, 0, lightoffset), 0.1);
+		}
+		else {A_RemoveLight("statuslight");}
+	}
+	
+	action void A_DIDie(bool noblock = true, double newalpha = 0.5, bool dodrops = true) //:)
+	{
+		invoker.Alpha *= newalpha;
+		A_DIScream();
+		if (noblock) {A_NoBlocking();}
+		A_FaceTarget();
+		if (dodrops) {A_DIDrops();}
+		A_RemoveLight("statuslight");
+	}
+	
+	action void A_DIDrops(void)
+	{
+		A_SpawnItemEx("DI_Drop", flags: SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION | SXF_SETMASTER);
+	}
+	
+	action void A_DIDieBlood(void)
+	{
+		double diX = frandom(-invoker.Radius, invoker.Radius);
+		double diY = frandom(-invoker.Radius, invoker.Radius);
+		double diZ = frandom(invoker.Height / 2, invoker.Height);
+		A_SpawnItemEX(invoker.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);
+	}
+	
+	action void A_ProjectileSmoke()
+	{
+		A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKC0"), 0, SPF_ROLL, 20, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, -1, 0.6, random(0, 359));
+	}
+}

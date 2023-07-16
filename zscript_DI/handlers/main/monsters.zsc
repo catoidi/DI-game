@@ -1,0 +1,53 @@
+extend class DIHandler
+{
+	virtual void DIMonsterDied(WorldEvent e)
+	{
+		--enemycount;
+		e.Thing.ACS_ScriptCall("EnemyCount", enemycount);
+		currentspawners = e.Thing.ACS_ScriptCall("CheckSpawner", spawnamount, spawntime);
+		bool queuefinished = e.Thing.ACS_ScriptCall("CheckSpawnQueue"); //this is to fix a bug when you kill the 2nd to last enemy on the same frame the last enemy starts spawning.
+		if (waveinprogress == true)
+		{
+			if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1))
+			{
+				//console.printf("%s", "wave is over!");
+				++wavenum;
+				++fakewavenum;
+				e.Thing.ACS_NamedExecuteAlways("DIWaveFinished", 0, wavenum, 0, 0);
+				waveinprogress = false;
+				//GetWaveData(e);
+				//ParseWaveData(e);
+			}
+			else 
+			{
+				++waitcurrent;
+				//console.printf("%d, %d", waitnum, waitcurrent);
+				if ((waitnum != 0) && (waitcurrent == waitnum))
+				{
+					waitnum = 0;
+					waitcurrent = 0;
+					++batchnum;
+					ParseWaveData(e);
+					//console.printf("%s", "activating next batch...");
+				}
+				//console.printf("%s %d %d %d", "wave is still going,", currentspawners, spawnqueue.Size(), Level.Total_Monsters - (Level.Killed_Monsters + 1));
+			}
+		}
+	}
+	
+	virtual void DIMonsterHandler(WorldEvent e)
+	{	
+		if (endless_healthmult != 1)
+		{
+			int starthp = e.Thing.Health * endless_healthmult;
+			if (starthp < 1) {starthp = 1;}
+			e.Thing.Health = starthp;
+			e.Thing.StartHealth = starthp  / G_SkillPropertyFloat(SKILLP_MonsterHealth);
+		}
+		if (endless_damagemult != 1)
+		{
+			double startdmg = e.Thing.DamageMultiply * endless_damagemult;
+			e.Thing.DamageMultiply = startdmg;
+		}
+	}
+}

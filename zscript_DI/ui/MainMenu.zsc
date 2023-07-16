@@ -1,0 +1,149 @@
+//zscript_DI/ui/mainmenu.zsc
+
+Class DIMenuSwitcher ui
+{
+	virtual void DoNewGame()
+	{
+		Menu.SetMenu("DINewGameMenu");
+	}
+}
+
+Class DIFakeListMenu : ListMenu
+{
+	//DINewGameMenu newmenu;
+	DIMenuSwitcher switcher;
+	Menu prevmnu;
+	
+	override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		if (!parent)
+		{
+			//newmenu = new("DINewGameMenu");
+			switcher = new("DIMenuSwitcher");
+		
+			switcher.DoNewGame();
+		}
+		else 
+		{
+			console.printf("%s", parent.GetClassName());
+			prevmnu = parent;
+			Close();
+			menuDelegate.MenuDismissed();
+		}
+	}
+	
+	override void Drawer()
+	{
+	
+	}
+	
+	override void Ticker()
+	{
+		if (!prevmnu) {switcher.DoNewGame();}
+	}
+	
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		switch (mkey)
+		{
+		case MKEY_Back:
+		{
+			Close();
+			let m = GetCurrentMenu();
+			MenuSound(m != null ? "menu/backup" : "menu/clear");
+			if (!m) menuDelegate.MenuDismissed();
+			return true;
+		}
+		}
+		return false;
+	}
+}
+
+Class DIListMenu : ListMenu
+{
+	DIListMenuDescriptor DefDesc, CurDesc; //keep a separate copy of desc away from the already defined mDesc, for safekeeping.
+
+	override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		DefDesc = DIListMenuDescriptor(desc);
+		CurDesc = DIListMenuDescriptor(desc);
+		
+		console.printf("%s", "lmao0");
+		//CurDesc.UpdateDIList();
+		
+		//ListMenuDescriptor NewDesc = ListMenuDescriptor(CurDesc);
+	
+		Super.Init(parent, desc);
+	}
+}
+
+Class DIListMenuDescriptor : ListMenuDescriptor
+{
+	virtual void UpdateDIList(void)
+	{
+		/*
+		console.printf("%s", "lmao1");
+		for(int i=0; i < mItems.Size(); i++)
+		{
+			if (mItems[i] is "ListMenuItemDIPatchItem")
+			{
+				
+				console.printf("%s", "lmao2");
+				ListMenuItemDIPatchItem DIPatch = ListMenuItemDIPatchItem(mItems[i]);
+				
+				if (DIPatch.mEnabled == false)
+				{
+					console.printf("%s", "lmao3");
+					//mItems.Delete(i);
+				}
+			}
+		}
+		*/
+	}
+}
+
+Class ListMenuItemDIPatchItem : ListMenuItemPatchItem
+{
+	cvar patchcvar;
+	bool isselected;
+	
+	void Init(ListMenuDescriptor desc, CVar boolcvar, TextureID patch, String hotkey, Name child, int param = 0)
+	{
+		patchcvar = boolcvar;
+		Super.Init(desc, patch, hotkey, child, param);
+		if ((patchcvar) && (patchcvar.GetBool() == true))
+		{
+			mEnabled = true;
+		}
+		else
+		{
+			mEnabled = false;
+		}
+	}
+	
+	override bool Activate()
+	{
+		if (mEnabled == true) {Super.Activate();}
+		return false;
+	}
+	
+	override void Ticker()
+	{
+		Super.Ticker();
+		
+		if ((patchcvar) && (patchcvar.GetBool() == true))
+		{
+			mEnabled = true;
+		}
+		else
+		{
+			mEnabled = false;
+		}
+	}
+	
+	override void Draw(bool selected, ListMenuDescriptor desc)
+	{
+		isselected = selected;
+		Super.Draw(selected, desc);
+	}
+}

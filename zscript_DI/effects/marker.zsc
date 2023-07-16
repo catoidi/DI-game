@@ -1,0 +1,29 @@
+Class DIMarker : MapMarker
+{
+	//markers for enemies.
+	override void Tick(void)
+	{
+		Super.Tick();
+		
+		if (target)
+		{
+			Vector3 sPos = (
+				target.Pos.X,
+				target.Pos.Y,
+				target.Pos.Z
+			); 
+			SetOrigin(sPos, true);
+		}
+		else {SetState(ResolveState("Death"));}
+	}
+	
+	States
+	{
+		Spawn:
+			#### # -1;
+			Loop;
+		Death:
+			#### # 1 ACS_NamedExecuteAlways("activateself");
+			Stop;
+	}
+}

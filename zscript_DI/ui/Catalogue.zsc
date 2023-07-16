@@ -1,0 +1,199 @@
+//zscript_DI/ui/catalogue.zsc
+Class DICatalogueMenu : boxparty_ZF_GenericMenu
+{
+	//this is a menu that contains detailed information about every purchasable item in the game.
+	//im creating this as i had felt i was limiting myself with the small descriptions available from the Shop Displays.
+	
+	//plus, this is a great way for a player to look back and remember every item they currently have equipped.
+	
+	DICatalogueHandler handler;
+	
+	Font smallFont;
+	boxparty_ZF_Image background;
+	Array<boxparty_ZF_BoxImage> itemboximages;
+	Array<boxparty_ZF_Label> itemlabels;
+    Array<boxparty_ZF_Button> itembuttons;
+	
+	override void init(menu parent)
+	{
+		super.init(parent);
+		setbaseresolution((640, 400));
+		smallFont = Font.GetFont("SmallFont");
+		
+        handler = new('DICatalogueHandler');
+        handler.link = self;
+		
+		background = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/catalog/catback.png", imagescale: (2, 2));
+		background.Pack(mainFrame);
+		
+		//textureid poop = texman.CheckForTexture("graphics/hat/HATBACK.png");
+		//int fart, fart2;
+		//[fart, fart2] = texman.GetSize(poop);
+		//console.printf("%d, %d", fart, fart2);
+		
+		CreateItemList();
+	}
+	
+	override void Ticker ()
+    {
+        if (players[consoleplayer].mo == NULL) {return;}	
+	}
+	
+	virtual void CreateItemList(void)
+	{
+		//this will a list of valid items, and create a button for each of them on the left side of the menu.
+		
+		//also, grab the item name list from the player's "renteditems", the player's weapons, and all inventory items with "INVBAR" marked as true.
+	
+		//delete any old array data, if it exists.
+        while (itemlabels.Size() > 0)
+        {
+            let label = itemlabels[0];
+            itemlabels.Delete(0, 1);
+
+            label.Unpack();
+            label.Destroy();
+        }
+		while (itembuttons.Size() > 0)
+        {
+            let button = itembuttons[0];
+            itembuttons.Delete(0, 1);
+
+            button.Unpack();
+            button.Destroy();
+        }
+		while (itemboximages.Size() > 0)
+        {
+            let boximage = itemboximages[0];
+            itemboximages.Delete(0, 1);
+
+            boximage.Unpack();
+            boximage.Destroy();
+        }
+	
+		// Iterate through the player's inventory to find all of their weapons.
+        int labelCount = 0; // We need this to calculate the position of the labels.
+        let item = players [consoleplayer].mo.inv;
+        while (item != NULL)
+        {
+			/*
+            // If the inventory item isn't a weapon...
+            if (!(item is "Weapon"))
+            {
+                // Set "item" to the next item in the player's inventory.
+                item = item.inv;
+                // Continue the loop.
+                continue;
+            }
+			*/
+
+            // If there's no space left in the screen...
+            if (labelCount > 32)
+            {
+                // Break out of the loop.
+                break;
+            }
+			
+			// Create the box image's textures.
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/catalog/ITEMBAR.png", (0, 0), (144, 12), false, false);
+			// Add a box image.
+			let boxSize = (144, 12);
+			let aBoxImage = boxparty_ZF_BoxImage.Create
+			(
+				// Position
+				(
+					// Horizontal position.
+                    18,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    102 + (12 * labelCount)
+				),
+				// Size
+				boxSize,
+				// Texture
+				boxTexture
+			);
+			// Add the box image element into the main frame.
+			aBoxImage.Pack (mainFrame);
+			itemboximages.Push(aBoxImage);
+
+            // Get the weapon's name.
+            let weaponName = item.GetTag ();
+			if (weaponName.CodePointCount() > 16)
+			{
+				weaponName = String.Format("%s...", weaponName.Left(15));
+			}
+			
+            // Add a label.
+            let label = boxparty_ZF_Label.Create
+            (
+                // Position.
+                (
+                    // Horizontal position.
+                    24,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    105 + (12 * labelCount)
+                ),
+                // Size.
+                (
+                    // Calculate the horizontal size of the text.
+                    smallfont.StringWidth (weaponName),
+                    // Get the font's height.
+                    smallFont.GetHeight ()
+                ),
+                // The label's text.
+                text: weaponName,
+                // The font to use.
+                fnt: smallFont,
+                // Whether to automatically wrap the text or not.
+                wrap: false,
+                // Whether to automatically resize the element based on the text width.
+                autoSize: true,
+                // The text's colour.
+                textColor: Font.CR_WHITE
+            );
+
+            // Add the label element to the main frame.
+            label.Pack (mainFrame);
+            // Add the label to the labels list.
+            itemlabels.Push (label);
+			
+			// Create the button's textures.
+			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
+			let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/ITEMBAR_HOVER.png", false);
+			let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/ITEMBAR_CLICK.png", false);
+			// Add a button.
+			let aButton = boxparty_ZF_Button.Create
+			(
+				// Position
+				(
+					// Horizontal position.
+                    18,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    102 + (12 * labelCount)
+				),
+				// Size
+				(144, 12),
+				// Our command handler
+				cmdHandler: handler,
+				// A command string for the button
+				command: "aButton",
+				// The button's textures
+				inactive: buttonIdle,
+				hover: buttonHover,
+				click: buttonClick
+			);
+			// Add the button element into the main frame.
+			aButton.Pack (mainFrame);
+			itembuttons.Push(aButton);
+
+            // Increment labelCount.
+            labelCount++;
+
+            // Set "item" to the next item in the player's inventory.
+            item = item.inv;
+        }
+	}
+}

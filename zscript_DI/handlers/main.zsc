@@ -1,0 +1,43 @@
+//zscript_DI/handlers/main.zsc
+
+class DIHandler : EventHandler
+{
+	Array<Actor> spotarray; //list of available spawn spots.
+	Array<String> spawnqueue; //list of enemies waiting to spawn.
+	Array<String> spawnqueue_spawner; //what spawner each enemy in the spawnqueue can spawn from.
+	Array<String> filedata; //all text from the DIWAVE file.
+	Array<String> leveldata; //all text for the current level.
+	Array<String> wavedata; //all data for current wave.
+	Array<String> endlessdata; //all data for endless stuff.
+	int wavemax; //how many waves there are total for this level.
+	int wavenum; //the current wave.
+	int batchnum; //the current batch.
+	int waitcurrent; //number of enemies killed in this current batch.
+	int waitnum; //number of enemies needed to be killed in order to spawn the next batch.
+	int spotdelay; //delay in tics before spawn spots become available again after use.
+	int spawntime; //delay in tics before attempting to spawn more enemies.
+	int spawnamount; //how many enemies can be spawned in at once.
+	int enemyamount; //how many enemies are currently alive. tracked via levelinfo.
+	int enemymax; //how many enemies are allowed to exist at once.
+	
+	int enemycount; //how many enemies are estimated to be in this wave.
+	bool enemycounted;
+	
+	int fakewavenum; //the current wave number, minus any endless shenanigans.
+	int finalwave; //the final wave, before endless stuff.
+	int endlessnum; //how many times the final wave has been completed.
+	int endless_capmult; //multiply the spawn cap by this number.
+	int endless_ratemult; //multiply the spawn rate by this number.
+	int endless_spawnmult; //multiply the enemies by this number.
+	int endless_healthmult; //multiply the enemy's health by this number.
+	int endless_damagemult; //multiply the enemy's damage by this number.
+	
+	int currentspawners; //amount of spawners currently spawning enemies.
+	
+	Array<Actor> shoparray; //pointers to all shops currently in the level.
+	
+	bool waveinprogress; //true if there is a wave happening right now.
+	
+	Array<String> eventdata; //stores the data for all events available for this level.
+	int lastevent; //how many waves it has been since the last event.
+}

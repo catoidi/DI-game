@@ -1,0 +1,175 @@
+//fart
+
+Class HatTrackHandler : EventHandler
+{
+	//used to track a majority of the hats unlockable in DI.
+	//also can display unlock popups for hats/players/levels.
+	
+	DI_PlayerBase diplr;
+	transient cvar killtracker;
+	transient int killnum;
+	array<string> listkills;
+	
+	ui array<string> listunlocks;
+	ui bool isunlocking;
+	ui int unlocktimer;
+	ui double unlockalpha, unlockalpha2;
+	ui int fontcolor;
+	
+	
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			//kill tracker (applies to every player currently in game, regardless of how the monster died.)
+			if (e.Thing is "Fred") {listkills.Push("dihat_freddie");}
+		}
+	}
+	
+	override void WorldTick(void)
+	{
+		KillCounter();
+	}
+	
+	override void UiTick(void)
+	{
+		if ((!isunlocking) && (listunlocks.Size() > 0))
+		{
+			unlocktimer = 0;
+			isunlocking = true;
+		}
+		else if ((isunlocking) && (Level.IsFrozen() == false))
+		{
+			++unlocktimer;
+			if (unlocktimer < 7) {unlockalpha = unlocktimer / 7.0;}
+			else if (unlocktimer <= 150) {unlockalpha = 1.0;}
+			else if (unlocktimer <= 185) {unlockalpha = 1.0 - ((unlocktimer - 150) / 35.0);}
+			else {listunlocks.Delete(0); isunlocking = false;}
+		}
+	}
+	
+	override void RenderOverlay(RenderEvent e)
+	{
+		if ((isunlocking) && (listunlocks.Size() > 0))
+		{
+			//different modes for different unlocks
+			string unlocktxt = "NEW UNLOCK:";
+			string unlockback_string = "graphics/UNLOCKBOX1.png";
+			if (listunlocks[0].Left(6) == "dihat_")
+			{
+				unlocktxt = "NEW HAT:";
+			}
+			if (listunlocks[0].Left(13) == "di_unlock_lvl") 
+			{
+				unlocktxt = "NEW LEVEL:";
+				unlockback_string = "graphics/UNLOCKBOX2.png";
+			}
+			else if (listunlocks[0].Left(13) == "di_unlock_plr") 
+			{
+				unlocktxt = "NEW CHARACTER:";
+				unlockback_string = "graphics/UNLOCKBOX3.png";
+			}
+			
+			//drawing the background texture
+			let unlockback = TexMan.CheckForTexture(unlockback_string);
+			vector2 unlocksize = TexMan.GetScaledSize(unlockback);
+			let startx = ((unlocksize.x * unlockalpha) - unlocksize.x) * CleanXFac;
+			let starty = Screen.GetHeight() - (unlocksize.y * CleanYFac);
+			Screen.DrawTexture(unlockback, false, startx, starty,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, unlockalpha * 0.8);
+			
+			//drawing the top text
+			if (unlocktimer % 24 == 0) {fontcolor = Font.CR_WHITE;}
+			else if (unlocktimer % 12 == 0) {fontcolor = Font.CR_YELLOW;}
+			let sfont = Font.GetFont("smallFont");
+			Screen.DrawText(sfont, fontcolor, startx + (((unlocksize.x / 2) - (sfont.StringWidth(unlocktxt) / 2)) * CleanXFac), starty, unlocktxt,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, unlockalpha);
+			
+			//drawing the unlock graphic
+			let graphicstring = String.Format("graphics/unlocks/%s.png", listunlocks[0]); //case sensitive!
+			let realgraphic = TexMan.CheckForTexture(graphicstring);
+			vector2 graphicsize = TexMan.GetScaledSize(realgraphic);
+			double graphicmove = sin(unlocktimer * 10) * 0.5;
+			double xmax = ((unlocksize.x / 3.0) - 16) + graphicmove;
+			double ymax = (unlocksize.y - 20) + graphicmove;
+			//console.printf("before: %.1f, %.1f", graphicsize.x, graphicsize.y);
+			if (graphicsize.x > xmax) {graphicsize *= xmax / graphicsize.x;}
+			if (graphicsize.y > ymax) {graphicsize *= ymax / graphicsize.y;}
+			//console.printf("\cqafter: %.1f, %.1f", graphicsize.x, graphicsize.y);
+			Screen.DrawTexture(realgraphic, false, startx + ((8 + (graphicmove / 4)) * CleanXFac), starty + ((12 + (graphicmove / 4)) * CleanYFac),
+				DTA_DestWidthF, graphicsize.x * CleanXFac,
+				DTA_DestHeightF, graphicsize.y * CleanYFac,
+				DTA_KeepRatio, true,
+				DTA_Alpha, unlockalpha);
+				
+			//drawing the unlock name
+			let unlockname = String.Format("$DIPOPUP_%s", listunlocks[0]);
+			unlockname = StringTable.Localize(unlockname);
+			Screen.DrawText(sfont, Font.CR_UNTRANSLATED, startx + ((graphicsize.x + 16) * CleanXFac), starty + ((unlocksize.y / 2) * CleanYFac), unlockname,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, unlockalpha);
+		}
+	}
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name.Left(9) == "diunlock_")
+		{
+			let thiscvar = e.Name.Mid(9);
+			DoUnlock(thiscvar);
+		}
+	}
+	
+	ui virtual void DoUnlock(string unlockstring)
+	{
+		let unlockcvar = cvar.getcvar(unlockstring);
+	
+		if (unlockcvar)
+		{
+			unlockcvar.setbool(true);
+		}
+		
+		listunlocks.push(unlockstring);
+	}
+	
+	virtual void KillCounter()
+	{
+		//just doing some weird shit here cuz doing things the "normal" way led to multiple kills in 1 tick not being counted.
+		//this is the first solution to this problem i could think of.
+		//maybe the cvar can only be changed once per tick? idk.
+		if (listkills.Size() > 0)
+		{
+			killtracker = cvar.getcvar(listkills[0]);
+			if (killtracker != null)
+			{
+				killnum = killtracker.getint();
+				++killnum;
+				killtracker.setint(killnum);
+				KillUnlocks(listkills[0]);
+			}
+			
+			killtracker = null;
+			killnum = 0;
+			
+			listkills.Delete(0);
+		}
+	}
+	
+	virtual void KillUnlocks(string trackcvar)
+	{
+		if (killtracker == cvar.getcvar("dihat_freddie")) 
+		{
+			let fred1 = cvar.getcvar("dihat_unlock_07");
+			let fred2 = cvar.getcvar("dihat_unlock_08");
+			let fred3 = cvar.getcvar("dihat_unlock_09");
+			if ((killnum >= 1000) && (fred3.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_09");}
+			else if ((killnum >= 350) && (fred2.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_08");}
+			else if ((killnum >= 100) && (fred1.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_07");}
+		}
+	}
+}

@@ -1,0 +1,67 @@
+//zscript_DI/effects/deathbullet.zsc
+
+Class DI_BulletSpawner : DI_Actor
+{
+	//does a spin, then spawns a bullet facing the target.
+	Default
+	{
+		Scale 1.7;
+		Alpha 0;
+		Mass 0;
+		Gravity 0;
+		Radius 10;
+		Height 20;
+		RenderStyle "Translucent";
+		+BLOODSPLATTER;
+		+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		+NOINTERACTION;
+	}
+	
+	int bulletspin;
+	int bullettimer;
+	
+	override void postbeginplay(void)
+	{
+		super.postbeginplay();
+		
+		bulletspin = 8 - (16 * random(0, 1));		
+	}
+	
+	States
+	{
+		Spawn:
+			BDIE A 0 NoDelay A_AttachLightDef("fancylight", "GLOWREDBIG");
+			BDIE A 0 BRIGHT A_Jump(256, "Spinner");
+		Spinner:
+			#### # 1 BRIGHT 
+			{
+				A_SpawnParticle("3f0000", SPF_FULLBRIGHT, 35, 5 * invoker.Scale.X, 0, 0, 0, 0, random(-4, 4), random(-4, 4), random(-2, 2), 0, 0, 0, invoker.alpha);
+				A_SetRoll(roll + invoker.bulletspin);
+				invoker.alpha += 0.029;
+				invoker.scale -= (0.03, 0.03);
+				
+				++bullettimer;
+				if (bullettimer >= 35) {return ResolveState("Shoot");}
+				else {return ResolveState(null);}
+			}
+			Loop;
+		Shoot:
+			#### # 1 BRIGHT 
+			{
+				A_FaceTarget();
+				A_StartSound("bullet");
+				A_SpawnProjectile("Ron_Bullet", 0);
+				A_DIScale(0.85, 0.85);
+				A_FadeOut(0.5);
+				A_RemoveLight("fancylight");
+			}
+			#### ############ 0 BRIGHT A_SpawnParticle("3f0000", SPF_FULLBRIGHT, 18, 5 * invoker.Scale.X, 0, 0, 0, 0, random(-8, 8), random(-8, 8), random(-4, 4));
+		Death:
+			#### # 0 A_DIScale(0.1, 0.1); 
+			#### # 1 A_FadeOut(0.05);
+			Loop;
+	}
+}

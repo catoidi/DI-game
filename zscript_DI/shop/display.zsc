@@ -1,0 +1,191 @@
+Class DIShop_Display : DI_Actor abstract
+{
+	DIShop_Base curshop;
+	int ticknum;
+	double display_z;
+	
+	property DisplayOffset: display_z;
+
+	override void Tick()
+	{
+		Super.Tick();
+		if ((CheckIfSeen() == false) || (ticknum >= 5))
+		{	
+			if ((master != null) && (master is "DIShop_Base")) {curshop = DIShop_Base(master);}
+			else {curshop = null;}
+		
+			if (curshop) {DisplayTick();}
+			else {Destroy();}
+			ticknum = 0;
+		}
+		++ticknum;
+	}
+	
+	abstract void DisplayTick();
+	
+	virtual void GetDisplayPos(void)
+	{
+		double NewZSpot = curshop.Pos.Z + display_z;
+		NewZSpot *= curshop.Scale.Y;
+		Vector3 sPos = (curshop.Pos.X, curshop.Pos.Y, NewZSpot);
+		SetOrigin(sPos, true);
+		Scale.X = curshop.Scale.X * default.Scale.X;
+		Scale.Y = curshop.Scale.Y * default.Scale.Y;
+	}
+	
+	Default
+	{
+		RenderStyle "Translucent";
+		+NOINTERACTION;
+		-SOLID;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A -1;
+			Stop;
+		SorryNothing:
+			TNT1 A -1;
+			Stop;
+		Death:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+Class DIShop_Item : DIShop_Display
+{
+	string itemsprite;
+	int itemframe;
+	double spinnum;
+	static const string alphabet[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "]"}; 
+
+	default
+	{
+		DIShop_Display.DisplayOffset 36;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		spinnum = frandom(1.0, 3.0);
+	}
+
+	override void DisplayTick()
+	{
+		if (curshop.canshop == false) {bINVISIBLE = true; SetStateLabel("SorryNothing");}
+		else 
+		{
+			bINVISIBLE = false;
+			
+			GetDisplayPos();
+			
+			itemsprite = curshop.shop_currentsprite.Mid(0, 4);
+		
+			string curshopframe = curshop.shop_currentsprite.Mid(4, 1);
+			for (int i = 0; i < alphabet.Size(); i++) 
+			{
+				if (curshopframe == alphabet[i]) {itemframe = i;}
+			}
+			
+			SetStateLabel("Spawn");
+		}
+	}
+	
+	Default
+	{
+		Alpha 0.7;
+		+WALLSPRITE;
+		+INTERPOLATEANGLES;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1 
+			{
+				if (itemsprite == "") {itemsprite = "TNT1";} //don't crash the game if there's nothing to render!
+				sprite = GetSpriteIndex(itemsprite); frame = itemframe;
+				self.angle += self.spinnum;
+			}
+			Loop;
+		Death:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+Class DIShop_Number : DIShop_Display
+{
+	//while this uses the same sprites as the included damnums library, this does not use any damnums code.
+
+	int digitnum; //which digit this actor shows.
+	int currentnum; //the actual number to display.
+	string numbersprite; //which sprite to use.
+	
+	default
+	{
+		DIShop_Display.DisplayOffset 60;
+	}
+
+	override void DisplayTick()
+	{
+		if (curshop.canshop == false) {SetStateLabel("SorryNothing");}
+		else
+		{		
+			GetDisplayPos();
+		
+			int currentprice = curshop.GetShopPrice();
+			string pricestr = string.format("%d", currentprice);
+			int pricelength = pricestr.Length();
+		
+			if (digitnum > pricelength) {SetStateLabel("SorryNothing");}
+			else
+			{
+				string pricestr_d = pricestr.Mid(pricelength - digitnum, 1);
+				currentnum = pricestr_d.ToInt(10);
+			
+				if (digitnum > 0)
+				{
+					numbersprite = string.format("_L%d%d", pricelength, digitnum);
+					if (curshop.saleamount > 0) {A_SetTranslation("DamGreen");}
+					else if ((curshop.curround > curshop.lastpurchased + 1) && (curshop.currentprice > 0)) {A_SetTranslation("DamYellow");}
+					else if ((curshop.curround > curshop.lastpurchased) && (curshop.currentprice > 0)) {A_SetTranslation("DamOrange");}
+					else if ((curshop.curround == curshop.lastpurchased) && (curshop.currentprice > 0)) {A_SetTranslation("DamRed");}
+					else {A_SetTranslation("DamWhite");}
+			
+					SetStateLabel("Spawn");
+				}
+				else {SetStateLabel("SorryNothing");}
+			}
+		}
+	}
+	
+	Default
+	{
+		Scale 0.35;
+		SpriteAngle 0;
+		Alpha 0.9;
+		+SPRITEANGLE;
+		+BRIGHT;
+	}
+	
+	States
+	{
+		Spawn:
+			FRED A 1 {sprite = GetSpriteIndex(numbersprite); frame = currentnum;}
+			Loop;
+		Death:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+Class DIShop_Number1 : DIShop_Number {override void PostBeginPlay() {digitnum = 1; Super.PostBeginPlay();}}
+Class DIShop_Number2 : DIShop_Number {override void PostBeginPlay() {digitnum = 2; Super.PostBeginPlay();}}
+Class DIShop_Number3 : DIShop_Number {override void PostBeginPlay() {digitnum = 3; Super.PostBeginPlay();}}
+Class DIShop_Number4 : DIShop_Number {override void PostBeginPlay() {digitnum = 4; Super.PostBeginPlay();}}
+Class DIShop_Number5 : DIShop_Number {override void PostBeginPlay() {digitnum = 5; Super.PostBeginPlay();}}
+Class DIShop_Number6 : DIShop_Number {override void PostBeginPlay() {digitnum = 6; Super.PostBeginPlay();}}
+Class DIShop_Number7 : DIShop_Number {override void PostBeginPlay() {digitnum = 7; Super.PostBeginPlay();}}

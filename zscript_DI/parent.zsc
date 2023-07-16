@@ -1,0 +1,58 @@
+//zscript_di/parent.zsc
+
+//includes all parent actors for DI.
+
+Class DI_Actor : Actor abstract
+{
+	//Called by almost every actor in DI.
+	
+	mixin DI_ActorMixin;
+}
+
+Class DI_Drop : DI_Actor
+{
+	string coindrop;
+	DI_Monster coindropper;
+
+	//does nothing. gets replaced via eventhandlers.
+	Default
+	{
+		+NOINTERACTION;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (master is "DI_Monster")
+		{
+			coindropper = DI_Monster(master);
+			coindrop = coindropper.coindrop;
+			di_notweapon = coindropper.di_notweapon;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+Class DI_WaveStarter : Actor
+{
+	//gross hack to let ACS tell zscript to start next wave.
+	Default
+	{
+		+NOINTERACTION;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+Class DI_ClearPlayerItems : DI_WaveStarter {}

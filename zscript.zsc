@@ -1,0 +1,76 @@
+version "4.10"
+
+//Check the README.md for info about reusing the code in "zscript_DI".
+
+//base
+#include "zscript_DI/parent.zsc"
+#include "zscript_DI/mixin.zsc"
+#include "zscript_DI/player/base.zsc"
+#include "zscript_DI/enemies/monster.zsc"
+#include "zscript_DI/weapons/base.zsc"
+
+//eventhandlers
+#include "zscript_DI/handlers/main.zsc"
+#include "zscript_DI/handlers/main/override.zsc"
+#include "zscript_DI/handlers/main/wave.zsc"
+#include "zscript_DI/handlers/main/spawner.zsc"
+#include "zscript_DI/handlers/main/loot.zsc"
+#include "zscript_DI/handlers/main/monsters.zsc"
+#include "zscript_DI/handlers/randomevent.zsc"
+#include "zscript_DI/handlers/crosshair.zsc"
+#include "zscript_DI/handlers/hattrack.zsc"
+
+//ui
+#include "zscript_DI/ui/MainMenu.zsc"
+#include "zscript_DI/ui/NewGame.zsc"
+#include "zscript_DI/ui/newgame/Handler.zsc"
+#include "zscript_DI/ui/newgame/Tutorial.zsc"
+#include "zscript_DI/ui/newgame/Player.zsc"
+#include "zscript_DI/ui/newgame/Level.zsc"
+#include "zscript_DI/ui/newgame/Skill.zsc"
+#include "zscript_DI/ui/BoxHUD.zsc" //smh lazy dev copy/pasting code from their other game /s
+#include "zscript_DI/ui/Catalogue.zsc"
+#include "zscript_DI/ui/CatalogueHandler.zsc"
+
+//effects
+#include "zscript_DI/effects/blood.zsc"
+#include "zscript_DI/effects/puff.zsc"
+#include "zscript_DI/effects/trail.zsc"
+#include "zscript_DI/effects/teleport.zsc"
+#include "zscript_DI/effects/spawner.zsc"
+#include "zscript_DI/effects/marker.zsc"
+#include "zscript_DI/effects/boom.zsc"
+#include "zscript_DI/effects/deathbullet.zsc"
+
+//shop
+#include "zscript_DI/shop/base.zsc" //base actor all shop-type actors inherit from
+#include "zscript_DI/shop/shop.zsc" //actual shops
+#include "zscript_DI/shop/controller.zsc" //fake shops that run some kinda script
+#include "zscript_DI/shop/display.zsc" //item sprites and prices displayed over the shops
+#include "zscript_DI/shop/ghostshop.zsc" //does nothing. used to represent where the next shops will spawn.
+
+//ZForms (uses MIT License)
+#include "zscript_libraries/ZForms/Include.zsc"
+
+//boxhats (uses MIT License)
+#include "zscript_libraries/boxhats/spawnhandler.zsc"
+#include "zscript_libraries/boxhats/menuhandler.zsc"
+#include "zscript_libraries/boxhats/hatmenu.zsc"
+#include "zscript_libraries/boxhats/hat.zsc"
+#include "zscript_libraries/boxhats/hatdummy.zsc"
+
+//libtooltipmenu (uses MIT License)
+#include "zscript_libraries/libtooltipmenu/TooltipOptionMenu.zsc"
+
+//nashhpbar (uses MIT License)
+#include "zscript_libraries/NashHPBar/NashHPBarOptionMenu/NashHPBarOptionMenu.zsc"
+#include "zscript_libraries/NashHPBar/NashHPBarPlugin/NashHPBarPlugin.zsc"
+#include "zscript_libraries/NashHPBar/NashHPBarHandler/NashHPBarHandler.zsc"
+
+//damnums (uses MIT License)
+#include "zscript_libraries/damnums/constants.txt"
+#include "zscript_libraries/damnums/damnum.txt"
+#include "zscript_libraries/damnums/events.txt"
+#include "zscript_libraries/damnums/fonts/base.txt"
+#include "zscript_libraries/damnums/fonts/borderlands.txt"
+#include "zscript_libraries/damnums/fonts/gamedefaults.txt"

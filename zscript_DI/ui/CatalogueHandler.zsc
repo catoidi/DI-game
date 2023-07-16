@@ -1,0 +1,21 @@
+
+
+class DICatalogueHandler : boxparty_ZF_Handler
+{
+    // The menu this command handler belongs to.
+    // We need this to be able to do anything with our menu.
+    DICatalogueMenu link;
+
+    override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
+    {
+        // If the command is "aButton"...
+        if (command == "aButton")
+        {
+            // Change the text's colour to a random colour.
+            //link.aLabel.textColor = random [textColor] (Font.CR_BRICK, Font.CR_TEAL);
+			//Menu.SetMenu("EpisodeMenu", 0);    	// Class Selection Response
+			//Menu.SetMenu("SkillMenu", 0);    	// Episode Selection Response
+			//Menu.SetMenu("StartGame", 2);     	// Skill Selection Response (Starts Game), Use StartgameConfirm for Nightmare skills
+        }
+    }
+}

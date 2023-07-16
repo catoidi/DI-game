@@ -1,0 +1,163 @@
+Class DIShopController : DIShop_Base
+{
+	int user_baseprice; //the base price of the user_currentitem.
+	string user_eventname; //what network event to send to the event handler.
+	int user_event1, user_event2, user_event3; //arguments for the event handler to use.
+	
+	int user_pricedown_round; //how many rounds until the price can decrease. default is 2.
+	int user_pricedown_base; //when price can decrease, decrease by this amount.
+	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
+	
+	Property ReducePriceRound : user_pricedown_round;
+	Property ReducePriceBase : user_pricedown_base;
+	Property ReducePriceMult : user_pricedown_mult;
+	
+	Default
+	{
+		DIShopController.ReducePriceRound 2;
+		DIShopController.ReducePriceBase 5;
+		DIShopController.ReducePriceMult 0.95;
+	}
+	
+	override void PostBeginPlay()
+	{
+		shop_currentsprite = user_currentsprite;
+		shop_itemstock = user_itemstock;
+		SpawnShopExtras();
+		canshop = true;
+	}
+	
+	override void tick(void)
+	{
+		super.tick();
+		
+		if (canshop) {A_AttachLight("shoplight", DynamicLight.PointLight, "White", 20, 20, 0, (0, 0, 32));}
+		else {A_RemoveLight("shoplight");}
+		
+		++checkcount;
+		if (checkcount >= 35)
+		{
+			int newround = ACS_NamedExecuteWithResult("DICheckWave", 0, 0, 0, 0);
+			
+			if (newround != curround)
+			{
+				shop_itemstock = user_itemstock;
+			
+				if ((newround >= lastpurchased + user_pricedown_round) && (currentprice > 0))
+				{
+					currentprice *= user_pricedown_mult;
+					currentprice -= user_pricedown_base * (1 + newround - (lastpurchased + user_pricedown_round));
+				}
+				if (currentprice < 0) {currentprice = 0;}
+				
+				//calculate chance of sale.
+				//sale can only occur on items with a base price of at least 2.
+				//sale chance increases based on how long since the last sale 
+				//and also how long since the player last purchased from this shop.
+				int extrasale = newround - lastpurchased;
+				if (extrasale > 14) {extrasale = 14;}
+				if ((random(1, 30) <= 1 + extrasale + lastsale) && (user_baseprice >= 2)) {saleamount = 1; lastsale = 0;}
+				else {saleamount = 0; ++lastsale;}
+				canshop = true;
+				curround = newround;
+			}
+		}
+	}
+
+	override void PurchaseShopItem(void)
+	{
+		if (target is "PlayerPawn") 
+		{
+			A_ResetScale();
+			A_DIScale(0.25, -0.25);
+			
+			bool canafford = false;
+			
+			int buyprice = GetShopPrice();
+			plr = PlayerPawn(target);
+			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
+			if ((canafford == true) && (canshop == true))
+			{
+				DoPurchase(buyprice);
+			}
+			else 
+			{
+				string failmsg;
+				if (canshop == false) {failmsg = "\crthis is out of stock.";}
+				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this.";}
+				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this while in debt.";}
+				else {failmsg = "\cra mysterious force prevents you from buying this.";}
+				
+				console.printf("%s", failmsg);
+				A_StartSound("player/noway");
+			}
+		}
+	}
+	
+	override void RerollShopItem(void) {}
+	
+	override int GetShopPrice()
+	{
+		int getshopprice_int = ((user_baseprice + currentprice) / (saleamount + 1));
+		if (getshopprice_int < 1) {getshopprice_int = 1;}
+		return getshopprice_int;
+	}
+	
+	override int GetShopBasePrice(void)
+	{
+		return user_baseprice;
+	}
+	
+	override string GetShopItem(void)
+	{
+		return user_eventname;
+	}
+
+	virtual void DoPurchase(int buyprice)
+	{
+		frame += 1;
+		A_StartSound("switches/normbutn");
+		plr.score -= buyprice;
+		int priceincrease = user_baseprice / (saleamount + 1);
+		if (priceincrease <= 0) {priceincrease = 1;}
+		currentprice += priceincrease;
+		lastpurchased = curround;
+		EventHandler.SendNetworkEvent(user_eventname, user_event1, user_event2, user_event3);
+		//plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
+		//plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
+		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+		--shop_itemstock;
+		if (shop_itemstock == 0) {canshop = false;}
+	}
+
+	States
+	{
+		Spawn:
+			SHO1 A -1;
+		Inactive:
+		Active:
+			SHO1 A 1 A_Jump(256, "Purchase");
+			Stop;
+		Dummy: //not used.
+			LOOK AB 1;
+			Stop;
+	}
+}
+
+Class DIShopController_ACS : DIShopController //same as above but sends an ACS script instead.
+{
+	override void DoPurchase(int buyprice)
+	{
+		frame += 1;
+		A_StartSound("switches/normbutn");
+		plr.score -= buyprice;
+		currentprice += user_baseprice / (saleamount + 1);
+		lastpurchased = curround;
+		ACS_NamedExecuteAlways(user_eventname, 0, user_event1, user_event2, user_event3);
+		//plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
+		//plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
+		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+		--shop_itemstock;
+		if (shop_itemstock == 0) {canshop = false;}
+	}
+}

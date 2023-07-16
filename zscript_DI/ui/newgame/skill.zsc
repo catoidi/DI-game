@@ -1,0 +1,6 @@
+//zscript_DI/ui/newgame/skill.zsc
+
+extend class DINewGameMenu
+{
+	
+}
