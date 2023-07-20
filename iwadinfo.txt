@@ -1,0 +1,17 @@
+//iwadinfo.txt
+
+IWad 
+{
+    Name = "DI (beta build v0.4)"
+    Autoname = "DI"
+    Game = "Doom"
+    Config = "DI"
+    IWADname = "DI.ipk3"
+	Load = "di-content.pk3"
+	Mapinfo = "mapinfo/mindefaults.txt"
+    BannerColors = "FFFFFF", "000000"
+	//StartupType = "Hexen"
+	DiscordAppID = "1073483426872709191"
+	//SteamAppID = ""
+	NoKeyboardCheats
+}
