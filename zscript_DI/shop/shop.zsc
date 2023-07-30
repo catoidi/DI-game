@@ -259,6 +259,11 @@ Class DIRentShop : DIShop
 
 Class DIPermaShop : DIShop
 {
+	Default
+	{
+		DIShop_Base.AllowDebt false;
+	}
+
 	override void DoPurchase(int buyprice)
 	{
 		Super.DoPurchase(buyprice);
