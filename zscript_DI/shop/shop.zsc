@@ -170,6 +170,7 @@ Class DIShop : DIShop_Base
 			if ((canafford == true) && (canshop == true) && (hasroom == true))
 			{
 				DoPurchase(buyprice);
+				if (plr.score < 0) {DoDebt(plr);}
 			}
 			else 
 			{
@@ -219,6 +220,11 @@ Class DIShop : DIShop_Base
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
+	}
+	
+	virtual void DoDebt(PlayerPawn plr)
+	{
+	
 	}
 	
 	virtual void PurchaseMessage(int price)

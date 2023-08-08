@@ -45,6 +45,7 @@ Class DIShop_Base : SwitchableDecoration abstract
 	
 	abstract clearscope string GetShopItem();
 	
+	
 	Default
 	{
 		Radius 20;

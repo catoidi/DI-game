@@ -79,6 +79,7 @@ Class DIShopController : DIShop_Base
 			if ((canafford == true) && (canshop == true))
 			{
 				DoPurchase(buyprice);
+				if (plr.score < 0) {DoDebt(plr);}
 			}
 			else 
 			{
@@ -128,6 +129,11 @@ Class DIShopController : DIShop_Base
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
+	}
+	
+	virtual void DoDebt(PlayerPawn plr)
+	{
+	
 	}
 
 	States
