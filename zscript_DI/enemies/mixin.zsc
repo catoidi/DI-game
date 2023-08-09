@@ -1,0 +1,56 @@
+mixin class DI_MonsterRobotMixin
+{
+	Default
+	{
+		//multiply the health of the robot somewhere between 2x and 7x, depending on how tanky the original actor already was.
+		//multiply mass of parent actor by 100.
+		PainChance 0;
+		PainChance "Lightning", 256;
+		PainChance "FakeLightning", 256;
+		DamageFactor "Lightning", 1.6;
+		DamageFactor "FakeLightning", 1.6;
+		DamageFactor "Fire", 0.9;
+		DamageFactor "FakeFire", 0.9;
+		DamageFactor "Poison", 0.8;
+		DamageFactor "FakePoison", 0.8;
+		ExplosionDamage 25;
+		ExplosionRadius 64;
+		+NOBLOOD;
+		-THRUSPECIES; //machines cannot phase through other enemies.
+	}
+	
+	States
+	{
+		Death:
+			#### # 0 A_DITargetPlayer();
+			#### # 0 A_DIDie();
+			#### # 0 A_Jump(256, "DeathLoop");
+			Stop;
+		Death.Lightning:
+			#### # 0 
+			{
+				A_DITargetPlayer();
+				A_AttachLightDef("statuslight", "GLOWREDBIG");
+				A_SetTranslation("DamRed");
+				bBRIGHT = true;
+			}
+			#### ########## 3 A_DISmokin();
+			#### # 0
+			{
+				A_Explode(flags: XF_NOTMISSILE | XF_EXPLICITDAMAGETYPE, damagetype: "Enemy");
+				A_SpawnItemEX("SafeBoom", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+				A_SpawnItemEX("BoomText", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			}
+			#### # 0 A_DIDie();
+			#### # 0 A_Jump(256, "DeathLoop");
+			Stop;
+	}
+}
+
+mixin class DI_BoxBloodMixin
+{
+	action void DI_BoxGib(string boxspr, double boxsize = 4.0)
+	{
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(boxspr), 0, SPF_ROLL, 24, boxsize, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 3), 0, 0, -0.33, 1, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
+	}
+}

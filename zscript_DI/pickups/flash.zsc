@@ -1,0 +1,19 @@
+//zscript_DI/pickups/flash.zsc
+
+Class DI_PickupFlash : DI_Actor
+{
+	Default
+	{
+		Scale 2.0;
+		+NOINTERACTION;
+		+BRIGHT;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 AA 0 NoDelay A_SpawnParticleEX("White", TexMan.CheckForTexture("PKUPA0"), 0, SPF_FULLBRIGHT | SPF_ROLL, 24, 10.0, random(0, 359), 0, 0, 0, random(-2, 2), random(-2, 2), 0, 0, 0, 0.33);
+			PKUP AAAAA 2 {A_DIScale(1.1, 1.1, true); A_FadeOut(0.2);}
+			Stop;
+	}
+}

@@ -5,9 +5,6 @@ version "4.10"
 //base
 #include "zscript_DI/parent.zsc"
 #include "zscript_DI/mixin.zsc"
-#include "zscript_DI/player/base.zsc"
-#include "zscript_DI/enemies/monster.zsc"
-#include "zscript_DI/weapons/base.zsc"
 
 //eventhandlers
 #include "zscript_DI/handlers/main.zsc"
@@ -19,6 +16,16 @@ version "4.10"
 #include "zscript_DI/handlers/randomevent.zsc"
 #include "zscript_DI/handlers/crosshair.zsc"
 #include "zscript_DI/handlers/hattrack.zsc"
+
+//ZForms (uses MIT License)
+#include "zscript_libraries/ZForms/Include.zsc"
+
+//boxhats (uses MIT License)
+#include "zscript_libraries/boxhats/spawnhandler.zsc"
+#include "zscript_libraries/boxhats/menuhandler.zsc"
+#include "zscript_libraries/boxhats/hatmenu.zsc"
+#include "zscript_libraries/boxhats/hat.zsc"
+#include "zscript_libraries/boxhats/hatdummy.zsc"
 
 //ui
 #include "zscript_DI/ui/MainMenu.zsc"
@@ -42,6 +49,84 @@ version "4.10"
 #include "zscript_DI/effects/boom.zsc"
 #include "zscript_DI/effects/deathbullet.zsc"
 
+//player
+#include "zscript_DI/player/base.zsc"
+#include "zscript_DI/player/fredrick.zsc"
+#include "zscript_DI/player/box.zsc"
+
+//pickups
+#include "zscript_DI/pickups/base.zsc"
+#include "zscript_DI/pickups/coin.zsc"
+#include "zscript_DI/pickups/flash.zsc"
+
+//items
+#include "zscript_DI/items/health.zsc"
+#include "zscript_DI/items/armor.zsc"
+//passive items
+#include "zscript_DI/items/passives/fakestatups.zsc"
+#include "zscript_DI/items/passives/statups.zsc"
+#include "zscript_DI/items/passives/bloodyheart.zsc"
+#include "zscript_DI/items/passives/bonusarmor.zsc"
+#include "zscript_DI/items/passives/hathat.zsc"
+#include "zscript_DI/items/passives/status.zsc"
+#include "zscript_DI/items/passives/freshregen.zsc"
+#include "zscript_DI/items/passives/shoe.zsc"
+//consumable items
+#include "zscript_DI/items/consumables/health.zsc"
+#include "zscript_DI/items/consumables/bomb.zsc"
+#include "zscript_DI/items/consumables/turret.zsc"
+#include "zscript_DI/items/consumables/reroll.zsc"
+
+//weapons
+#include "zscript_DI/weapons/base.zsc" //not a weapon
+#include "zscript_DI/weapons/bullet.zsc" //not a weapon
+#include "zscript_DI/weapons/mixin.zsc" //not a weapon
+//starting weapons
+#include "zscript_DI/weapons/starter/starpistol.zsc"
+#include "zscript_DI/weapons/starter/glowstick.zsc"
+//#include "zscript_DI/weapons/starter/poisoner.zsc"
+//basic weapons
+#include "zscript_DI/weapons/basic/greenshotgun.zsc"
+#include "zscript_DI/weapons/basic/bluesmg.zsc"
+#include "zscript_DI/weapons/basic/pinkrifle.zsc"
+//normal weapons
+#include "zscript_DI/weapons/normal/grenadelauncher.zsc"
+//#include "zscript_DI/weapons/normal/sniperrifle.zsc"
+//#include "zscript_DI/weapons/normal/dualsmg.zsc"
+//#include "zscript_DI/weapons/normal/doubleshotgun.zsc"
+//fantasy weapons
+#include "zscript_DI/weapons/fantasy/stunbow.zsc"
+//#include "zscript_DI/weapons/fantasy/swordshield.zsc"
+//#include "zscript_DI/weapons/fantasy/magicstaff.zsc"
+//#include "zscript_DI/wepaons/fantasy/cards.zsc"
+//sci-fi weapons
+//#include "zscript_DI/weapons/scifi/plasmapistol.zsc"
+//#include "zscript_DI/weapons/scifi/plasmarifle.zsc"
+//#include "zscript_DI/weapons/scifi/railgun.zsc"
+//super weapons
+//#include "zscript_DI/weapons/super/flamethrower.zsc"
+//#include "zscript_DI/weapons/super/missilelauncher.zsc"
+//#include "zscript_DI/weapons/super/minigun.zsc"
+//#include "zscript_DI/weapons/super/boomshotgun.zsc"
+//#include "zscript_DI/weapons/super/thebigone.zsc"
+//box party weapons
+#include "zscript_DI/weapons/box/boxammo.zsc" //not a weapon
+#include "zscript_DI/weapons/box/laserpointer.zsc"
+#include "zscript_DI/weapons/box/partyshotty.zsc"
+#include "zscript_DI/weapons/box/popcorngun.zsc"
+#include "zscript_DI/weapons/box/partyshotty2.zsc" //not actually used in box party
+//#include "zscript_DI/weapons/box/sledgehammer.zsc" //not actually used in box party
+
+//enemies
+#include "zscript_DI/enemies/monster.zsc"
+#include "zscript_DI/enemies/bullet.zsc"
+#include "zscript_DI/enemies/mixin.zsc"
+#include "zscript_DI/enemies/randomspawner.zsc"
+#include "zscript_DI/enemies/basic/fred.zsc"
+#include "zscript_DI/enemies/basic/ron.zsc"
+#include "zscript_DI/enemies/box/fruitpuncher.zsc"
+#include "zscript_DI/enemies/special/debtcollector.zsc"
+
 //shop
 #include "zscript_DI/shop/base.zsc" //base actor all shop-type actors inherit from
 #include "zscript_DI/shop/shop.zsc" //actual shops
@@ -49,25 +134,24 @@ version "4.10"
 #include "zscript_DI/shop/display.zsc" //item sprites and prices displayed over the shops
 #include "zscript_DI/shop/ghostshop.zsc" //does nothing. used to represent where the next shops will spawn.
 
-//ZForms (uses MIT License)
-#include "zscript_libraries/ZForms/Include.zsc"
+//secret (shh don't tell anyone ok???)
+#include "zscript_DI/secret/cats.zsc"
 
-//boxhats (uses MIT License)
-#include "zscript_libraries/boxhats/spawnhandler.zsc"
-#include "zscript_libraries/boxhats/menuhandler.zsc"
-#include "zscript_libraries/boxhats/hatmenu.zsc"
-#include "zscript_libraries/boxhats/hat.zsc"
-#include "zscript_libraries/boxhats/hatdummy.zsc"
+//////////////////////////////////////////////////////////////
+//The below included code is under the MIT License.
+//You can find the details either embedded in the file itself,
+//or inside the same folder as the file.
+//////////////////////////////////////////////////////////////
 
-//libtooltipmenu (uses MIT License)
+//libtooltipmenu
 #include "zscript_libraries/libtooltipmenu/TooltipOptionMenu.zsc"
 
-//nashhpbar (uses MIT License)
+//nashhpbar
 #include "zscript_libraries/NashHPBar/NashHPBarOptionMenu/NashHPBarOptionMenu.zsc"
 #include "zscript_libraries/NashHPBar/NashHPBarPlugin/NashHPBarPlugin.zsc"
 #include "zscript_libraries/NashHPBar/NashHPBarHandler/NashHPBarHandler.zsc"
 
-//damnums (uses MIT License)
+//damnums
 #include "zscript_libraries/damnums/constants.txt"
 #include "zscript_libraries/damnums/damnum.txt"
 #include "zscript_libraries/damnums/events.txt"

@@ -1,0 +1,146 @@
+//status effect passives
+
+Class DI_StatusGiver_Ice : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Acquired Bullet Freezer! (Small chance for all weapons to do Ice damage.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			
+			plr.chance_ice += plr.CountInv("DI_StatusGiver_Ice");
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR N -1;
+			Stop;
+	}
+}
+
+Class DI_StatusGiver_Fire : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Acquired Bullet Burner! (Small chance for all weapons to do Fire damage.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			
+			plr.chance_fire += plr.CountInv("DI_StatusGiver_Fire");
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR O -1;
+			Stop;
+	}
+}
+
+Class DI_StatusGiver_Lightning : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Acquired Bullet Shocker! (Small chance for all weapons to do Shock damage.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			
+			plr.chance_lightning += plr.CountInv("DI_StatusGiver_Lightning");
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR P -1;
+			Stop;
+	}
+}
+
+Class DI_StatusGiver_Poison : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Acquired Bullet Poisoner! (Small chance for all weapons to do Poison damage.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			
+			plr.chance_poison += plr.CountInv("DI_StatusGiver_Poison");
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR Q -1;
+			Stop;
+	}
+}
+
+Class DI_StatusGiver_Rainbow : Inventory
+{
+	//gives all 4 status effects at once.
+	Default
+	{
+		Inventory.PickupMessage "Acquired Rainbow Bullets! (Chance for all weapons to do fire/ice/poison/shock damage.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void DoEffect(void)
+	{
+		if (CallACS("DICheckWaveProgress") == true) 
+		{
+			//don't do this part until the player is in the wave, otherwise the "maxamount" stuff for the shop won't work.
+			if (owner)
+			{
+				owner.A_GiveInventory("DI_StatusGiver_Ice", 1);
+				owner.A_GiveInventory("DI_StatusGiver_Fire", 1);
+				owner.A_GiveInventory("DI_StatusGiver_Poison", 1);
+				owner.A_GiveInventory("DI_StatusGiver_Lightning", 1);
+				owner.A_TakeInventory("DI_StatusGiver_Rainbow", 1);
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR V -1;
+			Stop;
+	}
+}

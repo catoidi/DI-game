@@ -1,0 +1,68 @@
+//zscript_DI/items/consumables/bomb.zsc
+
+Class DI_ThrowBomb : CustomInventory
+{
+	Default
+	{
+		Tag "Throwable Bomb";
+		Inventory.MaxAmount 100;
+		Inventory.Icon "GRENA0";
+		Inventory.PickupMessage "Got a throwable cartoon bomb.";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else {Super.Use(pickup);}
+		return true;
+	}
+	
+	States
+	{
+		Spawn:
+			GREN A -1;
+			Loop;
+		Use:
+			GREN A 0 {A_FireProjectile("DI_ThrowBomb_Projectile", 0, 0, 0, self.height / 3, FPF_NOAUTOAIM, -10);}
+			Stop;
+	}
+}
+
+Class DI_ThrowBomb_Projectile : DI_Actor
+{
+	Default
+	{
+		Radius 10;
+		Height 20;
+		Speed 15;
+		DI_Actor.IgnoreWeapon true;
+		Projectile;
+		-NOGRAVITY;
+		+BRIGHT;
+		+ROLLSPRITE;
+		+ROLLCENTER;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		+INTERPOLATEANGLES;
+	}
+	
+	States
+	{
+		Spawn:
+			GREN A 1 A_SetRoll(roll + 8);
+			Loop;
+		Death:
+			TNT1 A 1 
+			{
+				A_Explode(300, 64);
+				A_SpawnItemEX("SafeBoom", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+				A_SpawnItemEX("BoomText", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			}
+			Stop;
+	}
+}

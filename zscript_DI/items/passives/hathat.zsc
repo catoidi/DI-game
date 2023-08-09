@@ -1,0 +1,32 @@
+//hathat.zsc
+
+Class DI_HatHat : Inventory
+{
+	Default
+	{
+		Height 20;
+		Radius 10;
+		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Hat Hat Acquired! (Reduce all incoming damage by 1. Can't go below 1.)";
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		int blocknum = 1;
+		if ((newdamage >= 1) && (owner) && (passive == true))
+		{
+			blocknum = owner.CountInv("DI_HatHat");
+			if (newdamage > blocknum) {newdamage -= blocknum;}
+			else {newdamage = 1;}
+		}
+	
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	States
+	{
+		Spawn:
+			POWR M -1;
+			Stop;
+	}
+}

@@ -1,0 +1,89 @@
+//armor.zsc
+
+Class DI_TopHat : BasicArmorPickup
+{
+	mixin DI_ActorMixin;
+	
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "+100 Armor";
+		Inventory.Icon "ARMOA0";
+		Armor.SavePercent 40;
+		Armor.SaveAmount 100;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO A -1;
+			Stop;
+	}
+}
+
+Class DI_TopHat2 : BasicArmorPickup
+{
+	mixin DI_ActorMixin;
+	
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "+150 Armor";
+		Inventory.Icon "ARMOB0";
+		Armor.SavePercent 60;
+		Armor.SaveAmount 150;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO B -1;
+			Stop;
+	}
+}
+
+Class DI_PartyHat : BasicArmorPickup
+{
+	mixin DI_ActorMixin;
+	
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "+200 Armor";
+		Inventory.Icon "ARMOC0";
+		Armor.SavePercent 80;
+		Armor.SaveAmount 200;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO C -1;
+			Stop;
+	}
+}
+
+Class DI_BowTie : BasicArmorPickup
+{
+	mixin DI_ActorMixin;
+	
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "+50 True Armor";
+		Inventory.Icon "ARMOD0";
+		Armor.SavePercent 100;
+		Armor.SaveAmount 50;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO D -1;
+			Stop;
+	}
+}

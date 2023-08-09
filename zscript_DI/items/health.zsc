@@ -1,0 +1,88 @@
+//health.zsc
+
+Class DI_FullHeal : Health
+{
+	mixin DI_ActorMixin;
+	
+	Default
+	{
+		Inventory.Amount 100;
+		Inventory.PickupMessage "+100 Health";
+		Health.LowMessage 10, "+100 Health (wow u almost died lol)";
+		+BRIGHT;
+	}
+	
+	States
+	{
+		Spawn:
+			HEAL A -1;
+			Stop;
+	}
+}
+
+Class DI_Melon : Health
+{
+	Default
+	{
+		Inventory.Amount 50;
+		Inventory.MaxAmount 200;
+		Inventory.PickupMessage "+50 Health";
+		Health.LowMessage 10, "+50 Health (wow u almost died lol)";
+	}
+	
+	States
+	{
+		Spawn:
+			HEAL E -1;
+			Stop;
+	}
+}
+
+Class DI_Regen : HealthPickup //regenerates 1 hp every second.
+{
+	int hptick;
+
+	Default
+	{
+		Health 1;
+		Inventory.MaxAmount 999;
+		-INVENTORY.INVBAR;
+	}
+
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		++hptick;
+		if (hptick >= 35)
+		{
+			if (CallACS("DICheckWaveProgress") == true)
+			{
+				if (owner.health < (owner.GetMaxHealth(true) - owner.CountInv("DI_Degen"))) {Use(false);}
+				if (owner) {owner.A_TakeInventory("DI_Regen", 1);} //will remove the item, regardless if the player can regenerate or not.
+			}
+			hptick = 0;
+		}
+	}
+}
+
+Class DI_Degen : Inventory
+{
+	int hptick;
+	
+	Default
+	{
+		Inventory.MaxAmount 999;
+		-INVENTORY.INVBAR;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner.GetMaxHealth(true) <= owner.CountInv("DI_Degen"))
+		{
+			owner.A_Die();
+		}
+	}
+}

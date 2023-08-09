@@ -1,0 +1,63 @@
+Class DI_Bullet : DI_Actor abstract
+{
+	string fancylightname;
+	string bulletrail;
+	
+	property FancyLight: fancylightname;
+	property Trail: bulletrail;
+
+	Default
+	{
+		Mass 0;
+		Gravity 0;
+		Radius 10;
+		Height 20;
+		Speed 8;
+		DamageFunction (4);
+		DamageType "Enemy";
+		Projectile;
+		DI_Bullet.Trail "RONNE0";
+		DI_Bullet.FancyLight "GLOWRED"; //set this to "" to disable light.
+		+BLOODSPLATTER;
+		+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		+MTHRUSPECIES;
+	}
+	
+	int bulletspin;
+	
+	override void postbeginplay(void)
+	{
+		super.postbeginplay();
+		
+		bulletspin = 8 - (16 * random(0, 1));
+		cvar lightcvar = cvar.FindCVAR("di_fancylight");
+		if (lightcvar.GetBool() == true) {A_AttachLightDef("fancylight", fancylightname);}
+	}
+	
+	action void DIBulletTrail()
+	{
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(invoker.bulletrail), 0, SPF_ROLL | SPF_RELPOS, 6, 20.0, invoker.angle, -12, 0, 0, 0, 0, 0, 0, 0, 0, invoker.alpha / 2, 0, -3.34, invoker.roll, invoker.bulletspin);
+	}
+	
+	States
+	{
+		Spawn:
+			RONN E 0 BRIGHT A_Jump(256, "Spinner");
+		Spinner:
+			#### # 1 BRIGHT 
+			{
+				A_SetRoll(roll + invoker.bulletspin);
+				DIBulletTrail();
+			}
+			Loop;
+		Death.Sky:
+		Death:
+			#### # 0 A_RemoveLight("fancylight");
+			#### # 0 A_DIScale(0.1, 0.1); 
+			#### # 1 A_FadeOut(0.1);
+			Loop;
+	}
+}

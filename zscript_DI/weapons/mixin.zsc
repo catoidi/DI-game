@@ -1,0 +1,27 @@
+mixin class DI_ProjectileMixin
+{
+	virtual void CheckStatusChange()
+	{
+		DI_PlayerBase mixplr;
+		if (target is "DI_PlayerBase") {mixplr = DI_PlayerBase(target);}
+		if (mixplr) 
+		{
+			string newstat = mixplr.statusreplace;
+			if (newstat == "Ice") {damagetype = "Ice";}
+			else if (newstat == "Fire") {damagetype = "Fire";}
+			else if (newstat == "Lightning") {damagetype = "Lightning";}
+			else if (newstat == "Poison") {damagetype = "Poison";}
+		}
+	}
+	
+	virtual void DIProjectileTrail(double shosize = 1.0)
+	{
+		int trailnum = 0;
+		if (damagetype == "Ice") {trailnum = 1;}
+		else if (damagetype == "Fire") {trailnum = 2;}
+		else if (damagetype == "Lightning") {trailnum = 3;}
+		else if (damagetype == "Poison") {trailnum = 4;}
+		
+		if (trailnum != 0) {A_DIFakeStatusPuff(shosize, trailnum);}
+	}
+}

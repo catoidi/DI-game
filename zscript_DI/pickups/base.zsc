@@ -1,0 +1,106 @@
+Class DI_Pickup : ScoreItem abstract
+{
+	string parcolor;
+	
+	Property DespawnColor : parcolor;
+
+	Default
+	{
+		Height 20;
+		Radius 10;
+		Inventory.PickupFlash "DI_PickupFlash";
+		-COUNTITEM;
+		+INTERPOLATEANGLES;
+		+WALLSPRITE;
+		+FLOATBOB;
+		+INVENTORY.NOSCREENFLASH;
+	}
+	
+	override bool TryPickup (in out Actor toucher)
+	{
+		if (toucher is "DI_PlayerBase")
+		{
+			DI_PlayerBase ditoucher = DI_PlayerBase(toucher);
+			ditoucher.GiveInventory("DI_TokenComboTimer", (12 + (ditoucher.cointimer / 4) + (ditoucher.combonum * 4)) * Amount);
+		}
+		
+		Super.TryPickup(toucher);
+		return true;
+	}
+	
+	override void PlayPickupSound(Actor toucher)
+	{
+		double atten;
+		int chan;
+		int flags = 0;
+		double pitch = 0.0;
+		DI_PlayerBase ditoucher;
+
+		if (bNoAttenPickupSound)
+		{
+			atten = ATTN_NONE;
+		}
+		else
+		{
+			atten = ATTN_NORM;
+		}
+
+		if (toucher != NULL && toucher.CheckLocalView())
+		{
+			chan = CHAN_ITEM;
+			flags = CHANF_NOPAUSE | CHANF_MAYBE_LOCAL;
+		}
+		else
+		{
+			chan = CHAN_ITEM;
+			flags = CHANF_MAYBE_LOCAL;
+		}
+		
+		if (toucher != NULL && toucher is "DI_PlayerBase")
+		{
+			ditoucher = DI_PlayerBase(toucher);
+			ditoucher.cointimer += (4 * Amount);
+			
+			double coinnum = ditoucher.cointimer;
+			double combonum = ditoucher.combonum;
+			
+			pitch = 0.9 + (combonum / 10) + (coinnum / 500);
+		}
+		
+		toucher.A_StartSound(PickupSound, chan, flags, 1, atten, pitch);
+	}
+	
+	override string PickupMessage()
+	{
+		return "";
+	}
+	
+	int pickuptimer;
+	int fadenum;
+
+	States
+	{
+		Spawn:
+			TNT1 A 0 A_Jump(256, "Spinner");
+		Spinner:
+			#### # 35 BRIGHT
+			{
+				self.angle += 8;
+				++pickuptimer;
+				if (pickuptimer >= 10)
+				{
+					if (fadenum == 1) 
+					{
+						for (int i = 0; i < 4; ++i)
+						{
+							A_SpawnParticle(parcolor, SPF_FULLBRIGHT | SPF_RELVEL | SPF_NOTIMEFREEZE, 35, 6, random(0, 359), 0, 0, 0, 0, 2, random(-1, 2), 0, 0, 0, 1.0, 0, -0.17);
+						}
+					}
+					A_FadeOut(0.5);
+					++fadenum;
+					pickuptimer = 0;
+				}
+			}
+			Loop;
+	}
+}

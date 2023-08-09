@@ -1,0 +1,31 @@
+Class FredSpawner1 : RandomSpawner
+{
+	//freds have a random chance to be replaced with a special fred once the new fred is introduced.
+
+	Default
+	{
+		DropItem "Fred", 255, 49;
+		DropItem "Fred2", 255, 1;
+	}
+}
+
+Class FredSpawner2 : RandomSpawner
+{
+	Default
+	{
+		DropItem "Fred", 255, 95;
+		DropItem "Fred2", 255, 4;
+		DropItem "Fred4", 255, 1;
+	}
+}
+
+Class FredSpawner3 : RandomSpawner
+{
+	Default
+	{
+		DropItem "Fred", 255, 89;
+		DropItem "Fred2", 255, 8;
+		DropItem "Fred4", 255, 2;
+		DropItem "Fred5", 255, 1;
+	}
+}

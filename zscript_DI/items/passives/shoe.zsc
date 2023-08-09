@@ -1,0 +1,94 @@
+//zscript_DI/items/passives/shoe.zsc
+
+//shooting has a 1% chance to heal you 1 HP.
+
+Class DI_Shoe : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Shoe Acquired! (Shooting has a 1/8 chance to fire a shoe.)";
+		Inventory.MaxAmount 8;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if ((owner is "DI_PlayerBase") && (owner.player.ReadyWeapon is "DI_Weapon"))
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			if (plr.CurState == plr.ResolveState("Melee"))
+			{
+				if (random(1, 8) <= plr.CountInv("DI_Shoe"))
+				{
+					plr.A_SpawnItemEX("DI_Shoe_Throw", 0, 0, plr.Height / 2, cos(plr.pitch - 10)*16, 0, -sin(plr.pitch - 10)*16, 0, SXF_SETTARGET | SXF_TRANSFERPITCH);
+				}
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR Y -1;
+			Stop;
+	}
+}
+
+Class DI_Shoe_Throw : DI_Actor
+{
+	mixin DI_ProjectileMixin;
+
+	Default
+	{
+		Mass 0;
+		Gravity 0.25;
+		Radius 4;
+		Height 8;
+		Speed 16;
+		DamageFunction throwdam;
+		Projectile;
+		-NOGRAVITY;
+		+BLOODSPLATTER;
+		//+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		+INTERPOLATEANGLES;
+	}
+	
+	int throwdam;
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		CheckStatusChange();
+		
+		throwdam = 20;
+		if (target is "PlayerPawn")
+		{
+			throwdam += target.CountInv("DI_Shoe") * 5; //increase dmg for every shoe you have.
+		}
+	}
+	
+	action void ShoeParticle()
+	{
+		A_SpawnParticleEX("White", TexMan.CheckForTexture("SHOEA0"), 0, SPF_ROLL, 24, 32.0, random(0, 359), 0, 0, 0, random(-1, 1), random(-1, 1), random(1, 3), 0, 0, -0.33, 0.5, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
+	}
+	
+	States
+	{
+		Spawn:
+			SHOE A 1 A_SetRoll(roll + 8);
+			Loop;
+		Death.Sky:
+		Death:
+			TNT1 A 1 
+			{
+				A_ProjectileSmoke();
+				ShoeParticle();
+				if (invoker.damagetype != invoker.default.damagetype) {DIProjectileTrail(3.0);}
+			}
+			Stop;
+	}
+}

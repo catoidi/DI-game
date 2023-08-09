@@ -1,0 +1,34 @@
+//zscript_DI/items/passives/freshregen.zsc
+
+Class DI_FreshRegen : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Acquired Fresh Regen! (Gain 5 Health Regen upon getting a Fresh Weapon Bonus.)";
+		Inventory.MaxAmount 5;
+	}
+
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			
+			int regennum = 5 * plr.CountInv("DI_FreshRegen");
+			
+			if (plr.JustKilled == true)
+			{
+				plr.A_GiveInventory("DI_Regen", regennum);
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR X -1;
+			Stop;
+	}
+}

@@ -1,0 +1,240 @@
+//zscript_di/enemies/basic/fred.zsc
+
+Class Fred : DI_Monster
+{
+	//the basic-est fred.
+
+	Default
+	{
+		Speed 4;
+		Health 30;
+		Radius 17;
+		Height 39;
+		//Species "Fred";
+	}
+	
+	States
+	{
+		Spawn:
+			FRED A 10 A_Look;
+			Loop;
+		See:
+			#### AABB 2 A_Chase;
+			Loop;
+		Melee:
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(3, "melee", "whiff", "Melee", true);
+				A_SpawnItemEX("Fred_Slash", 6, 0, 18);
+				A_DIScale(0.1, -0.1);
+			}
+			#### # 15;
+			#### # 0 A_DIScale(-0.1, 0.1);
+			Goto See;
+	}
+}
+
+Class Fred_Slash : DI_Actor
+{
+	Default
+	{
+		+NOGRAVITY;
+		+NOINTERACTION;
+		+BRIGHT;
+	}
+	
+	States
+	{
+		Spawn:
+			FRED C 1 A_FadeOut(0.05);
+			Loop;
+	}
+}
+
+Class Fred_Slash2 : Fred_Slash {Default {+SPRITEFLIP;}} //for fred2.
+
+Class Fred_Slash3 : Fred_Slash {Default {Scale 2.0;}} //for fred3.
+
+Class Fred_Slash4 : Fred_Slash //for fred4.
+{
+	States
+	{
+		Spawn:
+			FRED J 0 NoDelay A_AttachLightDef("statuslight", "SHOCKER");
+			FRED J 1 A_FadeOut(0.05);
+			Wait;
+	}
+}
+
+Class Fred_Slash5 : Fred_Slash4 {Default {+SPRITEFLIP;}} //for fred5.
+
+Class Fred2 : Fred
+{
+	//fiendish fred. moves faster, does more damage, gets knockbacked more. very fiendish.
+
+	Default
+	{
+		Mass 5;
+		Scale 1.25;
+		Health 75;
+		Speed 12;
+		Radius 21;
+		Height 49;
+		DamageFactor "Ice", 1.4;
+		DamageFactor "FakeIce", 1.4;
+		Tag "Fiendish Fred";
+		DI_Monster.DIDrop "DI_Money";
+	}
+	
+	States
+	{
+		Spawn:
+			FRED D 10 A_Look;
+			Loop;
+		See:
+			#### DDEE 2 A_Chase;
+			Loop;
+		Melee:
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(6, "melee", "whiff", "Melee", true);
+				A_SpawnItemEX("Fred_Slash", 6, 0, 22);
+				A_DIScale(0.05, -0.05);
+			}
+			#### # 8;
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(6, "melee", "whiff", "Melee", true);
+				A_SpawnItemEX("Fred_Slash2", 6, 0, 22);
+				A_DIScale(0.05, -0.05);
+			}
+			#### # 6;
+			#### # 0 A_DIScale(-0.1, 0.1);
+			Goto See;
+	}
+}
+
+Class Fred3 : Fred
+{
+	//like regular fred but massive.
+
+	Default
+	{
+		Mass 1000;
+		Speed 6;
+		Health 600;
+		Radius 34;
+		Height 78;
+		Tag "Giant Fred";
+		DamageFactor "Fire", 1.5;
+		DamageFactor "FakeFire", 1.5;
+		DI_Monster.DIDrop "DI_Gem";
+	}
+	
+	States
+	{
+		Spawn:
+			FRED F 10 A_Look;
+			Loop;
+		See:
+			#### FFGG 2 A_Chase;
+			Loop;
+		Melee:
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(45, "melee", "whiff", "Melee", true);
+				A_SpawnItemEX("Fred_Slash3", 9, 0, 36);
+				A_DIScale(0.1, -0.1);
+			}
+			#### # 15;
+			#### # 0 A_DIScale(-0.1, 0.1);
+			Goto See;
+	}
+}
+
+Class Fred4 : Fred
+{
+	//fred in robot form.
+	
+	mixin DI_MonsterRobotMixin;
+
+	Default
+	{
+		Speed 4;
+		Mass 10000;
+		Health 210;
+		Tag "Robot Fred";
+		DI_Monster.DIDrop "DI_Money";
+	}
+
+	States
+	{
+		Spawn:
+			FRED H 10 A_Look;
+			Loop;
+		See:
+			#### HHII 2 A_Chase;
+			Loop;
+		Melee:
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(3, "melee", "whiff", "Lightning", true);
+				A_SpawnItemEX("Fred_Slash4", 6, 0, 18);
+				A_DIScale(0.1, -0.1);
+			}
+			#### # 15;
+			#### # 0 A_DIScale(-0.1, 0.1);
+			Goto See;
+	}
+}
+
+Class Fred5 : Fred4
+{	
+	Default
+	{
+		Mass 500;
+		Scale 1.25;
+		Health 375;
+		Speed 15;
+		Radius 21;
+		Height 49;
+		Tag "Fiendish Robot Fred";
+		DamageFactor "Ice", 1.4;
+		DamageFactor "FakeIce", 1.4;
+		DI_Monster.DIDrop "DI_Gem";
+	}
+	
+	States
+	{
+		Spawn:
+			FRED K 10 A_Look;
+			Loop;
+		See:
+			#### KKLL 2 A_Chase;
+			Loop;
+		Melee:
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(6, "melee", "whiff", "Lightning", true);
+				A_SpawnItemEX("Fred_Slash4", 6, 0, 22);
+				A_DIScale(0.05, -0.05);
+			}
+			#### # 8;
+			#### # 0 
+			{
+				A_FaceTarget();
+				A_CustomMeleeAttack(6, "melee", "whiff", "Lightning", true);
+				A_SpawnItemEX("Fred_Slash5", 6, 0, 22);
+				A_DIScale(0.05, -0.05);
+			}
+			#### # 6;
+			#### # 0 A_DIScale(-0.1, 0.1);
+			Goto See;
+	}
+}

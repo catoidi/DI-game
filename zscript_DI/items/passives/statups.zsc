@@ -1,0 +1,155 @@
+//zscript_DI/items/passives/statups.zsc
+
+//if you're gonna make some new stat up items for DI, this is the "proper" way to do it.
+
+Class DI_DamageMultGiver : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Damage Multiplier Increased! (+10% DMG)";
+		Inventory.MaxAmount 25;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			double adddam = 0.1 * plr.countinv("DI_DamageMultGiver");
+			plr.ExtraDamageMult += adddam;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR R -1;
+			Stop;
+	}
+}
+
+Class DI_ComboDamageMult : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Combo Damage Multiplier Acquired! (+10% DMG per Combo)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			double adddam = (0.1 * (plr.combonum - 1)) * plr.countinv("DI_ComboDamageMult");
+			plr.ExtraDamageMult += adddam;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR S -1;
+			Stop;
+	}
+}
+
+Class DI_PainRhombus : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Pain Rhombus Acquired! (+50% DMG, -10% per combo.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			int painstarnum = plr.CountInv("DI_PainRhombus") * 6;
+			painstarnum -= plr.CountInv("DI_PainRhombus") * plr.combonum;
+			if (painstarnum < 0) {painstarnum = 0;}
+			double adddam = 0.1 * painstarnum;
+			plr.ExtraDamageMult += adddam;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR T -1;
+			Stop;
+	}
+}
+
+Class DI_GunHoarder : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Gun Hoarder Acquired! (Gain +10% DMG for every weapon you own.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			double adddam = (0.1 * plr.weaponnum) * plr.countinv("DI_GunHoarder");
+			plr.ExtraDamageMult += adddam;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR U -1;
+			Stop;
+	}
+}
+
+Class DI_RewardsProgram : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Acquired Rewards Program! (Enemies drop +3 Extra Coins, -1 for every 250 Coins you have.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			if (plr.player.ReadyWeapon is "DI_Weapon")
+			{
+				DI_Weapon wepon = DI_Weapon(plr.player.ReadyWeapon);
+				int addcoin = plr.countinv("DI_RewardsProgram");
+				if (plr.score < 250) {addcoin *= 3;}
+				else if (plr.score < 500) {addcoin *= 2;}
+				else if (plr.score >= 750) {addcoin = 0;}
+				wepon.wpn_extracoin += addcoin;
+				//when making an item that increases coin drops, you must edit the weapon's extra coins, NOT the player's extra coins.
+				//idk why adding it to the player doesn't work, but since this works just fine im not gonna take the time to figure out a better solution.
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR W -1;
+			Stop;
+	}
+}

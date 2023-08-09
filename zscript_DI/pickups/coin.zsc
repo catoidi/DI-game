@@ -1,0 +1,48 @@
+//zscript_DI/pickups/coin.zsc
+
+Class DI_Coin : DI_Pickup
+{
+	Default
+	{
+		DI_Pickup.DespawnColor "ffe31e";
+	}
+
+	States
+	{
+		Spawn:
+			COIN A 0 NoDelay A_Jump(256, "Spinner");
+			Stop;
+	}
+}
+
+Class DI_Money : DI_Pickup
+{
+	Default 
+	{
+		Inventory.Amount 3;
+		DI_Pickup.DespawnColor "529c54";
+	}
+	
+	States
+	{
+		Spawn:
+			COIN B 0 NoDelay A_Jump(256, "Spinner");
+			Stop;
+	}
+}
+
+Class DI_Gem : DI_Pickup
+{
+	Default 
+	{
+		Inventory.Amount 5;
+		DI_Pickup.DespawnColor "94c5ea";
+	}
+	
+	States
+	{
+		Spawn:
+			COIN C 0 NoDelay A_Jump(256, "Spinner");
+			Stop;
+	}
+}

@@ -1,0 +1,49 @@
+//zscript_DI/inventory/health.zsc
+
+Class DI_Pizza : HealthPickup
+{
+	Default
+	{
+		Tag "Pizza Slice";
+		Health 25;
+		Inventory.MaxAmount 5;
+		Inventory.Icon "HEALB0";
+		Inventory.PickupMessage "Acquired a Pizza Slice. (+25 Health on Usage)";
+	}
+	
+	States
+	{
+		Spawn:
+			HEAL B -1;
+			Stop;
+	}
+}
+
+Class DI_JuiceBox : Inventory
+{
+	Default
+	{
+		Tag "Juice Box";
+		Inventory.MaxAmount 4;
+		Inventory.Icon "HEALD0";
+		Inventory.PickupMessage "Acquired a Juice Box. (+40 Health Regen on Usage)";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (owner)
+		{
+			owner.A_GiveInventory("DI_Regen", 40);
+			return true;
+		}
+		else {return false;}
+	}
+	
+	States
+	{
+		Spawn:
+			HEAL D -1;
+			Stop;
+	}
+}

@@ -1,0 +1,16 @@
+class DI_PlayerFredrick : DI_PlayerBase
+{
+	Default
+	{
+		Height 39;
+		Player.DisplayName "Fredrick";
+		Player.Portrait "graphics/info_fredrick.png";
+		Player.WeaponSlot 1, "StarPistol";
+		Player.StartItem "StarPistol";
+		Player.StartItem "StarPistolAmmo", 13;
+		Player.StartItem "DI_ThrowBomb", 8;
+		Player.ViewHeight 33;
+		Player.DamageScreenColor "Purple";
+		BloodColor "Purple";
+	}
+}

@@ -1,0 +1,165 @@
+//zscript_DI/items/passives/fakestatups.zsc
+
+//these items don't do anything on their own. 
+//there isn't any reason why the code for these items couldn't reside within the items themselves, but it is what it is.
+
+Class DI_BaseDamageGiver : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Base Damage Increased! (+1 DMG)";
+		Inventory.MaxAmount 25;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR A -1;
+			Stop;
+	}
+}
+
+Class DI_ComboDamage : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Combo Damage Acquired! (+1 DMG per Combo)";
+		Inventory.MaxAmount 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR F -1;
+			Stop;
+	}
+}
+
+Class DI_ExtraCoinGiver : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Inflation Rate Increased! (+1 Coin from all enemies)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR B -1;
+			Stop;
+	}
+}
+
+Class DI_FreshBonusGiver : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Freshness Increased! (x2 to Fresh Weapon Bonuses)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR C -1;
+			Stop;
+	}
+}
+
+Class DI_FreshBonusCharger : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Fast Fresh Acquired! (Shortens Fresh Weapon Cooldown)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR L -1;
+			Stop;
+	}
+}
+
+Class DI_BulletSplitter : Inventory
+{
+	//gives +1 projectile, but reduces accuracy by 3.
+	Default
+	{
+		Inventory.PickupMessage "Bullet Splitter Acquired! (+1 Projectile, -3 Accuracy)";
+		Inventory.MaxAmount 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR G -1;
+			Stop;
+	}
+}
+
+Class DI_TooManyBullets : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Bullet Splitter Acquired! (Projectiles x2, -5 DMG)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR H -1;
+			Stop;
+	}
+}
+
+Class DI_AmmoGiver : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Ammo Increased! (+1 Magazine Size)";
+		Inventory.MaxAmount 10;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR I -1;
+			Stop;
+	}
+}
+
+Class DI_PainStar : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Pain Star Acquired! (+5 DMG, decreases with high combos.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR J -1;
+			Stop;
+	}
+}
+
+Class DI_Gunslinger : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Gunslinger Acquired! (Gain +1 DMG for every weapon you own.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR K -1;
+			Stop;
+	}
+}

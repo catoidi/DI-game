@@ -1,0 +1,313 @@
+//zboxscript/enemies/fruitpuncher.zsc
+
+//its a watermelon that punches ya.
+
+CLASS FruitPuncher : DI_Monster //20007
+{
+	Default
+	{
+		Speed 20;
+		Health 40;
+		Radius 16;
+		Height 40;
+		Mass 200;
+		BloodType "DI_FruitBlood";
+		Species "Melon";
+		Tag "Fruit Puncher";
+		Obituary "$BOX_DIE_FRUIT";
+		+FLOORCLIP;
+		+JUMPDOWN;
+		//$Category "Box Party/Enemies/"
+		//$Title "Melon"
+		//$Color 4
+	}
+	
+	States
+	{
+		Spawn:
+			MELN A 10 A_Look;
+			Loop;
+		See:
+			MELN AABB 3 A_Chase;
+			Loop;
+		Melee:
+			#### C 0 A_FaceTarget;
+			#### CC 5 A_DIScale(-0.025, 0.05);
+			#### D 0 A_Recoil(-10);
+			#### D 0 A_CustomMeleeAttack(6, "enemies/melee", "enemies/whiff", "Melee", false);
+			#### D 10 A_DIScale(0.05, -0.1);
+			Goto See;
+	}
+}
+
+CLASS DI_FruitBlood : DI_Blood
+{
+	mixin DI_BoxBloodMixin;
+
+	Default
+	{
+		Alpha 1.0;
+	}
+	
+	override void postbeginplay(void)
+	{
+		super.postbeginplay();
+		DI_BoxGib("MELNP0", 10);
+		DI_BoxGib("MELNP0", 10);
+		DI_BoxGib("MELNP0", 10);
+	}
+	
+	States
+	{
+		Roller:
+			#### # 0 
+			{
+				frame = random(0, 3);
+				self.Scale.X *= frandom(0.5, 1.2); 
+				self.Scale.Y *= frandom(0.5, 1.2);
+				A_SetRoll(random(0, 359));
+			}
+			BLDR # 15 A_SpawnItemEX("DI_BloodPuff", flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERSPRITEFRAME | SXF_TRANSFERSCALE | SXF_TRANSFERALPHA | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERROLL);
+		Looper:
+			#### # 15 {A_FadeOut(0.2); A_DIScale(1.2, 1.2, true);}
+			Loop;
+	}
+}
+
+/*
+CLASS FruitBlood : BoxBlood
+{
+	States
+	{
+		Firsty:
+			TNT1 AAA 0 A_SpawnItemEX("FruitGusher", 0, 0, 0, random(-4, 4), random(-4, 4), random(-4, 4), 0, SXF_ORIGINATOR | SXF_NOCHECKPOSITION);
+			TNT1 AAA 0 A_SpawnItemEx("MelonChunk", 0, 0, 0, random(-6, 6), random(-6, 6), random(0, 6), random(0, 359), SXF_NOCHECKPOSITION, 100);
+			TNT1 AAA 0 A_SpawnItemEx("FruitGusherPuff", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			TNT1 A 0 A_BoxParticle("ff 00 00", 3, 12, 30);
+			Goto Super::Firsty;
+		Secondy:
+			TNT1 AA 0 A_SpawnItemEX("FruitGusher", 0, 0, 0, random(-4, 4), random(-4, 4), random(-4, 4), 0, SXF_ORIGINATOR | SXF_NOCHECKPOSITION);
+			TNT1 AA 0 A_SpawnItemEx("MelonChunk", 0, 0, 0, random(-6, 6), random(-6, 6), random(0, 6), random(0, 359), SXF_NOCHECKPOSITION, 100);
+			TNT1 AA 0 A_SpawnItemEx("FruitGusherPuff", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			TNT1 A 0 A_BoxParticle("ff 00 00", 2, 12, 30);
+			Goto Super::Secondy;
+		Thirdy:
+			TNT1 A 0 A_SpawnItemEX("FruitGusher", 0, 0, 0, random(-4, 4), random(-4, 4), random(-4, 4), 0, SXF_ORIGINATOR | SXF_NOCHECKPOSITION);
+			TNT1 A 0 A_SpawnItemEx("MelonChunk", 0, 0, 0, random(-6, 6), random(-6, 6), random(0, 6), random(0, 359), SXF_NOCHECKPOSITION, 100);
+			TNT1 A 0 A_SpawnItemEx("FruitGusherPuff", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			TNT1 A 0 A_BoxParticle("ff 00 00", 1, 12, 30);
+			Goto Super::Thirdy;
+	}
+}
+
+CLASS FruitGusher : BoxActor
+{
+	Default
+	{
+		Radius 8;
+		Height 8;
+		Mass 0;
+	
+		-SOLID;
+		-BLOCKEDBYSOLIDACTORS;
+		+MISSILE;
+		+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+	}
+	
+	override void tick(void)
+	{
+		super.tick();
+		
+		if (!InStateSequence(CurState, ResolveState("Death")))
+		{
+			if (self.Pos.Z ~== self.FloorZ) {A_Die();}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			BLDR A 0 {frame = random(0, 3);}
+			#### # 0 A_QueueCorpse;
+			BLDR # 1 A_Jump(128, "SpeenLeft");
+		SpeenRight:
+			BLDR #################### 1 A_SetRoll(roll - 8);
+			BLDR # 0 A_FadeOut(0.2);
+			Loop;
+		SpeenLeft:
+			BLDR #################### 1 A_SetRoll(roll + 8);
+			BLDR # 0 A_FadeOut(0.2);
+			Loop;
+		Death.Sky:
+		Death:
+			BLDR # 0;
+			BLDR # 0 A_Jump(224, "DeathLoop");
+			BLDR # 0 
+			{if (self.Pos.Z ~== self.FloorZ) {A_SpawnItemEX("FruitGusherFlat", 0, 0, 0, 0, 0, 0, random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERSPRITEFRAME | SXF_TRANSFERSCALE);}}
+			Goto DeathLoop;
+		DeathLoop:
+			BLDR # 1 A_BoxScale(0.2);
+			BLDR # 0 A_FadeOut(0.2);
+			Loop;
+	}
+}
+
+CLASS FruitGusherPuff : ProjectileSmoke
+{
+	Default {Alpha 1.0;}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			BLDR A 0 {frame = random(0, 3);}
+		Looper:
+			BLDR # 1 A_FadeOut(0.05);
+			#### # 0 A_BoxScale(0.05);
+			Loop;
+	}
+}
+
+CLASS FruitGusherFlat : BoxActor 
+{
+	Default
+	{
+		Radius 8;
+		Height 8;
+		Mass 0;
+		Scale 0.2;
+	
+		-SOLID;
+		-BLOCKEDBYSOLIDACTORS;
+		+INTERPOLATEANGLES;
+		+FLATSPRITE;
+		+SPRITEANGLE;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 A_SetRoll(random(0, 359)); //inherits sprite/frame from parent.
+			#### # 0 A_BoxParticle("ff 00 00", 2, 12, 30);
+			#### # 0 A_QueueCorpse;
+			#### # 0 A_JumpIf((ACS_ScriptCall("CrumbCheck") >= 2), "Null");
+			#### #################### 1 A_BoxScale(frandom(0.03, 0.05));
+			#### # 900;
+			Goto Looper;
+		Looper:
+			#### # 1 
+			{
+				A_BoxScale(-0.05);
+				A_FadeOut(0.05);
+			}
+			Loop;
+	}
+}
+
+CLASS MelonChunk : BoxChunk
+{
+	States
+	{	
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN P 0 A_Jump(128, 2);
+			MELN P 0 {bSPRITEFLIP = true;}
+			"####" "#" 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+
+
+CLASS FruitGib : BoxGib abstract
+{
+	States
+	{
+		SpeenRight:
+			"####" "#" 1 A_SetRoll(roll - 3);
+			"####" "#" 0 A_BoxFade(0.005);
+			"####" "#" 0 A_SpawnItemEX("FruitGusher", random(0, 2), random(0, 2), random(0, 2), random(0, 1), random(0, 1), random(0, 1), 0, SXF_ORIGINATOR, 220);
+			Loop;
+		SpeenLeft:
+			"####" "#" 1 A_SetRoll(roll - 3);
+			"####" "#" 0 A_BoxFade(0.005);
+			"####" "#" 0 A_SpawnItemEX("FruitGusher", random(0, 2), random(0, 2), random(0, 2), random(0, 1), random(0, 1), random(0, 1), 0, SXF_ORIGINATOR, 220);
+			Loop;
+	}
+}
+
+CLASS FruitGib_Torso : FruitGib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN J 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+
+CLASS FruitGib_Glasses : FruitGib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN K 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+
+CLASS FruitGib_LeftArm : FruitGib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN L 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+
+CLASS FruitGib_RightArm : FruitGib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN M 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+
+CLASS FruitGib_LeftLeg : FruitGib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN N 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+
+CLASS FruitGib_RightLeg : FruitGib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			"####" "#" 0 A_QueueCorpse;
+			MELN O 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+	}
+}
+*/

@@ -1,0 +1,75 @@
+//zscript_DI/items/passives/bloodyheart.zsc
+
+Class DI_BloodyHeart : Inventory
+{
+	Default
+	{
+		Height 20;
+		Radius 10;
+		Inventory.MaxAmount 3;
+		Inventory.PickupMessage "Bloody Heart Acquired! (Drop HP Pickups upon taking damage.)";
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		int dropnum = 1;
+		if ((damage >= 1) && (owner) && (passive == true))
+		{
+			dropnum = owner.CountInv("DI_BloodyHeart");
+			for (int i = 0; i < dropnum; ++i) 
+			{
+				owner.A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 24, random(-6, 6), random(-6, 6), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+			}
+		}
+	
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	States
+	{
+		Spawn:
+			POWR D -1;
+			Stop;
+	}
+}
+
+Class DI_BloodyHeart_Drop : DI_Actor
+{
+	Default
+	{
+		Height 20;
+		Radius 10;
+		RenderStyle "Translucent";
+		Alpha 0.25;
+	}
+
+	States
+	{
+		Spawn:
+			HEAL C 35;
+			TNT1 A 10 A_SpawnItemEX("DI_BloodyHeart_Pickup", flags: SXF_NOCHECKPOSITION);
+			Stop;
+	}
+}
+
+Class DI_BloodyHeart_Pickup : Health
+{
+	Default
+	{
+		Height 20;
+		Radius 10;
+		Health 2;
+		Inventory.Icon "HEALC0";
+		Inventory.PickupMessage "+2 Health";
+		+FLOATBOB;
+		+BRIGHT;
+	}
+	
+	States
+	{
+		Spawn:
+			HEAL C 140;
+			HEAL C 105 A_FadeOut(0.25);
+			Wait;
+	}
+}

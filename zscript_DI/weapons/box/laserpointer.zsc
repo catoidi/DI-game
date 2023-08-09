@@ -1,0 +1,205 @@
+//zboxscript/weapons/laserpointer.zsc
+
+//zscript code for the laser pointer. (and later the laser pointer upgrade.)
+
+CLASS LaserPointer : DI_Weapon //20020
+{
+	//pew pew laser
+	Default
+	{
+		Radius 20;
+		Height 24;
+		DI_Weapon.FreshBonus 1;
+		DI_Weapon.BaseDamage 25;
+		DI_Weapon.Ammo1HUD 4;
+		DI_Weapon.AutoOffset false;
+		Weapon.SelectionOrder 5000;
+		Weapon.SlotNumber 4;
+		Weapon.SlotPriority 1;
+		Weapon.Kickback 0;
+		Weapon.AmmoUse 2;
+		Weapon.AmmoGive 24;
+		Weapon.AmmoType "BoxAmmo";
+		Inventory.PickupMessage "Acquired the Laser Pointer. (+24 Party Ammo)";
+		//Inventory.Icon "AMMOJ0";
+		//Inventory.AltHUDIcon "AMMOC0";
+		Obituary "$BOX_DIE_LASER";
+		Tag "Laser Pointer";
+		
+		+WEAPON.ALT_USES_BOTH;
+		-WEAPON.AMMO_OPTIONAL;
+		+CASTSPRITESHADOW;
+		+COUNTITEM;
+		//$Category "Box Party/Weapons"
+		//$Title "Laser Pointer"
+		//$Color 9
+	}
+	
+	States
+	{
+		Ready:
+			LAZR A 1 A_WeaponReady;
+			Loop;
+		Fire:
+			LAZR B 0 BRIGHT DI_FireProjectile("LaserPointerBullet", -32768, -32768, -32768, -4, 4, FPF_AIMATANGLE, isRecoil: false);
+			LAZR B 0 BRIGHT A_StartSound("weapons/laser/lasrpew");
+			LAZR B 1 BRIGHT A_WeaponOffset(-2, 30, WOF_INTERPOLATE);
+			LAZR BBB 1 BRIGHT A_WeaponOffset(-2, 3, WOF_ADD | WOF_INTERPOLATE);
+			LAZR B 1;
+			LAZR A 3;
+			LAZR A 2 A_Refire;
+			Goto Ready;
+		AltFire:
+			LAZR A 0;
+			LAZR A 0 A_JumpIfInventory("BoxAmmo", 5, 3);
+			LAZR A 0 A_Jump(256, "NoReload");
+			LAZR A 0 A_Jump(256, "Ready");
+			LAZR A 0 {invoker.bNOALERT = true;} //dont alert enemies when charging
+			LAZR FGFG 8 A_WeaponOffset(random(-1, 1), random(19, 21), WOF_INTERPOLATE);
+		AltFire2:
+			LAZR HI 2 A_WeaponOffset(random(-3, 3), random(17, 23), WOF_INTERPOLATE);
+			LAZR H 0 A_Refire("AltFire2");
+			LAZR H 0 {invoker.bNOALERT = false;} //alert enemies now
+			LAZR H 0 A_AlertMonsters();
+			LAZR H 0 A_StartSound("weapons/laser/lasrpew2");
+			LAZR H 0 BRIGHT DI_FireProjectile("LaserPointerBullet2", -32768, -32768, -32768, -4, 4, FPF_AIMATANGLE, isRecoil: false);
+			LAZR H 0 BRIGHT A_TakeInventory("BoxAmmo", 5);
+			LAZR H 1 BRIGHT A_WeaponOffset(-6, 60, WOF_INTERPOLATE);
+			LAZR HHH 1 BRIGHT A_WeaponOffset(-3, 4, WOF_ADD | WOF_INTERPOLATE);
+			LAZR A 6;
+			LAZR A 0 A_Refire("AltFire");
+			LAZR AAA 2 A_WeaponOffset(6, 6, WOF_ADD | WOF_INTERPOLATE);
+			Goto Ready;
+		NoReload:
+			#### # 0 A_StartSound("noammo", starttime: 0.1);
+			LAZR A 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
+			LAZR AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
+			LAZR A 4;
+			Goto Ready;
+		Deselect:
+			LAZR A 0 A_Lower;
+			Loop;
+		Select:
+			LAZR AAA 0 A_Raise;
+			LAZR A 1 A_Raise;
+			Loop;
+		Spawn:
+			LAZR E -1;
+			Stop;
+	}
+}
+
+CLASS LaserPointerBullet : DI_Actor
+{
+	mixin DI_ProjectileMixin;
+
+	//the projectile that can shock enemies
+	Default
+	{
+		Mass 0;
+		Gravity 0;
+		Radius 3;
+		Height 6;
+		Speed 20;
+		DamageFunction throwdam;
+		DamageType "Lightning";
+		Projectile;
+		+BLOODSPLATTER;
+		+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+	}
+	
+	int throwdam;
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		CheckStatusChange();
+		
+		throwdam = 24;
+		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "LaserPointer"))
+		{
+			LaserPointer tarwpn = LaserPointer(target.player.ReadyWeapon);
+			throwdam = tarwpn.wpn_damage;
+			throwdam *= tarwpn.damagemult;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1 BRIGHT A_SetRoll(random(0, 359));
+		Zoomin:
+			LAZR C 2 BRIGHT;
+			LAZR C 1 BRIGHT A_SpawnParticleEX("White", TexMan.CheckForTexture("LAZRC0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELATIVE, 10, 12.0, random(0, 359), 0, 0, 0, frandom(-1, 1), frandom(-1, 1), frandom(-1, 1), 0, 0, 0, 0.25, 0, -1.2, random(0, 359));
+			Loop;
+		XDeath:
+		Crash:
+			LAZR C 0 BRIGHT A_StartSound("weapons/laser/lasrhit");
+		Death.Sky:
+		Death:
+			LAZR C 1 BRIGHT 
+			{
+				A_DIScale(0.3, 0.3);
+				A_FadeOut(0.2);
+				if (invoker.damagetype != "Lightning") {DIProjectileTrail(2.0);}
+			}
+			LAZR CCCCCC 0 BRIGHT A_SpawnParticleEX("White", TexMan.CheckForTexture("LAZRC0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELATIVE, 10, 6.0, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 1), 0, 0, 0, 1.0, -1, 0, random(0, 359));
+			LAZR CCCC 1 BRIGHT
+			{
+				A_DIScale(0.3, 0.3);
+				A_FadeOut(0.2);
+			}
+			Stop;
+	}
+}
+
+CLASS LaserPointerBullet2 : LaserPointerBullet
+{
+	Default
+	{
+		Radius 6;
+		Height 12;
+		Speed 40;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		throwdam *= 4;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1 BRIGHT A_SetRoll(random(0, 359));
+		Zoomin:
+			LAZR J 3 BRIGHT;
+			LAZR ## 0 BRIGHT A_SpawnParticleEX("White", TexMan.CheckForTexture("LAZRJ0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELATIVE, 10, 24.0, random(0, 359), 0, 0, 0, frandom(-1, 1), frandom(-1, 1), frandom(-1, 1), 0, 0, 0, 0.25, 0, -2.4, random(0, 359));
+			Loop;
+		XDeath:
+		Crash:
+			LAZR J 0 BRIGHT A_StartSound("weapons/laser/lasrhit");
+		Death.Sky:
+		Death:
+			LAZR # 1 BRIGHT 
+			{
+				A_StartSound("weapons/laser/lasrboom");
+				A_DIScale(0.15, 0.15);
+				A_FadeOut(0.1);
+				if (invoker.damagetype != "Lightning") {DIProjectileTrail(3.0);}
+			}
+			LAZR # 1 BRIGHT A_Explode(throwdam * 2, 40);
+			LAZR # 0 BRIGHT A_QuakeEX(1, 1, 1, 35, 0, 60);
+			LAZR ############ 0 BRIGHT A_SpawnParticleEX("White", TexMan.CheckForTexture("LAZRJ0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELATIVE, 20, 12.0, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 1), 0, 0, 0, 1.0, -1, 0, random(0, 359));
+			LAZR ######## 1 BRIGHT
+			{
+				A_DIScale(0.35, 0.35);
+				A_FadeOut(0.1);
+			}
+			Stop;
+	}
+}

@@ -1,0 +1,43 @@
+//zscript_DI/items/passives/bonusarmor.zsc
+
+Class DI_BonusArmor : Inventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Bonus Armor Acquired! (1/2 chance for armor drops on enemy death)";
+		Inventory.MaxAmount 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR E -1;
+			Stop;
+	}
+}
+
+Class DI_BonusArmorPickup : BasicArmorBonus
+{
+	mixin DI_ActorMixin;
+	
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "+2 Armor";
+		Inventory.Icon "ARMOE0";
+		Armor.SavePercent 25;
+		Armor.MaxSaveAmount 100;
+		Armor.SaveAmount 2;
+		+BRIGHT;
+		+FLOATBOB;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO E 140;
+			ARMO E 105 A_FadeOut(0.25);
+			Wait;
+	}
+}

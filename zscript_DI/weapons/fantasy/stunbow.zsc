@@ -1,0 +1,222 @@
+//zscript_DI/weapons/fantasy.zsc
+
+CLASS StunCrossbow : DI_Weapon
+{
+	Default
+	{
+		DI_Weapon.FreshBonus 3;
+		DI_Weapon.BaseDamage 1; //direct hit from projectile will do an extra 18 damage.
+		DI_Weapon.Recoil 3.0;
+		DI_Weapon.RecoilRecover 2.0;
+		Weapon.Kickback 0;
+		Weapon.SelectionOrder 10000;
+		Weapon.SlotNumber 4;
+		Weapon.SlotPriority 1;
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 1;
+		Weapon.AmmoType "StunCrossbowAmmo";
+		Inventory.Pickupmessage "Acquired the Stun Crossbow.";
+		Tag "Stun Crossbow";
+		//$Category "DI/Weapons/"
+		//$Title "Stun Crossbow"
+		//$Color 9
+	}
+	
+	States
+	{
+		Ready:
+			SBOW # 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Deselect:
+			SBOW # 0 A_Lower;
+			Loop;
+		Select:
+			SBOW A 0 A_TakeInventory("StunCrossbowReload");
+			SBOW A 0 A_JumpIfInventory("StunCrossbowAmmo", 1, "SelectLoop");
+			SBOW D 0 A_Jump(256, "SelectLoop");
+			Stop;
+		SelectLoop:
+			SBOW ### 0 A_Raise;
+			SBOW # 1 A_Raise;
+			Loop;
+		Fire:
+			SBOW # 0 A_JumpIfInventory("StunCrossbowAmmo", 1, 2);
+			SBOW # 0 A_Jump(256, "NoReload");
+			SBOW B 2 BRIGHT 
+			{
+				//A_SetPitch(pitch - 3);
+				DI_FireProjectile("StunCrossbowBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE);
+				A_StartSound("pistpow");
+				//A_OverlayOffset(PSP_WEAPON, -4, 4, WOF_ADD);
+				//if (invoker.recnum < 3) invoker.recnum += 1;
+			}
+			SBOW CCDDDD 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			SBOW D 0 A_Refire;
+			SBOW DD 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			//#### # 0 {invoker.recnum = 0;}
+			Goto Ready;
+		Reload:
+			SBOW # 0 A_JumpIfInventory("StunCrossbowReload", 1, 9);
+			SBOW # 0 A_JumpIfInventory("StunCrossbowAmmo", invoker.Ammo1.MaxAmount, "NoReload");
+			SBOW ## 1 A_OverlayOffset(PSP_WEAPON, 3.0, -0.5, WOF_ADD);
+			SBOW DDDDDD 1 A_OverlayOffset(PSP_WEAPON, 9, -2, WOF_ADD);
+			//arrow reload start
+			SBOW D 20 {A_Overlay(-2, "Reload_Arrow");}
+			SBOW DDDD 1 A_OverlayOffset(PSP_WEAPON, -1.5, 0.25, WOF_ADD);
+			//arrow reload end
+			#### # 0 A_GiveInventory("StunCrossbowAmmo", 1);
+			#### # 0 A_GiveInventory("StunCrossbowReload", 1);
+			SBOW A 2 A_JumpIfInventory("StunCrossbowAmmo", invoker.Ammo1.MaxAmount, "ReloadEnd");
+			SBOW A 2 DI_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD);
+			Goto ReloadEnd;
+		Reload_Arrow:
+			TNT1 A 0 A_OverlayOffset(-2, 36, 78, WOF_ADD);
+			SBOW EEEEEEEEEEEE 1 A_OverlayOffset(-2, 1, -8, WOF_ADD);
+			SBOW EEEE 1 A_OverlayOffset(-2, -7, 2, WOF_ADD);
+			SBOW E 4;
+			SBOW EEEE 1 A_OverlayOffset(-2, -3, 1.5, WOF_ADD);
+			Stop;
+		ReloadEnd:
+			#### # 0 A_TakeInventory("StunCrossbowReload");
+			SBOW AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -9, 2, WOF_ADD);
+			Goto Ready;
+		NoReload:
+			#### # 0 A_StartSound("noammo", starttime: 0.1);
+			SBOW # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
+			SBOW #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
+			SBOW # 4;
+			Goto Ready;
+		Spawn:
+			TNT1 A -1;
+			Stop;
+	}
+}
+
+CLASS StunCrossbowBullet : DI_Actor
+{
+	mixin DI_ProjectileMixin;
+
+	Default
+	{
+		Mass 0;
+		Gravity 0;
+		Radius 3;
+		Height 6;
+		Speed 20;
+		DamageFunction throwdam;
+		DamageType "Lightning";
+		Projectile;
+		+BLOODSPLATTER;
+		+FLATSPRITE;
+	}
+	
+	int throwdam;
+	int basedam;
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		CheckStatusChange();
+		
+		A_AttachLightDef("stunner", "SHOCKER2");
+		if (damagetype == "Ice") {A_AttachLightDef("stunner", "FREEZER2");}
+		else if (damagetype == "Fire") {A_AttachLightDef("stunner", "BURNER2");}
+		else if (damagetype == "Poison") {A_AttachLightDef("stunner", "POISONER2");}
+		
+		
+		throwdam = 20;
+		basedam = 1;
+		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "StunCrossbow"))
+		{
+			StunCrossbow tarwpn = StunCrossbow(target.player.ReadyWeapon);
+			throwdam = tarwpn.wpn_damage + 19;
+			basedam = tarwpn.wpn_damage;
+			throwdam *= tarwpn.damagemult;
+			basedam *= tarwpn.damagemult;
+			if (throwdam < 1) {throwdam = 1;}
+			if (basedam < 1) {basedam = 1;}
+			pitch = target.pitch;
+		}
+	}
+	
+	virtual string ShockSprite(void)
+	{
+		string statspr = "";
+		if (damagetype == "Ice") {statspr = "PUFFD0";}
+		else if (damagetype == "Fire") {statspr = "PUFFE0";}
+		else if (damagetype == "Poison") {statspr = "PUFFG0";}
+		
+		return statspr;
+	}
+	
+	action void A_BowTrail(void)
+	{
+		int stroll = -1;
+		if (invoker.damagetype == "Fire") {stroll = 180;}
+		A_DIShocked(2.0, invoker.ShockSprite(), stroll);
+	}
+	
+	action void A_BowShocked (double shosize = 1.0)
+	{
+		string shockstr;
+		int ht = invoker.height;
+		int rd = invoker.radius;
+		int stroll = random(0, 359);
+		switch(random(0, 2))
+		{
+			case 0: shockstr = "ELECA0";
+			case 1: shockstr = "ELECB0";
+			case 2: shockstr = "ELECC0";
+		}
+		
+		if (damagetype == "Ice") {shockstr = "PUFFD0";}
+		else if (damagetype == "Fire") {shockstr = "PUFFE0"; stroll = 180;}
+		else if (damagetype == "Poison") {shockstr = "PUFFG0";}
+		
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(shockstr), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-64, 64), random(-rd, rd), random(-64, 64), random(-2, 2), 0, random(-1, 1), 0, 0, 0, 1.0, -1, 0, stroll);
+	}
+	
+	States
+	{
+		Spawn:
+			SBOW F 3 BRIGHT A_BowTrail();
+			Loop;
+		XDeath:
+		Crash:
+			SBOW F 0 BRIGHT A_StartSound("weapons/laser/lasrhit");
+		Death.Sky:
+		Death:
+			SBOW F 15 BRIGHT;
+			SBOW FFFFF 15 BRIGHT 
+			{
+				A_BowShocked(10.0);
+				A_BowShocked(10.0);
+				A_BowShocked(10.0);
+				A_BowShocked(10.0);
+				A_BowShocked(10.0);
+				A_Explode(invoker.basedam, 64, 0, fulldamagedistance: 64);
+			}
+			SBOW FFFF 1 BRIGHT
+			{
+				A_RemoveLight("stunner");
+				A_DIScale(0.3, 0.3);
+				A_FadeOut(0.2);
+			}
+			Stop;
+	}
+}
+
+Class StunCrossbowAmmo : Ammo
+{
+	//it sure is ammo.
+	Default
+	{
+		Radius 20;
+		Height 24;
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		+CASTSPRITESHADOW;
+	}
+}
+
+Class StunCrossbowReload : GreenShotgunReload {}
