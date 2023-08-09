@@ -188,10 +188,16 @@ class DI_HUD : BaseStatusBar
 			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARA.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		
-		if (BoxHealthInterpolator.GetValue() > cplayer.mo.GetMaxHealth(true))
+		if (BoxHealthInterpolator.GetValue() > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen")))
 		{
-			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - cplayer.mo.GetMaxHealth(true), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen")), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
+		
+		if (GetAmount("DI_Degen") > 0)
+		{
+			DrawBar("graphics/boxhud/HUDBARB2.png", "graphics/boxhud/HUDBARB0.png", GetAmount("DI_Degen"), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-80, -8), 0, DI_ITEM_OFFSETS);
+		}
+		
 		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		if (GetAmount("DI_Regen") > 0)
 		{

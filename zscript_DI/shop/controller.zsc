@@ -133,7 +133,7 @@ Class DIShopController : DIShop_Base
 	
 	virtual void DoDebt(PlayerPawn plr)
 	{
-	
+		//overwrite this if you want something custom to happen to the player upon going into debt.
 	}
 
 	States

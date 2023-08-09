@@ -31,6 +31,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	int combodrain;
 	bool hpupdate;
 	int prevhp;
+	int degentimer;
 	int cointimer;
 	string LastWeaponKill;
 	string CurrentWeaponKill;
@@ -102,6 +103,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 			
 			if (cointimer > 50) {cointimer *= 0.98;}
 			else if (cointimer > 0) {--cointimer;}
+			
+			if (self.degentimer > 70)
+			{
+				if (CallACS("DICheckWaveProgress") == true)
+				{
+					A_SetHealth(self.Health - 1);
+					if (self.Health < 1) {self.A_Die();}
+				}
+				self.degentimer = 0;
+			}
+			else {++self.degentimer;}
 		}
 	}
 	

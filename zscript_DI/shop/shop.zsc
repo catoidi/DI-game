@@ -224,7 +224,7 @@ Class DIShop : DIShop_Base
 	
 	virtual void DoDebt(PlayerPawn plr)
 	{
-	
+		//overwrite this if you want something custom to happen upon the player going into debt.
 	}
 	
 	virtual void PurchaseMessage(int price)
