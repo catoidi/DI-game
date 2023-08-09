@@ -104,12 +104,18 @@ Class DI_PlayerBase : PlayerPawn abstract
 			if (cointimer > 50) {cointimer *= 0.98;}
 			else if (cointimer > 0) {--cointimer;}
 			
-			if (self.degentimer > 70)
+			int degenmax = 70;
+			if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")) * 2) {degenmax = 10;}
+			if (self.degentimer > degenmax)
 			{
 				if (CallACS("DICheckWaveProgress") == true)
 				{
-					A_SetHealth(self.Health - 1);
-					if (self.Health < 1) {self.A_Die();}
+					if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")))
+					{
+						A_SetHealth(self.Health - 1);
+						if (self.Health < 1) {self.A_Die();}
+						if (bNOBLOOD == false) {A_DISpawnPlayerBlood();}
+					}
 				}
 				self.degentimer = 0;
 			}
@@ -397,10 +403,15 @@ Class DI_PlayerBase : PlayerPawn abstract
 		A_RemoveLight("shoot");
 		A_DIScale(0.05, -0.05);
 		A_TakeInventory("DI_TokenComboTimer", 35 * invoker.combodrain);
+		if (!noblood) {A_DISpawnPlayerBlood();}
+	}
+	
+	action void A_DISpawnPlayerBlood()
+	{
 		double diX = frandom(-self.Radius, self.Radius);
 		double diY = frandom(-self.Radius, self.Radius);
 		double diZ = frandom(self.Height / 2, self.Height);
-		if (noblood == false) {A_SpawnItemEX(self.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);}
+		A_SpawnItemEX(self.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);
 	}
 	
 	action void AutoOffset()

@@ -27,6 +27,7 @@ Class DIShop : DIShop_Base
 	Default
 	{
 		DIShop_Base.AllowDebt true;
+		DIShop_Base.DebtHP 3;
 		DIShop.ReducePriceRound 2;
 		DIShop.ReducePriceBase 5;
 		DIShop.ReducePriceMult 0.95;
@@ -225,6 +226,9 @@ Class DIShop : DIShop_Base
 	virtual void DoDebt(PlayerPawn plr)
 	{
 		//overwrite this if you want something custom to happen upon the player going into debt.
+		plr.A_GiveInventory("DI_Degen", user_debthp);
+		plr.ACS_ScriptCall("DebtMSG");
+		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}
 	
 	virtual void PurchaseMessage(int price)
@@ -267,7 +271,7 @@ Class DIPermaShop : DIShop
 {
 	Default
 	{
-		DIShop_Base.AllowDebt false;
+		DIShop_Base.DebtHP 60;
 	}
 
 	override void DoPurchase(int buyprice)

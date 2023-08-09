@@ -134,6 +134,9 @@ Class DIShopController : DIShop_Base
 	virtual void DoDebt(PlayerPawn plr)
 	{
 		//overwrite this if you want something custom to happen to the player upon going into debt.
+		plr.A_GiveInventory("DI_Degen", user_debthp);
+		plr.ACS_ScriptCall("DebtMSG");
+		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}
 
 	States
