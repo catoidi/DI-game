@@ -79,7 +79,7 @@ Class DIShopController : DIShop_Base
 			if ((canafford == true) && (canshop == true))
 			{
 				DoPurchase(buyprice);
-				if (plr.score < 0) {DoDebt(plr);}
+				if (plr.score < 0) {DoDebt(buyprice);}
 			}
 			else 
 			{
@@ -131,10 +131,14 @@ Class DIShopController : DIShop_Base
 		if (shop_itemstock == 0) {canshop = false;}
 	}
 	
-	virtual void DoDebt(PlayerPawn plr)
+	virtual void DoDebt(int buyprice)
 	{
-		//overwrite this if you want something custom to happen to the player upon going into debt.
-		plr.A_GiveInventory("DI_Degen", user_debthp);
+		//overwrite this if you want something custom to happen upon the player going into debt.
+		let debtnum = buyprice / 50;
+		if (-plr.score > buyprice) {debtnum = -plr.score / 50;}
+		if (debtnum < 0) {debtnum = 0;}
+		debtnum += 3;
+		plr.A_GiveInventory("DI_Degen", debtnum);
 		plr.ACS_ScriptCall("DebtMSG");
 		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}

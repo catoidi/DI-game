@@ -39,7 +39,7 @@ CLASS GrenadeLauncher : DI_Weapon
 		Fire:
 			GLAN # 0 A_JumpIfInventory("GrenadeLauncherAmmo", 1, 2);
 			GLAN # 0 A_Jump(256, "NoReload");
-			GLAN B 2 BRIGHT 
+			GLAN # 2 
 			{
 				A_SetPitch(pitch - 3);
 				DI_FireProjectile("GrenadeLauncherBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE);

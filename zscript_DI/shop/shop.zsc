@@ -27,7 +27,6 @@ Class DIShop : DIShop_Base
 	Default
 	{
 		DIShop_Base.AllowDebt true;
-		DIShop_Base.DebtHP 3;
 		DIShop.ReducePriceRound 2;
 		DIShop.ReducePriceBase 5;
 		DIShop.ReducePriceMult 0.95;
@@ -171,7 +170,7 @@ Class DIShop : DIShop_Base
 			if ((canafford == true) && (canshop == true) && (hasroom == true))
 			{
 				DoPurchase(buyprice);
-				if (plr.score < 0) {DoDebt(plr);}
+				if (plr.score < 0) {DoDebt(buyprice);}
 			}
 			else 
 			{
@@ -223,10 +222,14 @@ Class DIShop : DIShop_Base
 		if (shop_itemstock == 0) {canshop = false;}
 	}
 	
-	virtual void DoDebt(PlayerPawn plr)
+	virtual void DoDebt(int buyprice)
 	{
 		//overwrite this if you want something custom to happen upon the player going into debt.
-		plr.A_GiveInventory("DI_Degen", user_debthp);
+		let debtnum = buyprice / 50;
+		if (-plr.score > buyprice) {debtnum = -plr.score / 50;}
+		if (debtnum < 0) {debtnum = 0;}
+		debtnum += 3;
+		plr.A_GiveInventory("DI_Degen", debtnum);
 		plr.ACS_ScriptCall("DebtMSG");
 		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}
@@ -269,11 +272,6 @@ Class DIRentShop : DIShop
 
 Class DIPermaShop : DIShop
 {
-	Default
-	{
-		DIShop_Base.DebtHP 60;
-	}
-
 	override void DoPurchase(int buyprice)
 	{
 		Super.DoPurchase(buyprice);

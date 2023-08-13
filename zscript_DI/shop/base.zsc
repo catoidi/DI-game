@@ -8,7 +8,6 @@ Class DIShop_Base : SwitchableDecoration abstract
 	int user_debthp; //how much HP to take from the player upon going into debt.
 	
 	property AllowDebt: user_allowdebt;
-	property DebtHP: user_debthp;
 	
 	int currentprice; //how much the price has increased.
 	int lastpurchased; //checks how many rounds ago the last purchase was.
