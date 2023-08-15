@@ -1,0 +1,4 @@
+unbind -
+unbind =
+bind r +reload
+bind f +zoom

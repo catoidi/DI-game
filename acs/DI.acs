@@ -1,0 +1,204 @@
+#library "DI"
+#include "zcommon.acs"
+
+int curwave;
+int spawntime;
+int spawntime_delay;
+bool okspawn;
+int spawnercount;
+int spawnamount;
+bool waveinprogress;
+bool queuefinished;
+
+int enemycount;
+
+bool announcewave;
+bool announceevent;
+
+SCRIPT "playerscript" ENTER
+{
+	SetAirControl(0.5);
+	if (ActivatorTID() < 7500) {Thing_ChangeTID(0, 7500 + PlayerNumber());}
+	
+	ACS_NamedExecuteAlways("EnemyCountHUD", 0, 0, 0, 0);
+}
+
+SCRIPT "openscript" OPEN
+{
+	okspawn = true;
+	curwave = 1;
+	announcewave = true;
+	announceevent = true;
+	ACS_NamedExecute("DIStartWave", 0, 0, 0, 0);
+}
+
+SCRIPT "SpawnSpawners" OPEN
+{
+	if (okspawn == true)
+	{
+		++spawntime_delay;
+		if (spawntime_delay >= spawntime)
+		{
+			for (int i = 0; i < spawnamount; ++i)
+			{
+				Spawn("DISpawner", 0, 0, 0, 0, 0);
+			}
+			spawntime_delay = 0;
+		}
+	}
+	Delay(1);
+	Restart;
+}
+
+script "activateself" (void)
+{
+	Thing_Activate(0);
+}
+
+SCRIPT "SpawnerToggle" (int isdone)
+{
+	if (isdone == 1) {--spawnercount;} else {++spawnercount;}
+}
+
+SCRIPT "CheckSpawner" (int snum, int stime)
+{
+	spawnamount = snum;
+	spawntime = stime;
+	SetResultValue(spawnercount);
+}
+
+SCRIPT "SpawnQueueDone" (void)
+{
+	Delay(5);
+	queuefinished = true;
+}
+
+SCRIPT "CheckSpawnQueue" (void)
+{
+	SetResultValue(queuefinished);
+}
+
+bool swap_angled = false;
+int swap_A0 = 0.0; //the angle that the swapper starts in. used to make player face specific direction when teleporting into shop.
+
+SCRIPT "PlayerTeleSwap" (int IgnoreAngle)
+{
+	//requires 8 DI_PlayerTeleSwap's with TID's -7500/-7507 to work.
+	
+	if (swap_angled == false)
+	{
+		swap_A0 = GetActorAngle(-7500);
+	}
+
+	for (int i = 7500; i < 7508; ++i)
+	{
+		if (IsTIDUsed(i) == false) {continue;}
+	
+		int swapX = 0.0;
+		int swapY = 0.0;
+		int swapZ = 0.0;
+		int swapA = 0.0;
+
+		swapX = GetActorX(-i);
+		swapY = GetActorY(-i);
+		swapZ = GetActorZ(-i);
+		swapA = GetActorAngle(-i);
+		
+		Delay(1);
+
+		//SetActorPosition(-i, GetActorX(i), GetActorY(i), GetActorZ(i), true);
+		//SetActorAngle(-i, i);
+		
+		//Delay(1);
+		
+		SetActorPosition(i, swapX, swapY, swapZ, true);
+		if (swap_angled == true) {SetActorAngle(i, swap_A0);}
+		else {SetActorAngle(i, swapA);}
+		SetActorVelocity(i, 0, 0, 0, false, true);
+	}
+}
+
+SCRIPT "DIWaveFinished" (int nextwave)
+{
+	curwave = nextwave;
+	waveinprogress = false;
+	ACS_NamedExecute("DIWaveFinished_Level", 0, 0, 0, 0);
+	//ACS_NamedExecute("DIStartWave", 0, 0, 0, 0);
+	Delay(105);
+	if (GetCVAR("di_autosave") == true) {Autosave();}
+}
+
+SCRIPT "DIStartWave" (void)
+{	
+	ACS_NamedExecute("DIStartWave_Level", 0, 0, 0, 0);
+	if (announcewave == true) //set this to false if you want your level to announce waves in a different way.
+	{
+		SetFont("BIGFONT");
+		SetHudSize(320, 200, false);
+		HudMessageBold(s:"Wave\n", d:curwave; HUDMSG_FADEINOUT, -123456781, CR_RED, 160.4, 70.0, 3.0, 1.0, 1.0);
+	}
+	Delay(35);
+	Spawn("DI_WaveStarter", 0, 0, 0, 0, 0);
+	waveinprogress = true;
+	queuefinished = false;
+}
+
+SCRIPT "DebtMSG" (void)
+{
+	SetFont("BIGFONT");
+	SetHudSize(960, 600, false);
+	HudMessageBold(s:"As punishment for going into debt,\nYour maximum health has been reduced."; HUDMSG_FADEINOUT, -123455782, CR_BRICK, 480.4, 360.0, 3.0, 1.0, 1.0);
+}
+
+SCRIPT "EventIsStarting" (void)
+{
+	ACS_NamedExecute("EventIsStarting_Level", 0, 0, 0, 0);
+	if (announceevent == true)
+	{
+		SetFont("BIGFONT");
+		SetHudSize(640, 400, false);
+		HudMessageBold(s:"INCOMING RANDOM EVENT"; HUDMSG_FADEINOUT, -123456782, CR_ORANGE, 320.4, 248.0, 3.0, 1.0, 1.0);
+	}
+}
+
+SCRIPT "EnemyCount" (int nme)
+{
+	enemycount = nme;
+}
+
+SCRIPT "EnemyCountHUD" (void)
+{
+	Delay(5);
+	if (waveinprogress == true)
+	{
+		int leftnum = enemycount;
+		int alivemon = GetLevelInfo(LEVELINFO_TOTAL_MONSTERS) - GetLevelInfo(LEVELINFO_KILLED_MONSTERS);
+		
+		if (leftnum < alivemon) {leftnum = alivemon;}
+		
+		HudMessage(d:leftnum, s:" remaining."; HUDMSG_FADEOUT, -5678, CR_DARKRED, 0.5, 0.8, 0.3, 0.3, 0.75);
+	}
+	Restart;
+}
+
+SCRIPT "DoFreshFlash" (void)
+{
+	SetFont("FRESHFLA");
+	SetHudSize(1, 1, false);
+	HudMessage(s:"A"; HUDMSG_ALPHA | HUDMSG_FADEOUT, -123356789, CR_UNTRANSLATED, 0.0, 0.0, 0.01, 0.49, 0.20);
+}
+
+SCRIPT "FreshReadyMSG" (void)
+{
+	HudMessage(s:" \n\n\n\n\n\n\n\n\cnfresh bonus ready!"; HUDMSG_FADEOUT, -5679, CR_UNTRANSLATED, 0.5, 0.8, 0.3, 0.3, 0.75);
+}
+
+SCRIPT "DICheckWave" (void)
+{
+	SetResultValue(curwave);
+}
+
+SCRIPT "DICheckWaveProgress" (void)
+{
+	SetResultValue(waveinprogress);
+}

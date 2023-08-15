@@ -1,0 +1,11 @@
+#library "DIHAT"
+#include "zcommon.acs"
+
+SCRIPT "fredtracker" (void)
+{
+	int freds = GetCVAR("dihat_freddie");
+	
+	if (freds >= 100) {SetCVAR("dihat_unlock_07", true);}
+	if (freds >= 1000) {SetCVAR("dihat_unlock_08", true);}
+	if (freds >= 10000) {SetCVAR("dihat_unlock_09", true);}
+}
