@@ -67,23 +67,26 @@ Class DIShop : DIShop_Base
 			
 				if ((canshop == true) || (user_alwaysreroll == true)) {ChooseNewShopItem();} //just purchased items have a 50% chance to not reroll.
 			
-				if ((newround >= lastpurchased + user_pricedown_round) && (currentprice > 0))
+				if (itempool.Size() > 0)
 				{
-					currentprice *= user_pricedown_mult;
-					currentprice -= user_pricedown_base * (1 + newround - (lastpurchased + user_pricedown_round));
+					if ((newround >= lastpurchased + user_pricedown_round) && (currentprice > 0))
+					{
+						currentprice *= user_pricedown_mult;
+						currentprice -= user_pricedown_base * (1 + newround - (lastpurchased + user_pricedown_round));
+					}
+					if (currentprice < 0) {currentprice = 0;}
+					
+					//calculate chance of sale.
+					//sale can only occur on items with a base price of at least 2.
+					//sale chance increases based on how long since the last sale 
+					//and also how long since the player last purchased from this shop.
+					int extrasale = newround - lastpurchased;
+					if (extrasale > 14) {extrasale = 14;}
+					if ((random(1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {saleamount = 1; lastsale = 0;}
+					else {saleamount = 0; ++lastsale;}
+					canshop = true;
+					curround = newround;
 				}
-				if (currentprice < 0) {currentprice = 0;}
-				
-				//calculate chance of sale.
-				//sale can only occur on items with a base price of at least 2.
-				//sale chance increases based on how long since the last sale 
-				//and also how long since the player last purchased from this shop.
-				int extrasale = newround - lastpurchased;
-				if (extrasale > 14) {extrasale = 14;}
-				if ((random(1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {saleamount = 1; lastsale = 0;}
-				else {saleamount = 0; ++lastsale;}
-				canshop = true;
-				curround = newround;
 			}
 		}
 	}
@@ -112,28 +115,40 @@ Class DIShop : DIShop_Base
 			
 			Array<String> currentline;
 			filedata[i].Split(currentline, " ", TOK_SKIPEMPTY);
+			
+			int pushchance = 256;
+			if (currentline.Size() >= 5) {pushchance = currentline[4].ToInt(10);}
+			
 			if (currentline[0] == user_shoptype) //This is case sensitive!
 			{
+				if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
 				itempool.Push(filedata[i]); //only add relevant item pool data to this array.
 			}
-			else if (user_shoptype == "") {itempool.Push(filedata[i]);} //if no item pool is defined, add every item to the shop.
+			else if (user_shoptype == "") 
+			{
+				if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+				itempool.Push(filedata[i]); //if no item pool is defined, add every item to the shop.
+			}
 		}
 	}
 	
 	virtual void ChooseNewShopItem(void)
 	{
-		if (itempool.Size() == 0) {ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
-		int chosenitem = random(0, itempool.Size() - 1);
+		if (itempool.Size() == 0) {canshop = false;}//{ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
+		if (canshop == true)
+		{
+			int chosenitem = random(0, itempool.Size() - 1);
 		
-		Array<String> currentitem;
-		itempool[chosenitem].Split(currentitem, " ", TOK_SKIPEMPTY);
+			Array<String> currentitem;
+			itempool[chosenitem].Split(currentitem, " ", TOK_SKIPEMPTY);
 		
-		if ((user_currentitem != "") && (user_currentitem != " ")) {shop_currentitem = user_currentitem;}
-		else {shop_currentitem = currentitem[1];}
-		if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
-		else {shop_currentsprite = currentitem[2];}
-		if (user_baseprice > 0) {shop_baseprice = user_baseprice;}
-		else {shop_baseprice = currentitem[3].ToInt(10);}
+			if ((user_currentitem != "") && (user_currentitem != " ")) {shop_currentitem = user_currentitem;}
+			else {shop_currentitem = currentitem[1];}
+			if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
+			else {shop_currentsprite = currentitem[2];}
+			if (user_baseprice > 0) {shop_baseprice = user_baseprice;}
+			else {shop_baseprice = currentitem[3].ToInt(10);}
+		}
 	}
 	
 	override void RerollShopItem(void)
