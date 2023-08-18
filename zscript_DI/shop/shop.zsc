@@ -4,6 +4,7 @@ Class DIShop : DIShop_Base
 {
 	Array<String> filedata; //all the lines from DISHOP.
 	Array<String> itempool; //only the lines that match user_shoptype. if user_shoptype is blank, it uses all items in DISHOP.
+	Array<String> groupdata; //used mainly if the shop is using a group instead of a standard item category. groups will inherit all items for each category it calls.
 
 	//these start with "user_" so that Ultimate Doom Builder is able to manually add in stuff here.
 	//the ones with "shop_" are the ones that this actor actually uses.
@@ -96,6 +97,7 @@ Class DIShop : DIShop_Base
 		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
 		filedata.Clear();
 		itempool.Clear();
+		groupdata.Clear();
 	
 		int ThisLump = Wads.FindLump("DISHOP", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DISHOP", ThisLump + 1, Wads.ANYNAMESPACE);
@@ -107,6 +109,27 @@ Class DIShop : DIShop_Base
 			NextLump = Wads.FindLump("DISHOP", ThisLump + 1, 1);
 		}
 		
+		//check for category grouping. identified by the presence of "[".
+		if (user_shoptype.Left(1) == "[")
+		{
+			for (int i = 0; i < filedata.Size(); i++)
+			{
+				if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+				if (filedata[i].Length() < 3) {continue;}
+				filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+				
+				Array<String> currentline;
+				filedata[i].Split(currentline, " ", TOK_SKIPEMPTY);
+				
+				if (currentline[0] == user_shoptype) //This is case sensitive!
+				{
+					groupdata.Push(currentline[1]); //add this category to the group.
+				}
+			}
+		}
+		else {groupdata.Push(user_shoptype);} //this is just 1 category, no grouping needed.
+		
+		//add valid items to this shop's pool
 		for (int i = 0; i < filedata.Size(); i++)
 		{
 			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
@@ -119,15 +142,18 @@ Class DIShop : DIShop_Base
 			int pushchance = 256;
 			if (currentline.Size() >= 5) {pushchance = currentline[4].ToInt(10);}
 			
-			if (currentline[0] == user_shoptype) //This is case sensitive!
+			for (int j = 0; j < groupdata.Size(); j++)
 			{
-				if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
-				itempool.Push(filedata[i]); //only add relevant item pool data to this array.
-			}
-			else if (user_shoptype == "") 
-			{
-				if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
-				itempool.Push(filedata[i]); //if no item pool is defined, add every item to the shop.
+				if (currentline[0] == groupdata[j]) //This is case sensitive!
+				{
+					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+					itempool.Push(filedata[i]); //only add relevant item pool data to this array.
+				}
+				else if (user_shoptype == "") 
+				{
+					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+					itempool.Push(filedata[i]); //if no item pool is defined, add every item to the shop.
+				}
 			}
 		}
 	}
