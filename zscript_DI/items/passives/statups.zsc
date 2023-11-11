@@ -2,7 +2,7 @@
 
 //if you're gonna make some new stat up items for DI, this is the "proper" way to do it.
 
-Class DI_DamageMultGiver : Inventory
+Class DI_DamageMultGiver : DIPassiveInventory
 {
 	Default
 	{
@@ -30,7 +30,7 @@ Class DI_DamageMultGiver : Inventory
 	}
 }
 
-Class DI_ComboDamageMult : Inventory
+Class DI_ComboDamageMult : DIPassiveInventory
 {
 	Default
 	{
@@ -58,7 +58,7 @@ Class DI_ComboDamageMult : Inventory
 	}
 }
 
-Class DI_PainRhombus : Inventory
+Class DI_PainRhombus : DIPassiveInventory
 {
 	Default
 	{
@@ -89,7 +89,7 @@ Class DI_PainRhombus : Inventory
 	}
 }
 
-Class DI_GunHoarder : Inventory
+Class DI_GunHoarder : DIPassiveInventory
 {
 	Default
 	{
@@ -117,7 +117,7 @@ Class DI_GunHoarder : Inventory
 	}
 }
 
-Class DI_RewardsProgram : Inventory
+Class DI_RewardsProgram : DIPassiveInventory
 {
 	Default
 	{

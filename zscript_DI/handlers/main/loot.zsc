@@ -38,14 +38,17 @@ extend class DIHandler
 				DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
 				DI_PlayerBase cplr = DI_PlayerBase(players[i].mo);
 					
-				if (cplr == plr) {iskiller = true;}
-			
-				int compoint = 120 + e.Thing.default.Health;
-				int fakescore = plr.score;
-				if (fakescore < 0) {fakescore = 0;}
-				if ((iskiller == true) && (plr.CanFreshKill()) && (notweapon == false)) {compoint += (30 * (plr.CountInv("DI_TokenCombo") + 2)) + fakescore;}
-				cplr.GiveInventory("DI_TokenComboTimer", compoint);
-				if (iskiller == true) {plr.DIMonsterKilled(notweapon);}
+				if (plr && cplr)
+				{
+					if (cplr == plr) {iskiller = true;}
+				
+					int compoint = 120 + e.Thing.default.Health;
+					int fakescore = plr.score;
+					if (fakescore < 0) {fakescore = 0;}
+					if ((iskiller == true) && (plr.CanFreshKill()) && (notweapon == false)) {compoint += (30 * (plr.CountInv("DI_TokenCombo") + 2)) + fakescore;}
+					cplr.GiveInventory("DI_TokenComboTimer", compoint);
+					if (iskiller == true) {plr.DIMonsterKilled(notweapon);}
+				}
 			
 			}
 		}

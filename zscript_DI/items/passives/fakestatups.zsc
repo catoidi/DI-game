@@ -1,9 +1,9 @@
 //zscript_DI/items/passives/fakestatups.zsc
 
-//these items don't do anything on their own. 
-//there isn't any reason why the code for these items couldn't reside within the items themselves, but it is what it is.
+//the code for these items isn't here, but within the player actor itself.
+//for compatibility purposes, this is the WRONG way to create new items.
 
-Class DI_BaseDamageGiver : Inventory
+Class DI_BaseDamageGiver : DIPassiveInventory
 {
 	Default
 	{
@@ -19,7 +19,7 @@ Class DI_BaseDamageGiver : Inventory
 	}
 }
 
-Class DI_ComboDamage : Inventory
+Class DI_ComboDamage : DIPassiveInventory
 {
 	Default
 	{
@@ -35,7 +35,7 @@ Class DI_ComboDamage : Inventory
 	}
 }
 
-Class DI_ExtraCoinGiver : Inventory
+Class DI_ExtraCoinGiver : DIPassiveInventory
 {
 	Default
 	{
@@ -51,7 +51,7 @@ Class DI_ExtraCoinGiver : Inventory
 	}
 }
 
-Class DI_FreshBonusGiver : Inventory
+Class DI_FreshBonusGiver : DIPassiveInventory
 {
 	Default
 	{
@@ -67,7 +67,7 @@ Class DI_FreshBonusGiver : Inventory
 	}
 }
 
-Class DI_FreshBonusCharger : Inventory
+Class DI_FreshBonusCharger : DIPassiveInventory
 {
 	Default
 	{
@@ -83,7 +83,7 @@ Class DI_FreshBonusCharger : Inventory
 	}
 }
 
-Class DI_BulletSplitter : Inventory
+Class DI_BulletSplitter : DIPassiveInventory
 {
 	//gives +1 projectile, but reduces accuracy by 3.
 	Default
@@ -100,7 +100,7 @@ Class DI_BulletSplitter : Inventory
 	}
 }
 
-Class DI_TooManyBullets : Inventory
+Class DI_TooManyBullets : DIPassiveInventory
 {
 	Default
 	{
@@ -116,7 +116,7 @@ Class DI_TooManyBullets : Inventory
 	}
 }
 
-Class DI_AmmoGiver : Inventory
+Class DI_AmmoGiver : DIPassiveInventory
 {
 	Default
 	{
@@ -132,7 +132,7 @@ Class DI_AmmoGiver : Inventory
 	}
 }
 
-Class DI_PainStar : Inventory
+Class DI_PainStar : DIPassiveInventory
 {
 	Default
 	{
@@ -148,7 +148,7 @@ Class DI_PainStar : Inventory
 	}
 }
 
-Class DI_Gunslinger : Inventory
+Class DI_Gunslinger : DIPassiveInventory
 {
 	Default
 	{

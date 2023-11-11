@@ -1,6 +1,6 @@
 //zscript_DI/items/passives/bloodyheart.zsc
 
-Class DI_BloodyHeart : Inventory
+Class DI_BloodyHeart : DIPassiveInventory
 {
 	Default
 	{

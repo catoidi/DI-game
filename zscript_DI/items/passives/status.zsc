@@ -1,6 +1,6 @@
 //status effect passives
 
-Class DI_StatusGiver_Ice : Inventory
+Class DI_StatusGiver_Ice : DIPassiveInventory
 {
 	Default
 	{
@@ -28,7 +28,7 @@ Class DI_StatusGiver_Ice : Inventory
 	}
 }
 
-Class DI_StatusGiver_Fire : Inventory
+Class DI_StatusGiver_Fire : DIPassiveInventory
 {
 	Default
 	{
@@ -56,7 +56,7 @@ Class DI_StatusGiver_Fire : Inventory
 	}
 }
 
-Class DI_StatusGiver_Lightning : Inventory
+Class DI_StatusGiver_Lightning : DIPassiveInventory
 {
 	Default
 	{
@@ -84,7 +84,7 @@ Class DI_StatusGiver_Lightning : Inventory
 	}
 }
 
-Class DI_StatusGiver_Poison : Inventory
+Class DI_StatusGiver_Poison : DIPassiveInventory
 {
 	Default
 	{
@@ -112,7 +112,7 @@ Class DI_StatusGiver_Poison : Inventory
 	}
 }
 
-Class DI_StatusGiver_Rainbow : Inventory
+Class DI_StatusGiver_Rainbow : DIPassiveInventory
 {
 	//gives all 4 status effects at once.
 	Default

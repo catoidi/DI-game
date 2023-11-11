@@ -1,6 +1,6 @@
 //zscript_DI/items/passives/freshregen.zsc
 
-Class DI_FreshRegen : Inventory
+Class DI_FreshRegen : DIPassiveInventory
 {
 	Default
 	{

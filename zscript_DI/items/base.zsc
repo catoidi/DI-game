@@ -1,0 +1,3 @@
+//zscript_DI/items/base.zsc
+
+class DIPassiveInventory : Inventory {} //does nothing on it's own. used simply for tracking purposes.

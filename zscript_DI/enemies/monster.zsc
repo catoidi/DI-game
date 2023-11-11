@@ -153,7 +153,7 @@ Class DI_Monster : DI_Actor abstract
 	
 	action void A_DIFirePain(void)
 	{
-		int firepain = (invoker.painhp - invoker.health) / 2; //fire effect is based on 1/3 the projectile damage.
+		int firepain = (invoker.painhp - invoker.health); //fire effect will effectively double the damage given.
 		int fireparticle = 5 + (firepain / 25);
 		invoker.firenum += firepain;
 		invoker.A_DIBurned(fireparticle, 0.5);
@@ -162,7 +162,7 @@ Class DI_Monster : DI_Actor abstract
 	
 	action void A_DIPoisonPain(void)
 	{
-		int poisonpain = (invoker.painhp - invoker.health); //poison effect is stronger than fire effect, but is slower.
+		int poisonpain = (invoker.painhp - invoker.health) * 3; //poison damage gives a strong DOT effect, but is slower than fire.
 		int poisonparticle = 5 + (poisonpain / 25);
 		invoker.poisonnum += poisonpain;
 		invoker.A_DIPoisoned(poisonparticle, 0.5);

@@ -1,6 +1,6 @@
 //zscript_DI/items/passives/bonusarmor.zsc
 
-Class DI_BonusArmor : Inventory
+Class DI_BonusArmor : DIPassiveInventory
 {
 	Default
 	{

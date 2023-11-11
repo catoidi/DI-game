@@ -2,7 +2,7 @@
 
 //shooting has a 1% chance to heal you 1 HP.
 
-Class DI_Shoe : Inventory
+Class DI_Shoe : DIPassiveInventory
 {
 	Default
 	{

@@ -1,6 +1,6 @@
 //hathat.zsc
 
-Class DI_HatHat : Inventory
+Class DI_HatHat : DIPassiveInventory
 {
 	Default
 	{
