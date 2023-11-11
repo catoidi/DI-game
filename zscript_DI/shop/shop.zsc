@@ -12,7 +12,7 @@ Class DIShop : DIShop_Base
 	int user_baseprice, shop_baseprice; //the base price of the user_currentitem.
 	string user_shoptype; //for use with random shops, this tells the shop which item pool to look through.
 	int user_pricemult; //multiplier for the base price.
-	bool user_alwaysreroll; //removes the 50% chance of not rerolling just purchased items.
+	bool user_alwaysreroll; //forces the shop to always reroll their item upon every restock.
 	
 	Inventory itemactor; //points to the inventory class for the current item, but only if the player already has the item.
 	int itemmax; //the item's built in max amount value. only applies if the player already has the item.
@@ -21,6 +21,7 @@ Class DIShop : DIShop_Base
 	int user_pricedown_base; //when price can decrease, decrease by this amount.
 	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
 	
+	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
 	Property ReducePriceMult : user_pricedown_mult;
@@ -66,7 +67,7 @@ Class DIShop : DIShop_Base
 			{
 				shop_itemstock = user_itemstock;
 			
-				if ((canshop == true) || (user_alwaysreroll == true)) {ChooseNewShopItem();} //just purchased items have a 50% chance to not reroll.
+				if ((canshop == true) || (user_alwaysreroll == true)) {ChooseNewShopItem();} //previously used shops do not reroll, unless marked to always reroll.
 			
 				if (itempool.Size() > 0)
 				{
@@ -161,7 +162,7 @@ Class DIShop : DIShop_Base
 	virtual void ChooseNewShopItem(void)
 	{
 		if (itempool.Size() == 0) {canshop = false;}//{ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
-		if (canshop == true)
+		if ((canshop == true) || (user_alwaysreroll == true))
 		{
 			int chosenitem = random(0, itempool.Size() - 1);
 		
@@ -170,8 +171,12 @@ Class DIShop : DIShop_Base
 		
 			if ((user_currentitem != "") && (user_currentitem != " ")) {shop_currentitem = user_currentitem;}
 			else {shop_currentitem = currentitem[1];}
-			if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
-			else {shop_currentsprite = currentitem[2];}
+			if (user_hideitem == false)
+			{
+				//might've been causing VM aborts, idk...
+				if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
+				else {shop_currentsprite = currentitem[2];}
+			}
 			if (user_baseprice > 0) {shop_baseprice = user_baseprice;}
 			else {shop_baseprice = currentitem[3].ToInt(10);}
 		}

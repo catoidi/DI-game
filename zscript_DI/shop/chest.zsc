@@ -13,6 +13,7 @@ Class DIChest : DIPermaShop
 	{
 		DIShop_Base.HideItem true;
 		DIShop_Base.DisplayOffset -16;
+		DIShop.AlwaysReroll true;
 		DIShop.ReducePriceRound 0;
 		DIShop.ReducePriceBase 0;
 		DIShop.ReducePriceMult 1.0;
