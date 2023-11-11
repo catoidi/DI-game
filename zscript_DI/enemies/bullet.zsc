@@ -35,6 +35,13 @@ Class DI_Bullet : DI_Actor abstract
 		bulletspin = 8 - (16 * random(0, 1));
 		cvar lightcvar = cvar.FindCVAR("di_fancylight");
 		if (lightcvar.GetBool() == true) {A_AttachLightDef("fancylight", fancylightname);}
+		
+		if (target is "DI_Monster")
+		{
+			//slow projectile if monster is currently frozen
+			let mon = DI_Monster(target);
+			Vel *= 1.0 - mon.icenum;
+		}
 	}
 	
 	action void DIBulletTrail()
