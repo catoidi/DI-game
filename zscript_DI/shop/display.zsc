@@ -25,7 +25,7 @@ Class DIShop_Display : DI_Actor abstract
 	
 	virtual void GetDisplayPos(void)
 	{
-		double NewZSpot = curshop.Pos.Z + display_z;
+		double NewZSpot = curshop.Pos.Z + display_z + curshop.user_displayoffset;
 		NewZSpot *= curshop.Scale.Y;
 		Vector3 sPos = (curshop.Pos.X, curshop.Pos.Y, NewZSpot);
 		SetOrigin(sPos, true);

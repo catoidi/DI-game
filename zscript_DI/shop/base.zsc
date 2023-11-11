@@ -6,8 +6,14 @@ Class DIShop_Base : SwitchableDecoration abstract
 	int user_itemstock, shop_itemstock; //how many items this shop can sell per round. set to -1 for unlimited stock. defaults to 1.
 	bool user_allowdebt; //allow the player to buy from this shop even if they're in debt.
 	int user_debthp; //how much HP to take from the player upon going into debt.
+	bool user_hideitem; //does not reveal the item to the player.
+	bool user_hideprice; //hides the price of the item. not recommended to use.
+	int user_displayoffset; //add/reduce the Z offset for the displays above the shop.
 	
 	property AllowDebt: user_allowdebt;
+	property HideItem: user_hideitem;
+	property HidePrice: user_hideprice;
+	property DisplayOffset: user_displayoffset;
 	
 	int currentprice; //how much the price has increased.
 	int lastpurchased; //checks how many rounds ago the last purchase was.
@@ -26,14 +32,17 @@ Class DIShop_Base : SwitchableDecoration abstract
 	
 	virtual void SpawnShopExtras(void)
 	{
-		A_SpawnItemEX("DIShop_Item", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number1", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number2", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number3", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number4", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number5", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number6", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEX("DIShop_Number7", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		if (user_hideitem == false) {A_SpawnItemEX("DIShop_Item", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);}
+		if (user_hideprice == false)
+		{
+			A_SpawnItemEX("DIShop_Number1", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEX("DIShop_Number2", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEX("DIShop_Number3", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEX("DIShop_Number4", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEX("DIShop_Number5", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEX("DIShop_Number6", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEX("DIShop_Number7", flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		}
 	}
 	
 	abstract void PurchaseShopItem();

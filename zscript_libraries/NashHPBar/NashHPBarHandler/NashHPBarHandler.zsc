@@ -231,6 +231,7 @@ class NashHPBarHandler : EventHandler
 				
 				txt = String.Format("$shopitem_%s", targName);
 				txt = Stringtable.Localize(txt);
+				if (prevShop.user_hideitem == true) {txt = "\ctUnknown Item";}
 				if (prevAimTarget is "DIPermaShop") {txt = String.Format("\cz%s", txt);}
 				Screen.DrawText(fnt, nameTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
@@ -242,6 +243,7 @@ class NashHPBarHandler : EventHandler
 					
 				// draw target base price
 				txt = String.Format("\cfBase Price: %d", prevShop.GetShopBasePrice());
+				if (prevShop.user_hideprice == true) {txt = "Base Price: ????";}
 				Screen.DrawText(fnt, normalTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
 					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (3 * CleanYFac),
@@ -253,6 +255,7 @@ class NashHPBarHandler : EventHandler
 				// draw target description
 				txt = String.Format("$shopdesc_%s", targName);
 				txt = Stringtable.Localize(txt);
+				if (prevShop.user_hideitem == true) {txt = "\caWho knows what riches this holds?";}
 				Screen.DrawText(fnt, normalTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
 					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (19 * CleanYFac),

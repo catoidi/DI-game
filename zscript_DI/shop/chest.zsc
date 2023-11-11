@@ -1,0 +1,41 @@
+//zscript_di/shop/chest.zsc
+
+//works similar to a shop, but with a few important notes:
+//1. the chest item is hidden until after purchase.
+//2. the chest can only be purchased once per round.
+//3. the price will never go back down.
+//4. the item is permanent.
+//best used as a way for players to get a few permanent items at the start of a run.
+
+Class DIChest : DIPermaShop
+{
+	Default
+	{
+		DIShop_Base.HideItem true;
+		DIShop_Base.DisplayOffset -16;
+		DIShop.ReducePriceRound 0;
+		DIShop.ReducePriceBase 0;
+		DIShop.ReducePriceMult 1.0;
+	}
+	
+	override void ChooseNewShopItem()
+	{
+		Super.ChooseNewShopItem();
+		if (shop_itemstock > 0) {frame = 8;}
+	}
+
+	States
+	{
+		Spawn:
+			SHOP I -1;
+			Stop;
+		Inactive:
+		Active:
+			SHOP # 1 A_Jump(256, "Purchase");
+			Stop;
+		Squish:
+			#### ########## 1 A_DIScale(-0.025, 0.025);
+			#### # -1;
+			Wait;
+	}
+}

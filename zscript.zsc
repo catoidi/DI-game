@@ -133,6 +133,7 @@ version "4.10"
 #include "zscript_DI/shop/controller.zsc" //fake shops that run some kinda script
 #include "zscript_DI/shop/display.zsc" //item sprites and prices displayed over the shops
 #include "zscript_DI/shop/ghostshop.zsc" //does nothing. used to represent where the next shops will spawn.
+#include "zscript_DI/shop/chest.zsc" //can provide 1 random perma item per round. price never goes down.
 
 //secret (shh don't tell anyone ok???)
 #include "zscript_DI/secret/cats.zsc"
