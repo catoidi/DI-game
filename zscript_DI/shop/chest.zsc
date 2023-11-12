@@ -40,3 +40,31 @@ Class DIChest : DIPermaShop
 			Wait;
 	}
 }
+
+Class DIChest_Single : DIChest
+{
+	//can only be opened once, then it's done.
+	
+	override void RestockShop() {}
+	
+	override void ChooseNewShopItem()
+	{
+		if (shop_itemstock > 0)
+		{
+			Super.ChooseNewShopItem();
+			frame = 10;
+		}
+	}
+	
+	override void RerollShopItem(void)
+	{
+		if (shop_itemstock > 0) {Super.RerollShopItem();}
+	}
+
+	States
+	{
+		Spawn:
+			SHOP K -1;
+			Stop;
+	}
+}

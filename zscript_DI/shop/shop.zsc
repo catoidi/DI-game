@@ -65,7 +65,7 @@ Class DIShop : DIShop_Base
 			
 			if (newround != curround)
 			{
-				shop_itemstock = user_itemstock;
+				RestockShop();
 			
 				if ((canshop == true) || (user_alwaysreroll == true)) {ChooseNewShopItem();} //previously used shops do not reroll, unless marked to always reroll.
 			
@@ -86,7 +86,7 @@ Class DIShop : DIShop_Base
 					if (extrasale > 14) {extrasale = 14;}
 					if ((random(1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {saleamount = 1; lastsale = 0;}
 					else {saleamount = 0; ++lastsale;}
-					canshop = true;
+					if (shop_itemstock > 0) {canshop = true;} //if shop is restocked, reenable shopping.
 					curround = newround;
 				}
 			}
@@ -159,10 +159,16 @@ Class DIShop : DIShop_Base
 		}
 	}
 	
+	virtual void RestockShop(void)
+	{
+		//override this if you want the shop to not restock every round.
+		shop_itemstock = user_itemstock;
+	}
+	
 	virtual void ChooseNewShopItem(void)
 	{
 		if (itempool.Size() == 0) {canshop = false;}//{ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
-		if ((canshop == true) || (user_alwaysreroll == true))
+		else if ((canshop == true) || (user_alwaysreroll == true))
 		{
 			int chosenitem = random(0, itempool.Size() - 1);
 		
