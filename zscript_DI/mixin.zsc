@@ -130,6 +130,19 @@ mixin class DI_ActorMixin
 		}
 	}
 	
+	action void A_DIHearted (int inum = 1, double shosize = 0.25, bool isdead = false)
+	{
+		double ht = invoker.height;
+		double rd = invoker.radius;
+		
+		if (isdead) {ht *= 4;}
+		
+		for (int i = 0; i < inum; ++i)
+		{
+			A_SpawnParticleEX("White", TexMan.CheckForTexture("PUFFH0"), 0, SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, 180, random(-rd, rd), random(-rd, rd), random(ht / 2, ht), 0, 0, frandom(0.1, 1.0), 0, 0, 0, 1.0, -1, 0, 180);
+		}
+	}
+	
 	action void A_DIStatusLight (int curstatus = 0)
 	{
 		let lighttype = DynamicLight.PointLight;

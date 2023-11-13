@@ -11,12 +11,16 @@ Class DI_Monster : DI_Actor abstract
 	bool isshocked; //enemy is currently shocked. does not affect the monster in anyway. use this to know if monster is shocked or not.
 	int ticker; //a timer.
 	int poisonticker; //extra delay for poison effect.
+	bool hearted; //whether or not this monster has been hit with a heart attack.
+	bool friendlylight; //enable/disable the hearted light.
+	int hearttimer; //how long to keep the enemy charmed.
 
 	//Called by all of DI's enemies.
 	Default
 	{
 		Mass 100;
 		PainChance 256;
+		PainChance "Heart", 256;
 		Monster;
 		DamageFactor "Enemy", 0;
 		DamageFactor "FakeLightning", 1.0; //fake damagetypes only hurt enemies, not players. if i knew a better way of doing this, i would swap this out with that in a heartbeat.
@@ -95,6 +99,20 @@ Class DI_Monster : DI_Actor abstract
 				poisonticker = 0;
 			}
 			
+			if (hearttimer > 0) {--hearttimer;}
+			else {hearted = false;}
+			if (hearted == true) 
+			{
+				DoCharmEffect();
+			}
+			else if (friendlylight == true) 
+			{
+				bFRIGHTENED = false;
+				DamageMultiply += 0.66;
+				friendlylight = false;
+				A_RemoveLight("friendlylight");
+			}
+			
 			ticker = 0;
 		}
 	}
@@ -131,6 +149,21 @@ Class DI_Monster : DI_Actor abstract
 		speed = default.speed * (1.0 - icenum);
 	}
 	
+	virtual void DoCharmEffect(void)
+	{
+		A_DIHearted(2, 1.0);
+		bFRIGHTENED = true;
+		if (friendlylight == false)
+		{
+			DamageMultiply -= 0.66;
+			int size1 = radius;
+			int size2 = size1 * 0.75;
+			int lightoffset = height / 2;
+			A_AttachLight("friendlylight", DynamicLight.PointLight, Color(0xd2a5ff), size1, size2, 0, (0, 0, lightoffset), 0.1);
+			friendlylight = true;
+		}
+	}
+	
 	action void A_DITargetPlayer(void)
 	{
 		//ensures that the enemy drops are calculated based on whichever player it was targetting last.
@@ -140,33 +173,50 @@ Class DI_Monster : DI_Actor abstract
 		}
 	}
 	
-	action void A_DIIcePain(void)
+	action void A_DIIcePain(double fakedmg = 0.0)
 	{
 		//called before A_DIPain.
 		//slows the enemy speed based on how much damage they took from the ice attack.
 		double icepain = (invoker.painhp - invoker.health) * 2;
+		if (fakedmg != 0.0) {icepain = fakedmg;} //ignore damage taken, use preset value instead.
 		icepain *= 1.0 / invoker.default.health;
 		int iceparticle = icepain * 6;
 		invoker.UpdateIceNum(icepain);
 		invoker.A_DIIced(iceparticle, 0.15);
 	}
 	
-	action void A_DIFirePain(void)
+	action void A_DIFirePain(int fakedmg = 0)
 	{
 		int firepain = (invoker.painhp - invoker.health); //fire effect will effectively double the damage given.
+		if (fakedmg != 0) {firepain = fakedmg;} //ignore damage taken, use preset value instead.
 		int fireparticle = 5 + (firepain / 25);
 		invoker.firenum += firepain;
 		invoker.A_DIBurned(fireparticle, 0.5);
 		invoker.A_DIStatusLight(2);
 	}
 	
-	action void A_DIPoisonPain(void)
+	action void A_DIPoisonPain(int fakedmg = 0)
 	{
 		int poisonpain = (invoker.painhp - invoker.health) * 3; //poison damage gives a strong DOT effect, but is slower than fire.
+		if (fakedmg != 0) {poisonpain = fakedmg;} //ignore damage taken, use preset value instead.
 		int poisonparticle = 5 + (poisonpain / 25);
 		invoker.poisonnum += poisonpain;
 		invoker.A_DIPoisoned(poisonparticle, 0.5);
 		invoker.A_DIStatusLight(3);
+	}
+	
+	action void A_DIHeartPain(void)
+	{
+		if (random(1, invoker.PainThreshold) <= 1)
+		{
+			invoker.hearted = true;
+			invoker.hearttimer += 8;
+			invoker.DoCharmEffect();
+		}
+		else
+		{
+			invoker.A_DIPoisonPain(invoker.PainThreshold * 10);
+		}
 	}
 	
 	action void A_DIPain(void)
@@ -221,6 +271,9 @@ Class DI_Monster : DI_Actor abstract
 			Stop;
 		Pain.Poison:
 			#### # 0 A_DIPoisonPain();
+			#### # 0 A_Jump(256, "Pain");
+		Pain.Heart:
+			#### # 0 A_DIHeartPain();
 			#### # 0 A_Jump(256, "Pain");
 		Death:
 			#### # 0 A_DITargetPlayer();
