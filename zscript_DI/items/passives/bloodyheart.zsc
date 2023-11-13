@@ -58,7 +58,7 @@ Class DI_BloodyHeart_Pickup : Health
 	{
 		Height 20;
 		Radius 10;
-		Health 2;
+		Inventory.Amount 2;
 		Inventory.Icon "HEALC0";
 		Inventory.PickupMessage "+2 Health";
 		+FLOATBOB;

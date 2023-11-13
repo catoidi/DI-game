@@ -120,7 +120,7 @@ Class DIShopController : DIShop_Base
 		A_StartSound("switches/normbutn");
 		plr.score -= buyprice;
 		int priceincrease = user_baseprice / (saleamount + 1);
-		if (priceincrease <= 0) {priceincrease = 1;}
+		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;
 		lastpurchased = curround;
 		EventHandler.SendNetworkEvent(user_eventname, user_event1, user_event2, user_event3);
@@ -137,9 +137,12 @@ Class DIShopController : DIShop_Base
 		let debtnum = buyprice / 50;
 		if (-plr.score > buyprice) {debtnum = -plr.score / 50;}
 		if (debtnum < 0) {debtnum = 0;}
-		debtnum += 3;
-		plr.A_GiveInventory("DI_Degen", debtnum);
-		plr.ACS_ScriptCall("DebtMSG");
+		debtnum += user_debthp;
+		if (debtnum >= 1)
+		{
+			plr.A_GiveInventory("DI_Degen", debtnum);
+			plr.ACS_ScriptCall("DebtMSG");
+		}
 		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}
 

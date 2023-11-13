@@ -29,6 +29,7 @@ Class DIShop : DIShop_Base
 	Default
 	{
 		DIShop_Base.AllowDebt true;
+		DIShop_Base.DebtHP 1;
 		DIShop.ReducePriceRound 2;
 		DIShop.ReducePriceBase 5;
 		DIShop.ReducePriceMult 0.95;
@@ -264,7 +265,7 @@ Class DIShop : DIShop_Base
 		PurchaseMessage(buyprice);
 		plr.score -= buyprice;
 		int priceincrease = shop_baseprice / (saleamount + 1);
-		if (priceincrease <= 0) {priceincrease = 1;}
+		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;
 		lastpurchased = curround;
 		plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
@@ -280,9 +281,12 @@ Class DIShop : DIShop_Base
 		let debtnum = buyprice / 50;
 		if (-plr.score > buyprice) {debtnum = -plr.score / 50;}
 		if (debtnum < 0) {debtnum = 0;}
-		debtnum += 3;
-		plr.A_GiveInventory("DI_Degen", debtnum);
-		plr.ACS_ScriptCall("DebtMSG");
+		debtnum += user_debthp;
+		if (debtnum >= 1)
+		{
+			plr.A_GiveInventory("DI_Degen", debtnum);
+			plr.ACS_ScriptCall("DebtMSG");
+		}
 		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}
 	
@@ -324,6 +328,11 @@ Class DIRentShop : DIShop
 
 Class DIPermaShop : DIShop
 {
+	Default
+	{
+		DIShop_Base.DebtHP 10;
+	}
+	
 	override void DoPurchase(int buyprice)
 	{
 		Super.DoPurchase(buyprice);

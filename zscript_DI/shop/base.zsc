@@ -5,12 +5,13 @@ Class DIShop_Base : SwitchableDecoration abstract
 	string user_currentsprite, shop_currentsprite; //the sprite of the current item.
 	int user_itemstock, shop_itemstock; //how many items this shop can sell per round. set to -1 for unlimited stock. defaults to 1.
 	bool user_allowdebt; //allow the player to buy from this shop even if they're in debt.
-	int user_debthp; //how much HP to take from the player upon going into debt.
+	int user_debthp; //minimum HP to take from the player upon going into debt.
 	bool user_hideitem; //does not reveal the item to the player.
 	bool user_hideprice; //hides the price of the item. not recommended to use.
 	int user_displayoffset; //add/reduce the Z offset for the displays above the shop.
 	
 	property AllowDebt: user_allowdebt;
+	property DebtHP: user_debthp;
 	property HideItem: user_hideitem;
 	property HidePrice: user_hideprice;
 	property DisplayOffset: user_displayoffset;

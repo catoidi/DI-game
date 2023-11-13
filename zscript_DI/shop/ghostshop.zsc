@@ -20,3 +20,13 @@ class DI_GhostShop : DI_Actor
 			Stop;
 	}
 }
+
+class DI_GhostChest : DI_GhostShop
+{
+	States
+	{
+		Spawn:
+			SHOP Y -1;
+			Stop;
+	}
+}
