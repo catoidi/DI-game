@@ -222,8 +222,8 @@ Class DIShop : DIShop_Base
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
 			if ((canafford == true) && (canshop == true) && (hasroom == true))
 			{
+				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
-				if (plr.score < 0) {DoDebt(buyprice);}
 			}
 			else 
 			{
@@ -273,21 +273,6 @@ Class DIShop : DIShop_Base
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
-	}
-	
-	virtual void DoDebt(int buyprice)
-	{
-		//overwrite this if you want something custom to happen upon the player going into debt.
-		let debtnum = buyprice / 50;
-		if (-plr.score > buyprice) {debtnum = -plr.score / 50;}
-		if (debtnum < 0) {debtnum = 0;}
-		debtnum += user_debthp;
-		if (debtnum >= 1)
-		{
-			plr.A_GiveInventory("DI_Degen", debtnum);
-			plr.ACS_ScriptCall("DebtMSG");
-		}
-		//A_DamageTarget(user_debthp, flags: DMSS_NOPROTECT);
 	}
 	
 	virtual void PurchaseMessage(int price)
