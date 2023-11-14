@@ -1,0 +1,95 @@
+//zscript_DI/handlers/itemhud.zsc
+
+class DIItemHUDHandler : EventHandler
+{
+	Array<String> filedata; //all the lines from DISHOP.
+
+	transient ui cvar itemscale, itemhudtoggle;
+	ui DI_PlayerBase diplr;
+	ui Array<String> itemnames;
+	ui Array<String> itemsprites;
+	ui Array<String> validitems;
+	ui Array<String> validsprites;
+	
+	override void WorldLoaded(WorldEvent e)
+	{	
+		int ThisLump = Wads.FindLump("DISHOP", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISHOP", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISHOP", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i].Split(currentline, " ");
+			if (currentline.Size() < 4) {continue;} //this is not an item. skipped.
+			let inttxt = String.Format("diitemhud %s %s", currentline[1], currentline[2]);
+			EventHandler.SendInterfaceEvent(consoleplayer, inttxt); //send the item name and sprite to the ui scope, for use with HUD elements.
+		}
+	}
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name.Left(10) == "diitemhud ")
+		{
+			Array<String> currentline;
+			e.Name.Split(currentline, " ");
+			if (itemnames.Find(currentline[1]) == itemnames.Size()) //not a duplicate, add to the list of shop items.
+			{
+				itemnames.Push(currentline[1]); //create a list of all valid shop item names and sprites.
+				itemsprites.Push(currentline[2]);
+			}
+		}
+	}
+	
+	override void UITick()
+	{
+		diplr = DI_PlayerBase(players[consoleplayer].mo);
+		if (!diplr) {return;} //no player = no inventory!
+		itemhudtoggle = cvar.GetCVAR("di_itemhud_toggle", players[consoleplayer]);
+		itemscale = cvar.GetCVAR("di_itemhud_scale", players[consoleplayer]);
+		if (!itemhudtoggle) {return;}
+		if (!itemscale) {return;}
+		validitems.Clear();
+		validsprites.Clear();
+		if (itemhudtoggle.GetBool() == false) {return;}
+		for (int i = 0; i < itemnames.Size(); i++)
+		{
+			inventory curitem = diplr.FindInventory(itemnames[i], false); //search player's inventory.
+			if (curitem && !(curitem is "Weapon") && (curitem.bINVBAR == false)) //Only look for Passive items. No weapons, no consumables, etc.)
+			{
+				validitems.Push(itemnames[i]);
+				validsprites.Push(itemsprites[i]);
+			}
+		}
+	}
+	
+	override void RenderOverlay(RenderEvent e)
+	{
+		for (int i = 0; i < validitems.Size(); i++)
+		{
+			if (!itemscale) {return;}
+			let scalenum = itemscale.GetFloat();
+			let realsprite = TexMan.CheckForTexture(String.Format("%s0", validsprites[i]));
+			if (realsprite)
+			{
+				let startx = Screen.GetWidth() - (24 * CleanXFac * (i + 0.5) * scalenum);
+				let starty = 24 * CleanYFac * scalenum;
+				Screen.DrawTexture(realsprite, false, startx, starty,
+					DTA_ScaleX, scalenum * CleanXFac,
+					DTA_ScaleY, scalenum * CleanYFac,
+					DTA_KeepRatio, true
+				);
+			}
+		}
+	}
+}
