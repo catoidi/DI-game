@@ -68,8 +68,12 @@ class DIItemHUDHandler : EventHandler
 			inventory curitem = diplr.FindInventory(itemnames[i], false); //search player's inventory.
 			if (curitem is "DIPassiveInventory") //Only look for Passive items. No weapons, no consumables, etc.)
 			{
-				validitems.Push(itemnames[i]);
-				validsprites.Push(itemsprites[i]);
+				DIPassiveInventory hiddencheck = DIPassiveInventory(curitem);
+				if (hiddencheck.dipassive_hidden == false)
+				{
+					validitems.Push(itemnames[i]);
+					validsprites.Push(itemsprites[i]);
+				}
 			}
 		}
 	}

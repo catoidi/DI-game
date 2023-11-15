@@ -1,3 +1,9 @@
 //zscript_DI/items/base.zsc
 
-class DIPassiveInventory : Inventory {} //does nothing on it's own. used simply for tracking purposes.
+class DIPassiveInventory : Inventory 
+{
+	//this is used for tracking purposes for the Item HUD.
+	bool dipassive_hidden; //if enabled, this item is not shown on the item hud.
+	
+	property DIHidden: dipassive_hidden;
+}

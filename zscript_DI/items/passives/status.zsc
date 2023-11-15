@@ -6,6 +6,7 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 	{
 		Inventory.PickupMessage "Acquired Bullet Freezer! (Small chance for all weapons to do Ice damage.)";
 		Inventory.MaxAmount 10;
+		DIPassiveInventory.DIHidden true;
 	}
 	
 	override void DoEffect(void)
@@ -17,6 +18,9 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 			DI_PlayerBase plr = DI_PlayerBase(owner);
 			
 			plr.chance_ice += plr.CountInv("DI_StatusGiver_Ice");
+			
+			if (plr.CountInv("DI_StatusGiver_Ice") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			else {dipassive_hidden = false;}
 		}
 	}
 	
@@ -34,6 +38,7 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 	{
 		Inventory.PickupMessage "Acquired Bullet Burner! (Small chance for all weapons to do Fire damage.)";
 		Inventory.MaxAmount 10;
+		DIPassiveInventory.DIHidden true;
 	}
 	
 	override void DoEffect(void)
@@ -45,6 +50,9 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 			DI_PlayerBase plr = DI_PlayerBase(owner);
 			
 			plr.chance_fire += plr.CountInv("DI_StatusGiver_Fire");
+			
+			if (plr.CountInv("DI_StatusGiver_Fire") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			else {dipassive_hidden = false;}
 		}
 	}
 	
@@ -62,6 +70,7 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 	{
 		Inventory.PickupMessage "Acquired Bullet Shocker! (Small chance for all weapons to do Shock damage.)";
 		Inventory.MaxAmount 10;
+		DIPassiveInventory.DIHidden true;
 	}
 	
 	override void DoEffect(void)
@@ -73,6 +82,9 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 			DI_PlayerBase plr = DI_PlayerBase(owner);
 			
 			plr.chance_lightning += plr.CountInv("DI_StatusGiver_Lightning");
+			
+			if (plr.CountInv("DI_StatusGiver_Lightning") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			else {dipassive_hidden = false;}
 		}
 	}
 	
@@ -90,6 +102,7 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 	{
 		Inventory.PickupMessage "Acquired Bullet Poisoner! (Small chance for all weapons to do Poison damage.)";
 		Inventory.MaxAmount 10;
+		DIPassiveInventory.DIHidden true;
 	}
 	
 	override void DoEffect(void)
@@ -101,6 +114,9 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 			DI_PlayerBase plr = DI_PlayerBase(owner);
 			
 			plr.chance_poison += plr.CountInv("DI_StatusGiver_Poison");
+			
+			if (plr.CountInv("DI_StatusGiver_Poison") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			else {dipassive_hidden = false;}
 		}
 	}
 	
@@ -114,6 +130,8 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 
 Class DI_StatusGiver_Rainbow : DIPassiveInventory
 {
+	bool statusgiven;
+
 	//gives all 4 status effects at once.
 	Default
 	{
@@ -128,13 +146,17 @@ Class DI_StatusGiver_Rainbow : DIPassiveInventory
 			//don't do this part until the player is in the wave, otherwise the "maxamount" stuff for the shop won't work.
 			if (owner)
 			{
-				owner.A_GiveInventory("DI_StatusGiver_Ice", 1);
-				owner.A_GiveInventory("DI_StatusGiver_Fire", 1);
-				owner.A_GiveInventory("DI_StatusGiver_Poison", 1);
-				owner.A_GiveInventory("DI_StatusGiver_Lightning", 1);
-				owner.A_TakeInventory("DI_StatusGiver_Rainbow", 1);
+				if (statusgiven == false)
+				{
+					owner.A_GiveInventory("DI_StatusGiver_Ice", owner.CountInv("DI_StatusGiver_Rainbow"));
+					owner.A_GiveInventory("DI_StatusGiver_Fire", owner.CountInv("DI_StatusGiver_Rainbow"));
+					owner.A_GiveInventory("DI_StatusGiver_Poison", owner.CountInv("DI_StatusGiver_Rainbow"));
+					owner.A_GiveInventory("DI_StatusGiver_Lightning", owner.CountInv("DI_StatusGiver_Rainbow"));
+					statusgiven = true;
+				}
 			}
 		}
+		else {statusgiven = false;}
 	}
 	
 	States
