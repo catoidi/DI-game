@@ -4,7 +4,7 @@ class DIItemHUDHandler : EventHandler
 {
 	Array<String> filedata; //all the lines from DISHOP.
 
-	transient ui cvar itemscale, itemhudtoggle;
+	transient ui cvar itemscale, itemhudtoggle, itemalpha;
 	ui DI_PlayerBase diplr;
 	ui Array<String> itemnames;
 	ui Array<String> itemsprites;
@@ -57,6 +57,7 @@ class DIItemHUDHandler : EventHandler
 		if (!diplr) {return;} //no player = no inventory!
 		itemhudtoggle = cvar.GetCVAR("di_itemhud_toggle", players[consoleplayer]);
 		itemscale = cvar.GetCVAR("di_itemhud_scale", players[consoleplayer]);
+		itemalpha = cvar.GetCVAR("di_itemhud_alpha", players[consoleplayer]);
 		if (!itemhudtoggle) {return;}
 		if (!itemscale) {return;}
 		validitems.Clear();
@@ -65,7 +66,7 @@ class DIItemHUDHandler : EventHandler
 		for (int i = 0; i < itemnames.Size(); i++)
 		{
 			inventory curitem = diplr.FindInventory(itemnames[i], false); //search player's inventory.
-			if (curitem && !(curitem is "Weapon") && (curitem.bINVBAR == false)) //Only look for Passive items. No weapons, no consumables, etc.)
+			if (curitem is "DIPassiveInventory") //Only look for Passive items. No weapons, no consumables, etc.)
 			{
 				validitems.Push(itemnames[i]);
 				validsprites.Push(itemsprites[i]);
@@ -79,14 +80,20 @@ class DIItemHUDHandler : EventHandler
 		{
 			if (!itemscale) {return;}
 			let scalenum = itemscale.GetFloat();
+			let alphanum = itemalpha.GetFloat();
 			let realsprite = TexMan.CheckForTexture(String.Format("%s0", validsprites[i]));
 			if (realsprite)
 			{
-				let startx = Screen.GetWidth() - (24 * CleanXFac * (i + 0.5) * scalenum);
-				let starty = 24 * CleanYFac * scalenum;
+				let limitX = Screen.GetWidth() / 3;
+				let singleX = (24 * CleanXFac * scalenum);
+				int Xmax = limitX / singleX;
+				int itemrows = i / Xmax;
+				let startx = Screen.GetWidth() - (singleX * ((i % Xmax) + 0.5));
+				let starty = (24 * (1 + itemrows)) * CleanYFac * scalenum;
 				Screen.DrawTexture(realsprite, false, startx, starty,
 					DTA_ScaleX, scalenum * CleanXFac,
 					DTA_ScaleY, scalenum * CleanYFac,
+					DTA_Alpha, alphanum,
 					DTA_KeepRatio, true
 				);
 			}
