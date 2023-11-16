@@ -10,6 +10,10 @@ class DIItemHUDHandler : EventHandler
 	ui Array<String> itemsprites;
 	ui Array<String> validitems;
 	ui Array<String> validsprites;
+	ui Array<Int> validcount;
+	ui Array<Int> validperm;
+	ui bool heartfade;
+	ui int heartfade_int;
 	
 	override void WorldLoaded(WorldEvent e)
 	{	
@@ -62,6 +66,8 @@ class DIItemHUDHandler : EventHandler
 		if (!itemscale) {return;}
 		validitems.Clear();
 		validsprites.Clear();
+		validcount.Clear();
+		validperm.Clear();
 		if (itemhudtoggle.GetBool() == false) {return;}
 		for (int i = 0; i < itemnames.Size(); i++)
 		{
@@ -73,8 +79,28 @@ class DIItemHUDHandler : EventHandler
 				{
 					validitems.Push(itemnames[i]);
 					validsprites.Push(itemsprites[i]);
+					validcount.Push(diplr.CountInv(itemnames[i]));
+					bool hasperma = false;
+					for (int j = 0; j < diplr.wavekeep.Size(); ++j) //horrible. no good.
+					{
+						if (hasperma == true) {continue;}
+						if (itemnames[i].MakeLower() == diplr.wavekeep[j].Left(itemnames[i].Length()).MakeLower()) {hasperma = true;}
+					}
+					if (hasperma == true) {validperm.Push(1);}
+					else {validperm.Push(0);}
 				}
 			}
+		}
+		
+		if (heartfade == true)
+		{
+			++heartfade_int;
+			if (heartfade_int >= 35) {heartfade = false;}
+		}
+		else
+		{
+			--heartfade_int;
+			if (heartfade_int <= 0) {heartfade = true;}
 		}
 	}
 	
@@ -85,7 +111,7 @@ class DIItemHUDHandler : EventHandler
 			if (!itemscale) {return;}
 			let scalenum = itemscale.GetFloat();
 			let alphanum = itemalpha.GetFloat();
-			let realsprite = TexMan.CheckForTexture(String.Format("%s0", validsprites[i]));
+			let realsprite = TexMan.CheckForTexture(String.Format("%s0", validsprites[i])); //gross hack
 			if (realsprite)
 			{
 				let limitX = Screen.GetWidth() / 3;
@@ -100,6 +126,32 @@ class DIItemHUDHandler : EventHandler
 					DTA_Alpha, alphanum,
 					DTA_KeepRatio, true
 				);
+				if (validperm[i] == 1)
+				{
+					Screen.DrawTexture(TexMan.CheckForTexture("PUFFH0"), false,
+						startx - (8 * CleanXFac * scalenum), 
+						starty - (20 * CleanYFac * scalenum),
+						DTA_ScaleX, scalenum * CleanXFac,
+						DTA_ScaleY, scalenum * CleanYFac,
+						DTA_Alpha, alphanum * (heartfade_int / 35.0),
+						DTA_KeepRatio, true
+					);
+				}
+				if (validcount[i] > 1)
+				{
+					int itemcount = validcount[i];
+					startx += 4 * CleanXFac * scalenum;
+					starty -= 8 * CleanYFac * scalenum;
+					if (itemcount >= 10) {startx -= 8 * CleanXFac * scalenum;}
+					if (itemcount >= 100) {startx -= 8 * CleanXFac * scalenum;}
+					if (itemcount > 999) {itemcount = 999;}
+					Screen.DrawText(smallfont, Font.CR_GOLD, startx, starty, String.Format("%d", validcount[i]),
+						DTA_ScaleX, scalenum * CleanXFac,
+						DTA_ScaleY, scalenum * CleanYFac,
+						DTA_Alpha, alphanum,
+						DTA_KeepRatio, true
+					);
+				}
 			}
 		}
 	}
