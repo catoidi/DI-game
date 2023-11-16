@@ -235,18 +235,52 @@ Class DI_PlayerBase : PlayerPawn abstract
 		chance_poison = 0;
 	}
 	
+	clearscope virtual int ComboThreshold(int cnum, bool ignoreitems = false)
+	{
+		//use this to check how much combo points the player must generate to reach certain combo numbers.
+		int cret = 0;
+		switch (cnum)
+		{
+			case 2: cret = 350; break;
+			case 3: cret = 1050; break;
+			case 4: cret = 2100; break;
+			case 5: cret = 3500; break;
+			case 6: cret = 5250; break;
+			case 7: cret = 10500; break;
+			case 8: cret = 21000; break;
+			case 9: cret = 42000; break;
+		}
+		
+		if ((cnum <= (CountInv("DI_WealthJar") + 1)) && (ignoreitems == false))
+		{
+			return 0;
+		}
+		
+		return cret;
+	}
+	
+	clearscope virtual int GetCombo(bool getdrain = false)
+	{
+		//use this to check the player's current combo number.
+		int cnum = 1;
+		int cdrain = 0;
+		if (CountInv("DI_TokenComboTimer") > ComboThreshold(9)) {cnum = 9; cdrain = 110;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(8)) {cnum = 8; cdrain = 55;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(7)) {cnum = 7; cdrain = 36;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(6)) {cnum = 6; cdrain = 21;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(5)) {cnum = 5; cdrain = 10;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(4)) {cnum = 4; cdrain = 6;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(3)) {cnum = 3; cdrain = 3;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(2)) {cnum = 2; cdrain = 1;}
+		
+		if (getdrain == true) {return cdrain;}
+		else {return cnum;}
+	}
+	
 	virtual void ComboCounter(void)
 	{
-		combodrain = 0;
-		if (CountInv("DI_TokenComboTimer") > 42000) {combonum = 9; combodrain = 110;}
-		else if (CountInv("DI_TokenComboTimer") > 21000) {combonum = 8; combodrain = 55;}
-		else if (CountInv("DI_TokenComboTimer") > 10500) {combonum = 7; combodrain = 36;}
-		else if (CountInv("DI_TokenComboTimer") > 5250) {combonum = 6; combodrain = 21;}
-		else if (CountInv("DI_TokenComboTimer") > 3500) {combonum = 5; combodrain = 10;}
-		else if (CountInv("DI_TokenComboTimer") > 2100) {combonum = 4; combodrain = 6;}
-		else if (CountInv("DI_TokenComboTimer") > 1050) {combonum = 3; combodrain = 3;}
-		else if (CountInv("DI_TokenComboTimer") > 350) {combonum = 2; combodrain = 1;}
-		else {combonum = 1;}
+		combonum = GetCombo();
+		combodrain = GetCombo(true);
 		
 		if (score < 0) {combodrain -= (score / 100);} //punish player for having negative score.
 		

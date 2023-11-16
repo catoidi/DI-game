@@ -336,42 +336,42 @@ class DI_HUD : BaseStatusBar
 		{
 			DrawBar("graphics/boxhud/SCOREBAA.png", "graphics/boxhud/SCOREBAR.png", GetAmount("DI_TokenComboTimer"), 350, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 			string comboicon = "graphics/boxhud/COMBO1.png";
-			if (GetAmount("DI_TokenComboTimer") >= 350)
+			if (diplayer.GetCombo() >= 2)
 			{
 				DrawBar("graphics/boxhud/SCOREBAB.png", "graphics/boxhud/SCOREBAA.png", GetAmount("DI_TokenComboTimer") - 350, 700, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO2.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 1050)
+			if (diplayer.GetCombo() >= 3)
 			{
 				DrawBar("graphics/boxhud/SCOREBAC.png", "graphics/boxhud/SCOREBAB.png", GetAmount("DI_TokenComboTimer") - 1050, 1050, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO3.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 2100)
+			if (diplayer.GetCombo() >= 4)
 			{
 				DrawBar("graphics/boxhud/SCOREBAD.png", "graphics/boxhud/SCOREBAC.png", GetAmount("DI_TokenComboTimer") - 2100, 1400, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO4.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 3500)
+			if (diplayer.GetCombo() >= 5)
 			{
 				DrawBar("graphics/boxhud/SCOREBAE.png", "graphics/boxhud/SCOREBAD.png", GetAmount("DI_TokenComboTimer") - 3500, 1750, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO5.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 5250)
+			if (diplayer.GetCombo() >= 6)
 			{
 				DrawBar("graphics/boxhud/SCOREBAF.png", "graphics/boxhud/SCOREBAE.png", GetAmount("DI_TokenComboTimer") - 5250, 5250, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO6.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 10500)
+			if (diplayer.GetCombo() >= 7)
 			{
 				DrawBar("graphics/boxhud/SCOREBAG.png", "graphics/boxhud/SCOREBAF.png", GetAmount("DI_TokenComboTimer") - 10500, 10500, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO7.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 21000)
+			if (diplayer.GetCombo() >= 8)
 			{
 				DrawBar("graphics/boxhud/SCOREBAH.png", "graphics/boxhud/SCOREBAG.png", GetAmount("DI_TokenComboTimer") - 21000, 21000, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO8.png";
 			}
-			if (GetAmount("DI_TokenComboTimer") >= 42000)
+			if (diplayer.GetCombo() >= 9)
 			{
 				DrawBar("graphics/boxhud/SCOREBAI.png", "graphics/boxhud/SCOREBAH.png", GetAmount("DI_TokenComboTimer") - 42000, 42000, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-112, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 				comboicon = "graphics/boxhud/COMBO9.png";
