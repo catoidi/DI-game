@@ -8,6 +8,8 @@ Class HatTrackHandler : EventHandler
 	DI_PlayerBase diplr;
 	transient cvar killtracker;
 	transient int killnum;
+	transient cvar boxcvar;
+	transient int boxtimer; //pls dont run boxtracker every tic ;3
 	array<string> listkills;
 	
 	ui array<string> listunlocks;
@@ -16,6 +18,36 @@ Class HatTrackHandler : EventHandler
 	ui double unlockalpha, unlockalpha2;
 	ui int fontcolor;
 	
+	array<string> filedata, shoplist_group, shoplist_item;
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		//not designed with multiplayer in mind yet :)
+		diplr = DI_PlayerBase(players[consoleplayer].mo);
+	
+		int ThisLump = Wads.FindLump("DISHOP", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISHOP", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISHOP", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i].Split(currentline, " ");
+			if (currentline.Size() < 4) {continue;} //this is not an item. skipped.
+			shoplist_group.push(currentline[0]);
+			shoplist_item.push(currentline[1]);
+		}
+	}
 	
 	override void WorldThingDied(WorldEvent e)
 	{
@@ -28,7 +60,9 @@ Class HatTrackHandler : EventHandler
 	
 	override void WorldTick(void)
 	{
-		KillCounter();
+		KillCounter(); //unlocks related to getting kills.
+		++boxtimer;
+		if (boxtimer > 35) {BoxTracker();} //for unlocking the Box Partyer player.
 	}
 	
 	override void UiTick(void)
@@ -171,5 +205,27 @@ Class HatTrackHandler : EventHandler
 			else if ((killnum >= 350) && (fred2.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_08");}
 			else if ((killnum >= 100) && (fred1.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_07");}
 		}
+	}
+
+	virtual void BoxTracker()
+	{
+		if (diplr && (Level.MapName == 'DI02')) //easiest check goes first
+		{
+			boxcvar = cvar.getcvar("di_unlock_plr_box");
+			if (boxcvar && (boxcvar.getbool() == false))
+			{
+				int boxamount = 0;
+				for (int i = 0; i < shoplist_group.size(); ++i)
+				{
+					if (shoplist_group[i] == "BoxWeapon")
+					{
+						let curitem = diplr.FindInventory(shoplist_item[i]);
+						if (curitem != null) {++boxamount;}
+					}
+				}
+				if (boxamount >= 2) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_plr_box");}
+			}
+		}
+		boxtimer = 0;
 	}
 }
