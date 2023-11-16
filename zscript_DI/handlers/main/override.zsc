@@ -134,5 +134,14 @@ extend class DIHandler
 		{
 			enemycount += e.Args[0];
 		}
+		else if (e.Name.Left(16) == "diplayeritemused")
+		{
+			let itemplr = players[e.Player].mo;
+			if (itemplr)
+			{
+				int consumer = itemplr.CountInv("DI_Consumer");
+				if (consumer > 0) {itemplr.GiveInventory("DI_Regen", 3 * consumer);}
+			}
+		}
 	}
 }

@@ -2,6 +2,8 @@
 
 Class DI_Dice : Inventory
 {
+	mixin DI_ConsumableMixin;
+	
 	Default
 	{
 		Tag "Instant Reroll";
@@ -21,7 +23,7 @@ Class DI_Dice : Inventory
 		else
 		{
 			EventHandler.SendNetworkEvent("DIRerollShops");
-			return true;
+			return DIUsed();
 		}
 	}
 	

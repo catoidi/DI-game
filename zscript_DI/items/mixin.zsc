@@ -1,0 +1,12 @@
+//zscript_DI/items/mixin.zsc
+
+mixin class DI_ConsumableMixin
+{
+	bool DIUsed(void)
+	{
+		//allows eventhandlers to track consumable item usage.
+		string command = string.format("%s", "diplayeritemused ");
+		EventHandler.SendNetworkEvent(command);
+		return true;
+	}
+}

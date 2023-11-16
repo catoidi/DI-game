@@ -11,17 +11,6 @@ Class DI_HeartBomb : DI_ThrowBomb
 		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
-	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
-		}
-		else {Super.Use(pickup);}
-		return true;
-	}
-	
 	States
 	{
 		Spawn:

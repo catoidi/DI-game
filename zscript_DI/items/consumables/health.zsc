@@ -2,6 +2,8 @@
 
 Class DI_Pizza : HealthPickup
 {
+	mixin DI_ConsumableMixin;
+	
 	Default
 	{
 		Tag "Pizza Slice";
@@ -10,6 +12,8 @@ Class DI_Pizza : HealthPickup
 		Inventory.Icon "HEALB0";
 		Inventory.PickupMessage "Acquired a Pizza Slice. (+25 Health on Usage)";
 	}
+	
+	override bool Use(bool pickup) {return DIUsed();}
 	
 	States
 	{
@@ -21,6 +25,8 @@ Class DI_Pizza : HealthPickup
 
 Class DI_JuiceBox : Inventory
 {
+	mixin DI_ConsumableMixin;
+	
 	Default
 	{
 		Tag "Juice Box";
@@ -35,7 +41,7 @@ Class DI_JuiceBox : Inventory
 		if (owner)
 		{
 			owner.A_GiveInventory("DI_Regen", 40);
-			return true;
+			return DIUsed();
 		}
 		else {return false;}
 	}

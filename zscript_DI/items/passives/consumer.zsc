@@ -1,0 +1,19 @@
+//zscript_DI/items/passives/consumer.zsc
+
+Class DI_Consumer : DIPassiveInventory
+{
+	//the code for this lies within a Network Process in the main Event Handler.
+
+	Default
+	{
+		Inventory.PickupMessage "Consumer acquired! (Using consumables gives +3 Regen.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 A -1;
+			Stop;
+	}
+}

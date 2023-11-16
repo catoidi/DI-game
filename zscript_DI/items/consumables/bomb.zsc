@@ -2,6 +2,8 @@
 
 Class DI_ThrowBomb : CustomInventory
 {
+	mixin DI_ConsumableMixin;
+
 	Default
 	{
 		Tag "Throwable Bomb";
@@ -18,8 +20,7 @@ Class DI_ThrowBomb : CustomInventory
 			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
 			return false;
 		}
-		else {Super.Use(pickup);}
-		return true;
+		else {DIUsed(); Super.Use(pickup); return true;} //call DIUsed() either standalone or as a replacement for "return true;" so that EventHandler's can track consumable item usage.
 	}
 	
 	States

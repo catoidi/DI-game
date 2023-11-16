@@ -1,5 +1,7 @@
 Class DITurret : Inventory
 {	
+	mixin DI_ConsumableMixin;
+	
 	Default
 	{
 		Tag "Turret";
@@ -24,6 +26,7 @@ Class DITurret : Inventory
 			{
 				owner.A_SpawnItemEX("DI_Teleport", 24);
 				spawned = true;
+				DIUsed();
 			}
 			else
 			{
