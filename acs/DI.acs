@@ -23,7 +23,7 @@ SCRIPT "playerscript" ENTER
 	ACS_NamedExecuteAlways("EnemyCountHUD", 0, 0, 0, 0);
 }
 
-SCRIPT "openscript" OPEN
+SCRIPT "openscript" (void) //run this script on your map to enable the waves.
 {
 	okspawn = true;
 	curwave = 1;

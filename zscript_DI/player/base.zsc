@@ -288,14 +288,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 		
 		combonum_bonus = combonum;
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
-		combonum_bonus += diwep.wpn_extracoin;
-		if (CanFreshKill())
+		if (diwep)
 		{
-			if (player.ReadyWeapon is "DI_Weapon")
+			combonum_bonus += diwep.wpn_extracoin;
+			if (CanFreshKill())
 			{
-				combonum_bonus += diwep.wpn_freshbonus;
+				if (player.ReadyWeapon is "DI_Weapon")
+				{
+					combonum_bonus += diwep.wpn_freshbonus;
+				}
+				else {combonum_bonus += combonum + 1;}
 			}
-			else {combonum_bonus += combonum + 1;}
 		}
 		
 		if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
@@ -456,7 +459,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		//this setup cannot be used with the default weapon bobbing enabled, as it will cause visual issues.
 		//you can disable autooffset in the weapon's properties.
 		
-		if (diwep.wpn_autooffset == true)
+		if (diwep && diwep.wpn_autooffset == true)
 		{
 			//recoil part
 			double newoffset = diwep.current_recoil * diwep.wpn_recoil_offset;
