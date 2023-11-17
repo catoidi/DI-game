@@ -82,4 +82,24 @@ extend class DIHandler
 			e.Thing.A_SpawnItemEx("DI_BonusArmorPickup", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION, 128);
 		}
 	}
+	
+	virtual void BonusAmmoGiver(WorldEvent e, DI_PlayerBase plr)
+	{
+		let ammogivenum = plr.CountInv("DI_LeadRecycling");
+		if ((ammogivenum > 0) && (ammogivetick == false))
+		{
+			let curwpn = DI_Weapon(plr.player.ReadyWeapon);
+			let curammo1 = curwpn.AmmoType1;
+			let curammo2 = curwpn.AmmoType2;
+			if (curammo1 && (curwpn.wpn_dontgiveammo1 == false))
+			{
+				plr.GiveInventory(curammo1, ammogivenum);
+			}
+			if (curammo2 && (curwpn.wpn_dontgiveammo2 == false))
+			{
+				plr.GiveInventory(curammo2, ammogivenum);
+			}
+			ammogivetick = true; //only give 1 ammo per tick.
+		}
+	}
 }

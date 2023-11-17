@@ -23,6 +23,8 @@ class DIHandler : EventHandler
 	int enemycount; //how many enemies are estimated to be in this wave.
 	bool enemycounted;
 	
+	bool ammogivetick; //only give ammo once per tick.
+	
 	int fakewavenum; //the current wave number, minus any endless shenanigans.
 	int finalwave; //the final wave, before endless stuff.
 	int endlessnum; //how many times the final wave has been completed.

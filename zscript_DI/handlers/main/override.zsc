@@ -91,6 +91,7 @@ extend class DIHandler
 						DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
 						BoxDrops(e, plr, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
 						BonusArmorDrop(e, plr);
+						BonusAmmoGiver(e, plr); //used for DI_LeadRecycling.
 					}
 				}
 			}
@@ -112,6 +113,11 @@ extend class DIHandler
 				shoparray.Delete(removeshop);
 			}
 		}
+	}
+	
+	override void WorldTick()
+	{
+		ammogivetick = false;
 	}
 	
 	override void NetworkProcess(ConsoleEvent e)

@@ -1,0 +1,19 @@
+//zscript_DI/items/passives/leadrecycling.zsc
+
+class DI_LeadRecycling : DIPassiveInventory
+{
+	//the code for this item takes place inside the "loot" section of the main eventhandler.
+
+	Default
+	{
+		Inventory.PickupMessage "Lead Recycling acquired! (Killing enemies gives +1 Ammo.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 B -1;
+			Stop;
+	}
+}

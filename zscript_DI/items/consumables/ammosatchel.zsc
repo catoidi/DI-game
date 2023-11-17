@@ -1,0 +1,63 @@
+//zscript_DI/items/consumables/ammosatchel.zsc
+
+Class DI_AmmoSatchel : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	Default
+	{
+		Tag "Ammo Satchel";
+		Inventory.MaxAmount 3;
+		Inventory.Icon "SACKA0";
+		Inventory.PickupMessage "Got an Ammo Satchel! Refills all ammo for your weapons upon use.";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else 
+		{
+			if (owner is "DI_PlayerBase")
+			{
+				let plr = DI_PlayerBase(owner);
+				Array<String> allwpns;
+				//i know for a fact that there's definitely a way better way for me to do this, but we stay silly
+				
+				for (int i = 0; i < 10; ++i)
+				{
+					for (int j = 0; j < plr.player.Weapons.SlotSize(i); ++j)
+					{
+						class curwpn = plr.player.Weapons.GetWeapon(i, j);
+						if (curwpn)
+						{
+							allwpns.push(curwpn.GetClassName());
+						}
+					}
+				}
+				for (int i = 0; i < allwpns.Size(); ++i)
+				{
+					let curwpn = DI_Weapon(plr.FindInventory(allwpns[i]));
+					if (curwpn != null)
+					{
+						let curammo1 = curwpn.AmmoType1;
+						let curammo2 = curwpn.AmmoType2;
+						if (curammo1 && (curwpn.wpn_dontgiveammo1 == false)) {plr.SetInventory(curammo1, 999999);}
+						if (curammo2 && (curwpn.wpn_dontgiveammo2 == false)) {plr.SetInventory(curammo2, 999999);}
+					}
+				}
+				
+				//TODO: make like a green flash and some particles appear upon using this item
+			
+				DIUsed(); 
+				Super.Use(pickup); 
+				return true;
+			}
+			else {return false;}
+		}
+	}
+}

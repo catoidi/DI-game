@@ -76,6 +76,7 @@ version "4.10"
 #include "zscript_DI/items/passives/shoe.zsc"
 #include "zscript_DI/items/passives/wealthjar.zsc"
 #include "zscript_DI/items/passives/consumer.zsc"
+#include "zscript_DI/items/passives/leadrecycling.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"
@@ -83,6 +84,7 @@ version "4.10"
 #include "zscript_DI/items/consumables/turret.zsc"
 #include "zscript_DI/items/consumables/reroll.zsc"
 #include "zscript_DI/items/consumables/tomahawk.zsc"
+#include "zscript_DI/items/consumables/ammosatchel.zsc"
 
 //weapons
 #include "zscript_DI/weapons/base.zsc" //not a weapon

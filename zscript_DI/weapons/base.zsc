@@ -14,6 +14,8 @@ Class DI_Weapon : Weapon abstract
 	int wpn_projspeed; //how fast moving projectiles will spawn. does nothing on hitscans.
 	int wpn_rateoffire; //control the tic delay for parts of the firing animation. lower numbers are faster.
 	int wpn_reloadspeed; //control the tic delay for parts of the reload animation. lower numbers are faster.
+	bool wpn_dontgiveammo1; //tells items to NOT give this weapon it's first ammo type.
+	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
 	
 	int wpn_ammo1hud, wpn_ammo2hud; 
 	//how the ammo bar will be rendered on the HUD. 0 is default (unlimited ammo). 1 is used for limited ammo weapons. 2 is used for recharging weapons. 3 is used for heat ammo, 4 is used for box ammo.
@@ -34,6 +36,9 @@ Class DI_Weapon : Weapon abstract
 	property ProjectileSpeed: wpn_projspeed;
 	property RateOfFire: wpn_rateoffire;
 	property ReloadSpeed: wpn_reloadspeed;
+	
+	property DontGiveAmmo1: wpn_dontgiveammo1;
+	property DontGiveAmmo2: wpn_dontgiveammo2;
 	
 	property Ammo1HUD: wpn_ammo1hud;
 	property Ammo2HUD: wpn_ammo2hud;
@@ -62,6 +67,8 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.ProjectileSpeed 1;
 		DI_Weapon.RateOfFire 0;
 		DI_Weapon.ReloadSpeed 0;
+		DI_Weapon.DontGiveAmmo1 false;
+		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.Ammo1HUD 0;
 		DI_Weapon.Ammo2HUD 0;
 		Weapon.WeaponScaleY 1.0;

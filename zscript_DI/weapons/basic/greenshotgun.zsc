@@ -12,6 +12,7 @@ CLASS GreenShotgun : DI_Weapon
 		DI_Weapon.RecoilOffset 4.0;
 		DI_Weapon.RecoilRecover 2.0;
 		DI_Weapon.Ammo2Hud 1;
+		DI_Weapon.DontGiveAmmo2 true;
 		Weapon.Kickback 50;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 2;
