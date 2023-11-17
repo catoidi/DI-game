@@ -1,0 +1,29 @@
+//zscript_DI/items/passives/peerpressure.zsc
+
+Class DI_PeerPressure : DIPassiveInventory
+{
+	Default
+	{
+		Inventory.PickupMessage "Peer Pressure acquired! (Taking damage charms nearby enemies.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (passive && (damage > 0) && (owner is "DI_PlayerBase"))
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			int anumber = plr.CountInv("DI_PeerPressure");
+			plr.A_DIHearted(anumber, 1.0);
+			plr.A_Explode(1, 32 * anumber, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 32 * anumber, damagetype: "Heart");
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 C -1;
+			Stop;
+	}
+}

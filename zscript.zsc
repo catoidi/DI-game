@@ -77,6 +77,7 @@ version "4.10"
 #include "zscript_DI/items/passives/wealthjar.zsc"
 #include "zscript_DI/items/passives/consumer.zsc"
 #include "zscript_DI/items/passives/leadrecycling.zsc"
+#include "zscript_DI/items/passives/peerpressure.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"
