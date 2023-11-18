@@ -74,6 +74,7 @@ Class DIShop_Base : SwitchableDecoration abstract
 				if (buyer.score < 0) {debtnum = buyprice / 50;}
 				if (debtnum < 0) {debtnum = 0;}
 				debtnum += user_debthp;
+				if (buyer.score == buyprice) {debtnum = 0;}
 				return debtnum;
 			}
 		}
