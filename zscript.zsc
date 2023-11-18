@@ -49,6 +49,7 @@ version "4.10"
 #include "zscript_DI/effects/marker.zsc"
 #include "zscript_DI/effects/boom.zsc"
 #include "zscript_DI/effects/deathbullet.zsc"
+#include "zscript_DI/effects/canvas.zsc"
 
 //player
 #include "zscript_DI/player/base.zsc"

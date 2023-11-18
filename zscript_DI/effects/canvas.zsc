@@ -1,0 +1,51 @@
+//zscript_DI/effects/canvas.zsc
+
+Class DI_WaveCanvas : DI_Actor
+{
+	//displays the current wave as a texture.
+	TextureID tid;
+	Canvas cv;
+	int w, h;
+	int wavenum;
+	int ticktime;
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		tid = TexMan.CheckForTexture("CanvasTest");
+
+		cv = TexMan.GetCanvas("CanvasTest");
+
+		[w, h] = TexMan.GetSize(tid);
+	}
+	
+	virtual void DoWaveCheck()
+	{
+		if (cv)
+		{
+			cv.Clear(0, 0, w, h, 0);
+			
+			string curwave = string.format("%s", "Next Wave:");
+			int x = (w - bigFont.StringWidth(curwave)) / 2;
+			int y = (bigFont.GetHeight());
+			string curwave2 = string.format("%d", wavenum);
+			int xtwo = (w - bigFont.StringWidth(curwave2)) / 2;
+			int ytwo = (bigFont.GetHeight() * 3);
+
+			cv.DrawText(bigFont, Font.CR_RED, x, y, curwave);
+			cv.DrawText(bigFont, Font.CR_RED, xtwo, ytwo, curwave2);
+		}
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		++ticktime;
+		if (ticktime >= 35)
+		{
+			wavenum = ACS_ScriptCall("DICheckWave");
+			DoWaveCheck();
+			ticktime = 0;
+		}
+	}
+}
