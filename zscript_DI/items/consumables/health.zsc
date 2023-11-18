@@ -13,7 +13,7 @@ Class DI_Pizza : HealthPickup
 		Inventory.PickupMessage "Acquired a Pizza Slice. (+25 Health on Usage)";
 	}
 	
-	override bool Use(bool pickup) {return DIUsed();}
+	override bool Use(bool pickup) {DIUsed(); Super.Use(pickup); return true;}
 	
 	States
 	{
