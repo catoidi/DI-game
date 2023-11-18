@@ -379,7 +379,7 @@ class NashHPBarHandler : EventHandler
 					if (DITarget.firenum > 0) {fired = "\cx[BURN]";}
 					if (DITarget.poisonnum > 0) {poisoned = "\cd[POISON]";}
 					if (DITarget.isshocked == true) {shocked = "\ck[STUN]";}
-					if (DITarget.hearted == true) {charmed = "\ca[CHARMED]";}
+					if (DITarget.hearted == true) {charmed = "\ct[ANXIOUS]";}
 					
 					txt = String.Format("%s%s%s%s%s", fired, poisoned, iced, shocked, charmed);
 					Screen.DrawText(fnt, Font.CR_UNTRANSLATED,
