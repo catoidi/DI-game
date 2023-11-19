@@ -8,7 +8,7 @@ extend class DIHandler
 		bool queuefinished = e.Thing.ACS_ScriptCall("CheckSpawnQueue"); //this is to fix a bug when you kill the 2nd to last enemy on the same frame the last enemy starts spawning.
 		if (waveinprogress == true)
 		{
-			if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1))
+			if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1) && (enemycount <= 0))
 			{
 				//console.printf("%s", "wave is over!");
 				++wavenum;
