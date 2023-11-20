@@ -1,0 +1,47 @@
+//zscript_DI/items/consumables/9leafclover.zsc
+
+Class DI_9LeafClover : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	Default
+	{
+		Tag "9 Leaf Clover";
+		Inventory.MaxAmount 1;
+		Inventory.Icon "LEAFA0";
+		Inventory.PickupMessage "Got the 9 Leaf Clover! (Instantly maxxes out your combo on use.)";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else
+		{
+			if (owner is "DI_PlayerBase")
+			{
+				let plr = DI_PlayerBase(owner);
+				for (int i = 0; i < 24; ++i)
+				{
+					A_SpawnParticleEX("White", TexMan.CheckForTexture("PKUPA0"), 0, SPF_FULLBRIGHT | SPF_RELVEL, 48, 16, random(0, 359), 0, 0, 0, random(0, 16), 0, random(0, 8), 0, 0, -0.33, 1.0, -1, -0.15);
+				}
+				plr.ACS_NamedExecuteAlways("DoLeafFlash");
+				plr.A_Quake(3, 35, 0, 64);
+				plr.GiveInventory("DI_TokenComboTimer", plr.ComboThreshold(9) * 2);
+				return DIUsed();
+			}
+			else {return false;}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			LEAF A -1;
+			Stop;
+	}
+}
