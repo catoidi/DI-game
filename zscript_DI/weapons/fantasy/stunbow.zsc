@@ -25,7 +25,10 @@ CLASS StunCrossbow : DI_Weapon
 	States
 	{
 		Ready:
-			SBOW # 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			SBOW # 0 DI_WeaponReady(WRF_ALLOWRELOAD);
+			#### A 0 A_JumpIfInventory("StunCrossbowAmmo", 1, 2);
+			#### D 0;
+			#### # 1;
 			Loop;
 		Deselect:
 			SBOW # 0 A_Lower;
