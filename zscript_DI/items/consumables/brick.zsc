@@ -1,0 +1,71 @@
+//zscript_DI/items/consumables/brick.zsc
+
+Class DI_Brick : CustomInventory
+{
+	mixin DI_ConsumableMixin;
+
+	Default
+	{
+		Tag "Brick";
+		Inventory.MaxAmount 3;
+		Inventory.Icon "BRIKA0";
+		Inventory.PickupMessage "Got a brick.";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else {DIUsed(); Super.Use(pickup); return true;} //call DIUsed() either standalone or as a replacement for "return true;" so that EventHandler's can track consumable item usage.
+	}
+	
+	States
+	{
+		Spawn:
+			BRIK A 0 NoDelay {if (random(1, 2) == 2) {bSPRITEFLIP = true;}}
+			BRIK A -1;
+			Wait;
+		Use:
+			BRIK A 0 {A_FireProjectile("DI_Brick_Projectile", 0, 0, 0, self.height / 3, FPF_NOAUTOAIM, -10);}
+			Stop;
+	}
+}
+
+Class DI_Brick_Projectile : DI_Actor
+{
+	Default
+	{
+		Radius 10;
+		Height 20;
+		Speed 15;
+		DI_Actor.IgnoreWeapon true;
+		DamageFunction (120);
+		Projectile;
+		-NOGRAVITY;
+		+BRIGHT;
+		+ROLLSPRITE;
+		+ROLLCENTER;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		+INTERPOLATEANGLES;
+	}
+	
+	States
+	{
+		Spawn:
+			BRIK A 0 NoDelay {if (random(1, 2) == 2) {bSPRITEFLIP = true;}}
+			BRIK A 1 A_SetRoll(roll + 8);
+			Wait;
+		Death:
+			TNT1 A 1 
+			{
+				A_SpawnItemEX("ProjectileSmokeBig", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+				A_SpawnItemEX("DI_Brick", 0, 0, 4, random(-2, 2), random(-2, 2), random(2, 0));
+			}
+			Stop;
+	}
+}

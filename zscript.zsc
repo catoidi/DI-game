@@ -87,6 +87,7 @@ version "4.10"
 #include "zscript_DI/items/consumables/reroll.zsc"
 #include "zscript_DI/items/consumables/tomahawk.zsc"
 #include "zscript_DI/items/consumables/ammosatchel.zsc"
+#include "zscript_DI/items/consumables/brick.zsc"
 
 //weapons
 #include "zscript_DI/weapons/base.zsc" //not a weapon
