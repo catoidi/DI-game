@@ -89,7 +89,7 @@ Class DI_Pickup : ScoreItem abstract
 				++pickuptimer;
 				if (pickuptimer >= 10)
 				{
-					A_FadeOut(0.3);
+					A_FadeOut(0.4);
 					pickuptimer = 0;
 				}
 			}
