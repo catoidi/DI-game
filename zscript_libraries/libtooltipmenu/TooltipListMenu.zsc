@@ -1,29 +1,29 @@
-// TooltipOptionMenu -- a drop-in replacement for OptionMenu with tooltip support.
+// TooltipListMenu -- a drop-in replacement for ListMenu with tooltip support.
 // Released under the MIT license; see COPYING.md for details.
 //
-// To use this, declare your option menu in MENUDEF as normal, but add:
-//   class DITF_TooltipOptionMenu
+// To use this, declare your list menu in MENUDEF as normal, but add:
+//   class DITF_TooltipListMenu
 // You can then use the "Tooltip", "TooltipGeometry", and "TooltipAppearance"
 // menu pseudo-items to add and configure tooltips.
 // For details, see the included README.
 
-class DITF_TooltipOptionMenu : OptionMenu {
+class DITF_TooltipListMenu : ListMenu {
   mixin DITF_TooltipMenu;
 
-  void InitDynamic(Menu parent, OptionMenuDescriptor desc) {
+  void InitDynamic(Menu parent, ListMenuDescriptor desc) {
     desc.mItems.Clear();
     self.tooltip_settings = GetDefaults();
     super.Init(parent, desc);
   }
 
-  override void Init(Menu parent, OptionMenuDescriptor desc) {
+  override void Init(Menu parent, ListMenuDescriptor desc) {
     super.Init(parent, desc);
-    self.tooltip_settings = GetDefaults();
+    tooltip_settings = GetDefaults();
     if (desc.mItems.size() == 0) return;
 
     // If there's already a TooltipHolder in tail position, we've already been
     // initialized and just need to retrieve our saved tooltips from it.
-    let tail = OptionMenuItemTooltipHolder(desc.mItems[desc.mItems.size()-1]);
+    let tail = ListMenuItemTooltipHolder(desc.mItems[desc.mItems.size()-1]);
     if (tail) {
       tooltips.copy(tail.tooltips);
       return;
@@ -33,12 +33,19 @@ class DITF_TooltipOptionMenu : OptionMenu {
     // item indexes have changed.
     MenuItemBase selected = null;
     if (desc.mSelectedItem >= 0 && desc.mSelectedItem < desc.mItems.size()) {
-      selected = desc.mItems[desc.mSelectedItem];
+      int i = desc.mSelectedItem;
+      // ListMenu uses SelectedItem after the default selection to mark it; if
+      // the MENUDEF places it after a tooltip, the default selection will be
+      // the tooltip, not the item it's attached to. So scan backwards until
+      // we find the real item.
+      while (i >= 0 && !desc.mItems[i].Selectable()) { --i; }
+      if (i >= 0)
+        selected = desc.mItems[i];
     }
 
     // Steal the descriptor's list of menu items, then rebuild it containing
     // only the items we want to display.
-    array<OptionMenuItem> items;
+    array<ListMenuItem> items;
     items.Move(desc.mItems);
 
     // Start of tooltip block, i.e. index of the topmost menu item the next
@@ -48,8 +55,8 @@ class DITF_TooltipOptionMenu : OptionMenu {
     // items.
     bool tooltip_mode = true;
     for (uint i = 0; i < items.size(); ++i) {
-      if (items[i] is "OptionMenuItemTooltip") {
-        let tt = OptionMenuItemTooltip(items[i]);
+      if (items[i] is "ListMenuItemTooltip") {
+        let tt = ListMenuItemTooltip(items[i]);
         if (tt.tooltip == "" && !tooltip_mode) {
           // Explicit marker that the above items should have no tooltips.
           startblock = desc.mItems.size();
@@ -57,10 +64,10 @@ class DITF_TooltipOptionMenu : OptionMenu {
           AddTooltip(startblock, desc.mItems.size()-1, tt.tooltip);
           tooltip_mode = true;
         }
-      } else if (items[i] is "OptionMenuItemTooltipGeometry") {
-        OptionMenuItemTooltipGeometry(items[i]).CopyTo(tooltip_settings);
-      } else if (items[i] is "OptionMenuItemTooltipAppearance") {
-        OptionMenuItemTooltipAppearance(items[i]).CopyTo(tooltip_settings);
+      } else if (items[i] is "ListMenuItemTooltipGeometry") {
+        ListMenuItemTooltipGeometry(items[i]).CopyTo(tooltip_settings);
+      } else if (items[i] is "ListMenuItemTooltipAppearance") {
+        ListMenuItemTooltipAppearance(items[i]).CopyTo(tooltip_settings);
       } else {
         if (tooltip_mode) {
           // Just finished a run of tooltips.
@@ -73,7 +80,7 @@ class DITF_TooltipOptionMenu : OptionMenu {
 
     // Store our tooltips inside the menu descriptor so we can recover them when
     // the menu is redisplayed.
-    desc.mItems.push(OptionMenuItemTooltipHolder(new("OptionMenuItemTooltipHolder").Init(tooltips)));
+    desc.mItems.push(ListMenuItemTooltipHolder(new("ListMenuItemTooltipHolder").Init(tooltips)));
 
     // Restore the originally selected item at its new index.
     if (selected) {
@@ -84,18 +91,18 @@ class DITF_TooltipOptionMenu : OptionMenu {
   }
 }
 
-class OptionMenuItemTooltipHolder : OptionMenuItem {
+class ListMenuItemTooltipHolder : ListMenuItem {
   mixin DITF_TooltipHolder;
 }
 
-class OptionMenuItemTooltip : OptionMenuItem {
+class ListMenuItemTooltip : ListMenuItem {
   mixin DITF_TooltipItem;
 }
 
-class OptionMenuItemTooltipGeometry : OptionMenuItem {
+class ListMenuItemTooltipGeometry : ListMenuitem {
   mixin DITF_TooltipGeometry;
 }
 
-class OptionMenuItemTooltipAppearance : OptionMenuItem {
+class ListMenuItemTooltipAppearance : ListMenuitem {
   mixin DITF_TooltipAppearance;
 }
