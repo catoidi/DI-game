@@ -20,9 +20,9 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	string TopLabel_text, TopLabel2_text;
 	boxparty_ZF_Label TopLabel, TopLabel2;
 	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
-	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages;
-	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels;
-    Array<boxparty_ZF_Button> tutbuttons, plrbuttons, lvlbuttons;
+	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, sklboximages;
+	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels, skllabels;
+    Array<boxparty_ZF_Button> tutbuttons, plrbuttons, lvlbuttons, sklbuttons;
 	
 	boxparty_ZF_BoxImage keyboardselect;
 	
@@ -88,6 +88,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		DestroyTutorial();
 		DestroyPlayerList();
 		DestroyLevelList();
+		DestroySkill();
 		
 		plrinfo.SetImage("");
 		
@@ -106,6 +107,10 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				if (keypos != -1) {handler.buttonClickCommand(lvlbuttons[keypos], lvlbuttons[keypos].getcommand());}
 				break;
 			case 2:
+				CreateSkill(); 
+				handler.currentskill = -1;
+				if (keypos != -1) {handler.buttonClickCommand(lvlbuttons[keypos], lvlbuttons[keypos].getcommand());}
+				else {keypos = 1;}
 				break;
 		}
 		
@@ -324,7 +329,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				case 2:
 					keystring = "graphics/catalog/ITEMBAR_HOVER_BIG.png";
 					keysize = (252, 21);
-					keyspot = (194, 80 + (21 * newkey));
+					if (sklboximages.Size() > 0) {keyspot = sklboximages[newkey].GetPos();}
 					break;
 			}
 			
@@ -368,6 +373,11 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 					}
 					break;
 				case 2:
+					if (sklbuttons.Size() > 0)
+					{
+						sklbuttons[newkey].Unpack();
+						sklbuttons[newkey].Pack(mainFrame);
+					}
 					break;
 			}
 		}
