@@ -17,6 +17,7 @@ version "4.11"
 #include "zscript_DI/handlers/crosshair.zsc"
 #include "zscript_DI/handlers/hattrack.zsc"
 #include "zscript_DI/handlers/itemhud.zsc"
+#include "zscript_DI/handlers/deathscreen.zsc"
 
 //ZForms (uses MIT License)
 #include "zscript_libraries/ZForms/Include.zsc"

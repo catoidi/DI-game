@@ -1,0 +1,138 @@
+//zscript_DI/handlers/deathscreen.zsc
+
+Class DeathscreenHandler : EventHandler
+{
+	ui DI_PlayerBase plr;
+	ui bool IsDead;
+	ui float DeathFade, DeathFade2;
+	ui int DeathTimer;
+	ui float diedmove;
+	ui int wavenum;
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name == "newwave_ui")
+		{
+			wavenum = e.Args[0];
+		}
+	}
+
+	override void UITick()
+	{
+		plr = DI_PlayerBase(players[consoleplayer].mo);
+		if (!plr) {return;}
+		if (plr.Health <= 0) {IsDead = true;}
+		else {IsDead = false;}
+		
+		if (IsDead == true)
+		{
+			if (DeathFade < 1.0) {DeathFade += 0.01;}
+			//else {DeathFade2 += 0.04;}
+			++DeathTimer;
+			if ((DeathTimer > 175) && (diedmove < 4.0))
+			{
+				float newmove = 0.02 + ((4.0 - diedmove) / 35);
+				diedmove += newmove;
+			}
+			else if (diedmove > 4.0) {diedmove = 4.0;}
+			else if (diedmove < 2.0) {diedmove = 2.0;}
+		}
+		else
+		{
+			DeathFade = 0.0;
+			DeathFade2 = 0.0;
+			DeathTimer = 0;
+		}
+	}
+	
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (plr && (IsDead == true))
+		{
+			let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
+			Screen.DrawTexture(blackscreen, false,
+				0, 0,
+				DTA_DestWidth, Screen.GetWidth(),
+				DTA_DestHeight, Screen.GetHeight(),
+				DTA_Alpha, DeathFade
+			);
+			if (DeathTimer > 105)
+			{
+				string died = "DEATH IS INEVITABLE";
+				if (plr.Score < 0) {died = "DEBT IS INEVITABLE";}
+				int scaley = (bigfont.GetHeight() * (CleanYFac * 1.3)) / 2;
+				Screen.DrawText(bigfont, Font.CR_BRICK,
+					(Screen.GetWidth() / 2) - ((bigfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / diedmove) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+			if (DeathTimer > 225)
+			{
+				string died = string.format("Current Wave: %d", wavenum);
+				int scaley = (16 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+			if (DeathTimer > 240)
+			{
+				string died = string.format("\n\nEnemies Killed: %d", plr.killcounter);
+				int scaley = (16 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+			if (DeathTimer > 255)
+			{
+				string died = string.format("\n\n\n\nItems Bought: %d", plr.buycounter);
+				int scaley = (16 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+			if (DeathTimer > 270)
+			{
+				int worth = plr.Score;
+				string dollar = "$";
+				if (worth < 0) {dollar = "-$"; worth *= -1;}
+				string died = string.format("\n\n\n\n\n\nTotal Worth: %s%d", dollar, worth);
+				int scaley = (16 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+			if (DeathTimer > 285)
+			{
+				int totalscore = ((plr.killcounter * 5) + (plr.buycounter * 10) + plr.Score) * wavenum;
+				string died = string.format("\n\n\n\n\n\n\n\n\cfFinal Rating: %d", totalscore);
+				int scaley = (16 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+		}
+	}
+}

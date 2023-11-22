@@ -126,6 +126,8 @@ Class DIShopController : DIShop_Base
 		frame += 1;
 		A_StartSound("switches/normbutn");
 		plr.score -= buyprice;
+		let diplr = DI_PlayerBase(plr);
+		diplr.buycounter += 1;
 		int priceincrease = user_baseprice / (saleamount + 1);
 		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;

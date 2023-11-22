@@ -280,6 +280,9 @@ extend class DIHandler
 		
 		e.Thing.ACS_ScriptCall("EnemyCount", enemycount);
 		
+		EventHandler.SendNetworkEvent("newwave", wavenum);
+		EventHandler.SendInterfaceEvent(consoleplayer, "newwave_ui", wavenum);
+		
 		currentspawners = e.Thing.ACS_ScriptCall("CheckSpawner", spawnamount, spawntime);
 	}
 	

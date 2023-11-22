@@ -43,6 +43,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	int boxammonum;
 	
 	int lastscore; //the score you had last round.
+	int killcounter; //how many enemies you've killed.
+	int buycounter; //how many times you've bought from a shop.
 	
 	Vector2 OldMove;
 	
@@ -169,6 +171,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	virtual void DIMonsterKilled(bool notweapon = false)
 	{
+		++killcounter;
+		
 		CurrentWeaponKill = player.ReadyWeapon.GetClassName();
 		DI_Weapon curwpn = DI_Weapon(player.ReadyWeapon);
 		
