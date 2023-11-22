@@ -220,7 +220,7 @@ Class DIShop : DIShop_Base
 				if (plr.CountInv(shop_currentitem) >= itemmax) {hasroom = false;}
 			}
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
-			if ((canafford == true) && (canshop == true) && (hasroom == true))
+			if ((canafford == true) && (canshop == true) && (hasroom == true) && (CanDoDebt(plr) == true))
 			{
 				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
@@ -233,6 +233,7 @@ Class DIShop : DIShop_Base
 				else if (hasroom == false) {failmsg = "\cryou're out of inventory space.";}
 				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this item.";}
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this item while in debt.";}
+				else if (CanDoDebt(plr) == false) {failmsg = "\cryou don't have enough HP to buy this.";}
 				else {failmsg = "\cra mysterious force prevents you from buying this item.";}
 				
 				console.printf("%s", failmsg);

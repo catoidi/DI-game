@@ -83,6 +83,13 @@ Class DIShop_Base : SwitchableDecoration abstract
 		else {return 0;}
 	}
 	
+	clearscope virtual bool CanDoDebt(PlayerPawn buyer, int buyprice = -999999)
+	{
+		int debtnum = GetDebt(buyer, buyprice);
+		if (buyer.GetMaxHealth(true) <= buyer.CountInv("DI_Degen") + debtnum) {return false;}
+		else {return true;}
+	}
+	
 	virtual void DoDebt(int buyprice)
 	{
 		//overwrite this if you want something custom to happen upon the player going into debt.
