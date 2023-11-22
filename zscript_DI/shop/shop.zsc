@@ -258,6 +258,12 @@ Class DIShop : DIShop_Base
 		return shop_currentitem;
 	}
 	
+	override bool IsPriceDecreased(void)
+	{
+		if ((curround >= lastpurchased + user_pricedown_round) && (currentprice > 0)) {return true;}
+		else {return false;}
+	}
+	
 	virtual void DoPurchase(int buyprice)
 	{
 		frame += 1;

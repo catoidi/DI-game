@@ -46,15 +46,17 @@ Class DIShop_Base : SwitchableDecoration abstract
 		}
 	}
 	
-	abstract void PurchaseShopItem();
+	abstract void PurchaseShopItem(); //player is attempting to purchase an item.
 	
-	abstract void RerollShopItem();
+	abstract void RerollShopItem(); //the shop is being forced to reroll.
 	
-	abstract clearscope int GetShopPrice();
+	abstract clearscope int GetShopPrice(); //get shop's current price displayed to the player.
 	
-	abstract clearscope int GetShopBasePrice();
+	abstract clearscope int GetShopBasePrice(); //get the base price of the shop's item.
 	
-	abstract clearscope string GetShopItem();
+	abstract clearscope string GetShopItem(); //give the name of the current shop item.
+	
+	abstract clearscope bool IsPriceDecreased(); //whether or not the shop's price is currently decreasing. (does not account for sales.)
 	
 	clearscope virtual int GetDebt(PlayerPawn buyer, int buyprice = -999999)
 	{

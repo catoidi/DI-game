@@ -24,6 +24,8 @@ Class DIChest : DIPermaShop
 		Super.ChooseNewShopItem();
 		if (shop_itemstock > 0) {frame = 8;}
 	}
+	
+	override bool IsPriceDecreased() {return false;}
 
 	States
 	{
