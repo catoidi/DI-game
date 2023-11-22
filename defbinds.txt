@@ -1,4 +1,18 @@
 unbind -
 unbind =
+unbind f2
+unbind f3
+unbind f4
+unbind f5
+unbind f6
+unbind f7
+unbind f8
+unbind f9
+unbind f10
+unbind f11
+unbind f12
+unbind capslock
 bind r +reload
 bind f +zoom
+bind q invuse
+bind f5 chase
