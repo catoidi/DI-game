@@ -13,6 +13,19 @@ Class Fred : DI_Monster
 		//Species "Fred";
 	}
 	
+	override void PostBeginPlay()
+	{
+		if ((random(1, 1000) == 1000) && (GetClassName() == "Fred"))
+		{
+			bSPRITEFLIP = true;
+			SetTag("Derf");
+			Health = 120;
+			StartHealth = 120;
+			SpeedMult = 4.0;
+		}
+		Super.PostBeginPlay();
+	}
+	
 	States
 	{
 		Spawn:

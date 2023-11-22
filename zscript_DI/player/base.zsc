@@ -282,8 +282,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 		combonum = GetCombo();
 		combodrain = GetCombo(true);
 		
-		if (score < 0) {combodrain -= (score / 100);} //punish player for having negative score.
-		
 		if (combodrain == 0) {combodrain = combonum;}
 		
 		combonum_bonus = combonum;

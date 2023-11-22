@@ -14,6 +14,8 @@ Class DI_Monster : DI_Actor abstract
 	bool hearted; //whether or not this monster has been hit with a heart attack.
 	bool friendlylight; //enable/disable the hearted light.
 	int hearttimer; //how long to keep the enemy charmed.
+	double speedmult; //speed multiplier.
+	property DISpeedMult: speedmult;
 
 	//Called by all of DI's enemies.
 	Default
@@ -31,6 +33,7 @@ Class DI_Monster : DI_Actor abstract
 		DeathSound "dipain";
 		Species "Enemy";
 		DI_Monster.DIDrop "DI_Coin";
+		DI_Monster.DISpeedMult 1.0;
 		+THRUSPECIES; //monsters of the same type can walk through each other.
 		+FLOORCLIP;
 		+JUMPDOWN;
@@ -49,6 +52,7 @@ Class DI_Monster : DI_Actor abstract
 		
 		AdjustPainThreshold();
 		painhp = health;
+		speed = default.speed * speedmult;
 	}
 	
 	override void Tick(void)
@@ -146,7 +150,7 @@ Class DI_Monster : DI_Actor abstract
 		if (icenum > 0.9) {icenum = 0.9;}
 		else if (icenum < 0) {icenum = 0.0;}
 		
-		speed = default.speed * (1.0 - icenum);
+		speed = default.speed * speedmult * (1.0 - icenum);
 	}
 	
 	virtual void DoCharmEffect(void)
