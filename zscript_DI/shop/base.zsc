@@ -61,7 +61,7 @@ Class DIShop_Base : SwitchableDecoration abstract
 	clearscope virtual int GetDebt(PlayerPawn buyer, int buyprice = -999999)
 	{
 		//overwrite this if you want to change how debt is calculated.
-		if (buyprice = -999999)
+		if (buyprice == -999999)
 		{
 			//change the buyprice integer if you want to calculate the debt for a custom price.
 			buyprice = GetShopPrice();

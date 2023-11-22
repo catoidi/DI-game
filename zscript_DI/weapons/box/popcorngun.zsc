@@ -10,8 +10,8 @@ CLASS PopcornGunAmmo2 : Ammo
 	{
 		Inventory.Amount 1;
 		Inventory.MaxAmount 24;
-		Inventory.Icon "AMMOK0";
-		Inventory.AltHUDIcon "AMMOD0";
+		Inventory.Icon "SHUTY0";
+		Inventory.AltHUDIcon "SHUTY0";
 	}
 
 	States
@@ -50,8 +50,6 @@ CLASS PopcornGun : DI_Weapon //200
 		Weapon.AmmoType "BoxAmmo";
 		Weapon.AmmoType2 "PopcornGunAmmo2";
 		Inventory.PickupMessage "Acquired the Popcorn Machine Gun. (+24 Party Ammo)";
-		Inventory.Icon "AMMOL0";
-		Inventory.AltHUDIcon "AMMOE0";
 		Obituary "$BOX_DIE_POPCORN";
 		Tag "Popcorn Gun";
 		+WEAPON.AMMO_CHECKBOTH;

@@ -112,7 +112,6 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			if (currentskill == sklnum) 
 			{
 				if (currentskill == 1) {currentskill = 2;}
-				console.printf("%d, %d, %d", currentclass, currentlvl, currentskill);
 				PlayDI(currentclass, currentlvl, currentskill);
 			} //{link.pagenum = 2;}
 			else {link.SetKeyPos(sklnum);}
@@ -126,7 +125,6 @@ Class DINewGameHandler : boxparty_ZF_Handler
 	{
 		link.MenuSound("menu/choose");
 		if (link.keyboardselect) {link.keyboardselect.SetAlpha(1.0);}
-		console.printf("%d", link.pagenum);
 		
 		switch(link.pagenum)
 		{
