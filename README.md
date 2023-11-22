@@ -3,7 +3,7 @@ This repository contains data for my upcoming game, DI, made in GZDOOM.
 
 This only includes the data that falls under the "GPLv3" License. See "LICENSE" for more info.
 
-This repository alone is not enough to play DI. You also need a file called "di-content.pk3", which is not open source, and not included here.
+This repository alone is not enough to play DI. You also need a file called "di-content.pk3", which is not yet publicly released.
 
 ### This also contains modified versions of the following repos:
 - [Universal Hats, by me](https://github.com/catoidi/universal-hats)
