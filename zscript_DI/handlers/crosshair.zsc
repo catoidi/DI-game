@@ -4,12 +4,15 @@
 
 class DIXHairHandler : EventHandler
 {
-	TextureID xhair_tex; //crosshair textures.
+	TextureID xhair_tex, xhair_freshtex; //crosshair textures.
 	transient ui cvar xhair_toggle;
 	transient ui cvar xhair_scale;
 	transient ui cvar xhair_alpha;
 	transient ui cvar xhair_color;
 	transient ui cvar xhair_precise;
+	transient ui cvar fresh_toggle;
+	transient ui cvar fresh_scale;
+	transient ui cvar fresh_alpha;
 	transient ui double xspread, curspread;
 	transient ui double xhair_startalpha;
 	transient ui string diwep_name;
@@ -21,6 +24,7 @@ class DIXHairHandler : EventHandler
 	override void WorldLoaded(WorldEvent e)
 	{
 		xhair_tex = TexMan.CheckForTexture("dixhair");
+		xhair_freshtex = TexMan.CheckForTexture("graphics/dixhair_fresh.png");
 	}
 
 	override void WorldTick()
@@ -33,8 +37,11 @@ class DIXHairHandler : EventHandler
 	{
 		if (diwep && diplayer)
 		{
-			if ((diplayer.Health > 0) & (xhair_startalpha < 1.0)) {xhair_startalpha += 0.1;}
-			else if (xhair_startalpha > 0.01) {xhair_startalpha -= 0.02;}
+			if (diplayer.Health > 0)
+			{ 
+				if (xhair_startalpha < 1.0) {xhair_startalpha += 0.1;}
+			}
+			else if (xhair_startalpha > 0) {xhair_startalpha -= 0.02;}
 			if (diwep_name != diwep.GetClassName()) {xhair_startalpha = 0.0;}
 			diwep_name = diwep.GetClassName();
 			
@@ -65,6 +72,9 @@ class DIXHairHandler : EventHandler
 		xhair_alpha = CVar.GetCVar("di_xhair_alpha", players[consoleplayer]);
 		xhair_color = CVar.GetCVar("di_xhair_color", players[consoleplayer]);
 		xhair_precise = CVar.GetCVar("pc_y", players[consoleplayer]);
+		fresh_toggle = CVar.GetCVar("di_xhair_fresh_toggle", players[consoleplayer]);
+		fresh_scale = CVar.GetCVar("di_xhair_fresh_scale", players[consoleplayer]);
+		fresh_alpha = CVar.GetCVar("di_xhair_fresh_alpha", players[consoleplayer]);
 	
 		if ((diwep) && (diplayer) && (xhair_toggle.GetInt() > 0))
 		{
@@ -88,6 +98,11 @@ class DIXHairHandler : EventHandler
 			Screen.DrawTexture(xhair_tex, false, cenx - xspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
 			Screen.DrawTexture(xhair_tex, false, cenx, ceny + xspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0);
 			Screen.DrawTexture(xhair_tex, false, cenx, ceny - xspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0);
+			
+			if ((diplayer.LastKillTimer > 0) && (fresh_toggle.GetBool() == true))
+			{
+				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + xspread + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, xscale, DTA_CenterOffset, true);
+			}
 		}
 	}
 }
