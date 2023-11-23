@@ -46,6 +46,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	int lastscore; //the score you had last round.
 	int killcounter; //how many enemies you've killed.
 	int buycounter; //how many times you've bought from a shop.
+	int moneyspent; //how much money you've spent at shops.
 	
 	Vector2 OldMove;
 	

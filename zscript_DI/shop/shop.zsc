@@ -273,6 +273,7 @@ Class DIShop : DIShop_Base
 		plr.score -= buyprice;
 		let diplr = DI_PlayerBase(plr);
 		diplr.buycounter += 1;
+		diplr.moneyspent += buyprice;
 		int priceincrease = shop_baseprice / (saleamount + 1);
 		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;
