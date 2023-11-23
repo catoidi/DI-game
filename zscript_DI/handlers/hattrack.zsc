@@ -209,22 +209,19 @@ Class HatTrackHandler : EventHandler
 
 	virtual void BoxTracker()
 	{
-		if (diplr && (Level.MapName == 'DI02')) //easiest check goes first
+		boxcvar = cvar.getcvar("di_unlock_plr_box");
+		if (boxcvar && (boxcvar.getbool() == false))
 		{
-			boxcvar = cvar.getcvar("di_unlock_plr_box");
-			if (boxcvar && (boxcvar.getbool() == false))
+			int boxamount = 0;
+			for (int i = 0; i < shoplist_group.size(); ++i)
 			{
-				int boxamount = 0;
-				for (int i = 0; i < shoplist_group.size(); ++i)
+				if (shoplist_group[i] == "BoxWeapon")
 				{
-					if (shoplist_group[i] == "BoxWeapon")
-					{
-						let curitem = diplr.FindInventory(shoplist_item[i]);
-						if (curitem != null) {++boxamount;}
-					}
+					let curitem = diplr.FindInventory(shoplist_item[i]);
+					if (curitem != null) {++boxamount;}
 				}
-				if (boxamount >= 2) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_plr_box");}
 			}
+			if (boxamount >= 2) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_plr_box");}
 		}
 		boxtimer = 0;
 	}
