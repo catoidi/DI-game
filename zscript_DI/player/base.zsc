@@ -35,8 +35,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 	int cointimer;
 	string LastWeaponKill;
 	string CurrentWeaponKill;
-	int LastKillTimer, LastKillTimer_Max, LastKillTimer_Count;
+	int LastKillTimer, LastKillTimer_Max;
 	bool JustKilled;
+	Array<String> freshlist; //every weapon that's activated a fresh weapon bonus.
 	Array<String> wavewipe; //a list of items to wipe every wave.
 	Array<String> wavekeep; //any items you've purchased that should not be wiped every wave.
 	Array<String> renteditems; //a list of all items you've rented this round.
@@ -156,15 +157,20 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	virtual void IsFreshKill(void)
 	{
+		int LastKillTimer_Count = 0;
+		freshlist.Push(player.ReadyWeapon.GetClassName());
+		for (int i = 0; i < freshlist.Size(); ++i)
+		{
+			if (freshlist[i] == player.ReadyWeapon.GetClassName()) {++LastKillTimer_Count;}
+		}
 		LastWeaponKill = CurrentWeaponKill;
 		LastKillTimer = 35 * (1 + LastKillTimer_Count);
-		if (score > 0) {LastKillTimer += score;}
+		if (score > 0) {LastKillTimer += score / weaponnum;} //if number of weapons is 0 this will crash :)
 		LastKillTimer_Max = LastKillTimer;
 		JustKilled = true;
 		A_StartSound("combord", 0);
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
 		int diwep_fresh = diwep.wpn_freshbonus;
-		++LastKillTimer_Count;
 		ACS_ScriptCall("dofreshflash");
 		console.printf("\cnfresh weapon bonus! (+%d)", diwep_fresh);
 	}
@@ -416,7 +422,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		//reset fresh weapon bonus
 		invoker.LastKillTimer = 0;
 		invoker.LastWeaponKill = "";
-		invoker.LastKillTimer_Count = 0;
+		invoker.freshlist.Clear();
 		
 		console.printf("%s", "\cxReturning any rented items...");
 		

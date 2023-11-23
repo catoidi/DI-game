@@ -400,7 +400,7 @@ class DI_HUD : BaseStatusBar
 				DrawImage("graphics/boxhud/AMMOX0.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
 			}
 			else if (diplayer.LastWeaponKill == CPlayer.ReadyWeapon.GetClassName()) 
-			{DrawImage("graphics/boxhud/FRESHFACE1.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS, 0.5);}
+			{DrawImage("graphics/boxhud/FRESHFACE3.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS, 0.5);}
 		}
 		
 		//KEYS
