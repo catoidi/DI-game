@@ -120,7 +120,7 @@ Class DI_AmmoGiver : DIPassiveInventory
 {
 	Default
 	{
-		Inventory.PickupMessage "Ammo Increased! (+1 Magazine Size)";
+		Inventory.PickupMessage "Ammo Increased! (+33% Ammo Capacity)";
 		Inventory.MaxAmount 10;
 	}
 	

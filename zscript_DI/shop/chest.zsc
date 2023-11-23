@@ -25,6 +25,12 @@ Class DIChest : DIPermaShop
 		if (shop_itemstock > 0) {frame = 8;}
 	}
 	
+	override void RerollShopItem(void)
+	{
+		frame = 8;
+		Super.RerollShopItem();
+	}
+	
 	override bool IsPriceDecreased() {return false;}
 
 	States
@@ -61,6 +67,12 @@ Class DIChest_Single : DIChest
 	override void RerollShopItem(void)
 	{
 		if (shop_itemstock > 0) {Super.RerollShopItem();}
+		else
+		{
+			//choose a new shop item, and then reset the stock.
+			A_ResetScale();
+			A_DIScale(0.25, -0.25);
+		}
 	}
 
 	States
