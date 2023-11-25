@@ -133,6 +133,7 @@ Class DI_Monster : DI_Actor abstract
 				di_notweapon = true; //this monster did not die from a weapon.
 			}
 		}
+		else if (!inflictor) {di_notweapon = true;} //we have no fucking idea what killed this thing :)
 	
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
