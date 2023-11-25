@@ -1,0 +1,119 @@
+//zscript_DI/items/passives/acidblood.zsc
+
+Class DI_AcidBlood : DIPassiveInventory
+{
+	int acidstrength;
+	
+	Default
+	{
+		Height 20;
+		Radius 10;
+		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Acid Blood Acquired! (Drop a damaging acid pool upon taking damage.)";
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		int dropnum = 1;
+		if ((damage >= 1) && (owner) && (passive == true))
+		{
+			dropnum = owner.CountInv("DI_AcidBlood");
+			for (int i = 0; i < dropnum; ++i) 
+			{
+				acidstrength = owner.CountInv("DI_AcidBlood");
+				owner.A_SpawnItemEX("DI_AcidBlood_Drop", 0, 0, 24, random(-6, 6), random(-6, 6), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION | SXF_SETTARGET);
+			}
+		}
+	
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 D -1;
+			Stop;
+	}
+}
+
+Class DI_AcidBlood_Drop : DI_Actor
+{
+	int acidstrength;
+	
+	Default
+	{
+		Height 20;
+		Radius 10;
+		Translation "DamGreen";
+		+BRIGHT;
+		-SOLID;
+		+NOBLOCKMAP;
+		+NOTELEPORT;
+		+ALLOWPARTICLES;
+		+THRUACTORS;
+		+MISSILE;
+		-BOUNCEONFLOORS;
+		+EXPLODEONWATER;
+		+ROLLSPRITE;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (target && (target is "DI_AcidBlood"))
+		{
+			let acid = DI_AcidBlood(target);
+			
+			acidstrength = acid.acidstrength;
+		}
+	}
+
+	States
+	{
+		Spawn:
+			BLUD B 0 NoDelay A_SetRoll(random(0, 359));
+			BLUD B -1;
+			Wait;
+		Death:
+			BLUD B 0 A_SpawnItemEX("DI_AcidBlood_Pool", flags: SXF_NOCHECKPOSITION | SXF_SETTARGET);
+			BLUD B 1
+			{
+				A_FadeOut(0.05);
+				A_DIScale(0.1, 0.1);
+			}
+			Wait;
+	}
+}
+
+Class DI_AcidBlood_Pool : DI_Actor
+{
+	int acidstrength;
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (target && (target is "DI_AcidBlood"))
+		{
+			let acid = DI_AcidBlood(target);
+			
+			acidstrength = acid.acidstrength;
+		}
+		else if (target && (target is "DI_AcidBlood_Drop"))
+		{
+			let acid = DI_AcidBlood_Drop(target);
+			
+			acidstrength = acid.acidstrength;
+		}
+		if (acidstrength == 0)
+		{
+			acidstrength = 1;
+		}
+	}
+
+	States
+	{
+		Spawn:
+			POOL A 35;
+			Stop;
+	}
+}

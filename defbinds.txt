@@ -12,6 +12,7 @@ unbind f10
 unbind f11
 unbind f12
 unbind capslock
+unbind enter
 bind r +reload
 bind f +zoom
 bind q invuse
