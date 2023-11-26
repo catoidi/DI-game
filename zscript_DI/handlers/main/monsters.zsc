@@ -59,10 +59,10 @@ extend class DIHandler
 		}
 		if (firenum > 0)
 		{
-			let firechance = 5 - firenum;
-			if (random(1, firechance) == 1)
+			let firechance = 3 + (firenum * 3);
+			if (random(1, 20) <= firechance)
 			{
-				let firedmg = firenum * 10;
+				let firedmg = 4 + (firenum * 4);
 				if (firedmg >= e.Thing.Health) {firedmg = e.Thing.Health - 1;}
 				e.Thing.A_DamageSelf(firedmg, "Fire");
 			}
