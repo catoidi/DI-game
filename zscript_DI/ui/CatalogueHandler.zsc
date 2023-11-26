@@ -8,6 +8,8 @@ class DICatalogueHandler : boxparty_ZF_Handler
 
     override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
     {
+		link.MenuSound("menu/activate");
+		
 		string cmd = command;
         // If the command is "aButton"...
         if (cmd.Left(5) == "item ")

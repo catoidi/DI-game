@@ -8,7 +8,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 	
 	DICatalogueHandler handler;
 	
-	Font smallFont;
+	Font smallFont, newSmallFont;
 	boxparty_ZF_Image background, tutorialimage;
 	Array<boxparty_ZF_BoxImage> itemboximages, tabboximages;
 	Array<boxparty_ZF_Label> itemlabels;
@@ -24,6 +24,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		super.init(parent);
 		setbaseresolution((640, 400));
 		smallFont = Font.GetFont("SmallFont");
+		newSmallFont = Font.GetFont("NewSmallFont");
 		
         handler = new('DICatalogueHandler');
         handler.link = self;
@@ -257,24 +258,24 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         categorytxt = boxparty_ZF_Label.Create
         (
             // Position.
-            (20, 88),
+            (20, 84),
             // Size.
             (
                 // Calculate the horizontal size of the text.
                 smallfont.StringWidth (currentcat) * 1.5,
                 // Get the font's height.
-                smallFont.GetHeight() * 1.5
+                newSmallFont.GetHeight() * 1.0
             ),
             // The label's text.
             text: currentcat,
             // The font to use.
-            fnt: smallFont,
+            fnt: newSmallFont,
             // Whether to automatically wrap the text or not.
             wrap: false,
             // Whether to automatically resize the element based on the text width.
             autoSize: false,
 			// The size of the font.
-			textScale: 1.5,
+			textScale: 1.0,
             // The text's colour.
             textColor: Font.CR_WHITE
         );
@@ -435,9 +436,13 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 				let iconname = TexMan.GetName(icon);
 				int sizex, sizey;
 				[sizex, sizey] = TexMan.GetSize(icon);
+				if (sizex == 0) {sizex = 1;}
+				if (sizey == 0) {sizey = 1;}
 				vector2 iconsize = (sizex, sizey);
+				float sizescale = 60 / sizey;
+				if (sizescale > (60 / sizex)) {sizescale = 60 / sizex;}
 				let itemtexture = boxparty_ZF_BoxTextures.CreateTexturePixels(iconname, (0, 0), iconsize, true, true);
-				itemimage = boxparty_ZF_BoxImage.Create((startx - 150, 102), (60, 60), itemtexture);
+				itemimage = boxparty_ZF_BoxImage.Create((startx - 180, 102), iconsize * sizescale, itemtexture);
 				itemimage.Pack (mainFrame);
 			}
 		}
@@ -447,9 +452,9 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		curtxt.Replace("\n", " ");
         itemtitle = boxparty_ZF_Label.Create
         (
-            (startx - 150, 180),
-            (300, 48),
-            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textScale: 1.5, textColor: Font.CR_GOLD
+            (startx - 180, 180),
+            (240, 48),
+            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 1.5, textColor: Font.CR_GOLD
         );
         itemtitle.Pack (mainFrame);
 		
@@ -458,9 +463,9 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		curtxt.Replace("\n", " ");
         itemdesc = boxparty_ZF_Label.Create
         (
-            (startx - 150, 200),
-            (300, 48),
-            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textColor: Font.CR_WHITE
+            (startx - 180, 220),
+            (360, 48),
+            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
         );
         itemdesc.Pack (mainFrame);
 		
@@ -470,20 +475,22 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		if (curtxt == string.format("shopdesc2_%s", curitem)) {curtxt = "";}
         itemdesc2 = boxparty_ZF_Label.Create
         (
-            (startx - 150, 236),
-            (300, 48),
-            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textColor: Font.CR_WHITE
+            (startx - 180, 284),
+            (360, 48),
+            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
         );
         itemdesc2.Pack (mainFrame);
 		
 		curtxt = string.format("$shoptype_%s", curitem);
 		curtxt = stringtable.localize(curtxt);
 		curtxt.Replace("\n", " ");
+		let itemamount = players[consoleplayer].mo.CountInv(curitem);
+		if (itemamount > 0) {curtxt = String.Format("%s \cn[Have: %d] ", curtxt, itemamount);}
         itemtags = boxparty_ZF_Label.Create
         (
-            (startx - 150, 308),
-            (300, 48),
-            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textColor: Font.CR_WHITE
+            (startx - 180, 360),
+            (360, 48),
+            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
         );
         itemtags.Pack (mainFrame);
 	}
