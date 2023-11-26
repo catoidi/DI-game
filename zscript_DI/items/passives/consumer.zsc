@@ -6,6 +6,7 @@ Class DI_Consumer : DIPassiveInventory
 
 	Default
 	{
+		Tag "Consumer";
 		Inventory.PickupMessage "Consumer acquired! (Using consumables gives +3 Regen.)";
 		Inventory.MaxAmount 5;
 	}

@@ -6,6 +6,7 @@ Class DI_Shoe : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Shoe";
 		Inventory.PickupMessage "Shoe Acquired! (Shooting has a 1/8 chance to fire a shoe.)";
 		Inventory.MaxAmount 8;
 	}

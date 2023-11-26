@@ -4,6 +4,7 @@ Class DI_BonusArmor : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Bonus Armor";
 		Inventory.PickupMessage "Bonus Armor Acquired! (1/2 chance for armor drops on enemy death)";
 		Inventory.MaxAmount 3;
 	}

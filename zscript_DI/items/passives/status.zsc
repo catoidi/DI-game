@@ -4,6 +4,7 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Ice Bullets";
 		Inventory.PickupMessage "Acquired Bullet Freezer! (Small chance for all weapons to do Ice damage.)";
 		Inventory.MaxAmount 10;
 		DIPassiveInventory.DIHidden true;
@@ -36,6 +37,7 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Fire Bullets";
 		Inventory.PickupMessage "Acquired Bullet Burner! (Small chance for all weapons to do Fire damage.)";
 		Inventory.MaxAmount 10;
 		DIPassiveInventory.DIHidden true;
@@ -68,6 +70,7 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Shock Bullets";
 		Inventory.PickupMessage "Acquired Bullet Shocker! (Small chance for all weapons to do Shock damage.)";
 		Inventory.MaxAmount 10;
 		DIPassiveInventory.DIHidden true;
@@ -100,6 +103,7 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Poison Bullets";
 		Inventory.PickupMessage "Acquired Bullet Poisoner! (Small chance for all weapons to do Poison damage.)";
 		Inventory.MaxAmount 10;
 		DIPassiveInventory.DIHidden true;
@@ -135,6 +139,7 @@ Class DI_StatusGiver_Rainbow : DIPassiveInventory
 	//gives all 4 status effects at once.
 	Default
 	{
+		Tag "Rainbow Bullets";
 		Inventory.PickupMessage "Acquired Rainbow Bullets! (Chance for all weapons to do fire/ice/poison/shock damage.)";
 		Inventory.MaxAmount 3;
 	}

@@ -6,6 +6,7 @@ Class DI_DamageMultGiver : DIPassiveInventory
 {
 	Default
 	{
+		Tag "DMG Mult +";
 		Inventory.PickupMessage "Damage Multiplier Increased! (+10% DMG)";
 		Inventory.MaxAmount 25;
 	}
@@ -34,6 +35,7 @@ Class DI_ComboDamageMult : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Combo DMG Mult";
 		Inventory.PickupMessage "Combo Damage Multiplier Acquired! (+10% DMG per Combo)";
 		Inventory.MaxAmount 3;
 	}
@@ -62,6 +64,7 @@ Class DI_PainRhombus : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Pain Rhombus";
 		Inventory.PickupMessage "Pain Rhombus Acquired! (+50% DMG, -10% per combo.)";
 		Inventory.MaxAmount 3;
 	}
@@ -93,6 +96,7 @@ Class DI_GunHoarder : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Gun Hoarder";
 		Inventory.PickupMessage "Gun Hoarder Acquired! (Gain +10% DMG for every weapon you own.)";
 		Inventory.MaxAmount 3;
 	}
@@ -121,6 +125,7 @@ Class DI_RewardsProgram : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Rewards Program";
 		Inventory.PickupMessage "Acquired Rewards Program! (Enemies drop +3 Extra Coins, -1 for every 250 Coins you have.)";
 		Inventory.MaxAmount 3;
 	}

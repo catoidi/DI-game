@@ -6,6 +6,7 @@ class DI_LeadRecycling : DIPassiveInventory
 
 	Default
 	{
+		Tag "Lead Recycling";
 		Inventory.PickupMessage "Lead Recycling acquired! (Killing enemies gives +1 Ammo.)";
 		Inventory.MaxAmount 3;
 	}

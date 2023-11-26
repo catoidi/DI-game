@@ -6,6 +6,7 @@ Class DI_HatHat : DIPassiveInventory
 	{
 		Height 20;
 		Radius 10;
+		Tag "Hat Hat";
 		Inventory.MaxAmount 5;
 		Inventory.PickupMessage "Hat Hat Acquired! (Reduce all incoming damage by 1. Can't go below 1.)";
 	}

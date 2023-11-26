@@ -4,6 +4,7 @@ Class DI_FreshRegen : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Fresh Regen";
 		Inventory.PickupMessage "Acquired Fresh Regen! (Gain 5 Health Regen upon getting a Fresh Weapon Bonus.)";
 		Inventory.MaxAmount 5;
 	}

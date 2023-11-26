@@ -2,6 +2,7 @@ Class DI_WealthJar : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Wealth Jar";
 		Inventory.PickupMessage "Jar of Wealth Acquired! (Your minimum combo is increased by 1.)";
 		Inventory.MaxAmount 4;
 	}
