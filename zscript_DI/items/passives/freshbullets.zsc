@@ -1,0 +1,50 @@
+//zscript_DI/items/passives/freshbullets.zsc
+
+Class DI_FreshBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Fresh Bullets";
+		Inventory.Icon "POW1E0";
+		Inventory.PickupMessage "Acquired Fresh Bullets! (Gain 33% Ammo upon getting a Fresh Weapon Bonus.)";
+		Inventory.MaxAmount 3;
+	}
+
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			
+			int freshnum = 4 - plr.CountInv("DI_FreshBullets");
+			
+			if (plr.JustKilled == true)
+			{
+				DI_Weapon wpn = DI_Weapon(plr.player.ReadyWeapon);
+				let type1 = wpn.AmmoType1;
+				let ammotype1 = plr.FindInventory(type1);
+				if (ammotype1 && (wpn.wpn_dontgiveammo1 == false))
+				{
+					let maxammo1 = (ammotype1.MaxAmount / freshnum) + 1;
+					plr.A_GiveInventory(ammotype1.GetClassName(), maxammo1);
+				}
+				let type2 = wpn.AmmoType2;
+				let ammotype2 = plr.FindInventory(type2);
+				if (ammotype2 && (wpn.wpn_dontgiveammo2 == false))
+				{
+					let maxammo2 = (ammotype2.MaxAmount / freshnum) + 1;
+					plr.A_GiveInventory(ammotype2.GetClassName(), maxammo2);
+				}
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 E -1;
+			Stop;
+	}
+}
