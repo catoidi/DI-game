@@ -9,10 +9,15 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 	DICatalogueHandler handler;
 	
 	Font smallFont;
-	boxparty_ZF_Image background;
-	Array<boxparty_ZF_BoxImage> itemboximages;
+	boxparty_ZF_Image background, tutorialimage;
+	Array<boxparty_ZF_BoxImage> itemboximages, tabboximages;
 	Array<boxparty_ZF_Label> itemlabels;
-    Array<boxparty_ZF_Button> itembuttons;
+    Array<boxparty_ZF_Button> itembuttons, tabbuttons;
+	boxparty_ZF_BoxImage itemimage;
+	boxparty_ZF_Label categorytxt, itemtitle, itemdesc, itemdesc2, itemtags;
+	
+	int currenttab;
+	int tutorialnum;
 	
 	override void init(menu parent)
 	{
@@ -31,7 +36,10 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		//[fart, fart2] = texman.GetSize(poop);
 		//console.printf("%d, %d", fart, fart2);
 		
-		CreateItemList();
+		currenttab = 0;
+		
+		DoTutorial();
+		CreateTabButtons(); //can only be called once.
 	}
 	
 	override void Ticker ()
@@ -39,7 +47,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         if (players[consoleplayer].mo == NULL) {return;}	
 	}
 	
-	virtual void CreateItemList(void)
+	virtual void CreateItemList()
 	{
 		//this will a list of valid items, and create a button for each of them on the left side of the menu.
 		
@@ -70,6 +78,8 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
             boximage.Unpack();
             boximage.Destroy();
         }
+		
+		//console.printf("%s", "generating item list...");
 	
 		// Iterate through the player's inventory to find all of their weapons.
         int labelCount = 0; // We need this to calculate the position of the labels.
@@ -86,6 +96,43 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
                 continue;
             }
 			*/
+			
+			switch(currenttab)
+			{
+				case 0:
+					if (!(item is "DI_Weapon"))
+					{
+						item = item.inv;
+						continue;
+					}
+					break;
+				case 1:
+					if (!(item is "DIPassiveInventory"))
+					{
+						item = item.inv;
+						continue;
+					}
+					else
+					{						
+						let passive = DIPassiveInventory(item);
+						if (passive.dipassive_hidden == true)
+						{
+							item = item.inv;
+							continue;
+						}
+					}
+					break;
+				case 2:
+					if (item.bINVBAR == false) 
+					{
+						item = item.inv;
+						continue;
+					}
+					break;
+			}
+			
+			//console.printf("making item for tab #%d", currenttab);
+			
 
             // If there's no space left in the screen...
             if (labelCount > 32)
@@ -179,7 +226,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 				// Our command handler
 				cmdHandler: handler,
 				// A command string for the button
-				command: "aButton",
+				command: string.Format("item %s", item.GetClassName()),
 				// The button's textures
 				inactive: buttonIdle,
 				hover: buttonHover,
@@ -195,5 +242,249 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
             // Set "item" to the next item in the player's inventory.
             item = item.inv;
         }
+		
+		string currentcat;
+		switch(currenttab)
+		{
+			case 0: currentcat = "\ca* Weapons"; break;
+			case 1: currentcat = "\cd* Passives"; break;
+			case 2: currentcat = "\cv* Consumables"; break;
+		}
+		
+		if (categorytxt) {categorytxt.Unpack(); categorytxt.Destroy();}
+		
+		// Add a label.
+        categorytxt = boxparty_ZF_Label.Create
+        (
+            // Position.
+            (20, 88),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallfont.StringWidth (currentcat) * 1.5,
+                // Get the font's height.
+                smallFont.GetHeight() * 1.5
+            ),
+            // The label's text.
+            text: currentcat,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+			// The size of the font.
+			textScale: 1.5,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+        );
+
+        // Add the label element to the main frame.
+        categorytxt.Pack (mainFrame);
+		
+		if (labelcount == 0) //if there's no items available...
+		{
+			// Add a label.
+            let label = boxparty_ZF_Label.Create
+            (
+                // Position.
+                (
+                    // Horizontal position.
+                    24,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    105 + (12 * labelCount)
+                ),
+                // Size.
+                (
+                    // Calculate the horizontal size of the text.
+                    smallfont.StringWidth ("sorry nothing"),
+                    // Get the font's height.
+                    smallFont.GetHeight ()
+                ),
+                // The label's text.
+                text: "sorry nothing",
+                // The font to use.
+                fnt: smallFont,
+                // Whether to automatically wrap the text or not.
+                wrap: false,
+                // Whether to automatically resize the element based on the text width.
+                autoSize: true,
+                // The text's colour.
+                textColor: Font.CR_BRICK
+            );
+
+            // Add the label element to the main frame.
+            label.Pack (mainFrame);
+            // Add the label to the labels list.
+            itemlabels.Push (label);
+		}
+	}
+	
+	virtual void CreateTabButtons()
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			// Create the box image's textures.
+			string icontex = string.Format("graphics/catalog/TABICON%d.png", i);
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(icontex, (0, 0), (38, 26), true, true);
+			// Add a box image.
+			let boxSize = (38, 26);
+			let aBoxImage = boxparty_ZF_BoxImage.Create
+			(
+				// Position
+				(
+					(172 + (50 * i)) * 2,
+					24
+				),
+				// Size
+				boxSize * 2,
+				// Texture
+				boxTexture
+			);
+			// Add the box image element into the main frame.
+			aBoxImage.Pack (mainFrame);
+			tabboximages.Push(aBoxImage);
+			
+			// Create the button's textures.
+			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
+			let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/TABICON_HOVER.png", true);
+			let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/TABICON_CLICK.png", true);
+			// Add a button.
+			let aButton = boxparty_ZF_Button.Create
+			(
+				// Position
+				(
+					(172 + (50 * i)) * 2,
+					24
+				),
+				// Size
+				boxSize * 2,
+				// Our command handler
+				cmdHandler: handler,
+				// A command string for the button
+				command: string.Format("switchtab%d", i),
+				// The button's textures
+				inactive: buttonIdle,
+				hover: buttonHover,
+				click: buttonClick
+			);
+			// Add the button element into the main frame.
+			aButton.Pack (mainFrame);
+			tabbuttons.Push(aButton);
+		}
+	}
+	
+	virtual void DoTutorial(void)
+	{
+		if (tutorialimage)
+		{
+			tutorialimage.Unpack();
+			tutorialimage.Destroy();
+		}
+		
+		if (tutorialnum == 0)
+		{
+			tutorialimage = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/catalog/cattutorial1.png");
+			tutorialimage.Pack(mainFrame);
+		}
+		else if (tutorialnum == 1)
+		{
+			tutorialimage = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/catalog/cattutorial2.png");
+			tutorialimage.Pack(mainFrame);
+			mainFrame.moveelement(mainFrame.indexofelement(tutorialimage), 1);
+		}
+	}
+	
+	virtual void GetItemPage(string curitem)
+	{
+		if (itemimage)
+		{
+			itemimage.Unpack();
+			itemimage.Destroy();
+		}
+		if (itemtitle)
+		{
+			itemtitle.Unpack();
+			itemtitle.Destroy();
+		}
+		if (itemdesc)
+		{
+			itemdesc.Unpack();
+			itemdesc.Destroy();
+		}
+		if (itemdesc2)
+		{
+			itemdesc2.Unpack();
+			itemdesc2.Destroy();
+		}
+		if (itemtags)
+		{
+			itemtags.Unpack();
+			itemtags.Destroy();
+		}
+		
+		let startx = 412;
+		
+		let realitem = players[consoleplayer].mo.FindInventory(curitem);
+		if (realitem && realitem.icon)
+		{
+			let icon = realitem.icon;
+			if (icon.IsValid())
+			{
+				let iconname = TexMan.GetName(icon);
+				int sizex, sizey;
+				[sizex, sizey] = TexMan.GetSize(icon);
+				vector2 iconsize = (sizex, sizey);
+				let itemtexture = boxparty_ZF_BoxTextures.CreateTexturePixels(iconname, (0, 0), iconsize, true, true);
+				itemimage = boxparty_ZF_BoxImage.Create((startx - 150, 102), (60, 60), itemtexture);
+				itemimage.Pack (mainFrame);
+			}
+		}
+		
+		let curtxt = string.format("$shopitem_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		curtxt.Replace("\n", " ");
+        itemtitle = boxparty_ZF_Label.Create
+        (
+            (startx - 150, 180),
+            (300, 48),
+            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textScale: 1.5, textColor: Font.CR_GOLD
+        );
+        itemtitle.Pack (mainFrame);
+		
+		curtxt = string.format("$shopdesc_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		curtxt.Replace("\n", " ");
+        itemdesc = boxparty_ZF_Label.Create
+        (
+            (startx - 150, 200),
+            (300, 48),
+            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textColor: Font.CR_WHITE
+        );
+        itemdesc.Pack (mainFrame);
+		
+		curtxt = string.format("$shopdesc2_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		curtxt.Replace("\n", " ");
+		if (curtxt == string.format("shopdesc2_%s", curitem)) {curtxt = "";}
+        itemdesc2 = boxparty_ZF_Label.Create
+        (
+            (startx - 150, 236),
+            (300, 48),
+            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textColor: Font.CR_WHITE
+        );
+        itemdesc2.Pack (mainFrame);
+		
+		curtxt = string.format("$shoptype_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		curtxt.Replace("\n", " ");
+        itemtags = boxparty_ZF_Label.Create
+        (
+            (startx - 150, 308),
+            (300, 48),
+            text: curtxt, fnt: smallFont, wrap: true, autoSize: false, textColor: Font.CR_WHITE
+        );
+        itemtags.Pack (mainFrame);
 	}
 }

@@ -8,14 +8,34 @@ class DICatalogueHandler : boxparty_ZF_Handler
 
     override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
     {
+		string cmd = command;
         // If the command is "aButton"...
-        if (command == "aButton")
+        if (cmd.Left(5) == "item ")
         {
-            // Change the text's colour to a random colour.
-            //link.aLabel.textColor = random [textColor] (Font.CR_BRICK, Font.CR_TEAL);
-			//Menu.SetMenu("EpisodeMenu", 0);    	// Class Selection Response
-			//Menu.SetMenu("SkillMenu", 0);    	// Episode Selection Response
-			//Menu.SetMenu("StartGame", 2);     	// Skill Selection Response (Starts Game), Use StartgameConfirm for Nightmare skills
+			if (link.tutorialnum == 1)
+			{
+				link.tutorialnum = 2;
+				link.DoTutorial();
+			}
+			let curitem = cmd.Mid(5);
+			link.GetItemPage(curitem);
         }
+		else if (cmd.Left(9) == "switchtab")
+		{
+			if (link.tutorialnum == 0)
+			{
+				link.tutorialnum = 1;
+				link.DoTutorial();
+			}
+		
+			int newtab = cmd.Mid(9).ToInt(10);
+			
+			if (newtab < 0) {newtab = 0;}
+			else if (newtab > 2) {newtab = 2;}
+			
+			link.currenttab = newtab;
+			
+			link.CreateItemList();
+		}
     }
 }

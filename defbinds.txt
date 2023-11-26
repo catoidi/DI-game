@@ -17,3 +17,4 @@ bind r +reload
 bind f +zoom
 bind q invuse
 bind f5 chase
+bind o "openmenu DICatalogueMenu"
