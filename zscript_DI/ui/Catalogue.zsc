@@ -15,6 +15,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
     Array<boxparty_ZF_Button> itembuttons, tabbuttons;
 	boxparty_ZF_BoxImage itemimage;
 	boxparty_ZF_Label categorytxt, itemtitle, itemdesc, itemdesc2, itemtags;
+	Array<String> permaitems;
 	
 	int currenttab;
 	int tutorialnum;
@@ -41,6 +42,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		
 		DoTutorial();
 		CreateTabButtons(); //can only be called once.
+		GetPlayerItems(); //grab a list of the player's permanent items, so they can be displayed as such.
 	}
 	
 	override void Ticker ()
@@ -397,6 +399,15 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		}
 	}
 	
+	virtual void GetPlayerItems()
+	{
+		let diplr = DI_PlayerBase(players[consoleplayer].mo);
+		if (diplr)
+		{
+			permaitems.Copy(diplr.wavekeep); //ezpz.
+		}
+	}
+	
 	virtual void GetItemPage(string curitem)
 	{
 		if (itemimage)
@@ -426,6 +437,21 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		}
 		
 		let startx = 412;
+		
+		let permacount = 0;
+		
+		foreach(mo : permaitems)
+		{
+			array<string> thisthing;
+			mo.Split(thisthing, ",");
+			if (thisthing.Size() == 2)
+			{
+				if (thisthing[0] == curitem) 
+				{
+					permacount += thisthing[1].ToInt(10);
+				}
+			}
+		}
 		
 		let realitem = players[consoleplayer].mo.FindInventory(curitem);
 		if (realitem && realitem.icon)
@@ -476,7 +502,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         itemdesc2 = boxparty_ZF_Label.Create
         (
             (startx - 180, 284),
-            (360, 48),
+            (360, 76),
             text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
         );
         itemdesc2.Pack (mainFrame);
@@ -485,7 +511,8 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		curtxt = stringtable.localize(curtxt);
 		curtxt.Replace("\n", " ");
 		let itemamount = players[consoleplayer].mo.CountInv(curitem);
-		if (itemamount > 0) {curtxt = String.Format("%s \cn[Have: %d] ", curtxt, itemamount);}
+		if (itemamount > 0) {curtxt = String.Format("%s \cn[Have: %d]", curtxt, itemamount);}
+		if (permacount > 0) {curtxt = String.Format("%s \cz[Permanent: %d] ", curtxt, permacount);}
         itemtags = boxparty_ZF_Label.Create
         (
             (startx - 180, 360),

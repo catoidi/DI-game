@@ -262,7 +262,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			case 9: cret = 42000; break;
 		}
 		
-		if ((cnum <= (CountInv("DI_WealthJar") + 1)) && (ignoreitems == false))
+		if ((cnum <= ((CountInv("DI_WealthJar") * 2) + 1)) && (ignoreitems == false))
 		{
 			return 0;
 		}
