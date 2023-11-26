@@ -49,5 +49,23 @@ extend class DIHandler
 			double startdmg = e.Thing.DamageMultiply * endless_damagemult;
 			e.Thing.DamageMultiply = startdmg;
 		}
+		
+		//code for DI_Firestarter Passive Item.
+		int firenum = 0;
+		for (int i = 0; i < players.Size(); ++i) 
+		{
+			if (firenum >= 4) {firenum = 4; continue;}
+			if (playeringame[i]) {firenum += players[i].mo.CountInv("DI_Firestarter");}
+		}
+		if (firenum > 0)
+		{
+			let firechance = 5 - firenum;
+			if (random(1, firechance) == 1)
+			{
+				let firedmg = firenum * 10;
+				if (firedmg >= e.Thing.Health) {firedmg = e.Thing.Health - 1;}
+				e.Thing.A_DamageSelf(firedmg, "Fire");
+			}
+		}
 	}
 }

@@ -1,0 +1,21 @@
+//zscript_DI/items/passives/firestarter.zsc
+
+Class DI_Firestarter : DIPassiveInventory
+{
+	//this code for this is contained within an eventhandler.
+
+	Default
+	{
+		Tag "Firestarter";
+		Inventory.Icon "POW1F0";
+		Inventory.PickupMessage "Firestarter acquired! (Enemies have a chance to spawn on fire.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 F -1;
+			Stop;
+	}
+}

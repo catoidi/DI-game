@@ -82,6 +82,7 @@ version "4.11"
 #include "zscript_DI/items/passives/peerpressure.zsc"
 #include "zscript_DI/items/passives/acidblood.zsc"
 #include "zscript_DI/items/passives/freshbullets.zsc"
+#include "zscript_DI/items/passives/firestarter.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"
