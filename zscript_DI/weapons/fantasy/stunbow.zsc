@@ -15,6 +15,7 @@ CLASS StunCrossbow : DI_Weapon
 		Weapon.AmmoUse 1;
 		Weapon.AmmoGive 1;
 		Weapon.AmmoType "StunCrossbowAmmo";
+		Inventory.Icon "SBOWZ0";
 		Inventory.Pickupmessage "Acquired the Stun Crossbow.";
 		Tag "Stun Crossbow";
 		//$Category "DI/Weapons/"
@@ -90,7 +91,7 @@ CLASS StunCrossbow : DI_Weapon
 			SBOW # 4;
 			Goto Ready;
 		Spawn:
-			TNT1 A -1;
+			SBOW Z -1;
 			Stop;
 	}
 }

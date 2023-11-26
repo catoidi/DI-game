@@ -49,6 +49,7 @@ CLASS PopcornGun : DI_Weapon //200
 		Weapon.AmmoGive2 0;
 		Weapon.AmmoType "BoxAmmo";
 		Weapon.AmmoType2 "PopcornGunAmmo2";
+		Inventory.Icon "POPGM0";
 		Inventory.PickupMessage "Acquired the Popcorn Machine Gun. (+24 Party Ammo)";
 		Obituary "$BOX_DIE_POPCORN";
 		Tag "Popcorn Gun";

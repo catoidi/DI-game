@@ -21,7 +21,7 @@ CLASS LaserPointer : DI_Weapon //20020
 		Weapon.AmmoGive 24;
 		Weapon.AmmoType "BoxAmmo";
 		Inventory.PickupMessage "Acquired the Laser Pointer. (+24 Party Ammo)";
-		//Inventory.Icon "AMMOJ0";
+		Inventory.Icon "LAZRE0";
 		//Inventory.AltHUDIcon "AMMOC0";
 		Obituary "$BOX_DIE_LASER";
 		Tag "Laser Pointer";

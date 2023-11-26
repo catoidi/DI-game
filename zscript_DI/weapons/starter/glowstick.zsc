@@ -47,7 +47,7 @@ CLASS Glowstick : DI_Weapon //20010
 		Weapon.AmmoGive1 4;
 		Weapon.AmmoType1 "GlowstickAmmo";
 		Inventory.PickupMessage "Acquired the Glowstick weapon.";
-		//Inventory.Icon "AMMOH0";
+		Inventory.Icon "GLOWA0";
 		//Inventory.AltHUDIcon "AMMOA0";
 		Obituary "$BOX_DIE_GLOW";
 		Tag "Glowstick";

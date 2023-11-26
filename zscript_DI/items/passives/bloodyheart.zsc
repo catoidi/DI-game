@@ -7,6 +7,7 @@ Class DI_BloodyHeart : DIPassiveInventory
 		Height 20;
 		Radius 10;
 		Tag "Bloody Heart";
+		Inventory.Icon "POWRD0";
 		Inventory.MaxAmount 3;
 		Inventory.PickupMessage "Bloody Heart Acquired! (Drop HP Pickups upon taking damage.)";
 	}

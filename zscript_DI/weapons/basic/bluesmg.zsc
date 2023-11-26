@@ -19,7 +19,7 @@ CLASS BlueSMG : DI_Weapon
 		Weapon.AmmoGive 24;
 		Weapon.AmmoType "BlueSMGAmmo";
 		Inventory.PickupMessage "Acquired the Blue SMG.";
-		//Inventory.Icon "PISTG0";
+		Inventory.Icon "BSMGZ0";
 		//Obituary "$BOX_DIE_STUPID";
 		//Inventory.Pickupmessage "$BOX_WEAPON_STUPID";
 		Tag "Blue SMG";

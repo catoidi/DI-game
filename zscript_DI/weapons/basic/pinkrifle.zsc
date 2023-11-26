@@ -17,7 +17,7 @@ CLASS PinkRifle : DI_Weapon
 		Weapon.AmmoGive 20;
 		Weapon.AmmoType "PinkRifleAmmo";
 		Inventory.PickupMessage "Acquired the Pink Rifle.";
-		//Inventory.Icon "PISTG0";
+		Inventory.Icon "PRIFZ0";
 		//Obituary "$BOX_DIE_STUPID";
 		//Inventory.Pickupmessage "$BOX_WEAPON_STUPID";
 		Tag "Pink Rifle";

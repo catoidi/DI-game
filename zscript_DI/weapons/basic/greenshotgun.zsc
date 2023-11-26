@@ -23,7 +23,7 @@ CLASS GreenShotgun : DI_Weapon
 		Weapon.AmmoType "GreenShotgunAmmo";
 		Weapon.AmmoType2 "GreenShotgunPump";
 		Inventory.PickupMessage "Acquired the Green Shotgun.";
-		//Inventory.Icon "PISTG0";
+		Inventory.Icon "SHOTZ0";
 		//Obituary "$BOX_DIE_STUPID";
 		//Inventory.Pickupmessage "$BOX_WEAPON_STUPID";
 		Tag "Green Shotgun";

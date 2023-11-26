@@ -16,6 +16,7 @@ CLASS StarPistol : DI_Weapon
 		Weapon.AmmoUse 1;
 		Weapon.AmmoGive 8;
 		Weapon.AmmoType "StarPistolAmmo";
+		Inventory.Icon "PISTZ0";
 		//Inventory.Icon "PISTG0";
 		//Obituary "$BOX_DIE_STUPID";
 		//Inventory.Pickupmessage "$BOX_WEAPON_STUPID";
@@ -93,7 +94,7 @@ CLASS StarPistol : DI_Weapon
 			PIST C 2 BRIGHT;
 			Stop;
 		Spawn:
-			TNT1 A -1;
+			PIST Z -1;
 			Stop;
 	}
 }

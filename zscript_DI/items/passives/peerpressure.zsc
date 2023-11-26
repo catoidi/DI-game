@@ -5,6 +5,7 @@ Class DI_PeerPressure : DIPassiveInventory
 	Default
 	{
 		Tag "Peer Pressure";
+		Inventory.Icon "POW1C0";
 		Inventory.PickupMessage "Peer Pressure acquired! (Taking damage gives nearby enemies anxiety.)";
 		Inventory.MaxAmount 5;
 	}

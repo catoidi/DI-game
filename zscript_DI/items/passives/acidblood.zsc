@@ -9,6 +9,7 @@ Class DI_AcidBlood : DIPassiveInventory
 		Height 20;
 		Radius 10;
 		Tag "Acid Blood";
+		Inventory.Icon "POW1D0";
 		Inventory.MaxAmount 5;
 		Inventory.PickupMessage "Acid Blood Acquired! (Drop a damaging acid pool upon taking damage.)";
 	}

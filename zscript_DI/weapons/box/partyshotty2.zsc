@@ -27,7 +27,7 @@ CLASS PartyShotty2 : DI_Weapon //20009
 		Weapon.AmmoType "BoxAmmo";
 		DamageType "PartyShot";
 		Inventory.PickupMessage "Acquired the Super Party Shotgun! (+24 Party Ammo)";
-		//Inventory.Icon "AMMOI0";
+		Inventory.Icon "SHU1Z0";
 		//Inventory.AltHUDIcon "AMMOB0";
 		Obituary "$BOX_DIE_SHUT";
 		Tag "Super Party Shotgun";
