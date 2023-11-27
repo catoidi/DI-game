@@ -10,7 +10,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		Height 56;
 		Mass 100;
 		PainChance 255;
-		SelfDamageFactor 0.05;
+		SelfDamageFactor 0.25;
 		Player.ViewBob 0.4;
 		Player.JumpZ 11;
 		Player.CrouchSprite "PLYC";

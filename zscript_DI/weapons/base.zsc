@@ -278,8 +278,8 @@ Class DI_Weapon : Weapon abstract
 		{
 			double randomangle = angle;
 			double randompitch = pitch;
-			if (angle == -32768) {randomangle = frandom(-invoker.wpn_accuracy, invoker.wpn_accuracy);}
-			if (pitch == -32768) {randompitch = frandom(-invoker.wpn_accuracy, invoker.wpn_accuracy);}
+			if (angle == -32768) {randomangle = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
+			if (pitch == -32768) {randompitch = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
 		
 			A_FireProjectile(missiletype, randomangle, useammo, spawnofs_xy, spawnheight, flags, randompitch);
 			useammo = false;
