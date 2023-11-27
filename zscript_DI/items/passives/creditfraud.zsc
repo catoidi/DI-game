@@ -7,7 +7,7 @@ Class DI_CreditFraud : DIPassiveInventory
 		Tag "Credit Fraud";
 		Inventory.Icon "POW1H0";
 		Inventory.PickupMessage "Credit Fraud acquired! (+50% DMG, but only if you're in Debt.)";
-		Inventory.MaxAmount 25;
+		Inventory.MaxAmount 3;
 	}
 	
 	override void DoEffect(void)
