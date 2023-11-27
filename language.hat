@@ -1,0 +1,55 @@
+[enu default]
+
+NEWHAT = "NEW HAT UNLOCKED:";
+HAT_MISSING = "there is no hat in this slot yet.";
+
+//Hat Menu
+HAT_COLOR_ON = "Copy Player Colors: ON";
+HAT_COLOR_OFF = "Copy Player Colors: OFF";
+HAT_SELECT_00 = "Your hat has been removed.";
+
+DIHAT_S_01 = "You have selected:"; //selected this hat in the menu.
+DIHAT_L_01 = "LOCKED: Survive a total of 100 waves."; //tried to pick this hat but it was locked.
+DIHAT_N_01 = ""; //name of the hat shown upon unlocking it.
+DIHAT_S_02 = "You have selected:";
+DIHAT_L_02 = "LOCKED: Survive a total of 250 waves.";
+DIHAT_N_02 = "";
+DIHAT_S_03 = "You have selected:";
+DIHAT_L_03 = "LOCKED: Survive a total of 750 waves.";
+DIHAT_N_03 = "";
+DIHAT_S_04 = "You have selected:";
+DIHAT_L_04 = "LOCKED: Reach wave 15 in Level 1.";
+DIHAT_N_04 = "";
+DIHAT_S_05 = "You have selected:";
+DIHAT_L_05 = "LOCKED: Reach wave 30 in Level 1.";
+DIHAT_N_05 = "";
+DIHAT_S_06 = "You have selected:";
+DIHAT_L_06 = "LOCKED: Reach wave 60 in Level 1.";
+DIHAT_N_06 = "";
+DIHAT_S_07 = "You have selected: Fred";
+DIHAT_L_07 = "LOCKED: Kill 100 Freds.";
+DIHAT_N_07 = "Fred";
+DIHAT_S_08 = "You have selected: Hatted Fred";
+DIHAT_L_08 = "LOCKED: Kill 350 Freds.";
+DIHAT_N_08 = "Hatted Fred";
+DIHAT_S_09 = "You have selected: Teeny Fred";
+DIHAT_L_09 = "LOCKED: Kill 1000 Freds.";
+DIHAT_N_09 = "Teeny Fred";
+DIHAT_S_10 = "You have selected:";
+DIHAT_L_10 = "LOCKED: Kill 50 Rons.";
+DIHAT_N_10 = "";
+DIHAT_S_11 = "You have selected:";
+DIHAT_L_11 = "LOCKED: Kill 175 Rons.";
+DIHAT_N_11 = "";
+DIHAT_S_12 = "You have selected:";
+DIHAT_L_12 = "LOCKED: Kill 500 Rons.";
+DIHAT_N_12 = "";
+DIHAT_S_13 = "You have selected:";
+DIHAT_L_13 = "LOCKED: Die 10 times.";
+DIHAT_N_13 = "";
+DIHAT_S_14 = "You have selected:";
+DIHAT_L_14 = "LOCKED: Die 100 times.";
+DIHAT_N_14 = "";
+DIHAT_S_15 = "You have selected:";
+DIHAT_L_15 = "LOCKED: Die 1000 times.";
+DIHAT_N_15 = "";

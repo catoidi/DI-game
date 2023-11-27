@@ -1,0 +1,59 @@
+//DI
+server bool di_fancylight = true; //enemy projectiles emit light, disable to save performance.
+server bool di_testcvar = true; //test cvar pls ignore
+server bool di_autosave = false; //game will save at the end of every wave (not recommended)
+
+//DI menu options
+user bool di_menu_dosave = false; //enable save/load options on main menu.
+user bool di_menu_gzdoom = false; //options button jumps straight to gzdoom options instead of DI options.
+user bool di_menu_asktutorial = false; //check if the player has been asked about the tutorial yet.
+
+//DI menu unlocks
+server cheat bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
+server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unlocked through reaching Wave 30 in Hard Mode.
+server cheat bool di_unlock_lvl_di01 = false; //unlocks Level 1. unlocked through playing/skipping the tutorial.
+server cheat bool di_unlock_lvl_di02 = false; //unlocks Level 2. unlocked through reaching Wave 10 on Level 1.
+server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked through purchasing 3 Box Party weapons at once.
+
+//DI crosshair
+user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
+user float di_xhair_scale = 2.0; //the size of the di crosshair.
+user float di_xhair_alpha = 1.0; //guess what this does.
+user color di_xhair_color = "FF FF FF"; //the default color of the crosshair.
+user bool di_xhair_fresh_toggle = true; //fresh meter below crosshair.
+user float di_xhair_fresh_scale = 1.0; //how long the meter can grow.
+user float di_xhair_fresh_alpha = 0.65; //another alpha cvar, combined with the crosshair's alpha.
+
+//DI item hud
+user bool di_itemhud_toggle = true; //enables the item hud.
+user float di_itemhud_scale = 0.75; //controls the size of the passive items shown at the top left of the screen.
+user float di_itemhud_alpha = 0.75; //opacity of the item hud.
+
+//DI hats (in multiplayer, the players will inherit the host's hats.)
+server cheat int dihat_freddie = 0; //how many freds you've murdered.
+server cheat bool dihat_unlock_07 = false; //kill 100 freds
+server cheat bool dihat_unlock_08 = false; //kill 350 freds
+server cheat bool dihat_unlock_09 = false; //kill 1000 freds
+
+//box party hat stuff (copy/pasted from box party)
+user bool box_hat_color = false;
+user bool box_hat_hidelock = false; //hide all locked hats in the hat menu.
+user cheat string box_hat_current = "00HMA1"; //currently selected hat
+user cheat bool box_hat_cheat = false; //auto-unlock all hats
+user cheat bool box_hat_unlock_00 = true; //not used
+
+//boxhud
+user int box_hudshake = 2; //how much hud shakes when taking damage
+user bool di_showfreshtimer = false;
+
+//nashhpbar
+user bool nashhpbar_enable = true;
+
+//damnums
+server bool   dam_enabled = true;
+server bool   dam_shootable = false;
+server int    dam_spray = 0;
+user   string dam_fontclass = "DamNumFontGameDefault";
+user   string dam_translation = "DamDefault";
+user   int    dam_physics = 0;
+user   bool   dam_usetypes = true;

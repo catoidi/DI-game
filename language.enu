@@ -1,0 +1,33 @@
+[enu default]
+
+TXT_GAME_NAME = "DI";
+PRESSANYKEY = "Press any key to begin.";
+
+SKILL_BABY = "Easy";
+SKILL_EASY = "Medium";
+SKILL_NORMAL = "Hard";
+SKILL_HARD = "Unfair";
+SKILL_NIGHTMARE = "Inevitable";
+
+CNTRLMNU_WEAPONS = "Inventory";
+
+//NewGameMenu
+DIMENU_SELECT_DI00 = "Tutorial";
+DIMENU_SELECT_DI01 = "ur 1st death";
+DIMENU_SELECT_DI02 = "the party area";
+DIMENU_LOCKED_PLAYER_BOX_PARTYER = "\ccunlocked by owning 2 Box Party Weapons at once.";
+DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
+
+//Unlocks
+DIPOPUP_dihat_unlock_07 = "Fred Hat";
+DIPOPUP_dihat_unlock_08 = "Hatted Fred";
+DIPOPUP_dihat_unlock_09 = "Teeny Fred";
+DIPOPUP_di_unlock_lvl_di01 = "your first death";
+DIPOPUP_di_unlock_lvl_di02 = "the party area";
+DIPOPUP_di_unlock_plr_box = "Box Partyer";
+
+//NashHPBar
+OPTMNU_NASHHPBAR = "Customize HP Bar";
+NASHHPBARMNU_TITLE = "HP Bar Options";
+NASHHPBARMNU_ENABLE = "Enable";
+NASHHPBARMNU_HELPTEXT_ENABLE = "Enables HP bar.";

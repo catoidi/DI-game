@@ -1,0 +1,115 @@
+>>These are groups. The groups (shown in brackets) will automatically inherit all items from the categories they call.
+>>So for example, if you want your shop to include every weapon, just use the [Weapon] group as the shop type.
+>>Otherwise, if you wanted only a specific category of weapon, you can either use one of the predefined categories below, or create your own category.
+>>Don't try to nest groups into each other. The results are undesirable.
+[Weapon] BasicWeapon;
+[Weapon] NormalWeapon;
+[Weapon] FantasyWeapon;
+[Weapon] BoxWeapon;
+[PermaWeapon] BasicWeapon;
+[PermaWeapon] NormalWeapon;
+[PermaWeapon] FantasyWeapon;
+[PermaWeapon] BoxWeapon;
+>>
+>>These are categories. They give the shops which items to display, their price, and their rarity.
+>>First, you give the name of the category. This will be called by the shop iteself. THIS IS CASE SENSITIVE!!!!!!
+>>Second, you give the name of the item class. Duplicates are allowed, so be wary of that.
+>>Third, you give a sprite name to for the shop to display. This does not have to match the item given.
+>>Fourth, you give the base price of the item. Keep in mind certain shops like Perma Shops will multiply this base value.
+>>Fifth, OPTIONALLY, you can assign a rarity to the item. The lower the number, the higher chance this item is not added to a shop's item pool. 1 is the minimum. 256 is guaranteed.
+>>
+>>Basic Weapons...
+BasicWeapon GreenShotgun SHOTZ 10;
+BasicWeapon BlueSMG BSMGZ 15;
+BasicWeapon PinkRifle PRIFZ 20;
+>>Normal Weapons...
+NormalWeapon GrenadeLauncher GLANZ 20;
+>>Fantasy Weapons...
+FantasyWeapon StunCrossbow SBOWZ 25;
+>>Box Party Weapons...
+BoxWeapon LaserPointer LAZRE 35;
+BoxWeapon PartyShotty SHUTZ 25;
+BoxWeapon PopcornGun POPGM 25;
+BoxWeapon PartyShotty2 SHU1Z 30 128;
+>>Armor...
+Armor DI_TopHat ARMOA 30;
+Armor DI_TopHat2 ARMOB 67 224;
+Armor DI_PartyHat ARMOC 120 192;
+Armor DI_BowTie ARMOD 50 192;
+>>Health...
+Health DI_FullHeal HEALA 12;
+Health DI_Melon HEALE 20 192;
+Health DI_Pizza HEALB 4 192;
+Health DI_JuiceBox HEALD 6 192;
+>>Consumables...
+Consumable DI_ThrowBomb GRENA 1;
+Consumable DI_Pizza HEALB 6;
+Consumable DITurret TURRC 10;
+Consumable DI_Dice DICEA 4;
+Consumable DI_JuiceBox HEALD 10;
+Consumable DI_Tomahawk HAWKA 2;
+Consumable DI_HeartBomb GRENF 2;
+Consumable DI_AmmoSatchel SACKA 6;
+Consumable DI_Brick BRIKA 10;
+Consumable DI_9LeafClover LEAFA 36;
+>>Permanent Consumables...
+PermaConsumable DI_ThrowBomb GRENA 1;
+PermaConsumable DI_Pizza HEALB 6;
+PermaConsumable DITurret TURRC 10;
+PermaConsumable DI_Dice DICEA 4;
+PermaConsumable DI_JuiceBox HEALD 10;
+PermaConsumable DI_Tomahawk HAWKA 2;
+PermaConsumable DI_HeartBomb GRENF 2;
+PermaConsumable DI_AmmoSatchel SACKA 6;
+PermaConsumable DI_9LeafClover LEAFA 36 36;
+>>Passive Grouping... (Split between rentals/permanents, in case you want specific items to not show up as a rental/permanent.)
+[Passive] DamagePassive;
+[Passive] DefensePassive;
+[Passive] ComboPassive;
+[Passive] StatusPassive;
+[Passive] OnlyRentPassive;
+[PermaPassive] DamagePassive;
+[PermaPassive] DefensePassive;
+[PermaPassive] ComboPassive;
+[PermaPassive] StatusPassive;
+[PermaPassive] OnlyPermaPassive;
+>>Damage Passives...
+DamagePassive DI_BaseDamageGiver POWRA 7 64;
+DamagePassive DI_ComboDamage POWRF 84 64;
+DamagePassive DI_PainStar POWRJ 35 64;
+DamagePassive DI_Gunslinger POWRK 28 64;
+DamagePassive DI_DamageMultGiver POWRR 7;
+DamagePassive DI_ComboDamageMult POWRT 84 128;
+DamagePassive DI_PainRhombus POWRS 35 128;
+DamagePassive DI_GunHoarder POWRU 28 128;
+DamagePassive DI_Shoe POWRY 7;
+DamagePassive DI_BulletSplitter POWRG 105 64;
+DamagePassive DI_TooManyBullets POWRH 126 64;
+DamagePassive DI_AmmoGiver POWRI 28;
+DamagePassive DI_Firestarter POW1F 14;
+>>Defense Passives...
+DefensePassive DI_BloodyHeart POWRD 7;
+DefensePassive DI_BonusArmor POWRE 7;
+DefensePassive DI_HatHat POWRM 14 192;
+DefensePassive DI_FreshRegen POWRX 14;
+DefensePassive DI_Consumer POW1A 7;
+DefensePassive DI_PeerPressure POW1C 14 192;
+DefensePassive DI_LastStand POW1G 7;
+>>Combo Passives...
+ComboPassive DI_ExtraCoinGiver POWRB 35;
+ComboPassive DI_FreshBonusGiver POWRC 14;
+ComboPassive DI_FreshBonusCharger POWRL 14;
+ComboPassive DI_WealthJar POWRZ 14;
+ComboPassive DI_FreshBullets POW1E 14;
+ComboPassive DI_LeadRecycling POW1B 21 128;
+>>Status Passives...
+StatusPassive DI_StatusGiver_Ice POWRN 7 64;
+StatusPassive DI_StatusGiver_Fire POWRO 7 64;
+StatusPassive DI_StatusGiver_Lightning POWRP 7 64;
+StatusPassive DI_StatusGiver_Poison POWRQ 7 64;
+StatusPassive DI_StatusGiver_Rainbow POWRV 21 64;
+StatusPassive DI_AcidBlood POW1D 7;
+>>Rental Only Passives...
+OnlyRentPassive DI_RewardsProgram POWRW 84;
+>>Permanent Only Passives...
+OnlyPermaPassive DI_CreditFraud POW1H 14;

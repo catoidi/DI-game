@@ -1,0 +1,8 @@
+>>Use this file to tell the game which events to activate at what levels and the minimum wave needed to activate it.
+>>Argument 1: The name of the level this event can activate in. This is not case sensitive.
+>>Argument 2: Specify whether this is an "ACS" script or an "Event" from an EventHandler.
+>>Argument 3: The name of the event you want to activate. Make sure your EventHandler's network code is not case sensitive.
+>>Argument 4: Random chance of the event being added to the event pool. Only 1 event in the pool will be activated per wave. Setting this to 0 means this event will always be added to the pool.
+>>Argument 5: The minimum wave required for this event. The event won't be added to the pool if the player has not reached this wave yet.
+DI01, Event, dievent_bulletdeath, 30, 1;
+DI02, Event, FakeEventPLSIgnore, 1, 1;

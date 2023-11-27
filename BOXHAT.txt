@@ -1,0 +1,3 @@
+Hat = DIHAT_S_07, DIHAT_L_07, dihat_unlock_07, 01HMA7.png, DIHAT07.png, DILOCK.png;
+Hat = DIHAT_S_08, DIHAT_L_08, dihat_unlock_08, 01HMA8.png, DIHAT08.png, DILOCK.png;
+Hat = DIHAT_S_09, DIHAT_L_09, dihat_unlock_09, 01HMA9.png, DIHAT09.png, DILOCK.png;

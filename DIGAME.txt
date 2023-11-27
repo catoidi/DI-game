@@ -1,0 +1,26 @@
+>>It's VERY IMPORTANT that this 100% matches the players/episodes listed in the default New Game Menu, or this won't work right.
+>>#1: Command
+>>	[Add]: adds this line to the menu.
+>>	[Delete]: removes this line from the menu. (4th argument not necessary for this command.)
+>>#2: Type
+>>	[Player]: this line is referring to a player class. MUST match the order of players added in MAPINFO's "gameinfo" section.
+>>	[Level]: this line is referring to an episode. MUST match the order the episodes are added in MAPINFO.
+>>#3: Item
+>>	(tells the menu which player/level's info to display. purely cosmetic.)
+>>#4: CVAR
+>>	(if this argument is used, this option will be locked unless this CVAR (must be a bool!) is set to TRUE.)
+>>	(if "di_unlock_cheat" is enabled, these options will always be enabled.)
+>>
+>>[PLAYERS]
+>>Player 1, Fredrick, always unlocked.
+Add, Player, Fredrick;
+>>Player 2, Box.
+Add, Player, Box Partyer, di_unlock_plr_box;
+>>
+>>[EPISODES]
+>>Tutorial Level.
+>>Add, Level, di00;
+>>First REAL Level.
+Add, Level, di01;
+>>Box Party Level.
+Add, Level, di02, di_unlock_lvl_di02;
