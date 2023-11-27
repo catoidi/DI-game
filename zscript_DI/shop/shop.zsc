@@ -322,12 +322,7 @@ Class DIRentShop : DIShop
 }
 
 Class DIPermaShop : DIShop
-{
-	Default
-	{
-		DIShop_Base.DebtHP 10;
-	}
-	
+{	
 	override void DoPurchase(int buyprice)
 	{
 		Super.DoPurchase(buyprice);

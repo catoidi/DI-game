@@ -15,16 +15,6 @@ CLASS GlowstickPower : Inventory
 	}
 }
 
-CLASS GlowstickColor : Inventory
-{
-	//defines which color will be used for the current glowstick.
-	//green equals 0.
-	Default
-	{
-		Inventory.MaxAmount 6;
-	}
-}
-
 CLASS Glowstick : DI_Weapon //20010
 {
 	//literally the glowstick copy/pasted from box party, but with some things like color translation stuff removed.

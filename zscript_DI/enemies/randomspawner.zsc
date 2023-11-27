@@ -29,3 +29,21 @@ Class FredSpawner3 : RandomSpawner
 		DropItem "Fred5", 255, 1;
 	}
 }
+
+Class RonSpawner1 : RandomSpawner
+{
+	Default
+	{
+		DropItem "Ron", 255, 99;
+		DropItem "Ron2", 255, 1;
+	}
+}
+
+Class FiendSpawner : RandomSpawner
+{
+	Default
+	{
+		DropItem "Fred2", 255, 9;
+		DropItem "Ron2", 255, 1;
+	}
+}

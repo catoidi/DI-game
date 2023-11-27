@@ -1,0 +1,34 @@
+//zscript_DI/items/passives/creditfraud.zsc
+
+Class DI_CreditFraud : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Credit Fraud";
+		Inventory.Icon "POW1H0";
+		Inventory.PickupMessage "Credit Fraud acquired! (+50% DMG, but only if you're in Debt.)";
+		Inventory.MaxAmount 25;
+	}
+	
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			DI_PlayerBase plr = DI_PlayerBase(owner);
+			if (plr.score < 0)
+			{
+				double adddam = 0.5 * plr.countinv("DI_CreditFraud");
+				plr.ExtraDamageMult += adddam;
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 H -1;
+			Stop;
+	}
+}

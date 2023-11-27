@@ -230,7 +230,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		int statuschance4 = chance_ice + chance_fire + chance_lightning + chance_poison;
 		if (statuschance4 > 0)
 		{
-			int randomchance = random(-4, statuschance4);
+			int randomchance = random(-2, statuschance4);
 			if (randomchance <= 0) {statusreplace = "";}
 			else if (randomchance <= chance_ice) {statusreplace = "Ice";}
 			else if (randomchance <= chance_ice + chance_fire) {statusreplace = "Fire";}

@@ -58,7 +58,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.BaseDamage 0;
 		DI_Weapon.BaseAccuracy 0;
 		DI_Weapon.Recoil 0;
-		DI_Weapon.RecoilRecover 0;
+		DI_Weapon.RecoilRecover 0.5;
 		DI_Weapon.RecoilOffset 4.0;
 		DI_Weapon.RecoilOffset_X -1;
 		DI_Weapon.RecoilOffset_Y 1;

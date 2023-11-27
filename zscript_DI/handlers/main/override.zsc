@@ -149,5 +149,10 @@ extend class DIHandler
 				if (consumer > 0) {itemplr.GiveInventory("DI_Regen", 3 * consumer);}
 			}
 		}
+		else if (e.Name == "wave_debug")
+		{
+			console.printf("waitnum: %d\ncurrentspawners: %d\nspawnqueue: %d\nalive monsters: %d\nenemycount: %d", waitnum, currentspawners, spawnqueue.Size(), Level.Total_Monsters - Level.Killed_Monsters, enemycount);
+			//if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1) && (enemycount <= 0))
+		}
 	}
 }
