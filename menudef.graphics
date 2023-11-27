@@ -1,0 +1,83 @@
+//menudef.graphics
+
+OptionMenu "DIGraphics"
+{
+	//combination of Display, Hardware, and Post Processing options.
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$BoxGraphics"
+
+	Submenu "$DSPLYMNU_GLOPT", 			"DIHardware"
+	Tooltip "OpenGL/Vulkan specific options are stored here."
+	StaticText ""
+	Option "$GLTEXMNU_TEXFILTER",		gl_texture_filter,				"FilterModes"
+	Tooltip "Recommended to leave on 'None (Trilinear)'."
+	Option "$GLTEXMNU_ANISOTROPIC",		gl_texture_filter_anisotropic,	"Anisotropy"
+	Tooltip "Improves the quality of textures from far distances."
+	StaticText " "
+	Option "$DSPLYMNU_WIPETYPE",				"wipetype", "Wipes"
+	Tooltip "Have a funny screen effect play upon starting a new game."
+	StaticText " "
+	Slider "$DSPLYMNU_GAMMA",					"vid_gamma",					0.75, 3.0, 0.05, 2
+	Tooltip "Default gamma is 1.15."
+	Slider "$DSPLYMNU_BRIGHTNESS",				"vid_brightness",				-0.8,0.8, 0.05,2
+	Slider "$DSPLYMNU_CONTRAST",				"vid_contrast",	   				0.1, 3.0, 0.1
+	Slider "$DSPLYMNU_SATURATION",				"vid_saturation",  				-3.0, 3.0, 0.25, 2
+	StaticText " "
+	Slider "$DSPLYMNU_FOV",						"fov",							75.0, 120.0, 0.1, 1
+	Tooltip ""
+}
+
+OptionMenu "DIVideo"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$BoxVideo"
+	
+	Option "$VIDMNU_PREFERBACKEND",		"vid_preferbackend", "PreferBackend"
+	Tooltip "Vulkan is recommended.\n\nIf struggling with graphical glitches or performance issues, try using 'OpenGL ES'."
+	Option "$VIDMNU_FULLSCREEN",		"vid_fullscreen", "YesNo"
+	Tooltip "Outputs to your monitor's native resolution.\n\nYou can control the game's internal resolution separately down below."
+	IfOption(Mac)
+	{
+		Option "$VIDMNU_HIDPI",			"vid_hidpi", "YesNo"
+	}
+	StaticText " "
+	Option "$DSPLYMNU_VSYNC",					"vid_vsync", "OnOff"
+	Option "$VIDMNU_MAXFPS",					"vid_maxfps", "MaxFps"
+	StaticText " "
+	Tooltip ""
+	Option "$VIDMNU_SCALEMODE",			"vid_scalemode", "ScaleModes"
+	Tooltip "Controls the game's internal resolution.\n\n'Normal' will match the resolution of the game window."
+	Slider "$VIDMNU_SCALEFACTOR",		"vid_scalefactor", 0.25, 2.0, 0.25, 2
+	Tooltip "Multiplies the internal resolution.\n\nHigher values can work as a replacement for anti-aliasing, but is extremely resource intensive."
+}
+
+OptionMenu "DIHardware"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$GLMNU_TITLE"
+	StaticText "$GLMNU_POSTPROCESS", "Gold"
+	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"
+	Tooltip "Gives bright objects a 'glow' effect.\n\nThis will impact performance."
+	Option "$GLPREFMNU_SSAO",		 			gl_ssao,						"SSAOModes"
+	Tooltip "Adds a dark shadow effect to the edges of walls.\n\nThis will impact performance."
+	Option "$GLPREFMNU_FXAA",		 			gl_fxaa,						"FXAAQuality"
+	Tooltip "A 'fast' form of anti-aliasing.\n\nCan degrade the image quality."
+	Option "$GLPREFMNU_MULTISAMPLE", 			gl_multisample,					"Multisample"
+	Tooltip "A more complex form of anti-aliasing.\n\nThis will massively impact performance."
+	Option "$GLPREFMNU_DITHER",		 			gl_dither_bpc,					"DitherModes"
+	Tooltip "Reduces light banding by adding smooth transitions between different colors."
+	StaticText " "
+	StaticText "$Rendering", "Gold"
+	Option "$GLPREFMNU_SECLIGHTMODE",			gl_lightmode,					"LightingModes"
+	Tooltip "Controls how the brightness of rooms are calculated."
+	Option "$GLPREFMNU_SPRBILLFACECAMERA",		gl_billboard_faces_camera,		"OnOff"
+	Tooltip "Controls how the player perceives 2D sprites in the world."
+	Option "$GLPREFMNU_RENDERQUALITY",			gl_seamless,					"Precision"
+	Tooltip "Enable 'Quality' mode if you are noticing white pixels around the edges of walls."
+}

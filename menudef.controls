@@ -1,0 +1,122 @@
+//menudef.controls
+
+OptionMenu "DIControls"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$CNTRLMNU_TITLE"
+	
+	Submenu "$OPTMNU_MOUSE",			"MouseOptionsSimple"
+	Tooltip ""
+	Submenu "$OPTMNU_JOYSTICK",			"JoystickOptions"
+	Tooltip "Pro tip: You might just be better off using Steam Input instead."
+	StaticText ""
+	StaticText "Keybinds", "Purple"
+	Tooltip ""
+	Submenu    "$CNTRLMNU_ACTION"      , "BoxActionControlsMenu"
+	Submenu    "$CNTRLMNU_WEAPONS"     , "BoxWeaponsControlMenu"
+	Submenu    "$CNTRLMNU_OTHER"       , "BoxOtherControlsMenu"
+	StaticText ""
+	SafeCommand "$OPTMNU_DEFAULTS",		"resetb2defaults"
+}
+
+OptionMenu "BoxActionControlsMenu"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$CNTRLMNU_ACTION_TITLE"
+	ScrollTop 2
+	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
+
+	StaticText ""
+	Control    "$CNTRLMNU_ATTACK"           , "+attack"
+	Tooltip "Used by every weapon."
+	Control    "$CNTRLMNU_ALTATTACK"        , "+altattack"
+	Control    "$CNTRLMNU_RELOAD"           , "+reload"
+	Control    "$CNTRLMNU_ZOOM"             , "+zoom"
+	Tooltip "Certain weapons might use this."
+
+	StaticText ""
+	Tooltip ""
+	Control    "$CNTRLMNU_USE"              , "+use"
+	Tooltip "Allows you to interact with the world around you."
+
+	StaticText ""
+	Control    "$CNTRLMNU_FORWARD"          , "+forward"
+	Control    "$CNTRLMNU_BACK"             , "+back"
+	Control    "$CNTRLMNU_MOVELEFT"         , "+moveleft"
+	Control    "$CNTRLMNU_MOVERIGHT"        , "+moveright"
+
+	StaticText ""
+	Control    "$CNTRLMNU_JUMP"             , "+jump"
+	Control    "$CNTRLMNU_CROUCH"           , "+crouch"
+	Control    "$CNTRLMNU_TOGGLECROUCH"     , "crouch"
+	Tooltip "Allows you to navigate the environment."
+
+	StaticText ""
+	Control    "$CNTRLMNU_RUN"              , "+speed"
+	Control    "$CNTRLMNU_TOGGLERUN"        , "toggle cl_run"
+	Tooltip "Control the speed of your travels."
+}
+
+OptionMenu "BoxWeaponsControlMenu"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$CNTRLMNU_WEAPONS_TITLE"
+	ScrollTop 2
+	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
+
+	StaticText ""
+	Control    "$CNTRLMNU_NEXTWEAPON"     , "weapnext"
+	Control    "$CNTRLMNU_PREVIOUSWEAPON" , "weapprev"
+	Tooltip "The main way of switching between weapons."
+	
+	StaticText ""
+	Control    "$CNTRLMNU_USEITEM"      , "invuse"
+	Control    "$CNTRLMNU_NEXTITEM"     , "invnext"
+	Control    "$CNTRLMNU_PREVIOUSITEM" , "invprev"
+	Tooltip "Used for Consumable items."
+
+	StaticText ""
+	Control    "$CNTRLMNU_SLOT1"          , "slot 1"
+	Control    "$CNTRLMNU_SLOT2"          , "slot 2"
+	Control    "$CNTRLMNU_SLOT3"          , "slot 3"
+	Control    "$CNTRLMNU_SLOT4"          , "slot 4"
+	Control    "$CNTRLMNU_SLOT5"          , "slot 5"
+	Control    "$CNTRLMNU_SLOT6"          , "slot 6"
+	Control    "$CNTRLMNU_SLOT7"          , "slot 7"
+	Control    "$CNTRLMNU_SLOT8"          , "slot 8"
+	Control    "$CNTRLMNU_SLOT9"          , "slot 9"
+	Control    "$CNTRLMNU_SLOT0"          , "slot 0"
+	Tooltip "Each weapon is assigned to a specific slot.\n\nYou can use this to hotswap between different weapons quickly."
+}
+
+OptionMenu "BoxOtherControlsMenu"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "$CNTRLMNU_OTHER_TITLE"
+	ScrollTop 2
+	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
+
+	StaticText ""
+	Control    "$CNTRLMNU_AUTOMAP"         , "togglemap"
+	Tooltip "Shows you a detailed map of all explored areas.\n\nPro tip: You can see enemies on the map too!"
+	Control    "$CNTRLMNU_CHASECAM"        , "chase"
+	Tooltip "Lets you see yourself in 3rd person.\n\nNot that great for combat, though."
+	Control "$DI_OPENCATALOGUE",	"openmenu DICatalogueMenu"
+	Tooltip "Opens a menu containing information about every item you currently own."
+
+	StaticText ""
+	Control    "$CNTRLMNU_SCREENSHOT"      , "screenshot"
+	Tooltip "By default, these should be stored where your config files are."
+	Control    "$CNTRLMNU_CONSOLE"         , "toggleconsole"
+	Tooltip "sv_cheats 1"
+	Control    "$CNTRLMNU_PAUSE"           , "pause"
+	Tooltip "This is not the same button that opens the main menu."
+}

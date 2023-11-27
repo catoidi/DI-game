@@ -1,0 +1,46 @@
+//menudef.hud
+
+OptionMenu "DIHudOptions"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "HUD Options"
+	Tooltip ""
+	StaticText "Main HUD Options", "Purple"
+	ScaleSlider "HUD Scale",	"hud_scale", -1.0, 8.0, 1.0, "$SCALEMNU_USEUI", "$SCALEMNU_USEFS"
+	Tooltip "Controls the size of the main HUD elements."
+	Slider "Damage Shake",		"box_hudshake",		0, 5, 1, 0	
+	Tooltip "Controls how much the HUD will 'shake' upon you taking damage.\n\nAlso influences the minimum threshold of damage needed for shake to occur."
+	Option "Show Fresh Timer", "di_showfreshtimer", OnOff
+	Tooltip "Adds a number timer beside the 'Fresh' meter.\n\nCan help you understand the fresh bonus cooldown a bit more."
+	StaticText ""
+	StaticText "Item HUD Options", "Purple"
+	Option "Enabled?", "di_itemhud_toggle", OnOff
+	Tooltip "Shows you your Passive items at the top right of the screen.\n\nPro tip: It also shows the item quantity and whether or not it's 'permanent'."
+	Slider "Scale", "di_itemhud_scale", 0.25, 3.0, 0.05, 2, "di_itemhud_toggle"
+	Tooltip "Controls the size of the Item HUD."
+	Slider "Alpha", "di_itemhud_alpha", 0.05, 1.0, 0.05, 2, "di_itemhud_toggle"
+	Tooltip "Controls the opacity of the Item HUD."
+	StaticText ""
+	StaticText "Crosshair Options", "Purple"
+	Option "Enabled?", "di_xhair_toggle", "xhairvalues"
+	Tooltip "Setting to 'Dynamic' will have crosshair dynamically match the weapon's accuracy."
+	Slider "Scale", "di_xhair_scale", 1.0, 10.0, 0.5, 1, "di_xhair_toggle"
+	Tooltip "Controls the size of the crosshair."
+	Slider "Alpha", "di_xhair_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_toggle"
+	Tooltip "Controls the opacity of the crosshair."
+	Option "Add Fresh Meter", "di_xhair_fresh_toggle", onoff
+	Tooltip "Adds a 2nd Fresh Weapon Bonus meter below the crosshair.\n\nFresh Weapon Bonus is kinda an important mechanic to the game, and this can help make tracking it easier."
+	Slider "Fresh Scale", "di_xhair_fresh_scale", 0.05, 3.0, 0.05, 1, "di_xhair_fresh_toggle"
+	Tooltip "Controls the length of the fresh meter.\n\nAlso takes your crosshair scaling into account."
+	Slider "Fresh Alpha", "di_xhair_fresh_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_fresh_toggle"
+	Tooltip "Controls the alpha of the fresh meter.\n\nAlso takes your crosshair alpha into account."
+}
+
+OptionValue "xhairvalues"
+{
+	0, "Off"
+	1, "On"
+	2, "Dynamic"
+}

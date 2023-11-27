@@ -1,0 +1,53 @@
+DefaultListMenu
+{
+	Font "BigFont", "Untranslated"
+	LineSpacing 20
+	Font "BigUpper", "White"
+	Selector "graphics/m_selector.png", -24, -4
+	LineSpacing 18
+}
+
+ListMenu "MainMenu"
+{
+	//Class "DIListMenu"
+	Size "Clean"
+	Font "BigUpper", "Gray"
+	StaticPatchCentered 160, -4, "DILOGO"
+	Selector "graphics/m_selector.png", -20, 0
+	Position 92, 80
+	//PatchItem "M_NGAME",	"n",	"PlayerclassMenu"
+	PatchItem "M_NGAME",	"n",	"DINewGameMenu"
+	PatchItem "M_OPTION",	"o",	"DIOptionsMenu"
+	//DIPatchItem "di_testcvar", "M_OPTION",	"o",	"OptionsMenu"
+	//PatchItem "M_RDTHIS",   "r",    "ReadThisMenu"
+	//PatchItem "M_LOADG",	"l",	"LoadGameMenu"
+	//PatchItem "M_SAVEG",	"s",	"SaveGameMenu"
+	PatchItem "M_QUITG",	"q",	"QuitMenu"
+	AnimatedTransition
+}
+
+ListMenu "DIOptionsMenu"
+{
+	Class "DITF_TooltipListMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	StaticTextCentered 48, 12, "$Options", "DarkGrey"
+	Font "BIGFONT", "White"
+	Position 64, 40
+	TextItem "$Controls", "c", "DIControls"
+	Tooltip "Contains settings for Mouse, Controller, and Keybinds."
+	TextItem "$HUD", "h", "DIHUDOptions"
+	Tooltip "Control most of the UI elements from here."
+	//TextItem "$Gameplay", "g", "BoxGameplay"
+	TextItem "$Graphics", "g", "DIGraphics"
+	Tooltip "A whole treasure trove of options in here."
+	TextItem "$Video", "v", "DIVideo"
+	Tooltip "Control renderer and resolution settings from here."
+	TextItem "$Sound", "s", "SoundOptionsSimple"
+	Tooltip "I think you get how this one works."
+	TextItem "Hats", "h", "boxparty_HatMenu"
+	Tooltip "Lets you choose your hat.\n\nOnly visible in mirrors and in third person."
+	//TextItem "$Misc", "m", "BoxMisc"
+	AnimatedTransition
+	Size "Clean"
+}

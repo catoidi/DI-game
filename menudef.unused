@@ -1,0 +1,92 @@
+//menudef.unused
+
+
+/*
+ListMenu "MainMenu"
+{
+	Class "DIFakeListMenu"
+}
+*/
+
+ListMenu "PlayerclassMenu"
+{
+	NetgameMessage "$NEWGAME"
+	StaticTextCentered 160, 0, "$MNU_CHOOSECLASS", "Purple"
+	Selector "graphics/m_selector.png", -24, -4
+	Font "BIGFONT", "White"
+	Position 48, 20
+	PlayerDisplay 220, 20, "20 00 00", "100 100 50"
+	MouseWindow 0, 220
+	AnimatedTransition
+	Size "Clean"
+	LineSpacing 13
+	//when 'optclean' was on, the player portraits were getting cropped.
+	//this menu gets autofilled by mapinfo.
+}
+
+ListMenu "EpisodeMenu"
+{
+	NetgameMessage "$NEWGAME"
+	Position 48, 63
+	StaticText 54, 38, "$MNU_EPISODE"
+}
+
+ListMenu "SkillMenu"
+{
+	StaticText 74, 16, "$MNU_CHOOSESKILL"
+	Position 160, 44
+}
+
+ListMenu "LoadGameMenu"
+{
+	NetgameMessage "$LOADNET"
+	StaticTextCentered 160, -10, "$MNU_LOADGAME"
+	Position 80, 54
+	Class "LoadMenu"
+	//Size Clean
+}
+
+ListMenu "SaveGameMenu"
+{
+	StaticTextCentered 160, -10, "$MNU_SAVEGAME"
+	Position 80, 54
+	Class "SaveMenu"
+	//Size Clean
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	Option "Autosaving",		"di_autosave",		OnOff
+	Slider "HUD Shake", 		"box_hudshake",		0, 20, 1, 0	
+	StaticText " "
+	StaticText "This option menu will be replaced in the future.", "Brick"
+}
+
+AddOptionMenu "OptionsMenuSimple"
+{
+	StaticText ""
+	Option "Autosaving",		"di_autosave",		OnOff
+	Slider "HUD Shake", 		"box_hudshake",		0, 20, 1, 0	
+	StaticText " "
+	StaticText "This option menu will be replaced in the future.", "Brick"
+}
+
+//from box party
+OptionMenu "BoxPlayerMenu"
+{
+	//copy/pasted from gzdoom.pk3.
+	Title "$MNU_PLAYERSETUP"
+	PlayerNameField "$PLYRMNU_NAME"
+	PlayerColorItem "$PLYRMNU_PLAYERCOLOR", "PlayerColors"
+	PlayerColorSlider "$PLYRMNU_RED", 0
+	PlayerColorSlider "$PLYRMNU_GREEN", 1
+	PlayerColorSlider "$PLYRMNU_BLUE", 2
+	PlayerClassItem "$PLYRMNU_PLAYERCLASS", "PlayerClass"
+	PlayerGenderItem "$PLYRMNU_PLAYERGENDER", "Gender"
+	PlayerSwitchOnPickupItem "$PLYRMNU_SWITCHONPICKUP", "OffOn"
+	Option "$PLYRMNU_ALWAYSRUN", cl_run, "OnOff"
+	StaticText " "
+	Submenu "$BOX_HAT_MENU", "boxparty_hatmenu"
+	Class "NewPlayerMenu"
+}
