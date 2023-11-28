@@ -59,6 +59,12 @@ OptionMenu "BoxActionControlsMenu"
 	Control    "$CNTRLMNU_RUN"              , "+speed"
 	Control    "$CNTRLMNU_TOGGLERUN"        , "toggle cl_run"
 	Tooltip "Control the speed of your travels."
+	
+	StaticText ""
+	Control "Toggle Aim Assist","netevent AimAssistToggle"
+	Tooltip "Control Aim Assist at the press of a button. Note that Aim Assist also works with Keyboard/Mouse."
+	Control "Hold Toggle Aim Assist","+AimAssistToggleHold"
+	Tooltip "Use this if you want to hold down a button to enable Aim Assist."
 }
 
 OptionMenu "BoxWeaponsControlMenu"

@@ -157,6 +157,13 @@ version "4.11"
 //secret (shh don't tell anyone ok???)
 #include "zscript_DI/secret/cats.zsc"
 
+//aim assist mod
+#include "zscript_libraries/AimAssist/Handler.zs"
+#include "zscript_libraries/AimAssist/PlayerData.zs"
+#include "zscript_libraries/AimAssist/Marker.zs"
+#include "zscript_libraries/AimAssist/Menu.zs"
+#include "zscript_libraries/AimAssist/ZJSON/Include.zs"
+
 //////////////////////////////////////////////////////////////
 //The below included code is under the MIT License.
 //You can find the details either embedded in the file itself,

@@ -6,7 +6,7 @@ OptionMenu "DIGraphics"
 	class "DITF_TooltipOptionMenu"
 	TooltipAppearance "", "gold", "TFTTBG"
 	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
-	Title "$BoxGraphics"
+	Title "Graphics Options"
 
 	Submenu "$DSPLYMNU_GLOPT", 			"DIHardware"
 	Tooltip "OpenGL/Vulkan specific options are stored here."
@@ -34,7 +34,7 @@ OptionMenu "DIVideo"
 	class "DITF_TooltipOptionMenu"
 	TooltipAppearance "", "gold", "TFTTBG"
 	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
-	Title "$BoxVideo"
+	Title "Video Options"
 	
 	Option "$VIDMNU_PREFERBACKEND",		"vid_preferbackend", "PreferBackend"
 	Tooltip "Vulkan is recommended.\n\nIf struggling with graphical glitches or performance issues, try using 'OpenGL ES'."
@@ -53,6 +53,13 @@ OptionMenu "DIVideo"
 	Tooltip "Controls the game's internal resolution.\n\n'Normal' will match the resolution of the game window."
 	Slider "$VIDMNU_SCALEFACTOR",		"vid_scalefactor", 0.25, 2.0, 0.25, 2
 	Tooltip "Multiplies the internal resolution.\n\nHigher values can work as a replacement for anti-aliasing, but is extremely resource intensive."
+	StaticText ""
+	SubMenu "$VIDMNU_RESPRESET", CustomResolutionMenu
+	Tooltip "Easily change the game's window size from here."
+	Command "$VIDMNU_APPLYW", "menu_resolution_commit_changes 0"
+	Tooltip "Applies your chosen window size."
+	Command "$VIDMNU_APPLYFS", "menu_resolution_commit_changes 1"
+	Tooltip "Applies your chosen window size in fullscreen mode."
 }
 
 OptionMenu "DIHardware"

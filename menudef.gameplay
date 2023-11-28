@@ -1,0 +1,17 @@
+//h
+
+OptionMenu "DIGameplay"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "Gameplay Options"
+	StaticText ""
+	StaticText "Aim Assist", "Purple"
+	Option "Aim Assist Enabled","cl_aim_assist_enabled","OnOff"
+	Tooltip "Allows you to automatically 'lock on' to enemies near your crosshair.\n\Works with controller or keyboard/mouse.\n\nYou can also set a keybind to toggle aim assist on the fly.\n\nDisabled by default."
+	Slider "Assist Intensity","cl_aim_assist_rot_speed",0.1,5,0.1
+	Tooltip "Intensity in angle per tick for Aim Assist.\n\nLower to decrease assist force."
+	Command "Update Now (Ingame)","netevent AimAssistUpdateCVARs"
+	Tooltip "Normally changing Aim Assist settings won't take effect until you start a new game.\n\nThis forces the settings to update immediately."
+}
