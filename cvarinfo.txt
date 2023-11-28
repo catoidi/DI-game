@@ -23,6 +23,7 @@ user color di_xhair_color = "FF FF FF"; //the default color of the crosshair.
 user bool di_xhair_fresh_toggle = true; //fresh meter below crosshair.
 user float di_xhair_fresh_scale = 1.0; //how long the meter can grow.
 user float di_xhair_fresh_alpha = 0.65; //another alpha cvar, combined with the crosshair's alpha.
+user bool di_xhair_precise = false;
 
 //DI item hud
 user bool di_itemhud_toggle = true; //enables the item hud.
@@ -57,6 +58,16 @@ user   string dam_fontclass = "DamNumFontGameDefault";
 user   string dam_translation = "DamDefault";
 user   int    dam_physics = 0;
 user   bool   dam_usetypes = true;
+
+//precise crosshair
+server bool pc_enable = false;
+user bool pc_flip_y = false;
+user bool pc_flip_x = false;
+user bool pc_disable_slot_1    = false;
+user bool pc_disable_not_ready = false;
+user bool pc_disable_no_weapon = true;
+user bool pc_target_health = false;
+user float pc_y;
 
 //aim assist (base)
 	User Bool cl_aim_assist_enabled = false;

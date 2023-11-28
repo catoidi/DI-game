@@ -164,6 +164,19 @@ version "4.11"
 #include "zscript_libraries/AimAssist/Menu.zs"
 #include "zscript_libraries/AimAssist/ZJSON/Include.zs"
 
+//precise crosshair mod
+#include "zscript_libraries/precisecrosshair/pc_event_handler.zs"
+#include "zscript_libraries/precisecrosshair/pc_puff.zs"
+#include "zscript_libraries/precisecrosshair/libeye/pc_projector.zs"
+#include "zscript_libraries/precisecrosshair/libeye/pc_projector gl.zs"
+#include "zscript_libraries/precisecrosshair/libeye/pc_projector planar.zs"
+#include "zscript_libraries/precisecrosshair/libeye/pc_viewport.zs"
+#include "zscript_libraries/precisecrosshair/settings/pc_settings_base.zs"
+#include "zscript_libraries/precisecrosshair/settings/pc_cvar_setting.zs"
+#include "zscript_libraries/precisecrosshair/settings/pc_bool_setting.zs"
+#include "zscript_libraries/precisecrosshair/settings/pc_settings_pack.zs"
+#include "zscript_libraries/precisecrosshair/settings/pc_settings.zs"
+
 //////////////////////////////////////////////////////////////
 //The below included code is under the MIT License.
 //You can find the details either embedded in the file itself,

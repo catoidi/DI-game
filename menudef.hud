@@ -26,6 +26,8 @@ OptionMenu "DIHudOptions"
 	StaticText "Crosshair Options", "Purple"
 	Option "Enabled?", "di_xhair_toggle", "xhairvalues"
 	Tooltip "Setting to 'Dynamic' will have crosshair dynamically match the weapon's accuracy."
+	Option "Precise Mode", "di_xhair_precise", YesNo
+	Tooltip "When enabled, the crosshair will dynamically move up/down to match where your bullets will actually land.\n\nDisabled by default."
 	Slider "Scale", "di_xhair_scale", 1.0, 10.0, 0.5, 1, "di_xhair_toggle"
 	Tooltip "Controls the size of the crosshair."
 	Slider "Alpha", "di_xhair_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_toggle"

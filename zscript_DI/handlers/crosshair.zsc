@@ -10,6 +10,7 @@ class DIXHairHandler : EventHandler
 	transient ui cvar xhair_alpha;
 	transient ui cvar xhair_color;
 	transient ui cvar xhair_precise;
+	transient ui cvar xhair_precise_toggle;
 	transient ui cvar fresh_toggle;
 	transient ui cvar fresh_scale;
 	transient ui cvar fresh_alpha;
@@ -72,6 +73,7 @@ class DIXHairHandler : EventHandler
 		xhair_alpha = CVar.GetCVar("di_xhair_alpha", players[consoleplayer]);
 		xhair_color = CVar.GetCVar("di_xhair_color", players[consoleplayer]);
 		xhair_precise = CVar.GetCVar("pc_y", players[consoleplayer]);
+		xhair_precise_toggle = CVar.GetCVar("di_xhair_precise", players[consoleplayer]);
 		fresh_toggle = CVar.GetCVar("di_xhair_fresh_toggle", players[consoleplayer]);
 		fresh_scale = CVar.GetCVar("di_xhair_fresh_scale", players[consoleplayer]);
 		fresh_alpha = CVar.GetCVar("di_xhair_fresh_alpha", players[consoleplayer]);
@@ -80,7 +82,7 @@ class DIXHairHandler : EventHandler
 		{
 			double cenx = screen.GetWidth() / 2;
 			double ceny = screen.GetHeight() / 2;
-			if (xhair_precise != null) {ceny = xhair_precise.GetFloat();} //mod compatibility with Precise Crosshair.
+			if (xhair_precise_toggle.GetBool() == true) {ceny = xhair_precise.GetFloat();} //mod compatibility with Precise Crosshair.
 			
 			double pfov = diplayer.player.fov;
 			
