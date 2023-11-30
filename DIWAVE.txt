@@ -175,7 +175,7 @@ Level DI01;
 		Wait 96;
 		Time 60;
 		Spawn Ron2, 2, DISpawnerSpot_Big;
-		Wait 38;
+		Wait 32;
 		Spawn Fred3, 1, DISpawnerSpot_Big;
 		Spawn Ron2, 2, DISpawnerSpot_Big;
 	}
