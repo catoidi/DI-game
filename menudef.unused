@@ -60,7 +60,8 @@ AddOptionMenu "OptionsMenu"
 	Option "Autosaving",		"di_autosave",		OnOff
 	Slider "HUD Shake", 		"box_hudshake",		0, 20, 1, 0	
 	StaticText " "
-	StaticText "This option menu will be replaced in the future.", "Brick"
+	StaticText "Warning: Many options in these menus", "Brick"
+	StaticText "may cause unintended consequences ingame.", "Brick"
 }
 
 AddOptionMenu "OptionsMenuSimple"
@@ -69,7 +70,8 @@ AddOptionMenu "OptionsMenuSimple"
 	Option "Autosaving",		"di_autosave",		OnOff
 	Slider "HUD Shake", 		"box_hudshake",		0, 20, 1, 0	
 	StaticText " "
-	StaticText "This option menu will be replaced in the future.", "Brick"
+	StaticText "Warning: Many options in these menus", "Brick"
+	StaticText "may cause unintended consequences ingame.", "Brick"
 }
 
 //from box party

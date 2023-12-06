@@ -18,6 +18,7 @@ CLASS GrenadeLauncher : DI_Weapon
 		Weapon.AmmoGive 4;
 		Weapon.AmmoType "GrenadeLauncherAmmo";
 		Inventory.Pickupmessage "Acquired the Grenade Launcher.";
+		Inventory.Icon "GLANZ0";
 		Tag "Grenade Launcher";
 		//$Category "DI/Weapons/"
 		//$Title "Grenade Launcher"
@@ -99,7 +100,7 @@ CLASS GrenadeLauncher : DI_Weapon
 			GLAN # 4;
 			Goto Ready;
 		Spawn:
-			TNT1 A -1;
+			GLAN Z -1;
 			Stop;
 	}
 }

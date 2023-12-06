@@ -11,6 +11,9 @@ SKILL_NIGHTMARE = "Inevitable";
 
 CNTRLMNU_WEAPONS = "Inventory";
 
+//Keybinds
+DI_OPENCATALOGUE = "Open Catalogue";
+
 //NewGameMenu
 DIMENU_SELECT_DI00 = "Tutorial";
 DIMENU_SELECT_DI01 = "ur 1st death";

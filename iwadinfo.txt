@@ -7,7 +7,7 @@ IWad
     Game = "Doom"
     Config = "DI"
     IWADname = "DI.ipk3"
-	Load = "di-content.pk3"
+	Load = "di-content.pk3", "di-gearbox.pk3"
 	Mapinfo = "mapinfo/mindefaults.txt"
     BannerColors = "FFFFFF", "000000"
 	//StartupType = "Hexen"
