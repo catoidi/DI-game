@@ -21,6 +21,7 @@ class DIXHairHandler : EventHandler
 	transient double wep_rec; //current weapon recoil.
 	transient DI_Weapon diwep; //the player's current weapon.
 	transient DI_PlayerBase diplayer; //the current console player.
+	transient ui bool showwheel; //is the weapon wheel active on this tic?
 	
 	override void WorldLoaded(WorldEvent e)
 	{
@@ -51,6 +52,11 @@ class DIXHairHandler : EventHandler
 			else if (curspread < xspread) {xspread -= (xspread - curspread) / 3.0;}
 		}
 		Super.UITick();
+	}
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name == "di_showwheel") {showwheel = true;}
 	}
 	
 	void GetWeaponAccuracy()
@@ -91,6 +97,7 @@ class DIXHairHandler : EventHandler
 			if (xhair_toggle.GetInt() == 2) {accnum += wep_rec;}
 			curspread = (3.0 * xscale) + (accnum * ((screen.GetWidth() / screen.GetAspectRatio()) / pfov));
 			double xalpha = ((1.0 - (wep_rec / ((pfov / 2) - wep_acc))) * xhair_alpha.GetFloat()) * xhair_startalpha;
+			if (showwheel) {xalpha *= 0.25;}
 			let xcolor = Translation.GetID("DamWhite");
 			if (diplayer.CanFreshKill()) {xcolor = Translation.GetID("IsFresh");}
 			else if ((diplayer.LastKillTimer >= 1) && (diplayer.LastWeaponKill == diwep.GetClassName())) {xcolor = Translation.GetID("DamDarkGrey");}
@@ -106,5 +113,7 @@ class DIXHairHandler : EventHandler
 				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + xspread + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, xscale, DTA_CenterOffset, true);
 			}
 		}
+		
+		showwheel = false;
 	}
 }
