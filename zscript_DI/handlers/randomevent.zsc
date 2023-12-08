@@ -1,6 +1,7 @@
 class DIEventHandler : EventHandler //you see the joke here is that this eventhandler is the one that handles DI's random events.
 {
 	bool dobulletdeath; //enables the bullet death event.
+	bool dofredpunch; //replace freds with fruit punchers.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -10,6 +11,10 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		if (e.Name == "dievent_bulletdeath")
 		{
 			dobulletdeath = true;
+		}
+		else if (e.Name == "dievent_fredpuncher")
+		{
+			dofredpunch = true;
 		}
 	}
 	
@@ -32,6 +37,17 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			DI_Monster thingy = DI_Monster(e.Thing);
 			if (dobulletdeath) {BulletDeath(thingy);}
+		}
+	}
+	
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (dofredpunch == true)
+		{
+			if (e.Replacee.GetClassName() == 'Fred') 
+			{
+				e.Replacement = 'FruitPuncher';
+			}
 		}
 	}
 	
