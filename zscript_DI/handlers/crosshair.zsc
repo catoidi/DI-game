@@ -4,13 +4,14 @@
 
 class DIXHairHandler : EventHandler
 {
-	TextureID xhair_tex, xhair_freshtex; //crosshair textures.
+	TextureID xhair_dottex, xhair_tex, xhair_freshtex; //crosshair textures.
 	transient ui cvar xhair_toggle;
 	transient ui cvar xhair_scale;
 	transient ui cvar xhair_alpha;
 	transient ui cvar xhair_color;
 	transient ui cvar xhair_precise;
 	transient ui cvar xhair_precise_toggle;
+	transient ui cvar dot_toggle;
 	transient ui cvar fresh_toggle;
 	transient ui cvar fresh_scale;
 	transient ui cvar fresh_alpha;
@@ -25,6 +26,7 @@ class DIXHairHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent e)
 	{
+		xhair_dottex = TexMan.CheckForTexture("graphics/dixhair_dot.png");
 		xhair_tex = TexMan.CheckForTexture("dixhair");
 		xhair_freshtex = TexMan.CheckForTexture("graphics/dixhair_fresh.png");
 	}
@@ -83,6 +85,7 @@ class DIXHairHandler : EventHandler
 		fresh_toggle = CVar.GetCVar("di_xhair_fresh_toggle", players[consoleplayer]);
 		fresh_scale = CVar.GetCVar("di_xhair_fresh_scale", players[consoleplayer]);
 		fresh_alpha = CVar.GetCVar("di_xhair_fresh_alpha", players[consoleplayer]);
+		dot_toggle = CVar.GetCVar("di_xhair_dot", players[consoleplayer]);
 	
 		if ((diwep) && (diplayer) && (xhair_toggle.GetInt() > 0))
 		{
@@ -107,6 +110,11 @@ class DIXHairHandler : EventHandler
 			if (diplayer.CanFreshKill()) {xcolor = Translation.GetID("IsFresh");} //change xhair color to blue when fresh is ready
 			else if ((diplayer.LastKillTimer >= 1) && (diplayer.LastWeaponKill == diwep.GetClassName())) {xcolor = Translation.GetID("DamDarkGrey");}
 			else if (diplayer.LastKillTimer < 1) {xcolor = Translation.GetID("NotFresh");} //fresh is ready but the weapon is wrong
+			
+			if (dot_toggle.GetBool() == true)
+			{
+				Screen.DrawTexture(xhair_dottex, false, cenx, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
+			}
 			
 			Screen.DrawTexture(xhair_tex, false, cenx + fracspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //right
 			Screen.DrawTexture(xhair_tex, false, cenx - fracspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //left
