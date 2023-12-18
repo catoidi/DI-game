@@ -54,6 +54,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	virtual void ResetRandomEvents()
 	{
 		dobulletdeath = false;
+		dofredpunch = false;
 	}
 	
 	virtual void BulletDeath(DI_Monster mon)
