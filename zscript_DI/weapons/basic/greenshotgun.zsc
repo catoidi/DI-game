@@ -32,17 +32,6 @@ CLASS GreenShotgun : DI_Weapon
 		//$Color 9
 	}
 	
-	int damnum;
-	bool isreload;
-	
-	override void tick()
-	{
-		super.tick();
-		
-		damnum = wpn_damage;
-		if ((owner) && (owner.CountInv("GreenShotgunAmmo") <= 1)) {damnum += 3;}
-	}
-	
 	States
 	{
 		Ready:
@@ -65,7 +54,7 @@ CLASS GreenShotgun : DI_Weapon
 				A_Overlay(-2, "Flash");
 				A_Overlay(2, "Fire_Barrel");
 				A_SetPitch(pitch - 1.6);
-				DI_BasicBullet(invoker.damnum, false);
+				DI_BasicBullet(invoker.wpn_damage, false);
 				A_StartSound("pistpow");
 				A_TakeInventory("GreenShotgunPump", 1);
 				//A_OverlayOffset(PSP_WEAPON, -12, 12, WOF_ADD);

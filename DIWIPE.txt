@@ -10,6 +10,7 @@ PopcornGun;
 BoxAmmo;
 PopcornGunAmmo2;
 GrenadeLauncher;
+DoubleShotgun;
 DI_BaseDamageGiver;
 DI_ExtraCoinGiver;
 DI_FreshBonusGiver;

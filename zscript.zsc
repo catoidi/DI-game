@@ -112,7 +112,7 @@ version "4.11"
 #include "zscript_DI/weapons/normal/grenadelauncher.zsc"
 //#include "zscript_DI/weapons/normal/sniperrifle.zsc"
 //#include "zscript_DI/weapons/normal/dualsmg.zsc"
-//#include "zscript_DI/weapons/normal/doubleshotgun.zsc"
+#include "zscript_DI/weapons/normal/doubleshotgun.zsc"
 //fantasy weapons
 #include "zscript_DI/weapons/fantasy/stunbow.zsc"
 //#include "zscript_DI/weapons/fantasy/swordshield.zsc"

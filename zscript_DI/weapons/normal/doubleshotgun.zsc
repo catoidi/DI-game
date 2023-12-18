@@ -1,0 +1,183 @@
+//zscript_DI/weapons/normal/doubleshotgun.zsc
+
+//the double shotgun. it's basically the green shotgun, but with double the fire power.
+
+Class DoubleShotgun : GreenShotgun
+{
+	Default
+	{
+		DI_Weapon.FreshBonus 1;
+		DI_Weapon.BaseDamage 8;
+		DI_Weapon.BaseAccuracy 8;
+		DI_Weapon.Projectiles 16;
+		DI_Weapon.Recoil 10.0;
+		DI_Weapon.RecoilOffset 3.0;
+		DI_Weapon.RecoilRecover 1.25;
+		DI_Weapon.Ammo2Hud 1;
+		DI_Weapon.DontGiveAmmo2 true;
+		Weapon.Kickback 50;
+		Weapon.SelectionOrder 10000;
+		Weapon.SlotNumber 2;
+		Weapon.SlotPriority 1;
+		Weapon.AmmoUse 2;
+		Weapon.AmmoGive 10;
+		Weapon.AmmoGive2 2;
+		Weapon.AmmoType "DoubleShotgunAmmo";
+		Weapon.AmmoType2 "DoubleShotgunPump";
+		Inventory.PickupMessage "Acquired the Double Pump-Action Shotgun.";
+		Inventory.Icon "PUSGZ0";
+		Tag "Double Shotgun";
+		//$Category "DI/Weapons/"
+		//$Title "Double Shotgun"
+		//$Color 9
+	}
+	
+	States
+	{
+		Ready:
+			PUSG A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Deselect:
+			PUSG A 0 A_Lower;
+			Loop;
+		Select:
+			PUSG A 0 A_TakeInventory("DoubleShotgunReload");
+			PUSG AAA 0 A_Raise;
+			PUSG A 1 A_Raise;
+			Loop;
+		Fire:
+			PUSG C 0;
+			PUSG C 0 A_JumpIfInventory("DoubleShotgunPump", 1, 2);
+			PUSG C 0 A_Jump(256, "NoReload");
+			PUSG C 2 BRIGHT 
+			{
+				A_Overlay(-2, "Flash");
+				A_Overlay(2, "Fire_Barrel");
+				A_SetPitch(pitch - 1.6);
+				DI_BasicBullet(invoker.wpn_damage, false);
+				A_StartSound("pistpow");
+				A_TakeInventory("DoubleShotgunPump", 2);
+			}
+			PUSG B 8;
+			PUSG B 0 DI_WeaponReady(WRF_NOPRIMARY);
+			Goto Ready;
+		Fire_Barrel:
+			PUSG F 2 BRIGHT;
+			PUSG F 12;
+			Stop;
+		AltFire:
+			//checks
+			#### # 0 A_JumpIfInventory("DoubleShotgunPump", 1, "NoReload");
+			#### # 0 A_JumpIfInventory("DoubleShotgunAmmo", 2, 2);
+			#### # 0 A_Jump(256, "NoReload");
+			//rotate
+			#### A 0 
+			{
+				A_Overlay(2, "Pump_Barrel");
+				A_OverlayPivot(PSP_WEAPON, 0.2, 0.3);
+				A_OverlayPivot(2, 0.2, 0.3);
+			}
+			#### AAAAAAAA 1 
+			{
+				A_OverlayRotate(PSP_WEAPON, 6, WOF_ADD);
+				A_OverlayRotate(2, 6, WOF_ADD);
+			}
+			//pump
+			#### # 0 A_StartSound("Weapons/PartyShotty/SHOTLOAD", CHAN_WEAPON);
+			PUSG B 1 A_OverlayOffset(PSP_WEAPON, 0, -3, WOF_ADD);
+			PUSG BBBBBB 1 A_OverlayOffset(PSP_WEAPON, -0.5, 0.5, WOF_ADD);
+			PUSG D 3;
+			PUSG DDDDDD 1 A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			PUSG B 1 A_OverlayOffset(PSP_WEAPON, 0, 3, WOF_ADD);
+			#### # 0 A_TakeInventory("DoubleShotgunAmmo", 2);
+			PUSG B 3 A_GiveInventory("DoubleShotgunPump", 2);
+			//rotate again
+			#### AAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, -6, WOF_ADD);
+			Goto Ready;
+		Pump_Barrel:
+			TNT1 A 8 A_OverlayOffset(2, -38, -70); //wait for rotate
+			PUSG F 1;
+			PUSG FFFFFF 1 A_OverlayOffset(2, -0.67, 2, WOF_ADD);
+			PUSG F 3;
+			PUSG FFFFFF 1 A_OverlayOffset(2, 0.67, -2, WOF_ADD);
+			PUSG F 4;
+			Stop;
+		Reload:
+			PUSG A 0 A_JumpIfInventory("DoubleShotgunReload", 1, "ReloadStart");
+			PUSG A 0 A_JumpIfInventory("DoubleShotgunAmmo", invoker.Ammo1.MaxAmount, "NoReload");
+			PUSG AAAAAA 1 A_OverlayOffset(PSP_WEAPON, 10, 2, WOF_ADD);
+			Goto ReloadStart;
+		ReloadStart:
+			PUSG D 10 {A_Overlay(2, "Reload_Barrel"); A_Overlay(3, "Reload_Shell");}
+			PUSG D 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
+			PUSG B 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
+			#### # 0 A_GiveInventory("DoubleShotgunAmmo", 1);
+			PUSG A 0 A_GiveInventory("DoubleShotgunReload", 1);
+			PUSG A 2 A_JumpIfInventory("DoubleShotgunAmmo", invoker.Ammo1.MaxAmount, "ReloadEnd");
+			PUSG A 2 DI_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD);
+			Goto ReloadEnd;
+		Reload_Barrel:
+			PUSG F 16;
+			Stop;
+		Reload_Shell:
+			TNT1 A 0 A_OverlayOffset(3, 6, 36, WOF_ADD);
+			PUSG GGGGGG 1 A_OverlayOffset(3, -2, -6, WOF_ADD);
+			PUSG GGGG 1 A_OverlayOffset(3, 1.5, 0, WOF_ADD);
+			PUSG H 4;
+			Stop;
+		ReloadEnd:
+			PUSG A 0 A_TakeInventory("DoubleShotgunReload");
+			PUSG AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, -2, WOF_ADD);
+			Goto Ready;
+		NoReload:
+			#### # 0 A_StartSound("noammo", starttime: 0.1);
+			PUSG A 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
+			PUSG AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
+			PUSG A 4;
+			Goto Ready;
+		Flash:
+			PUSG E 2 BRIGHT;
+			Stop;
+		Spawn:
+			PUSG Z -1;
+			Stop;
+	}
+}
+
+
+
+Class DoubleShotgunAmmo : Ammo
+{
+	Default
+	{
+		Radius 20;
+		Height 24;
+		Inventory.Amount 10;
+		Inventory.MaxAmount 10;
+	}
+	
+	States
+	{
+		Spawn:
+			SHOT F -1;
+			Stop;
+	}
+}
+
+Class DoubleShotgunPump : Ammo
+{
+	Default
+	{
+		Inventory.Amount 2;
+		Inventory.MaxAmount 2;
+	}
+}
+
+Class DoubleShotgunReload : Inventory 
+{
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+	}
+}
