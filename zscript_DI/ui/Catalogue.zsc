@@ -462,13 +462,16 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 				let iconname = TexMan.GetName(icon);
 				int sizex, sizey;
 				[sizex, sizey] = TexMan.GetSize(icon);
-				if (sizex == 0) {sizex = 1;}
+				if (sizex == 0) {sizex = 1;} //do not divide by 0 pls thank u :)
 				if (sizey == 0) {sizey = 1;}
 				vector2 iconsize = (sizex, sizey);
-				float sizescale = 60 / sizey;
-				if (sizescale > (60 / sizex)) {sizescale = 60 / sizex;}
+				float sizescale = 120 / sizex; //get scale from X
+				float sizescaley = 60 / sizey; //get scale from Y
+				if (sizescaley > sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
+				if (sizescale > 3.0) {sizescale = 3.0;} //default size is 3x.
+				float starty = (60 - (sizey * sizescale)) / 2; //place texture in the center of the whitespace.
 				let itemtexture = boxparty_ZF_BoxTextures.CreateTexturePixels(iconname, (0, 0), iconsize, true, true);
-				itemimage = boxparty_ZF_BoxImage.Create((startx - 180, 102), iconsize * sizescale, itemtexture);
+				itemimage = boxparty_ZF_BoxImage.Create((startx - 180, starty + 102), iconsize * sizescale, itemtexture);
 				itemimage.Pack (mainFrame);
 			}
 		}
