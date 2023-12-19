@@ -106,6 +106,7 @@ Class DI_Weapon : Weapon abstract
 				RecoilTick();
 				//AutoOffset(); //handled through the player actor now, since it doesn't appear to work when called from the gun itself ???????????????????????????????????????
 			}
+			else {ResetRecoil();}
 			plr.weaponnum += 1;
 		}
 	}
@@ -169,7 +170,7 @@ Class DI_Weapon : Weapon abstract
 		if (!Ammo1) {return;}
 		Ammo1.MaxAmount = Ammo1.Default.MaxAmount;
 		
-		Ammo1.MaxAmount += plr.CountInv("DI_AmmoGiver") + (plr.CountInv("DI_AmmoGiver") * (Ammo1.MaxAmount / 3));
+		if (wpn_dontgiveammo1 == false) {Ammo1.MaxAmount += plr.CountInv("DI_AmmoGiver") + (plr.CountInv("DI_AmmoGiver") * (Ammo1.MaxAmount / 3));}
 	}
 	
 	virtual void GetMaxAmmo2()
@@ -177,7 +178,7 @@ Class DI_Weapon : Weapon abstract
 		if (!Ammo2) {return;}
 		Ammo2.MaxAmount = Ammo2.Default.MaxAmount;
 		
-		Ammo2.MaxAmount += plr.CountInv("DI_AmmoGiver") + (plr.CountInv("DI_AmmoGiver") * (Ammo2.MaxAmount / 3));
+		if (wpn_dontgiveammo2 == false) {Ammo2.MaxAmount += plr.CountInv("DI_AmmoGiver") + (plr.CountInv("DI_AmmoGiver") * (Ammo2.MaxAmount / 3));}
 	}
 	
 	virtual void RecoilTick()
