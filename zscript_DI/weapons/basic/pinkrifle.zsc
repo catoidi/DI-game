@@ -87,15 +87,16 @@ CLASS PinkRifle : DI_Weapon
 			PRIF GGGG 1 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			PRIF G 31;
 			PRIF A 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
-			PRIF AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 1.5, WOF_ADD);
+			PRIF AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 0.5, WOF_ADD);
 			PRIF A 0 A_GiveInventory("PinkRifleAmmo", invoker.Ammo1.MaxAmount);
-			PRIF AAAAAAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, -4, WOF_ADD); //A_OverlayOffset(PSP_WEAPON, 0, 6, WOF_ADD);
+			PRIF AAAAAAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, -4, WOF_ADD);
 			Goto Ready;
 		ReloadClip:
 			TNT1 A 1 {A_OverlayPivot(-2, 0.2, 0.3); A_OverlayRotate(-2, 48, WOF_ADD);}
 			TNT1 A 1 A_OverlayOffset(-2, 0, -64, WOF_ADD);
 			PRIF E 1;
 			PRIF EEEEEEEEEEE 1 A_OverlayOffset(-2, 6, 12, WOF_ADD);
+			#### # 0 DI_EjectMagazine("PinkRifleMagazine");
 			TNT1 A 16;
 			PRIF FFFFFFFF 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
 			Stop;
@@ -135,6 +136,21 @@ Class PinkRifleAmmo : Ammo
 	{
 		Spawn:
 			PRIF F -1;
+			Stop;
+	}
+}
+
+Class PinkRifleMagazine : DI_Casing1
+{
+	Default
+	{
+		Scale 0.16;
+	}
+	
+	States
+	{
+		Spawn:
+			PRIF Y 0 NoDelay A_Jump(256, "TimeToRoll");
 			Stop;
 	}
 }

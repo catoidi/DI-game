@@ -92,6 +92,7 @@ CLASS BlueSMG : DI_Weapon
 		ReloadClip:
 			BSMG E 1;
 			BSMG EEEEEEEEEEE 1 A_OverlayOffset(-2, 6, 12, WOF_ADD);
+			#### # 0 DI_EjectMagazine("BlueSMGMagazine");
 			TNT1 A 16;
 			BSMG FFFFFFFF 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
 			Stop;
@@ -131,6 +132,21 @@ Class BlueSMGAmmo : Ammo
 	{
 		Spawn:
 			BSMG F -1;
+			Stop;
+	}
+}
+
+Class BlueSMGMagazine : DI_Casing1
+{
+	Default
+	{
+		Scale 0.16;
+	}
+	
+	States
+	{
+		Spawn:
+			BSMG Y 0 NoDelay A_Jump(256, "TimeToRoll");
 			Stop;
 	}
 }

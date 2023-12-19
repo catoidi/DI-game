@@ -83,6 +83,7 @@ CLASS StarPistol : DI_Weapon
 			Goto Ready;
 		ReloadClip:
 			PIST DDDDDDDDDDD 1 A_OverlayOffset(-2, 3, 12, WOF_ADD);
+			#### # 0 DI_EjectMagazine("StarPistolMagazine");
 			PIST EEEEEEE 1 A_OverlayOffset(-2, -4.5, -18, WOF_ADD);
 			Stop;
 		NoReload:
@@ -118,6 +119,21 @@ Class StarPistolAmmo : Ammo
 	{
 		Spawn:
 			PIST F -1;
+			Stop;
+	}
+}
+
+Class StarPistolMagazine : DI_Casing1
+{
+	Default
+	{
+		Scale 0.16;
+	}
+	
+	States
+	{
+		Spawn:
+			PIST Y 0 NoDelay A_Jump(256, "TimeToRoll");
 			Stop;
 	}
 }

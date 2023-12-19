@@ -1,5 +1,7 @@
 //zscript_DI/effects/casings.zsc
 
+//can also be used for ejected magazine clips.
+
 Class DI_Casing1 : DI_Actor
 {
 	Default
