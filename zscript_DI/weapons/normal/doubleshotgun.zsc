@@ -86,7 +86,8 @@ Class DoubleShotgun : GreenShotgun
 			#### # 0 A_StartSound("Weapons/PartyShotty/SHOTLOAD", CHAN_WEAPON);
 			PUSG B 1 A_OverlayOffset(PSP_WEAPON, 0, -3, WOF_ADD);
 			PUSG BBBBBB 1 A_OverlayOffset(PSP_WEAPON, -0.5, 0.5, WOF_ADD);
-			PUSG D 3;
+			PUSG DD 1 DI_BulletCasing();
+			PUSG D 1;
 			PUSG DDDDDD 1 A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
 			PUSG B 1 A_OverlayOffset(PSP_WEAPON, 0, 3, WOF_ADD);
 			#### # 0 A_TakeInventory("DoubleShotgunAmmo", 2);

@@ -60,6 +60,7 @@ CLASS StarPistol : DI_Weapon
 				//A_OverlayOffset(PSP_WEAPON, -4, 4, WOF_ADD);
 				//if (invoker.recnum < 3) invoker.recnum += 1;
 			}
+			#### # 0 DI_BulletCasing(1);
 			PIST AAAAAA 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
 			PIST A 0 A_Refire;
 			PIST AA 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);

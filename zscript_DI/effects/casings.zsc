@@ -1,0 +1,104 @@
+//zscript_DI/effects/casings.zsc
+
+Class DI_Casing1 : DI_Actor
+{
+	Default
+	{
+		Gravity 0.33;
+		BounceType "Doom";
+		BounceFactor 0.3;
+		WallBounceFactor 0.7;
+		Radius 2;
+		Height 4;
+		Mass 1;
+		Scale 0.25;
+	
+		
+		Projectile;
+		-NOGRAVITY;
+		-SOLID;
+		-BLOCKEDBYSOLIDACTORS;
+		+DONTSPLASH;
+		+THRUACTORS;
+		//+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		+DONTBOUNCEONSKY;
+		+EXPLODEONWATER;
+	}
+	
+	bool ejectleft;
+	int rollint;
+	
+	int casingtimer;
+	
+	property EjectLeft: ejectleft;
+	
+	override void postbeginplay()
+	{
+		super.postbeginplay();
+		
+		A_FadeOut(0.8);
+		A_SetRoll(random(0, 359));
+		bINTERPOLATEANGLES = true;
+		
+		rollint = random(5, 10);
+		if (ejectleft)
+		{
+			rollint *= -1;
+			bSPRITEFLIP = true;
+		}
+	}
+	
+	override void tick(void)
+	{
+		super.tick();
+		
+		if (InStateSequence(CurState, ResolveState("Death")))
+		{
+			bMOVEWITHSECTOR = true;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			BULT A 0 NoDelay A_Jump(256, "TimeToRoll");
+			Stop;
+		TimeToRoll:
+			#### # 1 
+			{
+				A_SetRoll(roll + invoker.rollint);
+				++casingtimer;
+				if (casingtimer > 70) {A_FadeOut(0.05);}
+				else {A_FadeIn(0.04);}
+			}
+			Wait;
+		Death.Sky:
+		Death:
+			#### ############### 35 {if (self.Pos.Z ~== self.FloorZ) {bFLATSPRITE = true;} else {bFLATSPRITE = false;}} 
+			#### # 1 A_FadeOut(0.05);
+			Wait;
+	}
+}
+
+Class DI_Casing2 : DI_Casing1
+{
+	States
+	{
+		Spawn:
+			BULT B 0 NoDelay A_Jump(256, "TimeToRoll");
+			Stop;
+	}
+}
+
+Class DI_Casing3 : DI_Casing1
+{
+	States
+	{
+		Spawn:
+			BULT C 0 NoDelay A_Jump(256, "TimeToRoll");
+			Stop;
+	}
+}

@@ -291,4 +291,20 @@ Class DI_Weapon : Weapon abstract
 			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4));
 		}
 	}
+	
+	action void DI_BulletCasing(int casingtype = 0)
+	{
+		//0 = shells.
+		//1 = small bullets.
+		//2 = big bullets.
+		
+		string casing = "DI_Casing1";
+		switch(casingtype)
+		{
+			case 1: casing = "DI_Casing2"; break;
+			case 2: casing = "DI_Casing3"; break;
+		}
+		
+		A_SpawnItemEX(casing, 4, 0, invoker.owner.height / 2, 0, frandom(2.0, 4.0), frandom(0.0, 4.0), flags: SXF_NOCHECKPOSITION);
+	}
 }
