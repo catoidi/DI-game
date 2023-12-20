@@ -17,7 +17,7 @@ SHOPDESC_STARPISTOL = "Increasing your coin drops\nalso increases weapon's DMG."
 SHOPDESC2_STARPISTOL = "\cbBase DMG is 11, increases by 2 for every coin enemies can drop. While freshness is ready, this weapon does +8 DMG.";
 SHOPTYPE_STARPISTOL = "\cb[Weapon] \cr[Not a Shop Item]";
 SHOPITEM_GLOWSTICK = "Glowstick";
-SHOPDESC_GLOWSTICK = "Melee Weapon. Gains extra\nammo on fresh weapon bonus.\nLow combo increases DMG.";
+SHOPDESC_GLOWSTICK = "Melee Weapon. Gains extra\nammo on fresh weapon bonus.\nKills grant health pickups.";
 SHOPDESC2_GLOWSTICK = "\cbThis is a \ctBox Party \cbitem. The alt-fire uses ammo, but does much more DMG. Melee attacks can stun enemies for longer. Each Box Party item increases the chance of Party Ammo spawning.";
 SHOPTYPE_GLOWSTICK = "\cb[Weapon] \ca[Limited Ammo] \cr[Not a Shop Item]";
 
