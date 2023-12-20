@@ -345,6 +345,13 @@ Class DI_PlayerBase : PlayerPawn abstract
 		}
 	}
 	
+	virtual int DIMaxHealth()
+	{
+		let heal = GetMaxHealth(true);
+		heal -= CountInv("DI_Degen");
+		return heal;
+	}
+	
 	action void BuyPermaItem(string itemsave)
 	{
 		//note: this could've also been done by deleting the item from the wipe array,
