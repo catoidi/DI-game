@@ -1,5 +1,6 @@
 //DI
 server bool di_fancylight = true; //enemy projectiles emit light, disable to save performance.
+server int di_floortic = 1050; //controls how long blood/casings are left on the ground. default is 30 seconds.
 server bool di_testcvar = true; //test cvar pls ignore
 server bool di_autosave = false; //game will save at the end of every wave (not recommended)
 

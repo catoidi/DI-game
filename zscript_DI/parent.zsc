@@ -9,6 +9,13 @@ Class DI_Actor : Actor abstract
 	mixin DI_ActorMixin;
 }
 
+Class DI_FloorActor : DI_Actor abstract
+{
+	//use this for things like blood and bullet casings.
+	//the floortic int is controlled by an eventhandler.
+	int floortic;
+}
+
 Class DI_Drop : DI_Actor
 {
 	string coindrop;

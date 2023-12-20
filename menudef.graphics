@@ -9,7 +9,7 @@ OptionMenu "DIGraphics"
 	Title "Graphics Options"
 
 	Submenu "$DSPLYMNU_GLOPT", 			"DIHardware"
-	Tooltip "OpenGL/Vulkan specific options are stored here."
+	Tooltip "Having performance issues? Try changing some settings here."
 	StaticText ""
 	Option "$GLTEXMNU_TEXFILTER",		gl_texture_filter,				"FilterModes"
 	Tooltip "Recommended to leave on 'None (Trilinear)'."
@@ -27,6 +27,20 @@ OptionMenu "DIGraphics"
 	StaticText " "
 	Slider "$DSPLYMNU_FOV",						"fov",							75.0, 120.0, 0.1, 1
 	Tooltip ""
+	StaticText ""
+	StaticText "DI-specific Options", "Purple"
+	Option "Blood/Casing Lifetime", "di_floortic", "bloodtic"
+	Tooltip "Controls how long blood and bullet casings will stay on the ground before despawning.\n\nCan potentially have a large impact on performance.\n\nChanging this setting only affects future blood/casings."
+	Option "Projectile Lights", "di_fancylight", onoff
+	Tooltip "Enables dynamic lights for enemy projectiles.\n\nCan make spotting enemy attacks easier, but can also reduce performance."
+}
+
+OptionValue "bloodtic"
+{
+	35, "1 second"
+	1050, "30 seconds"
+	4200, "2 minutes"
+	21000, "10 minutes (Not Recommended)"
 }
 
 OptionMenu "DIVideo"

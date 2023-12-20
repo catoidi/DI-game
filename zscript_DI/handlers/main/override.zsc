@@ -14,6 +14,8 @@ extend class DIHandler
 		ParseDIWAVE(e);
 		//GetWaveData(e);
 		//ParseWaveData(e);
+		
+		GetFloorTime();
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -61,6 +63,10 @@ extend class DIHandler
 			if (e.Thing is "DIShop")
 			{
 				shoparray.Push(e.Thing);
+			}
+			if (e.Thing is "DI_FloorActor")
+			{
+				GiveFloorTime(DI_FloorActor(e.Thing));
 			}
 		}
 	}
@@ -118,6 +124,13 @@ extend class DIHandler
 	override void WorldTick()
 	{
 		ammogivetick = false;
+		
+		++floortimer;
+		if (floortimer > 210)
+		{
+			GetFloorTime();
+			floortimer = 0;
+		}
 	}
 	
 	override void NetworkProcess(ConsoleEvent e)

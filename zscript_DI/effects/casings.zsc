@@ -2,7 +2,7 @@
 
 //can also be used for ejected magazine clips.
 
-Class DI_Casing1 : DI_Actor
+Class DI_Casing1 : DI_FloorActor
 {
 	Default
 	{
@@ -79,7 +79,8 @@ Class DI_Casing1 : DI_Actor
 			Wait;
 		Death.Sky:
 		Death:
-			#### ############### 35 {if (self.Pos.Z ~== self.FloorZ) {bFLATSPRITE = true;} else {bFLATSPRITE = false;}} 
+			#### # 0 {bFLATSPRITE = true;}
+			#### # 1050 A_SetTics(floortic);
 			#### # 1 A_FadeOut(0.05);
 			Wait;
 	}

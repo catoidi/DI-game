@@ -1,0 +1,13 @@
+extend class DIHandler
+{
+	virtual void GetFloorTime()
+	{
+		floorcvar = cvar.GetCvar("di_floortic");
+		floortic = floorcvar.GetInt();
+	}
+
+	virtual void GiveFloorTime(DI_FloorActor fthing)
+	{
+		fthing.floortic = floortic;
+	}
+}

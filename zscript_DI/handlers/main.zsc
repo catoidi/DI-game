@@ -42,4 +42,8 @@ class DIHandler : EventHandler
 	
 	Array<String> eventdata; //stores the data for all events available for this level.
 	int lastevent; //how many waves it has been since the last event.
+	
+	transient cvar floorcvar;
+	int floortimer;
+	int floortic;
 }
