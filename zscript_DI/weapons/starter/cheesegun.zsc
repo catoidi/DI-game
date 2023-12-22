@@ -1,0 +1,30 @@
+//zscript_DI/weapons/starter/cheesegun.zsc
+
+Class CheeseGun : StarPistol
+{
+	Default
+	{
+		DI_Weapon.FreshBonus 4;
+		DI_Weapon.BaseDamage 6;
+		DI_Weapon.Projectiles 6;
+		DI_Weapon.Recoil 5;
+		DI_Weapon.RecoilRecover 1.25;
+		DI_Weapon.BaseAccuracy 7;
+		Weapon.Kickback 250;
+		Weapon.SelectionOrder 10000;
+		Weapon.SlotNumber 1;
+		Weapon.SlotPriority 1;
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 1;
+		Weapon.AmmoType "StarPistolAmmo";
+		Inventory.Icon "PISTZ0";
+		Tag "Cheese Cannon";
+	}
+
+	States
+	{
+		Ready:
+			CHES A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+	}
+}

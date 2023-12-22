@@ -15,6 +15,8 @@ server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unloc
 server cheat bool di_unlock_lvl_di01 = false; //unlocks Level 1. unlocked through playing/skipping the tutorial.
 server cheat bool di_unlock_lvl_di02 = false; //unlocks Level 2. unlocked through reaching Wave 10 on Level 1.
 server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked through purchasing 3 Box Party weapons at once.
+server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player. unlocked through purchasing 50 burgers.
+server cheat int di_burgercount = 0; //this must reach 50 to unlock burger.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).

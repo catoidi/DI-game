@@ -529,16 +529,22 @@ Class DI_PlayerBase : PlayerPawn abstract
 		Missile:
 			#### # 1;
 			#### # 11;
-			Goto Spawn;
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+			//Goto Spawn;
 		Melee:
 			#### # 1 BRIGHT {A_DIScale(0.05, -0.05); A_AttachLightDef("shoot", "BULLETSHOOT");}
 			#### # 3 BRIGHT;
 			#### # 2 A_RemoveLight("shoot");
 			#### # 0 A_DIScale(-0.05, 0.05);
-			Goto Missile;
+			#### # 0 A_Jump(256, "Missile");
+			Stop;
+			//Goto Missile;
 		Pain:
 			#### # 8 A_DIPlayerPain();
-			Goto Spawn;
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+			//Goto Spawn;
 		Pain.Lightning:
 			#### # 0
 			{
@@ -548,7 +554,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 				invoker.Vel = (0, 0, 0);
 			}
 			#### # 0 A_Jump(256, "Pain");
-			Goto Pain;
+			Stop;
+			//Goto Pain;
 		Death:
 			#### # 0 {self.Alpha *= 0.5;}
 			#### ### 0 

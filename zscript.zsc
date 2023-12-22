@@ -58,6 +58,7 @@ version "4.11"
 #include "zscript_DI/player/base.zsc"
 #include "zscript_DI/player/fredrick.zsc"
 #include "zscript_DI/player/box.zsc"
+#include "zscript_DI/player/burger.zsc"
 
 //pickups
 #include "zscript_DI/pickups/base.zsc"
@@ -105,6 +106,7 @@ version "4.11"
 //starting weapons
 #include "zscript_DI/weapons/starter/starpistol.zsc"
 #include "zscript_DI/weapons/starter/glowstick.zsc"
+#include "zscript_DI/weapons/starter/cheesegun.zsc"
 //#include "zscript_DI/weapons/starter/poisoner.zsc"
 //basic weapons
 #include "zscript_DI/weapons/basic/greenshotgun.zsc"

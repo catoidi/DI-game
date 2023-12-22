@@ -1,0 +1,32 @@
+//zscript_DI/player/burger.zsc
+
+class DI_PlayerBurger : DI_PlayerBase
+{
+	Default
+	{
+		Speed 0.6;
+		Height 48;
+		Health 75;
+		Scale 1.5;
+		Player.MaxHealth 75;
+		Player.DisplayName "Burger";
+		Player.Portrait "graphics/info_burger.png";
+		Player.StartItem "CheeseGun";
+		//Player.StartItem "GlowstickAmmo", 4;
+		//Player.StartItem "DI_Pizza", 3;
+		Player.ViewHeight 40;
+		Player.ViewBob 0.5;
+		+NOBLOOD;
+		+NOBLOODDECALS;
+	}
+
+	States
+	{
+		Spawn:
+			BURG A -1;
+			Loop;
+		See:
+			#### A 8;
+			Loop;
+	}
+}

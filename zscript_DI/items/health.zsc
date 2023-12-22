@@ -12,6 +12,12 @@ Class DI_FullHeal : Health
 		+BRIGHT;
 	}
 	
+	override void DoPickupSpecial(Actor toucher)
+	{
+		eventhandler.sendnetworkevent("di_burgerunlock");
+		Super.DoPickupSpecial(toucher);
+	}
+	
 	States
 	{
 		Spawn:

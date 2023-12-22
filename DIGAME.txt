@@ -16,6 +16,8 @@
 Add, Player, Fredrick;
 >>Player 2, Box.
 Add, Player, Box Partyer, di_unlock_plr_box;
+>>Player 3, Burger.
+Add, Player, Burger, di_unlock_plr_burger;
 >>
 >>[EPISODES]
 >>Tutorial Level.
