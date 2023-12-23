@@ -131,7 +131,7 @@ Class DI_RewardsProgram : DIPassiveInventory
 	{
 		Tag "Rewards Program";
 		Inventory.Icon "POWRW0";
-		Inventory.PickupMessage "Acquired Rewards Program! (Enemies drop +3 Extra Coins, -1 for every 250 Coins you have.)";
+		Inventory.PickupMessage "Acquired Rewards Program! (Enemies drop +3 Coins, but only while you're in debt.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -146,9 +146,8 @@ Class DI_RewardsProgram : DIPassiveInventory
 			{
 				DI_Weapon wepon = DI_Weapon(plr.player.ReadyWeapon);
 				int addcoin = plr.countinv("DI_RewardsProgram");
-				if (plr.score < 250) {addcoin *= 3;}
-				else if (plr.score < 500) {addcoin *= 2;}
-				else if (plr.score >= 750) {addcoin = 0;}
+				if (plr.score < 0) {addcoin *= 3;}
+				else {addcoin = 0;}
 				wepon.wpn_extracoin += addcoin;
 				//when making an item that increases coin drops, you must edit the weapon's extra coins, NOT the player's extra coins.
 				//idk why adding it to the player doesn't work, but since this works just fine im not gonna take the time to figure out a better solution.

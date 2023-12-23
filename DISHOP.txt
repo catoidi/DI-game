@@ -76,11 +76,9 @@ PermaConsumable DI_9LeafClover LEAFA 36 36;
 [PermaPassive] OnlyPermaPassive;
 >>Damage Passives...
 DamagePassive DI_BaseDamageGiver POWRA 7 64;
-DamagePassive DI_ComboDamage POWRF 84 64;
 DamagePassive DI_PainStar POWRJ 35 64;
 DamagePassive DI_Gunslinger POWRK 28 64;
 DamagePassive DI_DamageMultGiver POWRR 7;
-DamagePassive DI_ComboDamageMult POWRT 84 128;
 DamagePassive DI_PainRhombus POWRS 35 128;
 DamagePassive DI_GunHoarder POWRU 28 128;
 DamagePassive DI_Shoe POWRY 7;
@@ -111,6 +109,8 @@ StatusPassive DI_StatusGiver_Poison POWRQ 7 64;
 StatusPassive DI_StatusGiver_Rainbow POWRV 21 64;
 StatusPassive DI_AcidBlood POW1D 7;
 >>Rental Only Passives...
-OnlyRentPassive DI_RewardsProgram POWRW 84;
+OnlyRentPassive DI_ComboDamage POWRF 84 64;
+OnlyRentPassive DI_ComboDamageMult POWRT 84 128;
 >>Permanent Only Passives...
+OnlyPermaPassive DI_RewardsProgram POWRW 21;
 OnlyPermaPassive DI_CreditFraud POW1H 14;
