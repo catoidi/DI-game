@@ -39,7 +39,7 @@ Armor DI_PartyHat ARMOC 120 192;
 Armor DI_BowTie ARMOD 50 192;
 >>Health...
 Health DI_FullHeal HEALA 12;
-Health DI_Melon HEALE 20 192;
+Health DI_Melon HEALE 16 192;
 Health DI_Pizza HEALB 4 192;
 Health DI_JuiceBox HEALD 6 192;
 >>Consumables...
