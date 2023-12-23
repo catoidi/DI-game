@@ -5,11 +5,13 @@ Class CheeseGun : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
-		DI_Weapon.BaseDamage 6;
+		DI_Weapon.BaseDamage 8;
 		DI_Weapon.Projectiles 6;
-		DI_Weapon.Recoil 5;
-		DI_Weapon.RecoilRecover 1.25;
-		DI_Weapon.BaseAccuracy 10;
+		DI_Weapon.Recoil 10;
+		DI_Weapon.RecoilRecover 0.5;
+		DI_Weapon.RecoilOffset 1.5;
+		DI_Weapon.BaseAccuracy 5;
+		DI_Weapon.Ammo2HUD 3;
 		Weapon.Kickback 0;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 1;
@@ -17,20 +19,29 @@ Class CheeseGun : DI_Weapon
 		Weapon.AmmoUse 1;
 		Weapon.AmmoGive 1;
 		Weapon.AmmoType "CheeseGunAmmo";
+		Weapon.AmmoType2 "CheeseGunHeat";
 		Inventory.Icon "CHESZ0";
 		Tag "Cheese Cannon";
 	}
 	
 	float cheeseglow;
+	
+	override void tick()
+	{
+		super.tick();
+		
+		if (!owner) {return;}
+		if ((owner.CountInv("CheeseGunHeat") < Ammo2.MaxAmount) && (owner.CountInv("CheeseGunAmmo") > 0)) 
+		{
+			owner.A_GiveInventory("CheeseGunHeat", 1);
+			cheeseglow = owner.CountInv("CheeseGunHeat") / 100.0;
+		}
+	}
 
 	States
 	{
 		Ready:
-			CHES A 1 
-			{
-				if ((invoker.cheeseglow < 1.0) && (CountInv("CheeseGunAmmo") > 0)) {invoker.cheeseglow += 0.02;}
-				DI_WeaponReady(WRF_ALLOWRELOAD);
-			}
+			CHES A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
 			Loop;
 		Deselect:
 			CHES # 0 A_Lower;
@@ -54,7 +65,7 @@ Class CheeseGun : DI_Weapon
 				DI_FireProjectile("CheeseGunBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE);
 				A_StartSound("pistpow");
 			}
-			CHES B 6 {invoker.cheeseglow = 0.0;}
+			CHES B 6 A_TakeInventory("CheeseGunHeat", 70);
 			CHES A 0 A_Refire;
 			CHES A 1;
 			Goto Ready;
@@ -133,6 +144,7 @@ CLASS CheeseGunBullet : DI_Actor
 		{
 			CheeseGun tarwpn = CheeseGun(target.player.ReadyWeapon);
 			damnum = tarwpn.wpn_damage;
+			damnum *= tarwpn.damagemult;
 			if (tarwpn.cheeseglow > 0.7) 
 			{
 				damagetype = "Fire"; 
@@ -181,6 +193,15 @@ Class CheeseGunAmmo : Ammo
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
 		+CASTSPRITESHADOW;
+	}
+}
+
+Class CheeseGunHeat : Ammo
+{
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 300;
 	}
 }
 
