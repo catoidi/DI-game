@@ -22,7 +22,7 @@ Class DI_FreshRegen : DIPassiveInventory
 			
 			if (plr.JustKilled == true)
 			{
-				plr.A_GiveInventory("DI_Regen", regennum);
+				if (plr.health < plr.DIMaxHealth()) {plr.A_GiveInventory("DI_Regen", regennum);}
 			}
 		}
 	}

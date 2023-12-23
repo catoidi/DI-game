@@ -201,6 +201,7 @@ SHOPDESC_DI_REWARDSPROGRAM = "increase coin drops by 3,\n-1 for every 250 coins 
 SHOPTYPE_DI_REWARDSPROGRAM = "\cd[Passive] \cl[Max: 3]";
 SHOPITEM_DI_FRESHREGEN = "Fresh Regen";
 SHOPDESC_DI_FRESHREGEN = "Gain 5 health regen everytime\nyou get a fresh weapon bonus.";
+SHOPDESC2_DI_FRESHREGEN = "\cbDoes not give regen if you're at max health.";
 SHOPTYPE_DI_FRESHREGEN = "\cd[Passive] \cl[Max: 5]";
 SHOPITEM_DI_SHOE = "Shoe";
 SHOPDESC_DI_SHOE = "Shooting has a 1/8 chance\nto fire a shoe.";
