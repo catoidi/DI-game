@@ -243,7 +243,7 @@ Class DIShop : DIShop_Base
 	
 	override int GetShopPrice(void)
 	{
-		int getshopprice_int = ((shop_baseprice + currentprice) / (saleamount + 1)) * user_pricemult;
+		int getshopprice_int = ((shop_baseprice + currentprice) * user_pricemult) / (saleamount + 1);
 		if (getshopprice_int < 1) {getshopprice_int = 1;}
 		return getshopprice_int;
 	}
