@@ -67,6 +67,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	bool freshmsg;
 	
+	int degenforgive;
+	
 	override void PostBeginPlay(void)
 	{
 		Super.PostBeginPlay();
@@ -389,6 +391,14 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	action void DIWave_End(void)
 	{
+		//forgive some debts
+		if ((invoker.score >= 0) && (invoker.CountInv("DI_Degen") > 0))
+		{
+			++invoker.degenforgive;
+			invoker.A_TakeInventory("DI_Degen", invoker.degenforgive);
+		}
+		else {invoker.degenforgive = 0;}
+	
 		Array<String> keeparray;
 		
 		for (int i = 0; i < invoker.wavekeep.Size(); i++) //return any permanent items that were lost during wave
