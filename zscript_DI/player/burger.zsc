@@ -13,6 +13,7 @@ class DI_PlayerBurger : DI_PlayerBase
 		Player.Portrait "graphics/info_burger.png";
 		Player.StartItem "CheeseGun";
 		Player.StartItem "CheeseGunAmmo", 1;
+		Player.StartItem "CheeseGunHeat", 210;
 		//Player.StartItem "DI_Pizza", 3;
 		Player.ViewHeight 40;
 		Player.ViewBob 0.5;
