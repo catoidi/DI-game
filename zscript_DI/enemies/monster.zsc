@@ -3,7 +3,9 @@ Class DI_Monster : DI_Actor abstract
 	String coindrop;
 	property DIDrop: coindrop;
 	PlayerPawn plrtarget;
+	DI_Weapon plrwpn; //used for tracking fresh bonuses for status effect deaths.
 	
+	bool killedbyplayer;
 	int painhp; //health value since a_dipain was last called.
 	double icenum; //how much ice slowdown to apply.
 	int firenum; //how much the enemy is currently on fire.
@@ -14,6 +16,7 @@ Class DI_Monster : DI_Actor abstract
 	bool hearted; //whether or not this monster has been hit with a heart attack.
 	bool friendlylight; //enable/disable the hearted light.
 	int hearttimer; //how long to keep the enemy charmed.
+	bool forcefresh; //allow a fresh weapon bonus, if conditions are correct.
 	double speedmult; //speed multiplier.
 	property DISpeedMult: speedmult;
 
@@ -80,7 +83,11 @@ Class DI_Monster : DI_Actor abstract
 				A_DIBurned(2, 0.5);
 				A_DIStatusLight(2);
 				
-				if (self.health <= firedmg) {A_Die("Fire");}
+				if (self.health <= firedmg) 
+				{
+					if (plrtarget && plrwpn) {ConfirmPlayerWeapon(plrtarget, plrwpn);}
+					A_Die("Fire");
+				}
 				else {self.health -= firedmg; A_Pain();}
 				firenum -= firedmg;
 				if (firenum < 0) {firenum = 0;}
@@ -95,7 +102,11 @@ Class DI_Monster : DI_Actor abstract
 				A_DIPoisoned(2, 0.5);
 				if (firenum <= 0) {A_DIStatusLight(3);}
 				
-				if (self.health <= poisondmg) {A_Die("Poison");}
+				if (self.health <= poisondmg) 
+				{
+					if (plrtarget && plrwpn) {ConfirmPlayerWeapon(plrtarget, plrwpn);}
+					A_Die("Poison");
+				}
 				else {self.health -= poisondmg; A_Pain();}
 				poisonnum -= poisondmg;
 				if (poisonnum < 0) {poisonnum = 0;}
@@ -121,11 +132,28 @@ Class DI_Monster : DI_Actor abstract
 		}
 	}
 	
+	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)
+	{
+		//this code is a necessary evil to ensure players get awarded fresh bonuses if an enemy is killed by a status effect inflicted by their weapon.
+		if ((source is "DI_PlayerBase") && (inflictor is "DI_Actor"))
+		{
+			DI_PlayerBase dicheck = DI_PlayerBase(source);
+			DI_Actor dicheck2 = DI_Actor(inflictor);
+			if ((dicheck) && (dicheck2.di_notweapon == false))
+			{
+				plrwpn = DI_Weapon(dicheck.player.readyweapon);
+			}
+		}
+	
+		return Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
+	}
+	
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
 	{
 		//console.printf("%s", inflictor.GetClassName());
 		
-		if (inflictor is "DI_Actor")
+		if (killedbyplayer) {di_notweapon = false;}
+		else if (inflictor is "DI_Actor")
 		{
 			DI_Actor dicheck = DI_Actor(inflictor);
 			if (dicheck.di_notweapon == true)
@@ -136,6 +164,12 @@ Class DI_Monster : DI_Actor abstract
 		else if (!inflictor) {di_notweapon = true;} //we have no fucking idea what killed this thing :)
 	
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+	
+	virtual void ConfirmPlayerWeapon(PlayerPawn plr, DI_Weapon wpn)
+	{
+		if (wpn == plr.player.readyweapon) {killedbyplayer = true;}
+		else {killedbyplayer = false;}
 	}
 	
 	virtual void AdjustPainThreshold(void)
