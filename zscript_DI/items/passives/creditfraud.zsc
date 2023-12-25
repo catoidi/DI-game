@@ -22,6 +22,12 @@ Class DI_CreditFraud : DIPassiveInventory
 				double adddam = 0.5 * plr.countinv("DI_CreditFraud");
 				plr.ExtraDamageMult += adddam;
 			}
+			else if (plr.countinv("DI_Degen") > 0)
+			{
+				//still award a smaller amount of damage if the player has lost hp to debt.
+				double adddam = 0.15 * plr.countinv("DI_CreditFraud");
+				plr.ExtraDamageMult += adddam;
+			}
 		}
 	}
 	

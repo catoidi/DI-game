@@ -147,7 +147,7 @@ Class DI_RewardsProgram : DIPassiveInventory
 				DI_Weapon wepon = DI_Weapon(plr.player.ReadyWeapon);
 				int addcoin = plr.countinv("DI_RewardsProgram");
 				if (plr.score < 0) {addcoin *= 3;}
-				else {addcoin = 0;}
+				else if (plr.countinv("DI_Degen") == 0) {addcoin = 0;} //still give some coins if player has lost hp to debt.
 				wepon.wpn_extracoin += addcoin;
 				//when making an item that increases coin drops, you must edit the weapon's extra coins, NOT the player's extra coins.
 				//idk why adding it to the player doesn't work, but since this works just fine im not gonna take the time to figure out a better solution.
