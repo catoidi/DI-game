@@ -14,7 +14,7 @@ class DI_PlayerBurger : DI_PlayerBase
 		Player.StartItem "CheeseGun";
 		Player.StartItem "CheeseGunAmmo", 1;
 		Player.StartItem "CheeseGunHeat", 300;
-		//Player.StartItem "DI_Pizza", 3;
+		Player.StartItem "JuiceBox", 1;
 		Player.ViewHeight 40;
 		Player.ViewBob 0.5;
 		+NOBLOOD;
