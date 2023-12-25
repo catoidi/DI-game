@@ -71,10 +71,13 @@ Class CheeseGun : DI_Weapon
 			CHES A 1;
 			Goto Ready;
 		Reload:
-			CHES # 0 A_JumpIfInventory("CheeseGunReload", 1, 9);
+			CHES # 0 A_JumpIfInventory("CheeseGunReload", 1, "ReloadStart");
 			CHES # 0 A_JumpIfInventory("CheeseGunAmmo", invoker.Ammo1.MaxAmount, "NoReload");
 			CHES AA 1 A_OverlayOffset(PSP_WEAPON, 3.0, -0.5, WOF_ADD);
 			CHES ###### 1 A_OverlayOffset(PSP_WEAPON, 9, -2, WOF_ADD);
+			Goto ReloadStart+2;
+		ReloadStart:
+			CHES AA 1 A_OverlayOffset(PSP_WEAPON, 3.0, -0.5, WOF_ADD);
 			//arrow reload start
 			CHES # 22 {A_Overlay(-2, "Reload_Arrow");}
 			CHES #### 1 A_OverlayOffset(PSP_WEAPON, -1.5, 0.25, WOF_ADD);
