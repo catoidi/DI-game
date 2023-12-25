@@ -79,6 +79,7 @@ Class DI_Monster : DI_Actor abstract
 			{
 				int firedmg = 3 + (firenum / 2);
 				if (firedmg > firenum) {firedmg = firenum;}
+				if (poisonnum > 0) {firedmg *= 2;}
 				
 				A_DIBurned(2, 0.5);
 				A_DIStatusLight(2);
@@ -98,6 +99,7 @@ Class DI_Monster : DI_Actor abstract
 			{
 				int poisondmg = poisonnum / 5;
 				if (poisondmg < 1) {poisondmg = 1;}
+				if (firenum > 0) {poisondmg *= 2;}
 				
 				A_DIPoisoned(2, 0.5);
 				if (firenum <= 0) {A_DIStatusLight(3);}
@@ -143,6 +145,19 @@ Class DI_Monster : DI_Actor abstract
 			{
 				plrwpn = DI_Weapon(dicheck.player.readyweapon);
 			}
+		}
+		
+		if (damagetype == 'Ice' || damagetype == 'FakeIce')
+		{
+			//deal double damage if enemy is shocked then frozen
+			if (isshocked) {damage *= 2;}
+			if (hearted) {damage *= 1.25;}
+		}
+		else if (damagetype == 'Lightning' || damagetype == 'FakeLightning')
+		{
+			//deal double damage if enemy is frozen then shocked
+			if (icenum > 0) {damage *= 2;}
+			if (hearted) {damage *= 1.25;}
 		}
 	
 		return Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
@@ -228,6 +243,7 @@ Class DI_Monster : DI_Actor abstract
 	{
 		int firepain = (invoker.painhp - invoker.health); //fire effect will effectively double the damage given.
 		if (fakedmg != 0) {firepain = fakedmg;} //ignore damage taken, use preset value instead.
+		if (invoker.hearted) {firepain *= 1.25;}
 		int fireparticle = 5 + (firepain / 25);
 		invoker.firenum += firepain;
 		invoker.A_DIBurned(fireparticle, 0.5);
@@ -238,6 +254,7 @@ Class DI_Monster : DI_Actor abstract
 	{
 		int poisonpain = (invoker.painhp - invoker.health) * 3; //poison damage gives a strong DOT effect, but is slower than fire.
 		if (fakedmg != 0) {poisonpain = fakedmg;} //ignore damage taken, use preset value instead.
+		if (invoker.hearted) {poisonpain *= 1.25;}
 		int poisonparticle = 5 + (poisonpain / 25);
 		invoker.poisonnum += poisonpain;
 		invoker.A_DIPoisoned(poisonparticle, 0.5);
@@ -286,7 +303,13 @@ Class DI_Monster : DI_Actor abstract
 			Stop;
 		Pain.Lightning:
 			#### ### 0 A_DIShocked();
-			#### # 60 {A_DIPain(); A_DIStatusLight(1); invoker.isshocked = true;}
+			#### # 60 
+			{
+				A_DIPain(); 
+				A_DIStatusLight(1); 
+				invoker.isshocked = true;
+				if (invoker.icenum > 0) {A_SetTics(90);}
+			}
 			#### # 0 A_ResetScale();
 			#### # 0 A_DIStatusLight(0);
 			#### # 0 {invoker.isshocked = false;}
