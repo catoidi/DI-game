@@ -104,6 +104,7 @@ Class CheeseGun : DI_Weapon
 		Glow:
 			CHES F 1 BRIGHT
 			{
+				if (health <= 0) {invoker.cheeseglow = 0.0;}
 				A_OverlayFlags(2, PSPF_ALPHA | PSPF_FORCEALPHA, true);
 				A_OverlayAlpha(2, invoker.cheeseglow);
 			}
