@@ -19,6 +19,7 @@ version "4.11"
 #include "zscript_DI/handlers/hattrack.zsc"
 #include "zscript_DI/handlers/itemhud.zsc"
 #include "zscript_DI/handlers/deathscreen.zsc"
+#include "zscript_DI/handlers/painter.zsc"
 
 //ZForms (uses MIT License)
 #include "zscript_libraries/ZForms/Include.zsc"
@@ -41,6 +42,9 @@ version "4.11"
 #include "zscript_DI/ui/BoxHUD.zsc" //smh lazy dev copy/pasting code from their other game /s
 #include "zscript_DI/ui/Catalogue.zsc"
 #include "zscript_DI/ui/CatalogueHandler.zsc"
+
+//decoration
+#include "zscript_DI/decoration/painting.zsc"
 
 //effects
 #include "zscript_DI/effects/blood.zsc"
