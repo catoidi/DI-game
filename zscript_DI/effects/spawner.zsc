@@ -10,7 +10,7 @@ CLASS DISpawnerSpot : DI_Actor
 		Alpha 0.15;
 		RenderStyle "Translucent";
 		+FLATSPRITE;
-		+NOINTERACTION;
+		//+NOINTERACTION;
 		+MOVEWITHSECTOR;
 		//+INVISIBLE;
 	}
