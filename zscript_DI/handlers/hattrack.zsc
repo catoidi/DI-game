@@ -47,6 +47,9 @@ Class HatTrackHandler : EventHandler
 			shoplist_group.push(currentline[0]);
 			shoplist_item.push(currentline[1]);
 		}
+		
+		burgertracker = cvar.getcvar("di_burgercount");
+		burgertracker.setint(0);
 	}
 	
 	override void WorldThingDied(WorldEvent e)
@@ -170,13 +173,13 @@ Class HatTrackHandler : EventHandler
 				
 				burgercvar.setint(burgercvar.getint() + 1);
 				
-				if (burgercvar.getint() >= 24)
+				if (burgercvar.getint() >= 4)
 				{
 					eventhandler.sendinterfaceevent(consoleplayer, "diunlock_di_unlock_plr_burger");
 				}
-				else if (burgercvar.getint() < 24)
+				else if (burgercvar.getint() < 4)
 				{
-					int fakepercent = (burgercvar.getint() + 1) * 4;
+					int fakepercent = (burgercvar.getint() + 1) * 20;
 					console.printf("\cvBurger Progress: (%d%%)", fakepercent);
 				}
 			}
