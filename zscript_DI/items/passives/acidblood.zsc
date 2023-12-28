@@ -136,7 +136,7 @@ Class DI_AcidBlood_Pool : DI_Actor
 				}
 				else 
 				{
-					A_Explode(7 * acidstrength, 40, XF_THRUSTLESS | XF_CIRCULAR, fulldamagedistance: 40);
+					A_Explode(acidstrength, 40, XF_THRUSTLESS | XF_CIRCULAR, fulldamagedistance: 40);
 				}
 				return ResolveState(null);
 			}
