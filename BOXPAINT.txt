@@ -27,6 +27,11 @@ Painting = PANTB5, *, 49, 1, 1;
 Painting = PANTB6, *, 49, 1, 1;
 Painting = PANTB7, *, 49, 1, 1;
 Painting = PANBA1, *, 49, 1, 0.5;
+Painting = PANBB1, *, 49, 1, 0.5;
+Painting = PANBB2, *, 49, 1, 0.5;
+Painting = PANBB3, *, 49, 1, 0.5;
+Painting = PANBB4, *, 49, 1, 0.5;
+Painting = PANBB5, *, 49, 1, 0.5;
 >>Fruit Puncher Paintings (Only on the Box Party map)
 Painting = PANTA1, di02, 0, 1, 1;
 Painting = PANTA2, di02, 0, 1, 1;
