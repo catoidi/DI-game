@@ -1,0 +1,17 @@
+DoomEdNums
+{
+	20000 = DISpawnerSpot
+	20001 = DIShop
+	20002 = DI_PlayerTeleSwap
+	20003 = DIRentShop
+	20004 = DIPermaShop
+	20005 = DISpawnerSpot_Big
+	20006 = DIConsumableShop
+	20007 = DIShopController
+	20008 = DIShopController_ACS
+	20009 = DI_GhostShop
+	20010 = DIChest
+	20011 = DIChest_Single
+	20012 = DI_WaveCanvas
+	20013 = Painting
+}

@@ -1,0 +1,42 @@
+GameInfo
+{
+	TitlePage = "graphics/titlepic.png"
+	CursorPic = "graphics/m_cursor.png"
+	PauseSign = "graphics/m_pause.png"
+	BorderFlat = "graphics/border_flat.png"
+	MenuBackButton = "graphics/m_back.png"
+	MenuFontColor_Title = "White"
+	MenuFontColor_Label = "Default"
+	MenuFontColor_Value = "Gray"
+	MenuFontColor_Action = "Gray"
+	MenuFontColor_Header = "White"
+	MenuFontColor_Highlight = "White"
+	MenuFontColor_Selection = "Gray"
+	FullscreenAutoAspect = 3
+	DimColor = "0b 0b 0b"
+	DimAmount = 0.8
+	PlayerClasses = "DI_PlayerFredrick", "DI_PlayerBox", "DI_PlayerBurger" //DIGAME.txt MUST match this or the game will EXPLODE AND DIE.
+	StatusbarClass = "DI_HUD"
+	InfoPage = "guide01"
+	
+	AddEventHandlers = 
+		"DIHandler", //the main DI system, including monsters/spawners/waves/loot/etc.
+		"DIEventHandler", //random event handler.
+		"DIXHairHandler", //crosshair.
+		"NashHPBarHandler", //HP bar + Shop UI combo.
+		"DamNumEventHandler", //Damage Numbers.
+		"UniversalHatHandler", //Controlling the Hats.
+		"HatTrackHandler", //For controlling unlocks and stuff.
+		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
+		"DeathscreenHandler", //The end screen that appears upon your inevitable death.
+		"AimAssistHandler", //controls everything Aim Assist related.
+		"pc_EventHandler", //controls everything Precise Crosshair related.
+		"PaintHandler" //controls the paintings.
+}
+
+DamageType "Spawner" {}
+
+DamageType "FakeLightning"
+{
+	Factor = 0.0 //does no damage to anything except for DI_Monsters.
+}

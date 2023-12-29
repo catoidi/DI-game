@@ -1,0 +1,47 @@
+Skill baby
+{
+	DamageFactor = 0.67
+	MonsterHealth = 0.50
+	SpawnFilter = Baby
+	Name = "$SKILL_BABY"
+	MustConfirm = "Enemies have 50% less health and do 33% less damage. For those seeking a power fantasy."
+	TextColor = "Green"
+}
+
+Skill easy
+{
+	MonsterHealth = 0.67
+	SpawnFilter = Easy
+	Name = "$SKILL_EASY"
+	MustConfirm = "Enemies have 33% less health. For those who want to die slightly less often."
+	TextColor = "Yellow"
+}
+
+Skill normal
+{
+	SpawnFilter = Normal
+	Name = "$SKILL_NORMAL"
+	DefaultSkill
+	MustConfirm = "This is how the game was designed to be played. You will die a lot."
+	TextColor = "Red"
+}
+
+Skill hard
+{
+	DamageFactor = 2.0
+	MonsterHealth = 1.5
+	SpawnFilter = Hard
+	Name = "$SKILL_HARD"
+	MustConfirm = "Enemies do double damage and have 50% more health. This is not fair or balanced in any way. You have been warned."
+	TextColor = "DarkRed"
+}
+
+Skill nightmare
+{
+	DamageFactor = 4.0
+	MonsterHealth = 2.0
+	SpawnFilter = Nightmare
+	Name = "$SKILL_NIGHTMARE"
+	MustConfirm
+	NoMenu
+}
