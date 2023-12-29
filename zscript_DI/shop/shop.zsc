@@ -21,10 +21,13 @@ Class DIShop : DIShop_Base
 	int user_pricedown_base; //when price can decrease, decrease by this amount.
 	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
 	
+	bool user_dontprogress; //dont progress the shop level, if applicable.
+	
 	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
 	Property ReducePriceMult : user_pricedown_mult;
+	Property DontProgress : user_dontprogress;
 	
 	Default
 	{
@@ -278,7 +281,7 @@ Class DIShop : DIShop_Base
 		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;
 		lastpurchased = curround;
-		plr.ACS_ScriptCall("di_shopbought", buyprice);
+		plr.ACS_ScriptCall("di_shopbought", buyprice, user_dontprogress);
 		plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
 		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
