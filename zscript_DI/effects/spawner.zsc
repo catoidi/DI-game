@@ -1,7 +1,11 @@
-//zboxscript/traps/platespawner.zsc
+//zscript_DI/effects/spawner.zsc
 
 CLASS DISpawnerSpot : DI_Actor
 {
+	//spawner spots control where the enemy spawners will originate from.
+	//the spawner will constantly die and respawn according to the spawn delay.
+	//the best way to control spawnerspots is to add/remove the spots entirely.
+
 	Default
 	{
 		Radius 32; //maximum radius of enemies using this spawner.
@@ -58,6 +62,9 @@ Class DISpawnerSpot_Flying : DISpawnerSpot {} //flying enemies can spawn here.
 
 CLASS DISpawner : DI_Actor
 {
+	//how the spawner looks and behaves doesnt really matter.
+	//all that matters is the SpawnerToggle script and the SpawnChoice being spawned after a delay.
+
 	Default
 	{
 		Height 8;
@@ -148,6 +155,8 @@ CLASS DISpawner_Ring : DI_Actor
 			Loop;
 	}
 }
+
+//leftover code from box party
 
 /*
 CLASS PlateSpawnerGib1 : BoxGib
