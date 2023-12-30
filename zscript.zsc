@@ -45,6 +45,7 @@ version "4.11"
 
 //decoration
 #include "zscript_DI/decoration/painting.zsc"
+#include "zscript_DI/decoration/beam.zsc"
 
 //effects
 #include "zscript_DI/effects/blood.zsc"

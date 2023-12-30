@@ -14,4 +14,5 @@ DoomEdNums
 	20011 = DIChest_Single
 	20012 = DI_WaveCanvas
 	20013 = Painting
+	20014 = LightBeam
 }
