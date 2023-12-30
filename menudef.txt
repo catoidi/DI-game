@@ -16,7 +16,7 @@ ListMenu "MainMenu"
 	Size "Clean"
 	Font "BigUpper", "Gray"
 	StaticPatchCentered 160, -4, "DILOGO"
-	Selector "graphics/m_selector.png", -20, 0
+	Selector "graphics/m_selector.png", -30, -4
 	Position 92, 80
 	//PatchItem "M_NGAME",	"n",	"PlayerclassMenu"
 	PatchItem "M_NGAME",	"n",	"DINewGameMenu"
@@ -35,6 +35,7 @@ ListMenu "DIOptionsMenu"
 	TooltipAppearance "", "gold", "TFTTBG"
 	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	StaticTextCentered 48, 12, "$Options", "DarkGrey"
+	Selector "graphics/m_selector.png", -30, -4
 	Font "BIGFONT", "White"
 	Position 64, 40
 	TextItem "$Controls", "c", "DIControls"
