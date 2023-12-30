@@ -1,0 +1,52 @@
+//zscript_DI/decoration/tree.zsc
+
+Class DI_CoolTree : DI_Actor
+{
+	Default
+	{
+		Height 120;
+		Radius 30;
+		+SOLID;
+	}
+	
+	States
+	{
+		Spawn:
+			TREE K -1;
+			Stop;
+	}
+}
+
+Class DI_CoolTree_Young : DI_Actor
+{
+	Default
+	{
+		Height 72;
+		Radius 16;
+		+SOLID;
+	}
+	
+	States
+	{
+		Spawn:
+			TREE L -1;
+			Stop;
+	}
+}
+
+Class DI_CoolTree_Dead : DI_Actor
+{
+	Default
+	{
+		Height 24;
+		Radius 16;
+		+SOLID;
+	}
+	
+	States
+	{
+		Spawn:
+			TREE M -1;
+			Stop;
+	}
+}

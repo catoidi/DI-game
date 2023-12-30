@@ -15,4 +15,5 @@ DoomEdNums
 	20012 = DI_WaveCanvas
 	20013 = Painting
 	20014 = LightBeam
+	20015 = DI_GlassExplosion
 }

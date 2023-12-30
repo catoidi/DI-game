@@ -123,3 +123,34 @@ CLASS DI_BloodPuff : DI_Actor
 			Wait;
 	}
 }
+
+Class DI_Gib : DI_Blood
+{
+	States
+	{
+		Spawn:
+			TNT1 AAA 0 NoDelay A_Jump(256, "Roller");
+			Stop;
+		Roller:
+			#### # 0 
+			{
+				frame = random(0, 2);
+				self.Scale.X *= frandom(0.5, 1.2); 
+				self.Scale.Y *= frandom(0.5, 1.2);
+				A_SetRoll(random(0, 359));
+			}
+			BLUD # 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+		Looper:
+			#### # 15 {A_FadeOut(0.2); A_DIScale(1.2, 1.2, true);}
+			Loop;
+		Death.Sky:
+		Death:
+			#### # 0;
+			#### # 0 
+			{if (self.Pos.Z ~== self.FloorZ) {A_SpawnItemEX("DI_BloodFlat", 0, 0, 0, 0, 0, 0, random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERSPRITEFRAME | SXF_TRANSFERSCALE | SXF_TRANSFERALPHA | SXF_TRANSFERRENDERSTYLE, 0, self.tid);}}
+			TNT1 A 5;
+			Stop;
+	}
+}
