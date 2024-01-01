@@ -124,8 +124,42 @@ CLASS DI_BloodPuff : DI_Actor
 	}
 }
 
-Class DI_Gib : DI_Blood
+Class DI_Gib : DI_FloorActor
 {
+	Default
+	{
+		Radius 8;
+		Height 8;
+		Mass 0;
+		BounceType "Doom";
+	
+		-SOLID;
+		+NOBLOCKMAP;
+		+NOTELEPORT;
+		+ALLOWPARTICLES;
+		+THRUACTORS;
+		+MISSILE;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+EXPLODEONWATER;
+	}
+	
+	override void tick(void)
+	{
+		super.tick();
+		
+		if (!InStateSequence(CurState, ResolveState("Death")))
+		{
+			if (self.Pos.Z ~== self.FloorZ) {A_Die();}
+		}
+	}
+	
+	override void postbeginplay(void)
+	{
+		super.postbeginplay();
+		self.Vel += (frandom(-2, 2), frandom(-2, 2), frandom(-2, 2));
+	}
+
 	States
 	{
 		Spawn:
@@ -143,14 +177,13 @@ Class DI_Gib : DI_Blood
 			#### # 0 A_Jump(256, "Looper");
 			Stop;
 		Looper:
-			#### # 15 {A_FadeOut(0.2); A_DIScale(1.2, 1.2, true);}
+			#### # 15 {A_FadeOut(0.1);}
 			Loop;
 		Death.Sky:
 		Death:
-			#### # 0;
-			#### # 0 
-			{if (self.Pos.Z ~== self.FloorZ) {A_SpawnItemEX("DI_BloodFlat", 0, 0, 0, 0, 0, 0, random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERSPRITEFRAME | SXF_TRANSFERSCALE | SXF_TRANSFERALPHA | SXF_TRANSFERRENDERSTYLE, 0, self.tid);}}
-			TNT1 A 5;
-			Stop;
+			#### # 0 {bFLATSPRITE = true;}
+			#### # 1050 A_SetTics(floortic);
+			#### # 1 A_FadeOut(0.05);
+			Wait;
 	}
 }

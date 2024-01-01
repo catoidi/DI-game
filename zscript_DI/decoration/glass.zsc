@@ -14,7 +14,7 @@ Class DI_GlassExplosion : SafeBoom
 		
 		for (int i = 0; i < 12; ++i)
 		{
-			A_SpawnItemEX("DI_GlassShard", random(-6, 6), random(-6, 6), random(-4, 4), random(-4, 4), random(-4, 4), random(0, 4), random(0, 359), SXF_NOCHECKPOSITION, 0, tid);
+			A_SpawnItemEX("DI_GlassShard", random(-16, 16), random(-16, 16), random(-8, 8), random(-4, 4), random(-4, 4), random(0, 4), random(0, 359), SXF_NOCHECKPOSITION, 0, tid);
 		}
 	}
 	
