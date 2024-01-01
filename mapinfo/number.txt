@@ -16,4 +16,11 @@ DoomEdNums
 	20013 = Painting
 	20014 = LightBeam
 	20015 = DI_GlassExplosion
+	20016 = Tree
+	20017 = DeadTree
+	20018 = TropicalTree
+	20019 = TallGrass
+	20020 = TallGrass2
+	20021 = Bush
+	20022 = TropicalBush
 }

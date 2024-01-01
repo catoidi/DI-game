@@ -1,0 +1,166 @@
+//zscript_DI/decoration/foliage.zsc
+
+CLASS Tree : DI_Actor //20001
+{
+	Default
+	{
+		Radius 20;
+		Height 108;
+		+SOLID;
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tree (Default)"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			TREE A 0 NoDelay A_Jump(256, "Finish", "Secondy", "Thirdy");
+		Secondy:
+			TREE B 0;
+			Goto Finish;
+		Thirdy:
+			TREE C 0;
+			Goto Finish;
+		Finish:
+			TREE # -1;
+			Stop;
+	}
+}
+
+CLASS DeadTree : Tree
+{
+	Default
+	{
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tree (Dead)"
+		//$Color 2
+	}
+
+	States
+	{
+		Spawn:
+			TREE D 0 NoDelay A_Jump(256, "Finish", "Finish", "Secondy", "Thirdy", "Thirdy", "Fourthy", "Fifthy", "Fifthy", "Sixthy");
+		Secondy:
+			TREE E 0;
+			Goto Finish;
+		Thirdy:
+			TREE F 0;
+			Goto Finish;
+		Fourthy:
+			TREE G 0;
+			Goto Finish;
+		Fifthy:
+			TREE H 0;
+			Goto Finish;
+		Sixthy:
+			TREE I 0;
+			Goto Finish;
+		Finish:
+			TREE # -1;
+			Stop;
+	}
+}
+
+CLASS TropicalTree : Tree
+{
+	Default
+	{
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tree (Tropical)"
+		//$Color 2
+	}
+
+	States
+	{
+		Spawn:
+			TREE J -1;
+			Stop;
+	}
+}
+
+CLASS TallGrass : DI_Actor //20005
+{
+	Default
+	{
+		Radius 20;
+		Height 20;
+		-SOLID;
+		+NOGRAVITY;
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tall Grass"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			GRAS A -1;
+			Stop;
+	}
+}
+
+CLASS TallGrass2 : TallGrass
+{
+	Default
+	{
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tall Grass (Dead)"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			GRAS D -1;
+			Stop;
+	}
+}
+
+CLASS Bush : DI_Actor //20002
+{
+	Default
+	{
+		Radius 20;
+		Height 32;
+		+SOLID;
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Bush (Default)"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			BUSH A 0 NoDelay A_Jump(256, "Finish", "Secondy", "Thirdy");
+		Secondy:
+			BUSH B 0;
+			Goto Finish;
+		Thirdy:
+			BUSH C 0;
+			Goto Finish;
+		Finish:
+			BUSH # -1;
+			Stop;
+	}
+}
+
+CLASS TropicalBush : DI_Actor
+{
+	Default
+	{
+		Radius 20;
+		Height 32;
+		+SOLID;
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Bush (Tropical)"
+		//$Color 2
+	}
+
+	States
+	{
+		Spawn:
+			BUSH D -1;
+			Stop;
+	}
+}
