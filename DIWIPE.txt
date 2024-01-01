@@ -45,3 +45,4 @@ DI_FreshBullets;
 DI_Firestarter;
 DI_LastStand;
 DI_CreditFraud;
+DI_LeadSwitch;

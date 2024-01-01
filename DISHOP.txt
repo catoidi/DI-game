@@ -101,6 +101,7 @@ ComboPassive DI_FreshBonusCharger POWRL 14;
 ComboPassive DI_WealthJar POWRZ 14;
 ComboPassive DI_FreshBullets POW1E 14;
 ComboPassive DI_LeadRecycling POW1B 21 128;
+ComboPassive DI_LeadSwitch POW1I 14 128;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 7 64;
 StatusPassive DI_StatusGiver_Fire POWRO 7 64;
