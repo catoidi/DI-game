@@ -132,6 +132,8 @@ Class DI_Gib : DI_FloorActor
 		Height 8;
 		Mass 0;
 		BounceType "Doom";
+		BounceFactor 0.4;
+		WallBounceFactor 0.8;
 	
 		-SOLID;
 		+NOBLOCKMAP;
