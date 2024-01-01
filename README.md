@@ -1,4 +1,4 @@
-# DI-game
+# DI: Debt is Inevitable (Source Code)
 This repository contains data for my upcoming game, DI, made in GZDOOM.
 
 This only includes the data that falls under the "GPLv3" License. See "LICENSE" for more info.
