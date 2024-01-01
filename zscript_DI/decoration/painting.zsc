@@ -6,13 +6,32 @@ CLASS Painting : DI_Actor
 	{
 		Height 64;
 		Radius 16;
+		Activation THINGSPEC_Switch;
 		-SOLID;
-		+NOINTERACTION;
+		//+NOINTERACTION;
+		+NOGRAVITY;
+		+THRUACTORS;
 		+WALLSPRITE;
 		+SPRITEANGLE;
+		+USESPECIAL;
 		//$Category "Box Party/Decor/House/"
 		//$Title "Painting"
 		//$Color 2
+	}
+	
+	override void Activate(Actor activator)
+	{
+		if (CheckRange(64) == false) {PaintingUsed();}
+	}
+	
+	override void Deactivate(Actor activator)
+	{
+		if (CheckRange(64) == false) {PaintingUsed();}
+	}
+	
+	virtual void PaintingUsed()
+	{
+		console.printf("%s", "LMAO");
 	}
 	
 	action void DoPaintingRotation (int rot)
