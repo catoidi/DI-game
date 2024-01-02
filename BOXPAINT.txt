@@ -34,6 +34,8 @@ Painting = PANBB2, *, 49, 1, 0.5, PAINTING_CAT;
 Painting = PANBB3, *, 49, 1, 0.5, PAINTING_CAT;
 Painting = PANBB4, *, 49, 1, 0.5, PAINTING_CAT;
 Painting = PANBB5, *, 49, 1, 0.5, PAINTING_CAT;
+>>Map Paintings (Only spawns on that specific map)
+Painting = PANBB6, di01, 4, 1, 0.5, PAINTING_MAP;
 >>Fruit Puncher Paintings (Only on the Box Party map)
 Painting = PANTA1, di02, 0, 1, 1, PAINTING_MELON;
 Painting = PANTA2, di02, 0, 1, 1, PAINTING_MELON;

@@ -55,3 +55,4 @@ PAINTING_SEAWEED = "This appears to be a photo taken from an underwater craft of
 PAINTING_STRONG = "You do not recognize the extremely buff figure in this painting.";
 PAINTING_SKY = "Something about this photo seems familiar to you, but you're not sure why...";
 PAINTING_MANGO = "This painting appears to depict a mango, but you're not 100% sure.";
+PAINTING_MAP = "This appears to be a map of the arena.";

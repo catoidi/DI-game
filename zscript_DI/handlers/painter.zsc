@@ -116,7 +116,7 @@ class PaintHandler : EventHandler
 				currentline.Split(fixedline, ";"); //this fixes that strange space that appears at the end of each line.
 				fixedline[0].Split(splitline, ", ");
 				
-				let PaintCap = splitline[1].MakeLower();
+				name PaintCap = splitline[1].MakeLower();
 				if ((PaintCap == level.MapName) || (PaintCap == "*")) //run this code if 2nd argument is "*" or the name of the current level.
 				{
 					let PaintPriority = splitline[3].ToInt(10);
