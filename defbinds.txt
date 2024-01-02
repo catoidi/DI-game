@@ -28,7 +28,7 @@ bind r +reload
 bind Pad_B +jump
 bind Pad_X +reload
 bind z gb_prev_weapon
-bind Pad_Y gb_prev_weapon
+bind Pad_Y weapnext
 bind f +gb_toggle_weapon_menu
 bind q +gb_toggle_inventory_menu
 bind RShoulder +gb_toggle_inventory_menu
