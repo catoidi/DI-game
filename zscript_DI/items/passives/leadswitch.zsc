@@ -1,12 +1,13 @@
 Class DI_LeadSwitch : DIPassiveInventory
 {	
-	string oldwpn;
+	name oldwpn;
+	name prevwpn;
 	
 	Default
 	{
 		Tag "Lead Switch";
 		Inventory.Icon "POW1I0";
-		Inventory.PickupMessage "Lead Switch acquired! (Switching to a weapon with no ammo will give you +1 ammo.)";
+		Inventory.PickupMessage "Lead Switch acquired! (Switching to a fresh weapon will give you +1 ammo.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -33,15 +34,18 @@ Class DI_LeadSwitch : DIPassiveInventory
 			let curwpn = DI_Weapon(plr.player.ReadyWeapon);
 			let curammo1 = curwpn.AmmoType1;
 			let curammo2 = curwpn.AmmoType2;
-			let ammo1num = curwpn.AmmoUse1;
-			let ammo2num = curwpn.AmmoUse2;
-			if (curammo1 && (curwpn.wpn_dontgiveammo1 == false) && (plr.CountInv(curammo1) < ammo1num))
+			if ((curwpn.GetClassName() != plr.LastWeaponKill) && (curwpn.GetClassName() != prevwpn))
 			{
-				plr.GiveInventory(curammo1, ammogivenum);
-			}
-			if (curammo2 && (curwpn.wpn_dontgiveammo2 == false) && (plr.CountInv(curammo2) < ammo2num))
-			{
-				plr.GiveInventory(curammo2, ammogivenum);
+				if (curammo1 && (curwpn.wpn_dontgiveammo1 == false))
+				{
+					plr.GiveInventory(curammo1, ammogivenum);
+					prevwpn = curwpn.GetClassName();
+				}
+				if (curammo2 && (curwpn.wpn_dontgiveammo2 == false))
+				{
+					plr.GiveInventory(curammo2, ammogivenum);
+					prevwpn = curwpn.GetClassName();
+				}
 			}
 		}
 	}
