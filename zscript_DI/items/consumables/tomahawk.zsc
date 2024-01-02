@@ -27,9 +27,10 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 
 	Default
 	{
-		DamageFunction (128);
+		DamageFunction (256);
 		+NOGRAVITY;
 		+BLOODSPLATTER;
+		+EXTREMEDEATH;
 	}
 	
 	override int SpecialMissileHit(Actor victim)
