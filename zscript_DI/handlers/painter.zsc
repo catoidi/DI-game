@@ -6,6 +6,7 @@ class PaintHandler : EventHandler
 	Array<String> PaintNames;
 	Array<Int> PaintChance;
 	Array<Double> PaintScale;
+	Array<String> PaintText;
 	
 	override void WorldLoaded(WorldEvent e)
 	{
@@ -16,12 +17,13 @@ class PaintHandler : EventHandler
 	{
 		if (e.Thing != null)
 		{
-			if (e.Thing.GetClassName() == "Painting") {PaintController(e);}
+			if (e.Thing is "Painting") {PaintController(e);}
 		}
 	}
 
 	static const string alphabet[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "]"}; //all characters you can use sprite frames for, excluding \.
 	static const string rotations[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G"}; 
+	static const float spriterotation[] = {180.0, 180.0, 225.0, 270.0, 315.0, 0.0, 45.0, 90.0, 135.0, 202.5, 247.5, 292.5, 337.5, 22.5, 67.5, 112.5, 157.5};
 	
 	void PaintController(WorldEvent e)
 	{	
@@ -57,26 +59,7 @@ class PaintHandler : EventHandler
 		{			
 			if (paintrotation == rotations[i]) 
 			{
-				switch (i)
-				{
-					case 0: e.Thing.SpriteAngle = 180; break;
-					case 1: e.Thing.SpriteAngle = 180; break;
-					case 2: e.Thing.SpriteAngle = 225; break;
-					case 3: e.Thing.SpriteAngle = 270; break;
-					case 4: e.Thing.SpriteAngle = 315; break;
-					case 5: e.Thing.SpriteAngle = 0; break;
-					case 6: e.Thing.SpriteAngle = 45; break;
-					case 7: e.Thing.SpriteAngle = 90; break;
-					case 8: e.Thing.SpriteAngle = 135; break;
-					case 9: e.Thing.SpriteAngle = 202.5; break;
-					case 10: e.Thing.SpriteAngle = 247.5; break;
-					case 11: e.Thing.SpriteAngle = 292.5; break;
-					case 12: e.Thing.SpriteAngle = 337.5; break;
-					case 13: e.Thing.SpriteAngle = 22.5; break;
-					case 14: e.Thing.SpriteAngle = 67.5; break;
-					case 15: e.Thing.SpriteAngle = 112.5; break;
-					case 16: e.Thing.SpriteAngle = 157.5; break;
-				}
+				e.Thing.SpriteAngle = spriterotation[i];
 			}
 		}
 		
@@ -85,6 +68,15 @@ class PaintHandler : EventHandler
 		for (int i = 0; i < PaintScale.Size(); i++) {if (fullpainting == PaintNames[i]) {currentscale = PaintScale[i];}}
 		e.Thing.Scale.X *= currentscale;
 		e.Thing.Scale.Y *= currentscale;
+		
+		for (int i = 0; i < PaintText.Size(); i++) 
+		{
+			if (fullpainting == PaintNames[i]) 
+			{
+				let paintthing = Painting(e.Thing);
+				paintthing.flavortext = PaintText[i];
+			}
+		}
 	}
 	
 	void PaintLoader(WorldEvent e)
@@ -94,6 +86,7 @@ class PaintHandler : EventHandler
 		PaintNames.Clear();
 		PaintChance.Clear();
 		PaintScale.Clear();
+		PaintText.Clear();
 		
 		int DropMode = 0; //if 1, add to player list. if 2, add to ammo list.
 		
@@ -135,6 +128,8 @@ class PaintHandler : EventHandler
 						PaintChance.Push(PaintInt); //the chance of this specific Painting not being chosen.
 						let PaintDouble = splitline[4].ToDouble();
 						PaintScale.Push(PaintDouble); //the scale of the Painting.
+						if (splitline.Size() == 6) {PaintText.Push(splitline[5]);} //the flavor text of the painting.
+						else {PaintText.Push("PAINTING_NOTEXT");}
 						//double realchance = (100.0 / (PaintInt + 1.0));
 						//console.printf("\ctName = '%s', \coSize = '%.2f', \ckChance = %.2f%%.", splitline[0], PaintDouble, realchance);
 					}

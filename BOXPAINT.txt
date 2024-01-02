@@ -7,41 +7,42 @@
 >>The third argument is the rarity of the painting. 0 is almost guaranteed to spawn. Higher numbers mean more rare.
 >>The fourth argument is the priority of the painting. This multiplies the chance of this painting being picked. Minimum is 1.
 >>The fifth arguement is the scale of the painting. Supports decimals. Default is 1.
+>>The sixth argument is the "flavor text" that will appear when you interact with the painting. This text is optional.
 >>You can add the same painting multiple times if you want it to appear in a few specific levels.
 >>
 >>Generic Paintings (Spawn on any map)
-Painting = PANTA3, *, 0, 1, 1;
-Painting = PANTA4, *, 0, 1, 1;
+Painting = PANTA3, *, 0, 1, 1, PAINTING_SKY;
+Painting = PANTA4, *, 0, 1, 1, PAINTING_PIZZA;
 Painting = PANTA7, *, 0, 1, 1;
-Painting = PANTA8, *, 0, 1, 1;
-Painting = PANBA2, *, 24, 1, 0.5;
+Painting = PANTA8, *, 0, 1, 1, PAINTING_SEAWEED;
+Painting = PANBA2, *, 24, 1, 0.5, PAINTING_STRONG;
 >>Pride Paintings (Spawn on any map)
-Painting = PANTAB, *, 3, 1, 1;
-Painting = PANTAC, *, 3, 1, 1;
+Painting = PANTAB, *, 3, 1, 1, PAINTING_FLAG;
+Painting = PANTAC, *, 3, 1, 1, PAINTING_FLAG;
 >>Cat Paintings (Spawn on any map)
-Painting = PANTB1, *, 49, 1, 1;
-Painting = PANTB2, *, 49, 1, 1;
-Painting = PANTB3, *, 49, 1, 1;
-Painting = PANTB4, *, 49, 1, 1;
-Painting = PANTB5, *, 49, 1, 1;
-Painting = PANTB6, *, 49, 1, 1;
-Painting = PANTB7, *, 49, 1, 1;
-Painting = PANBA1, *, 49, 1, 0.5;
-Painting = PANBB1, *, 49, 1, 0.5;
-Painting = PANBB2, *, 49, 1, 0.5;
-Painting = PANBB3, *, 49, 1, 0.5;
-Painting = PANBB4, *, 49, 1, 0.5;
-Painting = PANBB5, *, 49, 1, 0.5;
+Painting = PANTB1, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANTB2, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANTB3, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANTB4, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANTB5, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANTB6, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANTB7, *, 49, 1, 1, PAINTING_DUMB;
+Painting = PANBA1, *, 49, 1, 0.5, PAINTING_CAT;
+Painting = PANBB1, *, 49, 1, 0.5, PAINTING_CAT;
+Painting = PANBB2, *, 49, 1, 0.5, PAINTING_CAT;
+Painting = PANBB3, *, 49, 1, 0.5, PAINTING_CAT;
+Painting = PANBB4, *, 49, 1, 0.5, PAINTING_CAT;
+Painting = PANBB5, *, 49, 1, 0.5, PAINTING_CAT;
 >>Fruit Puncher Paintings (Only on the Box Party map)
-Painting = PANTA1, di02, 0, 1, 1;
-Painting = PANTA2, di02, 0, 1, 1;
-Painting = PANTA5, di02, 0, 1, 1;
-Painting = PANTA6, di02, 0, 1, 1;
-Painting = PANTA9, di02, 0, 1, 1;
-Painting = PANTAA, di02, 0, 1, 1;
-Painting = PANBA3, di02, 4, 1, 0.5;
-Painting = PANBA4, di02, 4, 1, 0.25;
-Painting = PANBA5, di02, 4, 1, 0.5;
-Painting = PANBA6, di02, 4, 1, 0.5;
-Painting = PANBA7, di02, 4, 1, 0.5;
-Painting = PANBA8, di02, 4, 1, 0.1;
+Painting = PANTA1, di02, 0, 1, 1, PAINTING_MELON;
+Painting = PANTA2, di02, 0, 1, 1, PAINTING_MELON;
+Painting = PANTA5, di02, 0, 1, 1, PAINTING_MELON;
+Painting = PANTA6, di02, 0, 1, 1, PAINTING_MELON;
+Painting = PANTA9, di02, 0, 1, 1, PAINTING_MELON;
+Painting = PANTAA, di02, 0, 1, 1, PAINTING_MELON;
+Painting = PANBA3, di02, 4, 1, 0.5, PAINTING_MELON_SAD;
+Painting = PANBA4, di02, 4, 1, 0.25, PAINTING_MELON_FAN;
+Painting = PANBA5, di02, 4, 1, 0.5, PAINTING_MELON_BED;
+Painting = PANBA6, di02, 4, 1, 0.5, PAINTING_MELON_PLUSH;
+Painting = PANBA7, di02, 4, 1, 0.5, PAINTING_MELON_TWO;
+Painting = PANBA8, di02, 4, 1, 0.1, PAINTING_MELON_REAL;

@@ -8,15 +8,26 @@ CLASS Painting : DI_Actor
 		Radius 16;
 		Activation THINGSPEC_Switch;
 		-SOLID;
-		//+NOINTERACTION;
+		//+NOINTERACTION; //disabling this will potentially cause performance loss, but is necessary to be able to interact with the paintings.
+		+NOLIFTDROP;
 		+NOGRAVITY;
 		+THRUACTORS;
 		+WALLSPRITE;
 		+SPRITEANGLE;
-		+USESPECIAL;
+		+USESPECIAL; //dont place this object above/below doors or switches
 		//$Category "Box Party/Decor/House/"
 		//$Title "Painting"
 		//$Color 2
+	}
+	
+	static const float spriterotation[] = {180.0, 180.0, 225.0, 270.0, 315.0, 0.0, 45.0, 90.0, 135.0, 202.5, 247.5, 292.5, 337.5, 22.5, 67.5, 112.5, 157.5};
+	string flavortext;
+	
+	override void PostBeginPlay()
+	{
+		super.postbeginplay();
+		
+		if (flavortext == "") {flavortext = "PAINTING_NOTEXT";}
 	}
 	
 	override void Activate(Actor activator)
@@ -31,32 +42,10 @@ CLASS Painting : DI_Actor
 	
 	virtual void PaintingUsed()
 	{
-		console.printf("%s", "LMAO");
+		console.printf("%s", stringtable.Localize(flavortext, false));
 	}
 	
-	action void DoPaintingRotation (int rot)
-	{
-		switch (rot)
-		{
-			case 0: self.SpriteAngle = 180; break;
-			case 1: self.SpriteAngle = 180; break;
-			case 2: self.SpriteAngle = 225; break;
-			case 3: self.SpriteAngle = 270; break;
-			case 4: self.SpriteAngle = 315; break;
-			case 5: self.SpriteAngle = 0; break;
-			case 6: self.SpriteAngle = 45; break;
-			case 7: self.SpriteAngle = 90; break;
-			case 8: self.SpriteAngle = 135; break;
-			case 9: self.SpriteAngle = 202.5; break;
-			case 10: self.SpriteAngle = 247.5; break;
-			case 11: self.SpriteAngle = 292.5; break;
-			case 12: self.SpriteAngle = 337.5; break;
-			case 13: self.SpriteAngle = 22.5; break;
-			case 14: self.SpriteAngle = 67.5; break;
-			case 15: self.SpriteAngle = 112.5; break;
-			case 16: self.SpriteAngle = 157.5; break;
-		}
-	}
+	action void DoPaintingRotation(int rot) {self.SpriteAngle = invoker.spriterotation[rot];}
 	
 	States
 	{
@@ -109,5 +98,19 @@ CLASS Painting : DI_Actor
 			PANY A 1;
 			PANZ A 1;
 			Stop;
+	}
+}
+
+Class StaticPainting : Painting
+{
+	//behaves how it does in box party now.
+	//this should be used for any painting the player cannot normally reach.
+	Default 
+	{
+		+NOINTERACTION;
+		-USESPECIAL;
+		//$Category "Box Party/Decor/House/"
+		//$Title "Painting (Static)"
+		//$Color 2
 	}
 }

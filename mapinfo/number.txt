@@ -23,4 +23,5 @@ DoomEdNums
 	20020 = TallGrass2
 	20021 = Bush
 	20022 = TropicalBush
+	20023 = StaticPainting
 }

@@ -36,3 +36,21 @@ OPTMNU_NASHHPBAR = "Customize HP Bar";
 NASHHPBARMNU_TITLE = "HP Bar Options";
 NASHHPBARMNU_ENABLE = "Enable";
 NASHHPBARMNU_HELPTEXT_ENABLE = "Enables HP bar.";
+
+//Paintings
+PAINTING_NOTEXT = "This painting does not have a description.";
+PAINTING_LMAO = "lmao";
+PAINTING_FLAG = "This is one of our nation's flags.";
+PAINTING_DUMB = "You do not recognize the creature depicted in this painting.";
+PAINTING_CAT = "This is a photo of a known alien species from a faraway planet.";
+PAINTING_MELON_SAD = "This is a depiction of a Fruit Puncher.\nYou can sense strong emotions in this painting.";
+PAINTING_MELON_FAN = "The author of this painting is listed as: [ANONYMOUS]";
+PAINTING_MELON_PLUSH = "This is an advertisement for a Fruit Puncher Plush.";
+PAINTING_MELON_BED = "This is an advertisement for a mattress company.";
+PAINTING_MELON_TWO = "The name of this painting is called: 'two of em'";
+PAINTING_MELON_REAL = "This is just a photo of a melon with sunglasses on it.\nYou're not sure what the significance of this photo is.";
+PAINTING_MELON = "This is a painting of a Fruit Puncher.";
+PAINTING_PIZZA = "This is an advertisement for Pocket Pizzas.";
+PAINTING_SEAWEED = "This appears to be a photo taken from an underwater craft of some kind.";
+PAINTING_STRONG = "You do not recognize the extremely buff figure in this painting.";
+PAINTING_SKY = "Something about this photo seems familiar to you, but you're not sure why...";
