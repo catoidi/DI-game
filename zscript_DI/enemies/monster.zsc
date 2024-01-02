@@ -19,12 +19,16 @@ Class DI_Monster : DI_Actor abstract
 	bool forcefresh; //allow a fresh weapon bonus, if conditions are correct.
 	double speedmult; //speed multiplier.
 	property DISpeedMult: speedmult;
+	
+	name GibType;
+	Property GibType: GibType;
 
 	//Called by all of DI's enemies.
 	Default
 	{
 		Mass 100;
 		PainChance 256;
+		GibHealth 100; //player must do ludicrous extra damage in order to get blood coins.
 		PainChance "Heart", 256;
 		Monster;
 		DamageFactor "Enemy", 0;
@@ -37,6 +41,7 @@ Class DI_Monster : DI_Actor abstract
 		Species "Enemy";
 		DI_Monster.DIDrop "DI_Coin";
 		DI_Monster.DISpeedMult 1.0;
+		DI_Monster.GibType "DI_GibExplosion";
 		+THRUSPECIES; //monsters of the same type can walk through each other.
 		+FLOORCLIP;
 		+JUMPDOWN;
@@ -286,6 +291,50 @@ Class DI_Monster : DI_Actor abstract
 		A_Pain();
 	}
 	
+	action void A_DIShockDeath()
+	{
+		A_Explode(5, invoker.radius + 32, XF_NOTMISSILE | XF_EXPLICITDAMAGETYPE, 0, 32678, damagetype: "FakeLightning");
+		A_QuakeEX(1, 1, 1, 10, 0, invoker.radius + 32, 0);
+		A_AttachLightDef("deathlight", "SHOCKER");
+		A_DIShocked(2.0, inum: 5);
+	}
+	
+	action void A_DIIceDeath()
+	{
+		A_SetTranslation("Ice");
+		A_DIIced(16, 0.5, true);
+		A_DIDie();
+		A_DIDieBlood();
+		for (int i = 0; i < 2; ++i)
+		{
+			A_DISpawnIceCoin();
+		}
+	}
+	
+	action void A_DISpawnIceCoin()
+	{
+		A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+	}
+	
+	action void A_DISpawnBloodCoins()
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			bool fakebool;
+			actor bcoin;
+			[fakebool, bcoin] = A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			if (bcoin) {bcoin.A_SetTranslation("DamRed");}
+		}
+	}
+	
+	action void A_DIGibExplode()
+	{
+		if (bNOBLOOD == false)
+		{
+			A_SpawnItemEX(invoker.GibType, 0, 0, invoker.height / 0.75, flags: SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION);
+		}
+	}
+	
 	States
 	{
 		Pain:
@@ -341,7 +390,7 @@ Class DI_Monster : DI_Actor abstract
 			#### # 0 A_DITargetPlayer();
 			#### # 0 A_DIDie();
 			#### ### 0 A_DIDieBlood();
-			Goto DeathLoop;
+			#### # 0 A_Jump(256, "DeathLoop");
 		DeathLoop:
 			#### # 1 
 			{
@@ -353,26 +402,37 @@ Class DI_Monster : DI_Actor abstract
 			#### # 0 A_Jump(256, "Death.Lightning");
 			Stop;
 		Death.Lightning:
-			#### # 0 A_Explode(5, invoker.radius + 32, XF_NOTMISSILE | XF_EXPLICITDAMAGETYPE, 0, 32678, damagetype: "FakeLightning");
-			#### # 0 A_QuakeEX(1, 1, 1, 10, 0, invoker.radius + 32, 0);
-			#### # 0 A_AttachLightDef("deathlight", "SHOCKER");
-			#### ##### 0 A_DIShocked(2.0);
+			#### # 0 A_DIShockDeath();
 			#### # 0 A_Jump(256, "Death");
 			Stop;
 		Death.FakeIce:
 			#### # 0 A_Jump(256, "Death.Ice");
 			Stop;
 		Death.Ice:
-			#### # 0 
-			{
-				A_SetTranslation("Ice");
-				A_DIIced(16, 0.5, true);
-				A_DIDie();
-				A_DIDieBlood();
-				A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
-				A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION); //spawn 2 extra coins as a bonus, since ice corpses are kinda annoying to deal with.
-			}
-			#### # 0 A_FreezeDeath();
+			#### # 0 A_DIIceDeath(); //di stuff
+			#### # 0 A_FreezeDeath(); //gzdoom stuff
+			#### # 35 A_FreezeDeathChunks();
+			Wait;
+		XDeath:
+			#### # 0 A_DITargetPlayer();
+			#### # 0 A_DIDie();
+			#### #### 0 A_DIDieBlood();
+			#### # 0 A_DIGibExplode();
+			#### # 0 A_DISpawnBloodCoins();
+			#### # 0 A_Jump(256, "DeathLoop");
+			Stop;
+		XDeath.FakeLightning:
+			#### # 0 A_Jump(256, "XDeath.Lightning");
+		XDeath.Lightning:
+			#### # 0 A_DIShockDeath();
+			#### # 0 A_Jump(256, "XDeath");
+		XDeath.FakeIce:
+			#### # 0 A_Jump(256, "XDeath.Ice");
+		XDeath.Ice:
+			#### ## 0 A_DIDieBlood();
+			#### # 0 A_DISpawnBloodCoins();
+			#### # 0 A_DIIceDeath(); //di stuff
+			#### # 0 A_FreezeDeath(); //gzdoom stuff
 			#### # 35 A_FreezeDeathChunks();
 			Wait;
 	}

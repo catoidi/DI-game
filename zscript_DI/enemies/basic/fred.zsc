@@ -10,6 +10,7 @@ Class Fred : DI_Monster
 		Health 30;
 		Radius 17;
 		Height 39;
+		BloodColor "Red";
 		//Species "Fred";
 	}
 	
