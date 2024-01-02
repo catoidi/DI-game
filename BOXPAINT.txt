@@ -16,6 +16,7 @@ Painting = PANTA4, *, 0, 1, 1, PAINTING_PIZZA;
 Painting = PANTA7, *, 0, 1, 1;
 Painting = PANTA8, *, 0, 1, 1, PAINTING_SEAWEED;
 Painting = PANBA2, *, 24, 1, 0.5, PAINTING_STRONG;
+Painting = PANTAD, *, 7, 1, 1, PAINTING_MANGO;
 >>Pride Paintings (Spawn on any map)
 Painting = PANTAB, *, 3, 1, 1, PAINTING_FLAG;
 Painting = PANTAC, *, 3, 1, 1, PAINTING_FLAG;
