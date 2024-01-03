@@ -24,4 +24,5 @@ DoomEdNums
 	20021 = Bush
 	20022 = TropicalBush
 	20023 = StaticPainting
+	20024 = DI_DI01Canvas
 }
