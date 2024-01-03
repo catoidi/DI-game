@@ -83,7 +83,8 @@ extend class DIHandler
 			{
 				//console.printf("%d", finalwave);
 				++endlessnum;
-				getendless = true;
+				getendless = true; //for getting endless data.
+				doendless = true; //for sending endless data to the game.
 				if (leveldata[i].Mid(7) == "Restart")
 				{
 					//add endless data, then return to wave 1.
@@ -144,44 +145,48 @@ extend class DIHandler
 	
 		int batchdata = 0;
 		
-		//again, run the endless wave data BEFORE the regular wave data.
-		for (int i = 0; i < endlessdata.Size(); i++)
+		if (doendless == true)
 		{
-			if (endlessdata[i].Left(7) == "MultCap")
+			//again, run the endless wave data BEFORE the regular wave data.
+			for (int i = 0; i < endlessdata.Size(); i++)
 			{
-				string cap_string = endlessdata[i].Mid(7);
-				int cap_int = cap_string.ToInt(10);
-				endless_capmult += cap_int;
-				continue;
+				if (endlessdata[i].Left(7) == "MultCap")
+				{
+					string cap_string = endlessdata[i].Mid(7);
+					int cap_int = cap_string.ToInt(10);
+					endless_capmult += cap_int;
+					continue;
+				}
+				else if (endlessdata[i].Left(8) == "MultRate")
+				{
+					string rate_string = endlessdata[i].Mid(8);
+					int rate_int = rate_string.ToInt(10);
+					endless_ratemult += rate_int;
+					continue;
+				}
+				else if (endlessdata[i].Left(9) == "MultSpawn")
+				{
+					string spawn_string = endlessdata[i].Mid(9);
+					int spawn_int = spawn_string.ToInt(10);
+					endless_spawnmult += spawn_int;
+					continue;
+				}
+				else if (endlessdata[i].Left(10) == "MultHealth")
+				{
+					string health_string = endlessdata[i].Mid(10);
+					int health_int = health_string.ToInt(10);
+					endless_healthmult += health_int;
+					continue;
+				}
+				else if (endlessdata[i].Left(10) == "MultDamage")
+				{
+					string damage_string = endlessdata[i].Mid(10);
+					int damage_int = damage_string.ToInt(10);
+					endless_damagemult += damage_int;
+					continue;
+				}
 			}
-			else if (endlessdata[i].Left(8) == "MultRate")
-			{
-				string rate_string = endlessdata[i].Mid(8);
-				int rate_int = rate_string.ToInt(10);
-				endless_ratemult += rate_int;
-				continue;
-			}
-			else if (endlessdata[i].Left(9) == "MultSpawn")
-			{
-				string spawn_string = endlessdata[i].Mid(9);
-				int spawn_int = spawn_string.ToInt(10);
-				endless_spawnmult += spawn_int;
-				continue;
-			}
-			else if (endlessdata[i].Left(10) == "MultHealth")
-			{
-				string health_string = endlessdata[i].Mid(10);
-				int health_int = health_string.ToInt(10);
-				endless_healthmult += health_int;
-				continue;
-			}
-			else if (endlessdata[i].Left(10) == "MultDamage")
-			{
-				string damage_string = endlessdata[i].Mid(10);
-				int damage_int = damage_string.ToInt(10);
-				endless_damagemult += damage_int;
-				continue;
-			}
+			doendless = false;
 		}
 		
 		//calculate the number of enemies before doing anything else.
@@ -214,7 +219,7 @@ extend class DIHandler
 				if (batchdata != batchnum + 1) {continue;}
 				string batch_string = wavedata[i].Mid(4);
 				int batch_int = batch_string.ToInt(10);
-				waitnum = batch_int;
+				waitnum = batch_int * endless_spawnmult;
 				continue;
 			}
 			else if (batchdata != batchnum) {continue;}

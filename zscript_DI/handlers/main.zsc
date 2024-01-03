@@ -33,6 +33,7 @@ class DIHandler : EventHandler
 	int endless_spawnmult; //multiply the enemies by this number.
 	int endless_healthmult; //multiply the enemy's health by this number.
 	int endless_damagemult; //multiply the enemy's damage by this number.
+	bool doendless; //do the endless stuff this wave.
 	
 	int currentspawners; //amount of spawners currently spawning enemies.
 	
