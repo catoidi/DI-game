@@ -10,6 +10,7 @@ Class DI_FullHeal : Health
 		Inventory.PickupMessage "+100 Health";
 		Health.LowMessage 10, "+100 Health (wow u almost died lol)";
 		+BRIGHT;
+		+FLOATBOB;
 	}
 	
 	override void DoPickupSpecial(Actor toucher)
@@ -34,6 +35,8 @@ Class DI_Melon : Health
 		Inventory.MaxAmount 200;
 		Inventory.PickupMessage "+80 Health";
 		Health.LowMessage 10, "+80 Health (wow u almost died lol)";
+		+BRIGHT;
+		+FLOATBOB;
 	}
 	
 	States

@@ -9,4 +9,10 @@ mixin class DI_ConsumableMixin
 		EventHandler.SendNetworkEvent(command);
 		return true;
 	}
+	
+	default
+	{
+		+BRIGHT;
+		+FLOATBOB;
+	}
 }

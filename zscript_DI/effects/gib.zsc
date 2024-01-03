@@ -192,6 +192,7 @@ Class DI_GibExplosion : DI_Actor
 					let gibvel = boomsize * 9;
 					A_SpawnItemEX(invoker.GetGib(), 0, 0, 0, frandom(-gibvel, gibvel), frandom(-gibvel, gibvel), frandom(gibvel / 2, gibvel * 2), random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERRENDERSTYLE, 0, invoker.tid);
 				}
+				A_StartSound("wilhelm");
 			}
 			BLUD A 1 
 			{

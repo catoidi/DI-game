@@ -255,3 +255,7 @@ SHOPITEM_DI_LEADSWITCH = "Lead Switch";
 SHOPDESC_DI_LEADSWITCH = "Switching to a fresh weapon\ngives you +1 ammo.";
 SHOPDESC2_DI_LEADSWITCH = "\cbThis item only works if the new weapon can do fresh weapon kills, and the weapon hasn't been given ammo previously.";
 SHOPTYPE_DI_LEADSWITCH = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_DEATHMARK = "Marked for Death";
+SHOPDESC_DI_DEATHMARK = "Enemies have a 15% chance to be\nmarked. Marked enemies take\n50% more damage and always gib.";
+SHOPDESC2_DI_DEATHMARK = "\cbItem stacks will increase the chance for enemies to become marked. Marked enemies will also always gib. Gibbed enemies drop +2 coins.";
+SHOPTYPE_DI_DEATHMARK = "\cd[Passive] \cl[Max: 5]";

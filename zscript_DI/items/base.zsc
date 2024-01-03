@@ -6,4 +6,10 @@ class DIPassiveInventory : Inventory
 	bool dipassive_hidden; //if enabled, this item is not shown on the item hud.
 	
 	property DIHidden: dipassive_hidden;
+	
+	default
+	{
+		+BRIGHT;
+		+FLOATBOB;
+	}
 }

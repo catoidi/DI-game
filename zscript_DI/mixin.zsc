@@ -39,8 +39,9 @@ mixin class DI_ActorMixin
 	
 	action void A_DIScream (void)
 	{
-		if (random(0, 5000) == 5000) {A_StartSound("wilhelm");}
-		else {A_Scream();}
+		//if (random(0, 5000) == 5000) {A_StartSound("wilhelm");}
+		//else {A_Scream();}
+		A_Scream();
 	}
 	
 	//there's some duplicate functions here, i know. maybe one day i will fix it. but today is not that day.

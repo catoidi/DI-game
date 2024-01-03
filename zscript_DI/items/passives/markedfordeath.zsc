@@ -1,0 +1,65 @@
+//zscript_DI/items/passives/markedfordeath.zsc
+
+Class DI_DeathMark : DIPassiveInventory
+{
+	//enemies have a 15% chance to be marked. marked enemies take 50% more damage and always gib on death.
+	
+	Default
+	{
+		Tag "Death Mark";
+		Inventory.Icon "POW1J0";
+		Inventory.PickupMessage "Marked for Death Acquired! (Enemies have a 15% chance to be marked. Marked enemies take extra damage and always gib.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 J -1;
+			Stop;
+	}
+}
+
+Class DI_DeathMark_Enemy : Inventory
+{
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		newdamage = damage * 1.5; //enemy takes 50% more damage.
+		if (owner)
+		{
+			if (newdamage + 1 >= owner.health)
+			{
+				newdamage += 100; //enemy will always gib on death.
+			}
+		}
+		
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	override void DoEffect()
+	{
+		super.DoEffect();
+		
+		if (owner.health <= 0)
+		{
+			owner.A_SpawnItemEX("DI_DeathMark_Puff", zofs: owner.height / 2, flags: SXF_NOCHECKPOSITION);
+			owner.A_TakeInventory("DI_DeathMark_Enemy");
+		}
+	}
+}
+
+Class DI_DeathMark_Puff : DI_BloodPuff_GibBig
+{
+	Default
+	{
+		Renderstyle "Translucent";
+		//Alpha 0.25;
+	}
+
+	States
+	{
+		Spawn:
+			POW1 J 1 {A_DIScale(1.02, 1.02, true); A_FadeOut(0.1);}
+			Wait;
+	}
+}

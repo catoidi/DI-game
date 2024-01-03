@@ -109,6 +109,7 @@ StatusPassive DI_StatusGiver_Lightning POWRP 7 64;
 StatusPassive DI_StatusGiver_Poison POWRQ 7 64;
 StatusPassive DI_StatusGiver_Rainbow POWRV 21 64;
 StatusPassive DI_AcidBlood POW1D 7;
+StatusPassive DI_DeathMark POW1J 14;
 >>Rental Only Passives...
 OnlyRentPassive DI_ComboDamage POWRF 84 64;
 OnlyRentPassive DI_ComboDamageMult POWRT 84 128;
