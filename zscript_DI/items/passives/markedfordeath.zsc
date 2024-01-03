@@ -24,12 +24,15 @@ Class DI_DeathMark_Enemy : Inventory
 {
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
-		newdamage = damage * 1.5; //enemy takes 50% more damage.
-		if (owner)
+		if (passive == true)
 		{
-			if (newdamage + 1 >= owner.health)
+			newdamage = damage * 1.5; //enemy takes 50% more damage.
+			if (owner)
 			{
-				newdamage += 100; //enemy will always gib on death.
+				if (newdamage + 1 >= owner.health)
+				{
+					newdamage += 100; //enemy will always gib on death.
+				}
 			}
 		}
 		
