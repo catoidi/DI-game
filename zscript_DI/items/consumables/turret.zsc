@@ -81,10 +81,29 @@ Class DITurret_Actor : DI_Actor
 	
 	action void DITurret_Shoot(int recoil)
 	{
-		A_StartSound("bullet");
+		FLineTraceData plrcheck;
+		bool hit = invoker.LineTrace(invoker.angle, 1024, invoker.pitch, 0, 18, 0, 0, plrcheck);
+		
+		if (hit == false)
+		{
+			hit = invoker.LineTrace(invoker.angle + recoil, 1024, invoker.pitch, 0, 18, 0, 0, plrcheck);
+		}
+		if (hit == false)
+		{
+			hit = invoker.LineTrace(invoker.angle - recoil, 1024, invoker.pitch, 0, 18, 0, 0, plrcheck);
+		}
+		
+		if (hit && plrcheck.HitActor is "DI_PlayerBase")
+		{
+			A_StartSound("noammo", starttime: 0.1);
+		}
+		else
+		{
+			A_StartSound("bullet");
+			A_CustomBulletAttack(recoil, recoil, 1, 12, "DI_BulletPuff_NoWPN", 1024, CBAF_AIMFACING | CBAF_NORANDOM | CBAF_NORANDOMPUFFZ, spawnheight: 18);
+			A_AttachLightDef("shoot", "BULLETSHOOT");
+		}
 		A_DIScale(0.025, -0.025);
-		A_CustomBulletAttack(recoil, recoil, 1, 12, "DI_BulletPuff_NoWPN", 1024, CBAF_AIMFACING | CBAF_NORANDOM | CBAF_NORANDOMPUFFZ);
-		A_AttachLightDef("shoot", "BULLETSHOOT");
 	}
 
 	States
