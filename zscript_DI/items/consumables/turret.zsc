@@ -50,7 +50,7 @@ Class DITurret_Actor : DI_Actor
 	Default
 	{
 		Mass 200;
-		Health 180;
+		Health 50;
 		Radius 11;
 		Height 22;
 		Tag "Turret";
@@ -60,10 +60,23 @@ Class DITurret_Actor : DI_Actor
 		+NOBLOOD;
 	}
 	
+	int hptime;
+	
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		A_AttachLightDef("glower", "GLOWWHITE");
+	}
+	
+	override void tick()
+	{
+		super.tick();
+		++hptime;
+		if (hptime >= 35)
+		{
+			if (health < default.health) {health += 1;}
+			hptime = 0;
+		}
 	}
 	
 	action void DITurret_Shoot(int recoil)
