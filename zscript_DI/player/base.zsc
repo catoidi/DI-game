@@ -458,6 +458,27 @@ Class DI_PlayerBase : PlayerPawn abstract
 			invoker.score = 0;
 			console.printf("%s", "\cxYour debts have been forgiven.");
 		}
+		
+		//reset all weapon's ammo counts to default values
+		Array<String> allwpns;
+		//copy/pasted from the ammo satchel
+				
+		for (int i = 0; i < 10; ++i)
+		{
+			for (int j = 0; j < invoker.player.Weapons.SlotSize(i); ++j)
+			{
+				class curwpn = invoker.player.Weapons.GetWeapon(i, j);
+				if (curwpn)
+				{
+					allwpns.push(curwpn.GetClassName());
+				}
+			}
+		}
+		for (int i = 0; i < allwpns.Size(); ++i)
+		{
+			let curwpn = DI_Weapon(invoker.FindInventory(allwpns[i]));
+			if (curwpn != null) {curwpn.RestoreStartAmmo();}
+		}
 	}
 
 	action void A_DIPlayerPain(bool noblood = false)

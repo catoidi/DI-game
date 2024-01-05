@@ -16,6 +16,8 @@ Class DI_Weapon : Weapon abstract
 	int wpn_reloadspeed; //control the tic delay for parts of the reload animation. lower numbers are faster.
 	bool wpn_dontgiveammo1; //tells items to NOT give this weapon it's first ammo type.
 	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
+	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
+	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
 	
 	int wpn_ammo1hud, wpn_ammo2hud; 
 	//how the ammo bar will be rendered on the HUD. 0 is default (unlimited ammo). 1 is used for limited ammo weapons. 2 is used for recharging weapons. 3 is used for heat ammo, 4 is used for box ammo.
@@ -39,6 +41,9 @@ Class DI_Weapon : Weapon abstract
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
+	
+	property RestoreAmmo1: wpn_ammo1restore;
+	property RestoreAmmo2: wpn_ammo2restore;
 	
 	property Ammo1HUD: wpn_ammo1hud;
 	property Ammo2HUD: wpn_ammo2hud;
@@ -69,6 +74,8 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.ReloadSpeed 0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
+		DI_Weapon.RestoreAmmo1 0; //a value of 0 will mean the ammo restore amount will be set automatically.
+		DI_Weapon.RestoreAmmo2 0; //you may want to change this value if the ammo for your weapon is shared with another weapon.
 		DI_Weapon.Ammo1HUD 0;
 		DI_Weapon.Ammo2HUD 0;
 		Weapon.WeaponScaleY 1.0;
@@ -81,6 +88,8 @@ Class DI_Weapon : Weapon abstract
 		if ((owner) && (owner is "DI_PlayerBase"))
 		{
 			plr = DI_PlayerBase(owner);
+			if (ammo1) {wpn_ammo1restore = plr.CountInv(ammo1.GetClassName());}
+			if (ammo2) {wpn_ammo2restore = plr.CountInv(ammo2.GetClassName());}
 		}
 	}
 	
@@ -116,6 +125,39 @@ Class DI_Weapon : Weapon abstract
 		origin.A_WeaponOffset(0, 0, WOF_KEEPY); //gross hack to fix X offset when weapon is dropped mid-animation.
 		
 		super.PlayUpSound(origin);
+	}
+	
+	virtual void RestoreStartAmmo()
+	{
+		//reset ammo back to starting values.
+		
+		//this does not respect the "DontGiveAmmo" properties.
+		//if you wish to set the restore amount to a custom amount, change the wpn_ammo*restore ints.
+		//otherwise, the value will be set to whatever the ammo count is when the weapon is first picked up.
+	
+		if (ammo1)
+		{
+			//the ammo will only be reset if the value is below the starting amount or above the maximum amount.
+			let ammo1name = ammo1.GetClassName();
+			let startammo1 = wpn_ammo1restore;
+			let maxammo1 = ammo1.maxamount;
+			bool restore1 = false;
+			if (plr.CountInv(ammo1name) < startammo1) {restore1 = true;}
+			else if (plr.CountInv(ammo1name) > maxammo1) {restore1 = true;}
+			if (restore1) {plr.SetInventory(ammo1name, startammo1);}
+		}
+		
+		if (ammo2)
+		{
+			let ammo2name = ammo2.GetClassName();
+			let startammo2 = wpn_ammo2restore;
+			let maxammo2 = ammo2.maxamount;
+			bool restore2 = false;
+			if (plr.CountInv(ammo2name) < startammo2) {restore2 = true;}
+			else if (plr.CountInv(ammo2name) > maxammo2) {restore2 = true;}
+			if (restore2) {plr.SetInventory(ammo2name, startammo2);}
+		}
+		
 	}
 	
 	virtual void GetBaseDamage() //override these functions if you want to change how these values are calculated. 
