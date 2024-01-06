@@ -15,6 +15,7 @@ CLASS FruitPuncher : DI_Monster //20007
 		Species "Melon";
 		Tag "Fruit Puncher";
 		Obituary "$BOX_DIE_FRUIT";
+		DI_Monster.GibType "DI_FruitExplosion";
 		+FLOORCLIP;
 		+JUMPDOWN;
 		//$Category "Box Party/Enemies/"
@@ -71,5 +72,58 @@ CLASS DI_FruitBlood : DI_Blood
 		Looper:
 			#### # 15 {A_FadeOut(0.2); A_DIScale(1.2, 1.2, true);}
 			Loop;
+	}
+}
+
+Class DI_FruitExplosion : DI_GibExplosion
+{
+	override void postbeginplay()
+	{
+		super.postbeginplay();
+		
+		randomblood = random(0, 3);
+	}
+	
+	override name GetGib(int gibnum) 
+	{
+		switch(gibnum)
+		{
+			case 0:
+			case 1: return "DI_FruitGib"; break;
+			default: return "DI_FruitGib2"; break;
+		}
+		return "DI_FruitGib";
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay StartGibbing();
+			BLDR A 1 GibAway(invoker.randomblood);
+			Wait;
+	}
+}
+
+Class DI_FruitGib : DI_GibBloody
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			MELN J 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_FruitGib2 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			MELN J 15 {frame = random(10, 14);}
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
 	}
 }
