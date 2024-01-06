@@ -4,7 +4,7 @@ class DIItemHUDHandler : EventHandler
 {
 	Array<String> filedata; //all the lines from DISHOP.
 
-	transient ui cvar itemscale, itemhudtoggle, itemalpha;
+	transient ui cvar itemscale, itemhudtoggle, itemalpha, photomode;
 	ui DI_PlayerBase diplr;
 	ui Array<String> itemnames;
 	ui Array<String> itemsprites;
@@ -62,8 +62,10 @@ class DIItemHUDHandler : EventHandler
 		itemhudtoggle = cvar.GetCVAR("di_itemhud_toggle", players[consoleplayer]);
 		itemscale = cvar.GetCVAR("di_itemhud_scale", players[consoleplayer]);
 		itemalpha = cvar.GetCVAR("di_itemhud_alpha", players[consoleplayer]);
+		photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
 		if (!itemhudtoggle) {return;}
 		if (!itemscale) {return;}
+		if (!photomode) {return;}
 		validitems.Clear();
 		validsprites.Clear();
 		validcount.Clear();
@@ -108,6 +110,7 @@ class DIItemHUDHandler : EventHandler
 	{
 		for (int i = 0; i < validitems.Size(); i++)
 		{
+			if (photomode.GetBool() == true) {return;}
 			if (!itemscale) {return;}
 			let scalenum = itemscale.GetFloat();
 			let alphanum = itemalpha.GetFloat();

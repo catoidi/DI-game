@@ -197,7 +197,7 @@ SCRIPT "DoLeafFlash" (void)
 
 SCRIPT "FreshReadyMSG" (void)
 {
-	HudMessage(s:" \n\n\n\n\n\n\n\n\cnfresh bonus ready!"; HUDMSG_FADEOUT, -5679, CR_UNTRANSLATED, 0.5, 0.8, 0.3, 0.3, 0.75);
+	if (getcvar("di_photomode") == false) {HudMessage(s:" \n\n\n\n\n\n\n\n\cnfresh bonus ready!"; HUDMSG_FADEOUT, -5679, CR_UNTRANSLATED, 0.5, 0.8, 0.3, 0.3, 0.75);}
 }
 
 SCRIPT "DICheckWave" (void)

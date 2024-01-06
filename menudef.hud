@@ -19,6 +19,8 @@ OptionMenu "DIHudOptions"
 	Tooltip "Hides all HUD elements.  Does not get rid of popup messages.\n\nThis option is reset back to off upon closing the game."
 	Option "$DSPLYMNU_PLAYERSPRITES", "r_drawplayersprites", "OnOff"
 	Tooltip "Disabling this allows you to hide your weapon's viewmodel.\n\nThis option is reset back to off upon closing the game."
+	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
+	Tooltip "Prevents pickup messages from appearing at the top of your screen."
 	StaticText ""
 	StaticText "Passive Hotbar Options", "Purple"
 	Option "Enabled?", "di_itemhud_toggle", OnOff
