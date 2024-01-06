@@ -176,30 +176,34 @@ Class DI_GibExplosion : DI_Actor
 		Vel.Z += 0.05;
 	}
 	
-	virtual name GetGib()
+	virtual name GetGib(int gibnum = 0)
 	{
 		return "DI_GibBloody";
+	}
+	
+	action void StartGibbing()
+	{
+		A_SetRoll(random(0, 359));
+		for (int i = 0; i < invoker.gibamount; ++i)
+		{
+			let gibvel = invoker.boomsize * 9;
+			A_SpawnItemEX(invoker.GetGib(i), 0, 0, 0, frandom(-gibvel, gibvel), frandom(-gibvel, gibvel), frandom(gibvel / 2, gibvel * 2), random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERRENDERSTYLE, 0, invoker.tid);
+		}
+		A_StartSound("wilhelm");
+	}
+	
+	action void GibAway(int gibframe = -1)
+	{
+		if (gibframe > -1) {frame = gibframe;}
+		A_DIScale(1.025, 1.025, true); 
+		A_FadeOut(0.05);
 	}
 
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay
-			{
-				A_SetRoll(random(0, 359));
-				for (int i = 0; i < invoker.gibamount; ++i)
-				{
-					let gibvel = boomsize * 9;
-					A_SpawnItemEX(invoker.GetGib(), 0, 0, 0, frandom(-gibvel, gibvel), frandom(-gibvel, gibvel), frandom(gibvel / 2, gibvel * 2), random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERRENDERSTYLE, 0, invoker.tid);
-				}
-				A_StartSound("wilhelm");
-			}
-			BLUD A 1 
-			{
-				frame = randomblood;
-				A_DIScale(1.025, 1.025, true); 
-				A_FadeOut(0.05);
-			}
+			TNT1 A 0 NoDelay StartGibbing();
+			BLUD A 1 GibAway(invoker.randomblood);
 			Wait;
 	}
 }
