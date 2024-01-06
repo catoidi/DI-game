@@ -169,7 +169,7 @@ SCRIPT "EnemyCount" (int nme)
 SCRIPT "EnemyCountHUD" (void)
 {
 	Delay(5);
-	if (waveinprogress == true)
+	if ((waveinprogress == true) && (getcvar("di_photomode") == false))
 	{
 		int leftnum = enemycount;
 		int alivemon = GetLevelInfo(LEVELINFO_TOTAL_MONSTERS) - GetLevelInfo(LEVELINFO_KILLED_MONSTERS);

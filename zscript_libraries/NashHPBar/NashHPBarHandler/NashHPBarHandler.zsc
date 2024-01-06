@@ -33,6 +33,7 @@
 class NashHPBarHandler : EventHandler
 {
 	transient ui CVar cvEnableHPBar;
+	transient ui cvar photomode;
 	transient ui Actor prevAimTarget;
 	transient ui double healthBarAlpha;
 
@@ -98,6 +99,8 @@ class NashHPBarHandler : EventHandler
 	{
 		if (!cvEnableHPBar) cvEnableHPBar = CVar.GetCVar("nashhpbar_enable", players[consoleplayer]);
 		if (!cvEnableHPBar) ThrowAbortException("Cannot cache CVar \"nashhpbar_enable\"!");
+		if (!photomode) photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
+		if (!photomode) ThrowAbortException("Cannot cache CVar \"photomode\"!");
 	}
 
 	//===========================================================================
@@ -158,6 +161,9 @@ class NashHPBarHandler : EventHandler
 		CacheCVars();
 		if (!cvEnableHPBar) return;
 		if (cvEnableHPBar && !cvEnableHPBar.GetBool()) return;
+		
+		if (!photomode) return;
+		if (photomode && photomode.GetBool()) return;
 
 		let mnu = Menu.GetCurrentMenu();
 		if (mnu) return;

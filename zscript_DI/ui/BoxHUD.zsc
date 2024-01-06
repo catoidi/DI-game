@@ -6,6 +6,8 @@ class DI_HUD : BaseStatusBar
 	HUDFont SmallFont; //default smallfont font.
 	InventoryBarState invbar;
 	
+	cvar photomode;
+	
 	//stuff
 	bool HasAmmo1;
 	bool HasAmmo2;
@@ -72,6 +74,8 @@ class DI_HUD : BaseStatusBar
 		
 		shakecvar = cvar.findcvar("box_hudshake");
 		freshtimer = cvar.findcvar("di_showfreshtimer");
+		
+		photomode = cvar.findcvar("di_photomode");
 	}
 
 	override void NewGame()
@@ -160,7 +164,7 @@ class DI_HUD : BaseStatusBar
 		if (state == HUD_Fullscreen) //render HUD in fullscreen mode
 		{
 			BeginHUD();
-			DrawBoxHUD(TicFrac);
+			if (photomode.GetBool() == false) {DrawBoxHUD(TicFrac);}
 		}
 	}
 	
@@ -169,7 +173,7 @@ class DI_HUD : BaseStatusBar
 		Super.DrawAutomapHUD(TicFrac);
 		
 		BeginHUD(0.5);
-		DrawBoxHUD(TicFrac);
+		if (photomode.GetBool() == false) {DrawBoxHUD(TicFrac);}
 	}
 	
 	void DrawBoxHUD(double TicFrac)

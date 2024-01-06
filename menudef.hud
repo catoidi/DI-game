@@ -15,7 +15,12 @@ OptionMenu "DIHudOptions"
 	Option "Show Fresh Timer", "di_showfreshtimer", OnOff
 	Tooltip "Adds a number timer beside the 'Fresh' meter.\n\nCan help you understand the fresh bonus cooldown a bit more."
 	StaticText ""
-	StaticText "Item HUD Options", "Purple"
+	Option "Photo Mode", "di_photomode", OnOff
+	Tooltip "Hides all HUD elements.  Does not get rid of popup messages.\n\nThis option is reset back to off upon closing the game."
+	Option "$DSPLYMNU_PLAYERSPRITES", "r_drawplayersprites", "OnOff"
+	Tooltip "Disabling this allows you to hide your weapon's viewmodel.\n\nThis option is reset back to off upon closing the game."
+	StaticText ""
+	StaticText "Passive Hotbar Options", "Purple"
 	Option "Enabled?", "di_itemhud_toggle", OnOff
 	Tooltip "Shows you your Passive items at the top right of the screen.\n\nPro tip: It also shows the item quantity and whether or not it's 'permanent'."
 	Slider "Scale", "di_itemhud_scale", 0.25, 3.0, 0.05, 2, "di_itemhud_toggle"

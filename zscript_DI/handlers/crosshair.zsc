@@ -6,6 +6,7 @@ class DIXHairHandler : EventHandler
 {
 	TextureID xhair_dottex, xhair_tex, xhair_freshtex; //crosshair textures.
 	transient ui cvar xhair_toggle;
+	transient ui cvar photomode;
 	transient ui cvar xhair_scale;
 	transient ui cvar xhair_alpha;
 	transient ui cvar xhair_color;
@@ -77,6 +78,7 @@ class DIXHairHandler : EventHandler
 	override void RenderUnderlay(RenderEvent e)
 	{
 		xhair_toggle = CVar.GetCVar("di_xhair_toggle", players[consoleplayer]);
+		photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
 		xhair_scale = CVar.GetCVar("di_xhair_scale", players[consoleplayer]);
 		xhair_alpha = CVar.GetCVar("di_xhair_alpha", players[consoleplayer]);
 		xhair_color = CVar.GetCVar("di_xhair_color", players[consoleplayer]);
@@ -87,7 +89,7 @@ class DIXHairHandler : EventHandler
 		fresh_alpha = CVar.GetCVar("di_xhair_fresh_alpha", players[consoleplayer]);
 		dot_toggle = CVar.GetCVar("di_xhair_dot", players[consoleplayer]);
 	
-		if ((diwep) && (diplayer) && (xhair_toggle.GetInt() > 0))
+		if ((diwep) && (diplayer) && (xhair_toggle.GetInt() > 0) && (photomode.GetBool() == false))
 		{
 			double cenx = screen.GetWidth() / 2;
 			double ceny = screen.GetHeight() / 2;

@@ -50,6 +50,7 @@ user cheat bool box_hat_unlock_00 = true; //not used
 //boxhud
 user int box_hudshake = 2; //how much hud shakes when taking damage
 user bool di_showfreshtimer = false;
+user noarchive bool di_photomode = false; //hides all HUD elements. gets reset on game restart.
 
 //nashhpbar
 user bool nashhpbar_enable = true;
