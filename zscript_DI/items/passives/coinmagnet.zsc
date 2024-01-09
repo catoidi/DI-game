@@ -2,116 +2,18 @@
 
 class DI_CoinMagnet : DIPassiveInventory
 {
-	actor magnetbox;
-
 	Default
 	{
 		Tag "Coin Magnet";
-		Inventory.Icon "POW1J0";
+		Inventory.Icon "POW1L0";
 		Inventory.PickupMessage "Coin Magnet acquired! (Increases coin pickup radius.)";
 		Inventory.MaxAmount 5;
 	}
-	
-	override void doeffect()
-	{
-		super.doeffect();
-		if (owner)
-		{
-			
-		}
-	}
-	
-	/*
-	override void doeffect()
-	{
-		super.doeffect();
-		
-		if (!magnetbox && owner is "DI_PlayerBase")
-		{
-			bool fakebool;
-			[fakebool, magnetbox] = owner.A_SpawnItemEX("DI_CoinMagnet_Hitbox", flags: SXF_NOCHECKPOSITION | SXF_SETTARGET);
-			if (magnetbox) {console.printf("%s", "2nd hitbox spawned");}
-		}
-	}
-	*/
 	
 	States
 	{
 		Spawn:
 			POW1 L -1;
-			Stop;
-	}
-}
-
-class DI_CoinMagnet_Hitbox : Actor
-{
-	Default
-	{
-		//-SOLID;
-		//+NOGRAVITY;
-		//+BLOCKEDBYSOLIDACTORS;
-		//+CANPASS;
-		+PICKUP;
-	}
-
-	DI_PlayerBase plr;
-	DI_Pickup thecoin;
-
-	override void tick()
-	{
-		super.tick();
-		
-		if (target is "DI_PlayerBase") 
-		{
-			plr = DI_PlayerBase(target);
-			let magnetnum = plr.CountInv("DI_CoinMagnet");
-			if (magnetnum < 1) {A_Die();}
-			else
-			{
-				SetOrigin(plr.Pos, true);
-				A_SetSize(plr.radius * (magnetnum + 1), plr.height * (magnetnum + 1));
-				 
-				if (thecoin) 
-				{
-					console.printf("%s", "coin moved");
-					thecoin.SetOrigin(plr.Pos, true);
-				}
-			}
-		}
-		else 
-		{
-			console.printf("%s", "FUCK");
-			A_Die();
-		}
-	}
-	
-	override bool CanTouchItem(inventory item)
-	{
-		if (item is "DI_Pickup")
-		{
-			console.printf("%s", "lol");
-		}
-		return false;
-	}
-	
-	override bool CanCollideWith(Actor other, bool passive)
-	{
-		if ((other is "DI_Pickup") && (plr)) 
-		{
-			console.printf("%s", "coin collision");
-			thecoin = DI_Pickup(other);
-			return true;
-		}
-		else return false;
-	}
-	
-	States
-	{
-		Spawn:
-			TNT1 A -1;
-			Stop;
-		Death:
-			TNT1 A 1;
 			Stop;
 	}
 }

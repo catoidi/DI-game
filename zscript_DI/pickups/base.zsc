@@ -2,6 +2,8 @@ Class DI_Pickup : ScoreItem abstract
 {
 	string parcolor;
 	
+	bool ispicked;
+	
 	Property DespawnColor : parcolor;
 
 	Default
@@ -16,12 +18,30 @@ Class DI_Pickup : ScoreItem abstract
 		+INVENTORY.NOSCREENFLASH;
 	}
 	
+	override void tick()
+	{
+		super.tick();
+	
+		if ((ispicked == false) && (target is "DI_PlayerBase"))
+		{
+			int magnetnum = target.CountInv("DI_CoinMagnet");
+			if (magnetnum > 0)
+			{
+				if (Distance3D(target) <= (target.radius + (target.height / 2) + (magnetnum * 32)))
+				{
+					self.touch(target);
+				}
+			}
+		}
+	}
+	
 	override bool TryPickup (in out Actor toucher)
 	{
 		if (toucher is "DI_PlayerBase")
 		{
 			DI_PlayerBase ditoucher = DI_PlayerBase(toucher);
 			ditoucher.GiveInventory("DI_TokenComboTimer", (12 + (ditoucher.cointimer / 4) + (ditoucher.combonum * 4)) * Amount);
+			ispicked = true;
 		}
 		
 		Super.TryPickup(toucher);

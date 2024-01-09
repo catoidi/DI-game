@@ -259,3 +259,7 @@ SHOPITEM_DI_DEATHMARK = "Marked for Death";
 SHOPDESC_DI_DEATHMARK = "Enemies have a 15% chance to be\nmarked. Marked enemies take\n50% more damage and always gib.";
 SHOPDESC2_DI_DEATHMARK = "\cbItem stacks will increase the chance for enemies to become marked. Marked enemies will also always gib. Gibbed enemies drop +2 coins.";
 SHOPTYPE_DI_DEATHMARK = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_COINMAGNET = "Coin Magnet";
+SHOPDESC_DI_COINMAGNET = "Increases pickup radius for coins.";
+SHOPDESC2_DI_COINMAGNET = "\cbThe coin pickup radius is equal to your player's radius + (height / 2) + (itemstack * 32).";
+SHOPTYPE_DI_COINMAGNET = "\cd[Passive] \cl[Max: 5]";
