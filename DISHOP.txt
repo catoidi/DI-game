@@ -86,6 +86,7 @@ DamagePassive DI_BulletSplitter POWRG 105 64;
 DamagePassive DI_TooManyBullets POWRH 126 64;
 DamagePassive DI_AmmoGiver POWRI 28;
 DamagePassive DI_Firestarter POW1F 14;
+DamagePassive DI_Farsight POW1M 14;
 >>Defense Passives...
 DefensePassive DI_BloodyHeart POWRD 7;
 DefensePassive DI_BonusArmor POWRE 7;

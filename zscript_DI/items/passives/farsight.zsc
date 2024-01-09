@@ -1,0 +1,40 @@
+//zscript_DI/items/passives/farsight.zsc
+
+class DI_Farsight : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Farsight";
+		Inventory.Icon "POW1M0";
+		Inventory.PickupMessage "Farsight acquired! (Enemies take more damage from long distances.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 M -1;
+			Stop;
+	}
+}
+
+class DI_Farsight_Enemy: Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 5;
+	}
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == true) && (owner) && (owner.target))
+		{
+			int dmgmod = owner.CountInv("DI_Farsight_Enemy");
+			int dmgdist = owner.Distance3D(owner.target);
+			double dmgmult = 1.0 + (0.0005 * dmgdist * dmgmod);
+			if (dmgmult > (1 + dmgmod)) {dmgmult = 1 + dmgmod;}
+			newdamage = damage * dmgmult;
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+}

@@ -48,3 +48,4 @@ DI_CreditFraud;
 DI_LeadSwitch;
 DI_DeathMark;
 DI_CoinMagnet;
+DI_Farsight;

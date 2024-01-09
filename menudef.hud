@@ -8,7 +8,7 @@ OptionMenu "DIHudOptions"
 	Title "HUD Options"
 	Tooltip ""
 	StaticText "Main HUD Options", "Purple"
-	Slider "Main HUD Scale", "hud_scalefactor", 0.0, 1.0, 0.025, 3
+	Slider "Scale", "hud_scalefactor", 0.0, 1.0, 0.025, 3
 	Tooltip "Controls the size of the main HUD elements."
 	Slider "Damage Shake",		"box_hudshake",		0, 5, 1, 0	
 	Tooltip "Controls how much the HUD will 'shake' upon you taking damage.\n\nAlso influences the minimum threshold of damage needed for shake to occur."
