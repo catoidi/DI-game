@@ -147,16 +147,29 @@ Class DIShop : DIShop_Base
 			int pushchance = 256;
 			if (currentline.Size() >= 5) {pushchance = currentline[4].ToInt(10);}
 			
+			cvar cheatmode = cvar.getcvar("di_unlock_cheat");
+			bool docheat = cheatmode.getbool();
+			
 			for (int j = 0; j < groupdata.Size(); j++)
 			{
 				if (currentline[0] == groupdata[j]) //This is case sensitive!
 				{
 					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+					if ((currentline.Size() > 5) && (docheat == false))
+					{
+						cvar curcvar = cvar.getcvar(currentline[5]);
+						if ((curcvar) && (curcvar.getbool() == false)) {continue;} //dont add item if it's still locked.
+					}
 					itempool.Push(filedata[i]); //only add relevant item pool data to this array.
 				}
 				else if (user_shoptype == "") 
 				{
 					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+					if ((currentline.Size() > 5) && (docheat == false))
+					{
+						cvar curcvar = cvar.getcvar(currentline[5]);
+						if ((curcvar) && (curcvar.getbool() == false)) {continue;} //dont add item if it's still locked.
+					}
 					itempool.Push(filedata[i]); //if no item pool is defined, add every item to the shop.
 				}
 			}
