@@ -232,7 +232,7 @@ Class DIShop : DIShop_Base
 						cvar curcvar = cvar.getcvar(currentline[5]);
 						if ((curcvar) && (curcvar.getbool() == false)) {continue;} //dont add item if it's still locked.
 					}
-					if (blacklist.Find(currentline[1]) == blacklist.Size())
+					if (blacklist.Find(currentline[1]) != blacklist.Size())
 					{
 						itempool_blacklist.Push(filedata[i]);
 						continue;
