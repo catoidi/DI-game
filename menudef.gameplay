@@ -14,4 +14,8 @@ OptionMenu "DIGameplay"
 	Tooltip "Intensity in angle per tick for Aim Assist.\n\nLower to decrease assist force."
 	Command "Update Now (Ingame)","netevent AimAssistUpdateCVARs"
 	Tooltip "Normally changing Aim Assist settings won't take effect until you start a new game.\n\nThis forces the settings to update immediately."
+	StaticText ""
+	StaticText "Cheat Codes", "Purple"
+	Option "Unlock Everything", "di_unlock_cheat", OnOff
+	Tooltip "This will force all items, players, levels, etc. to become unlocked.\n\nThis does not take full effect until a new game is started."
 }

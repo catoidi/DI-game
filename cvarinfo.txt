@@ -12,13 +12,26 @@ user bool di_menu_asktutorial = false; //check if the player has been asked abou
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
 server cheat bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
-server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unlocked through reaching Wave 30 in Hard Mode.
+server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unlocked through beating Wave 25 in Hard Mode.
 server cheat bool di_unlock_lvl_di01 = false; //unlocks Level 1. unlocked through playing/skipping the tutorial.
-server cheat bool di_unlock_lvl_di02 = false; //unlocks Level 2. unlocked through reaching Wave 10 on Level 1.
-server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked through purchasing 3 Box Party weapons at once.
-server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player. unlocked through purchasing 50 burgers.
-server cheat bool di_unlock_item_doubleshotgun = false; //unlocks the double shotgun. unlocked through completing 25 total waves.
-server noarchive cheat int di_burgercount = 0; //this must reach 50 to unlock burger.
+server cheat bool di_unlock_lvl_di02 = false; //unlocks Level 2. unlocked through beating Wave 10 on Level 1.
+server cheat bool di_unlock_lvl_di03 = false; //unlocks Level 3. unlocked through beating Wave 10 on Level 2.
+server cheat bool di_unlock_lvl_di04 = false; //unlocks Level 4. unlocked through beating Wave 10 on Level 3.
+server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked through purchasing 2 Box Party weapons at once.
+server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player.
+server noarchive cheat int di_burgercount = 0; //you must consume 5 burger in 1 game to unlock burger.
+
+//DI shop item unlocks
+server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
+server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
+server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
+server cheat bool di_unlock_item_partyshotty2 = false; //unlocked by holding 3 Box Party weapons as Box Partyer on Level 2.
+server cheat bool di_unlock_item_icebullet = false; //get 10 ice kills to unlock.
+server cheat bool di_unlock_item_shockbullet = false; //get 10 shock kills to unlock.
+server cheat bool di_unlock_item_firebullet = false; //get 10 fire kills to unlock.
+server cheat bool di_unlock_item_poisonbullet = false; //get 10 poison kills to unlock.
+server cheat bool di_unlock_item_rainbowbullet = false; //unlock all other status bullets to unlock.
+server cheat int di_wavesdone = 0; //how many waves you've completed so far.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
