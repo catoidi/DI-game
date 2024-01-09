@@ -5,6 +5,8 @@ Class DIShop : DIShop_Base
 	Array<String> filedata; //all the lines from DISHOP.
 	Array<String> itempool; //only the lines that match user_shoptype. if user_shoptype is blank, it uses all items in DISHOP.
 	Array<String> groupdata; //used mainly if the shop is using a group instead of a standard item category. groups will inherit all items for each category it calls.
+	Array<String> blacklist; //a list of items that cannot be added to the shop pool.
+	Array<String> itempool_blacklist; //a list of blacklisted items that were removed from the item pool.
 
 	//these start with "user_" so that Ultimate Doom Builder is able to manually add in stuff here.
 	//the ones with "shop_" are the ones that this actor actually uses.
@@ -13,6 +15,7 @@ Class DIShop : DIShop_Base
 	string user_shoptype; //for use with random shops, this tells the shop which item pool to look through.
 	int user_pricemult; //multiplier for the base price.
 	bool user_alwaysreroll; //forces the shop to always reroll their item upon every restock.
+	string user_blacklist; //map editor defined item blacklist. can be used to fine-tune your item shops. uses same format as regular blacklist.
 	
 	Inventory itemactor; //points to the inventory class for the current item, but only if the player already has the item.
 	int itemmax; //the item's built in max amount value. only applies if the player already has the item.
@@ -40,6 +43,7 @@ Class DIShop : DIShop_Base
 	
 	override void PostBeginPlay()
 	{	
+		ParseBlacklist();
 		ParseDISHOP();
 		
 		if (user_pricemult < 1) {user_pricemult = 1;}
@@ -97,6 +101,70 @@ Class DIShop : DIShop_Base
 		}
 	}
 	
+	virtual void ParseBlacklist(void)
+	{
+		//look through the di_unlock_blacklist cvar and create a list of blacklisted items.
+		//the blacklist uses the class name of the item for identification.
+		
+		//this function should only be run once, as running this again would remove any items blacklisted mid-game.
+		cvar listcvar = cvar.getcvar("di_unlock_blacklist");
+		if (listcvar)
+		{
+			blacklist.Clear();
+			itempool_blacklist.Clear();
+			string fulllist = listcvar.getstring();
+			fulllist.Split(blacklist, ",", TOK_SKIPEMPTY);
+			user_blacklist.Split(blacklist, ",", TOK_SKIPEMPTY);
+		}
+	}
+	
+	virtual bool AddBlacklist(string newitem, bool forcereroll = false)
+	{
+		bool alreadydone = false;
+		int blacklistnum = blacklist.Find(newitem);
+		if (blacklistnum < blacklist.Size()) {alreadydone = true;} //skip if item already blacklisted
+		
+		if (alreadydone == false) 
+		{
+			blacklist.Push(newitem);
+			int poolnum = itempool.Find(newitem); //see if blacklist is in item pool
+			if (poolnum < itempool.Size())
+			{
+				itempool_blacklist.Push(itempool[poolnum]); //add to blacklisted pool
+				itempool.Delete(poolnum); //remove from item pool
+			}
+			if (newitem == shop_currentitem) {RerollShopItem();} //reroll shop if current item is now blacklisted
+			else if (forcereroll) {RerollShopItem();}
+			return true;
+		}
+		else {return false;}
+	}
+	
+	virtual bool RemoveBlacklist(string delitem, bool forcereroll = false)
+	{
+		int itemnum = blacklist.Find(delitem); //see if item is in blacklist
+		if (itemnum < blacklist.Size())
+		{
+			blacklist.Delete(itemnum); //remove from blacklist
+			int poolnum = itempool_blacklist.Find(delitem); //see if item was removed from shop pool
+			if (poolnum < itempool_blacklist.Size())
+			{
+				itempool.Push(itempool_blacklist[poolnum]); //add item back into shop pool
+				itempool_blacklist.Delete(poolnum); //remove from removed items list
+			}
+			if (forcereroll) {RerollShopItem();} //rerolling can give the shops a chance to immediately display the newly unblacklisted item.
+			return true;
+		}
+		else {return false;}
+	}
+	
+	virtual bool IsBlacklisted(string itemfind)
+	{
+		int itemnum = blacklist.Find(itemfind);
+		if (itemnum < blacklist.Size()) {return true;}
+		else {return false;}
+	}
+	
 	virtual void ParseDISHOP(void)
 	{
 		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
@@ -152,25 +220,24 @@ Class DIShop : DIShop_Base
 			
 			for (int j = 0; j < groupdata.Size(); j++)
 			{
-				if (currentline[0] == groupdata[j]) //This is case sensitive!
+				bool correctgroup = false;
+				if (currentline[0] == groupdata[j]) {correctgroup = true;} //case sensitive cuz i didnt make it a name instead of a string for some reason!
+				else if (user_shoptype == "") {correctgroup = true;} //if no group is defined, load EVERY item.
+				
+				if (correctgroup)
 				{
 					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
 					if ((currentline.Size() > 5) && (docheat == false))
 					{
 						cvar curcvar = cvar.getcvar(currentline[5]);
 						if ((curcvar) && (curcvar.getbool() == false)) {continue;} //dont add item if it's still locked.
+					}
+					if (blacklist.Find(currentline[1]) == blacklist.Size())
+					{
+						itempool_blacklist.Push(filedata[i]);
+						continue;
 					}
 					itempool.Push(filedata[i]); //only add relevant item pool data to this array.
-				}
-				else if (user_shoptype == "") 
-				{
-					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
-					if ((currentline.Size() > 5) && (docheat == false))
-					{
-						cvar curcvar = cvar.getcvar(currentline[5]);
-						if ((curcvar) && (curcvar.getbool() == false)) {continue;} //dont add item if it's still locked.
-					}
-					itempool.Push(filedata[i]); //if no item pool is defined, add every item to the shop.
 				}
 			}
 		}
