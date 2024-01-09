@@ -1,0 +1,6 @@
+//zscript_DI/ui/unlock/handler.zsc
+
+class DI_UnlockMenuHandler : boxparty_ZF_Handler
+{
+	DI_UnlockMenu link;
+}

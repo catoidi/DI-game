@@ -42,6 +42,8 @@ version "4.11"
 #include "zscript_DI/ui/BoxHUD.zsc" //smh lazy dev copy/pasting code from their other game /s
 #include "zscript_DI/ui/Catalogue.zsc"
 #include "zscript_DI/ui/CatalogueHandler.zsc"
+#include "zscript_DI/ui/unlock/menu.zsc"
+#include "zscript_DI/ui/unlock/handler.zsc"
 
 //decoration
 #include "zscript_DI/decoration/painting.zsc"

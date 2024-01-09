@@ -1,0 +1,13 @@
+>>this is for the unlock menu.
+di_unlock_item_partyshotty2 SHU1Z0;
+di_unlock_item_starpistol PISTZ0;
+di_unlock_item_glowstick GLOWA0;
+di_unlock_item_cheesegun CHESZ0;
+di_unlock_item_fred1 POWRE0;
+di_unlock_item_fred2 POW1F0;
+di_unlock_item_fred3 POW1G0;
+di_unlock_item_fred4 POW1M0;
+di_unlock_item_combobase POWRF0;
+di_unlock_item_combomult POWRT0;
+di_unlock_item_rewardsprogram POWRW0;
+di_unlock_item_creditfraud POW1H0;

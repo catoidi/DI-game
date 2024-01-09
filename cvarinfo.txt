@@ -22,10 +22,19 @@ server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player.
 server noarchive cheat int di_burgercount = 0; //you must consume 5 burger in 1 game to unlock burger.
 
 //DI shop item unlocks
+user bool di_unlock_tutorial = false; //do a menu tutorial the first time you open it.
 server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
 server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
 server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
 server cheat bool di_unlock_item_partyshotty2 = false; //unlocked by holding 3 Box Party weapons as Box Partyer on Level 2.
+server cheat bool di_unlock_item_fred1 = false; //unlock the bonus armor item by getting 100 fred kills.
+server cheat bool di_unlock_item_fred2 = false; //unlock the firestarter item by getting 300 fred kills.
+server cheat bool di_unlock_item_fred3 = false; //unlock the last stand item by getting 600 fred kills.
+server cheat bool di_unlock_item_fred4 = false; //unlock the farsight item by getting 1000 fred kills.
+server cheat bool di_unlock_item_combobase = false; //unlock the combo base dmg item by getting +8 Base DMG in 1 run.
+server cheat bool di_unlock_item_combomult = false; //unlock the combo dmg mult item by getting +100% DMG Mult in 1 run.
+server cheat bool di_unlock_item_creditfraud = false; //unlock the credit fraud item by starting 5 rounds while in debt.
+server cheat bool di_unlock_item_rewardsprogram = false; //unlock the rewards program item by starting 10 rounds while in debt.
 server cheat bool di_unlock_item_icebullet = false; //get 10 ice kills to unlock.
 server cheat bool di_unlock_item_shockbullet = false; //get 10 shock kills to unlock.
 server cheat bool di_unlock_item_firebullet = false; //get 10 fire kills to unlock.

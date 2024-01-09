@@ -20,7 +20,7 @@ ListMenu "MainMenu"
 	Position 92, 80
 	//PatchItem "M_NGAME",	"n",	"PlayerclassMenu"
 	PatchItem "M_NGAME",	"n",	"DINewGameMenu"
-	PatchItem "M_UNLOCK",	"u",	"boxparty_HatMenu"
+	PatchItem "M_UNLOCK",	"u",	"DI_UnlockMenu"
 	PatchItem "M_OPTION",	"o",	"DIOptionsMenu"
 	//DIPatchItem "di_testcvar", "M_OPTION",	"o",	"OptionsMenu"
 	//PatchItem "M_RDTHIS",   "r",    "ReadThisMenu"

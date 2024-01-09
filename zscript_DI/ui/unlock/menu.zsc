@@ -1,0 +1,123 @@
+//zscript_DI/ui/unlock/menu.zsc
+
+class DI_UnlockMenu : boxparty_ZF_GenericMenu
+{
+	DI_UnlockMenuHandler handler;
+	
+	bool morebuttons; //display 60 buttons at once instead of 15.
+	
+	cvar tutcvar, //check to see if player has done tutorial yet.
+		 cheatmode, //force everything to be enabled when cheatmode is on.
+		 blacklistcvar; //the cvar containing everything that's blacklisted.
+		 
+	bool justkeyed; //keyboard was pressed this tic.
+	int keypos, curkey; //more keyboard stuff.
+	
+	Font smallfont;
+	
+	boxparty_ZF_BoxImage background, 
+						 topimage, //the title of the menu at the top left.
+					     keyboardselect; //the item selected via keyboard.
+	boxparty_ZF_BoxImage currentsprite; //the item sprite shown at the top right of the screen. should be a duplicate of the current buttonimage.
+	
+	string infotext, //the text that appears at the top when you do something.
+		   unlockcounter; //text showing how many unlocks you have so far.
+		   
+	boxparty_ZF_Label infolabel; //the label containing the infotext.
+	
+	Array<string> unlocklist; //all the data from the DIUNLOCK file.
+	Array<boxparty_ZF_BoxImage> buttonimage, backimage; //the background image and sprite for the buttons.
+	Array<boxparty_ZF_Button> buttonlist; //the actual buttons you click.
+	int pagenum; //current page of unlocks.
+	
+	override void init(menu parent)
+	{
+		//beginning setup
+		super.init(parent);
+		setbaseresolution((640, 400));
+		smallfont = Font.GetFont("smallfont");
+		//make background texture
+		let bgtex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/hat/HATBACK.png", (0, 0), (640, 400), true, true);
+		background = boxparty_ZF_BoxImage.Create((0, 0), (640, 400), bgtex, (2, 2));
+		background.Pack(mainFrame);
+		//make unlocks texture
+		let toptex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/M_UNLOCK.png", (0, 0), (200, 52), true, true);
+		topimage = boxparty_ZF_BoxImage.Create((40, 30), (200, 52), toptex, (2, 2));
+		topimage.Pack(mainFrame);
+		//create handler
+		handler = new('DI_UnlockMenuHandler');
+		handler.link = self;
+		//keyboard stuff
+		keypos = -1;
+		curkey = -1;
+		//create info label
+		infotext = "Select an item to get started.";
+		UpdateInfoLabel();
+		//parse DIUNLOCK data
+		ParseDIUNLOCK();
+		//create unlock buttons
+		CreateUnlocks();
+	}
+	
+	virtual void UpdateInfoLabel()
+	{	
+		if (mainframe.indexofelement(infolabel) == mainframe.elementcount())
+		{
+			// Add a label.
+			infolabel = boxparty_ZF_Label.Create
+			(
+				// Position
+				(40, 88),
+				// Size.
+				(0, smallfont.getheight()),
+				// The label's text
+				text: infotext,
+				// The font to use
+				fnt: smallfont,
+				// Whether to automatically wrap the text or not
+				wrap: false,
+				// Whether to automatically resize the element based on the text width
+				autoSize: true,
+				//make the text smaller :)
+				textScale: 1.0,
+				// The text's colour
+				textColor: Font.CR_WHITE
+			);
+			infolabel.Pack(mainFrame);
+		}
+		else {infolabel.setText(infotext);}
+	}
+	
+	virtual void ParseDIUNLOCK()
+	{
+		array<string> filedata;
+	
+		int ThisLump = Wads.FindLump("DIUNLOCK", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); ++i)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;}
+			if (filedata[i].Length() < 3) {continue;}
+			int linesize = filedata[i].IndexOf(";");
+			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
+			array<string> curline;
+			filedata[i].Split(curline, " ");
+			if ((curline.Size() < 2) && (curline.Size() > 3)) {continue;} //each valid line must contain 2 or 3 arguments.
+			unlocklist.Push(filedata[i]);
+			console.printf("%s", filedata[i]);
+		}
+	}
+	
+	virtual void CreateUnlocks()
+	{
+	
+	}
+}
