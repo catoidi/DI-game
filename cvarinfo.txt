@@ -23,6 +23,7 @@ server noarchive cheat int di_burgercount = 0; //you must consume 5 burger in 1 
 
 //DI shop item unlocks
 user bool di_unlock_tutorial = false; //do a menu tutorial the first time you open it.
+user bool di_unlock_morebuttons = false; //show 60 buttons at once instead of 15.
 server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
 server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
 server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
