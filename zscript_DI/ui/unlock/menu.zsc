@@ -19,10 +19,9 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 					     keyboardselect; //the item selected via keyboard.
 	boxparty_ZF_BoxImage currentsprite; //the item sprite shown at the top right of the screen. should be a duplicate of the current buttonimage.
 	
-	string infotext, //the text that appears at the top when you do something.
-		   unlockcounter; //text showing how many unlocks you have so far.
+	string unlockcounter; //text showing how many unlocks you have so far.
 		   
-	boxparty_ZF_Label infolabel; //the label containing the infotext.
+	boxparty_ZF_Label infolabel, pagelabel; //this is the actual text you see on the menu.
 	
 	Array<string> unlocklist; //all the data from the DIUNLOCK file.
 	Array<boxparty_ZF_BoxImage> buttonimage, backimage; //the background image and sprite for the buttons.
@@ -42,7 +41,8 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		smallfont = Font.GetFont("smallfont");
 		plr = players[consoleplayer];
 		morebuttoncvar = cvar.getcvar("di_unlock_morebuttons", plr);
-		if (morebuttoncvar.GetBool() == true) {morebuttons = true;}
+		cheatmode = cvar.getcvar("di_unlock_cheat", plr);
+		if (morebuttoncvar.GetBool() == true) {morebuttons = true;} //DO NOT UPDATE THIS POST-INIT, EVERYTHING WILL EXPLODE....................
 		//make background texture
 		let bgtex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/hat/HATBACK.png", (0, 0), (640, 400), true, true);
 		background = boxparty_ZF_BoxImage.Create((0, 0), (640, 400), bgtex, (2, 2));
@@ -58,17 +58,20 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		keypos = -1;
 		curkey = -1;
 		//create info label
-		infotext = "Select an item to get started.";
-		UpdateInfoLabel();
+		UpdateInfoLabel("Select an item to get started.");
 		//parse DIUNLOCK data
 		ParseDIUNLOCK();
 		//create unlock buttons
 		UpdateUnlocks();
 		//create page buttons
-		CreatePageButtons();
+		CreatePageButton(true);
+		CreatePageButton(false);
+		UpdatePageLabel();
+		//create reset button
+		CreateResetButton();
 	}
 	
-	virtual void UpdateInfoLabel()
+	virtual void UpdateInfoLabel(string infotext)
 	{	
 		if (mainframe.indexofelement(infolabel) == mainframe.elementcount())
 		{
@@ -95,6 +98,41 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			infolabel.Pack(mainFrame);
 		}
 		else {infolabel.setText(infotext);}
+	}
+	
+	virtual void UpdatePageLabel()
+	{	
+		int maxbuttons = 15;
+		if (morebuttons) {maxbuttons = 60;}
+		int maxpage = 1 + (unlocklist.Size() / maxbuttons);
+		int curpage = pagenum + 1;
+		string pagetext = string.Format("Page: %d/%d", curpage, maxpage);
+	
+		if (mainframe.indexofelement(pagelabel) == mainframe.elementcount())
+		{
+			// Add a label.
+			pagelabel = boxparty_ZF_Label.Create
+			(
+				// Position
+				(568 - ((smallfont.StringWidth(pagetext) / 2)), 224),
+				// Size.
+				(0, smallfont.GetHeight()),
+				// The label's text
+				text: pagetext,
+				// The font to use
+				fnt: smallfont,
+				// Whether to automatically wrap the text or not
+				wrap: false,
+				// Whether to automatically resize the element based on the text width
+				autoSize: true,
+				//make the text smaller :)
+				textScale: 1.0,
+				// The text's colour
+				textColor: Font.CR_WHITE
+			);
+			pagelabel.Pack(mainFrame);
+		}
+		else {pagelabel.setText(pagetext);}
 	}
 	
 	virtual void ParseDIUNLOCK()
@@ -141,6 +179,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		{	
 			for (int i = 0; i < maxbuttons; ++i)
 			{
+				//also no need to worry about pages for this part, as it always loads page 1 first.
 				let startx = 24 + ((46 * (i / maxcolumn)) * buttonscale);
 				let starty = 112 + ((46 * (i % maxcolumn)) * buttonscale);
 				let startx_img = startx - (2 * buttonscale);
@@ -158,6 +197,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 					cvar curcvar = cvar.getcvar(curline[0], plr);
 					
 					if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
+					if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
 				}
 				
 				//CREATE THE BACKGROUND IMAGE
@@ -253,11 +293,210 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				buttonlist.Push(curbutton);
 				curbutton.Pack (mainFrame);
 			}
+			unlockscreated = true;
+		}
+		else
+		{
+			int startpos = maxbuttons * pagenum;
+			for (int i = 0; i < maxbuttons; ++i) //the unlock buttons are the first ones added to the buttonlist, so we always know exactly where all the buttons are in the array.
+			{
+				int newpos = i + startpos;
+				
+				let startx = 24 + ((46 * (i / maxcolumn)) * buttonscale);
+				let starty = 112 + ((46 * (i % maxcolumn)) * buttonscale);
+				let startx_img = startx - (2 * buttonscale);
+				let starty_img = starty - (2 * buttonscale);
+			
+				//CHOOSE BUTTON MODE
+				int buttonmode = 0; //item is locked
+				array<string> curline;
+				if (newpos >= unlocklist.Size()) {buttonmode = -1;} //item is missing
+				else
+				{
+					//console.printf("%s", "getting cvar #%d", i);
+					unlocklist[newpos].Split(curline, " ");
+					cvar curcvar = cvar.getcvar(curline[0], plr);
+					
+					if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
+					if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+				}
+				
+				//UPDATE BACK IMAGE
+				let backimg = "graphics/hat/HATMISSING.png";
+				switch(buttonmode)
+				{
+					case 0: backimg = "graphics/hat/DILOCK.png"; break;
+					case 1: backimg = "graphics/hat/HATBLANK4.png"; break;
+				}
+				let curtex = boxparty_ZF_BoxTextures.CreateSingleTexture(backimg, false);
+				backimage[i].setPos((startx_img, starty_img));
+				backimage[i].setSize((44 * buttonscale, 44 * buttonscale));
+				backimage[i].setBoxTex(curtex);
+				backimage[i].setBoxScale((buttonscale, buttonscale));
+				
+				//UPDATE ICON IMAGE
+				let unlockimg = 'graphics/hat/HATIDLE.png';
+				vector2 iconsize = (44, 44);
+				float bonusx, bonusy = 0;
+				float sizescale = 1.0;
+				if (buttonmode == 1)
+				{
+					unlockimg = string.format('graphics/unlocks/%s.png', curline[0]);
+					let temptex = texman.checkfortexture(unlockimg);
+					if (temptex.IsValid())
+					{
+						float sizex, sizey;
+						[sizex, sizey] = TexMan.GetSize(temptex);
+						if (sizex == 0) {sizex = 1;} //do not divide by 0 pls thank u :)
+						if (sizey == 0) {sizey = 1;}
+						sizescale = (32 * buttonscale) / sizex; //get scale from X
+						float sizescaley = (32 * buttonscale) / sizey; //get scale from Y
+						if (sizescaley > sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
+						if (sizescale > (3.0 * buttonscale)) {sizescale = (3.0 * buttonscale);} //default size is 3x.
+						sizex *= sizescale;
+						sizey *= sizescale;
+						iconsize = (sizex, sizey);
+						bonusx = ((40 * buttonscale) - sizex) / 2;
+						bonusy = ((40 * buttonscale) - sizey) / 2; //place texture in the center of the whitespace.
+						//console.printf("%s, %s\n%d+%d, %d+%d\n%.1f, %.1f, %.1f", curline[0], unlockimg, startx, bonusx, starty, bonusy, sizex, sizey, sizescale);
+					}
+					else {unlockimg = 'graphics/hat/HATIDLE.png';}
+				}
+				let curtex2 = boxparty_ZF_BoxTextures.CreateTexturePixels(unlockimg, (0, 0), iconsize, true, true);
+				buttonimage[i].setPos((startx + bonusx, starty + bonusy));
+				buttonimage[i].setSize(iconsize);
+				buttonimage[i].setBoxTex(curtex2);
+				buttonimage[i].setBoxScale((sizescale, sizescale));
+				
+				//UPDATE BUTTON COMMAND
+				let docommand = "sorrynothing";
+				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[0]);}
+				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[0]);}
+				buttonlist[i].setCommand(docommand);
+			}
 		}
 	}
 	
-	virtual void CreatePageButtons()
+	virtual void ChangePage(bool isRight)
 	{
+		int maxbuttons = 15;
+		if (morebuttons) {maxbuttons = 60;}
+		int maxpage = 1 + (unlocklist.Size() / maxbuttons);
+		int curpage = pagenum + 1;
 		
+		if ((curpage < maxpage) && isRight) {pagenum += 1;}
+		else if ((curpage > 1) && (isRight == false)) {pagenum -= 1;}
+		UpdatePageLabel();
+		UpdateUnlocks();
+	}
+	
+	virtual void CreatePageButton(bool isRight)
+	{
+		string docommand;
+		string dotexture;
+		vector2 pagepos;
+		
+		if (isRight) 
+		{
+			pagepos = (572, 232);
+			docommand = "GoRight";
+			dotexture = "graphics/hat/HATPAGER.png";
+		}
+		else 
+		{
+			pagepos = (516, 232);
+			docommand = "GoLeft";
+			dotexture = "graphics/hat/HATPAGEL.png";
+		}
+	
+		let boxSize = (48, 48);
+		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), boxSize, true, true);
+		let aBoxImage = boxparty_ZF_BoxImage.Create
+        (
+            // Position
+            pagepos,
+            // Size
+            boxSize,
+            // Texture
+            boxTexture,
+            // Scale
+            (2, 2)
+        );
+        // Add the box image element into the main frame.
+		buttonimage.Push(aBoxImage);
+        aBoxImage.Pack (mainFrame);
+		
+		// Create the button's textures.
+        let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
+        let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATPAGEHOVER.png", true);
+        let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATPAGESELECT.png", true);
+        // Add a button.
+        let aButton = boxparty_ZF_Button.Create
+        (
+            // Position
+            pagepos,
+            // Size
+            boxSize,
+            // Our command handler
+            cmdHandler: handler,
+            // A command string for the button
+            command: docommand,
+            // The button's textures
+            inactive: buttonIdle,
+            hover: buttonHover,
+            click: buttonClick
+        );
+        // Add the button element into the main frame.
+		buttonlist.Push(aButton);
+        aButton.Pack (mainFrame);
+	}
+	
+	virtual void CreateResetButton()
+	{
+		string docommand = "ResetBlacklist";
+		string dotexture = "graphics/hat/HATBUTTONOFF.png";
+		vector2 pagepos = (528, 288);
+	
+		let boxSize = (88, 88);
+		let boxSize2 = (80, 80);
+		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), boxSize, true, true);
+		let aBoxImage = boxparty_ZF_BoxImage.Create
+        (
+            // Position
+            pagepos - (4, 4),
+            // Size
+            boxSize,
+            // Texture
+            boxTexture,
+            // Scale
+            (2, 2)
+        );
+        // Add the box image element into the main frame.
+		buttonimage.Push(aBoxImage);
+        aBoxImage.Pack (mainFrame);
+		
+		// Create the button's textures.
+        let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
+        let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATHOVER.png", true);
+        let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATSELECT.png", true);
+        // Add a button.
+        let aButton = boxparty_ZF_Button.Create
+        (
+            // Position
+            pagepos,
+            // Size
+            boxSize2,
+            // Our command handler
+            cmdHandler: handler,
+            // A command string for the button
+            command: docommand,
+            // The button's textures
+            inactive: buttonIdle,
+            hover: buttonHover,
+            click: buttonClick
+        );
+        // Add the button element into the main frame.
+		buttonlist.Push(aButton);
+        aButton.Pack (mainFrame);
 	}
 }

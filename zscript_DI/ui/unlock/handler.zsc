@@ -3,4 +3,28 @@
 class DI_UnlockMenuHandler : boxparty_ZF_Handler
 {
 	DI_UnlockMenu link;
+	
+	override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
+    {
+		cvar cheatmode = cvar.FindCVAR('di_unlock_cheat');
+		cvar blacklist = cvar.FindCVAR('di_unlock_blacklist');
+		
+		if (command == 'sorrynothing')
+		{
+			link.UpdateInfoLabel("There is nothing there...");
+		}
+		else if (command == 'ResetBlacklist')
+		{
+			link.UpdateInfoLabel("Unlock blacklist has been reset.");
+			blacklist.SetString("");
+		}
+		else if (command == 'GoRight')
+		{
+			link.ChangePage(true);
+		}
+		else if (command == 'GoLeft')
+		{
+			link.ChangePage(false);
+		}
+	}
 }
