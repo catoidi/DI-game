@@ -57,7 +57,7 @@ Class HatTrackHandler : EventHandler
 		if (e.Thing is "DI_Monster")
 		{
 			//kill tracker (applies to every player currently in game, regardless of how the monster died.)
-			if (e.Thing is "Fred") {listkills.Push("dihat_freddie");}
+			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
 		}
 	}
 	
@@ -92,9 +92,9 @@ Class HatTrackHandler : EventHandler
 			//different modes for different unlocks
 			string unlocktxt = "NEW UNLOCK:";
 			string unlockback_string = "graphics/UNLOCKBOX1.png";
-			if (listunlocks[0].Left(6) == "dihat_")
+			if (listunlocks[0].Left(14) == "di_unlock_item")
 			{
-				unlocktxt = "NEW HAT:";
+				unlocktxt = "NEW SHOP ITEM:";
 			}
 			if (listunlocks[0].Left(13) == "di_unlock_lvl") 
 			{
@@ -223,14 +223,16 @@ Class HatTrackHandler : EventHandler
 	
 	virtual void KillUnlocks(string trackcvar)
 	{
-		if (killtracker == cvar.getcvar("dihat_freddie")) 
+		if (killtracker == cvar.getcvar("di_fredcount")) 
 		{
-			let fred1 = cvar.getcvar("dihat_unlock_07");
-			let fred2 = cvar.getcvar("dihat_unlock_08");
-			let fred3 = cvar.getcvar("dihat_unlock_09");
-			if ((killnum >= 1000) && (fred3.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_09");}
-			else if ((killnum >= 350) && (fred2.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_08");}
-			else if ((killnum >= 100) && (fred1.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_dihat_unlock_07");}
+			let fred1 = cvar.getcvar("di_unlock_item_fred1");
+			let fred2 = cvar.getcvar("di_unlock_item_fred2");
+			let fred3 = cvar.getcvar("di_unlock_item_fred3");
+			let fred4 = cvar.getcvar("di_unlock_item_fred4");
+			if ((killnum >= 1000) && (fred4.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred4");}
+			else if ((killnum >= 600) && (fred3.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred3");}
+			else if ((killnum >= 300) && (fred2.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred2");}
+			else if ((killnum >= 100) && (fred1.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred1");}
 		}
 	}
 

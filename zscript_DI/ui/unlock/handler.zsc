@@ -55,7 +55,7 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 			string progressname = link.FindCVARProgress(commandstring);
 			if (progressname != "")
 			{
-				console.printf("%s", "yea");
+				//console.printf("%s", "yea");
 				cvar progresscvar = cvar.findcvar(progressname);
 				labelcommand.appendformat(" \cn(Progress: %d)", progresscvar.getint());
 			}

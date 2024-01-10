@@ -232,7 +232,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			{
 				array<string> curline;
 				fulllist[i].Split(curline, " ");
-				console.printf("%d, %d", curline[2].ToInt(10), tab);
+				//console.printf("%d, %d", curline[2].ToInt(10), tab);
 				if (curline[2].ToInt(10) == tab)
 				{
 					unlocklist.push(fulllist[i]);
@@ -248,7 +248,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		{
 			array<string> curline;
 			unlocklist[i].Split(curline, " ");
-			console.printf("'%s', '%s'", checkname, curline[1]);
+			//console.printf("'%s', '%s'", checkname, curline[1]);
 			if (checkname == curline[1])
 			{
 				if (curline.Size() == 4) {return curline[3];}
@@ -285,7 +285,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		{
 			newcvar.AppendFormat("%s,", blacklistdata[i]);
 		}
-		console.printf("new data:\n%s", newcvar);
+		//console.printf("new data:\n%s", newcvar);
 		blacklistcvar.SetString(newcvar);
 		return returnvalue;
 	}
