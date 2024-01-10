@@ -6,6 +6,8 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 	
 	override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
     {
+		link.MenuSound("menu/activate");
+	
 		cvar cheatmode = cvar.FindCVAR('di_unlock_cheat');
 		cvar blacklist = cvar.FindCVAR('di_unlock_blacklist');
 		string commandstring = command;
@@ -16,7 +18,7 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 		}
 		else if (command == 'ResetBlacklist')
 		{
-			link.UpdateInfoLabel("Unlock blacklist has been reset.");
+			link.UpdateInfoLabel("\caUnlock blacklist has been reset.");
 			blacklist.SetString("");
 			link.blacklistdata.Clear();
 			link.UpdateUnlocks();
@@ -32,8 +34,15 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 		else if (commandstring.Left(9) == 'UNLOCKED:')
 		{
 			commandstring = commandstring.Mid(9);
-			link.UpdateBlacklistCVAR(commandstring);
+			let itemname = string.format("$SHOPITEM_%s", commandstring);
+			itemname = stringtable.localize(itemname);
+			let labelcommand = string.format("'%s' has been \cdenabled.", itemname);
+			if (link.UpdateBlacklistCVAR(commandstring) == true)
+			{
+				labelcommand = string.format("'%s' has been \cadisabled.", itemname);
+			}
 			link.UpdateUnlocks();
+			link.UpdateInfoLabel(labelcommand);
 		}
 		else if (commandstring.Left(7) == 'LOCKED:')
 		{
@@ -51,6 +60,24 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 				labelcommand.appendformat(" \cn(Progress: %d)", progresscvar.getint());
 			}
 			link.UpdateInfoLabel(labelcommand);
+		}
+		else if (commandstring.Left(9) == 'SwitchTab')
+		{
+			link.pagenum = 0;
+			int tabnum = commandstring.Mid(9).ToInt(10);
+			string labelmsg;
+			switch(tabnum)
+			{
+				case 1: labelmsg = "\cbNow displaying: \cgonly weapons."; break;
+				case 2: labelmsg = "\cbNow displaying: \cdonly passives."; break;
+				case 3: labelmsg = "\cbNow displaying: \cvmisc items."; break;
+			}
+			if (tabnum == link.tabnum) {labelmsg = "\cbNow displaying: \ccall items.";}
+			link.GenerateUnlocks(tabnum);
+			link.UpdateUnlocks();
+			link.UpdateInfoLabel(labelmsg);
+			link.UpdatePageLabel();
+			link.UpdateUnlockLabel();
 		}
 	}
 }
