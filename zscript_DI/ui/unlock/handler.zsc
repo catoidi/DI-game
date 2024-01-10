@@ -8,6 +8,7 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
     {
 		cvar cheatmode = cvar.FindCVAR('di_unlock_cheat');
 		cvar blacklist = cvar.FindCVAR('di_unlock_blacklist');
+		string commandstring = command;
 		
 		if (command == 'sorrynothing')
 		{
@@ -17,6 +18,8 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 		{
 			link.UpdateInfoLabel("Unlock blacklist has been reset.");
 			blacklist.SetString("");
+			link.blacklistdata.Clear();
+			link.UpdateUnlocks();
 		}
 		else if (command == 'GoRight')
 		{
@@ -25,6 +28,29 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 		else if (command == 'GoLeft')
 		{
 			link.ChangePage(false);
+		}
+		else if (commandstring.Left(9) == 'UNLOCKED:')
+		{
+			commandstring = commandstring.Mid(9);
+			link.UpdateBlacklistCVAR(commandstring);
+			link.UpdateUnlocks();
+		}
+		else if (commandstring.Left(7) == 'LOCKED:')
+		{
+			commandstring = commandstring.Mid(7);
+			let lockmsg = string.format("$SHOPLOCK_%s", commandstring);
+			lockmsg = stringtable.localize(lockmsg);
+			let itemname = string.format("$SHOPITEM_%s", commandstring);
+			itemname = stringtable.localize(itemname);
+			let labelcommand = string.format("\ca%s is locked.\n\n\cc%s", itemname, lockmsg);
+			string progressname = link.FindCVARProgress(commandstring);
+			if (progressname != "")
+			{
+				console.printf("%s", "yea");
+				cvar progresscvar = cvar.findcvar(progressname);
+				labelcommand.appendformat(" \cn(Progress: %d)", progresscvar.getint());
+			}
+			link.UpdateInfoLabel(labelcommand);
 		}
 	}
 }

@@ -23,8 +23,9 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		   
 	boxparty_ZF_Label infolabel, pagelabel; //this is the actual text you see on the menu.
 	
-	Array<string> unlocklist; //all the data from the DIUNLOCK file.
-	Array<boxparty_ZF_BoxImage> buttonimage, backimage; //the background image and sprite for the buttons.
+	Array<string> unlocklist, //all the data from the DIUNLOCK file.
+				  blacklistdata; //all the data currently in the blacklist cvar.
+	Array<boxparty_ZF_BoxImage> buttonimage, backimage, blacklistimage; //the background image and sprite for the buttons.
 	Array<boxparty_ZF_Button> buttonlist; //the actual buttons you click.
 	
 	bool unlockscreated; 
@@ -42,6 +43,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		plr = players[consoleplayer];
 		morebuttoncvar = cvar.getcvar("di_unlock_morebuttons", plr);
 		cheatmode = cvar.getcvar("di_unlock_cheat", plr);
+		blacklistcvar = cvar.getcvar("di_unlock_blacklist", plr);
 		if (morebuttoncvar.GetBool() == true) {morebuttons = true;} //DO NOT UPDATE THIS POST-INIT, EVERYTHING WILL EXPLODE....................
 		//make background texture
 		let bgtex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/hat/HATBACK.png", (0, 0), (640, 400), true, true);
@@ -58,17 +60,19 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		keypos = -1;
 		curkey = -1;
 		//create info label
-		UpdateInfoLabel("Select an item to get started.");
+		UpdateInfoLabel("Select an item to add/remove them from the shop pool.\n\n\cfChanges don't take effect until a new game is started.");
 		//parse DIUNLOCK data
 		ParseDIUNLOCK();
+		ParseBlacklistCVAR();
 		//create unlock buttons
 		UpdateUnlocks();
 		//create page buttons
 		CreatePageButton(true);
 		CreatePageButton(false);
 		UpdatePageLabel();
-		//create reset button
+		//create extra buttons
 		CreateResetButton();
+		//CreateTabButtons();
 	}
 	
 	virtual void UpdateInfoLabel(string infotext)
@@ -79,9 +83,9 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			infolabel = boxparty_ZF_Label.Create
 			(
 				// Position
-				(40, 88),
+				(40, 80),
 				// Size.
-				(0, smallfont.getheight()),
+				(smallfont.stringwidth(infotext), 40),
 				// The label's text
 				text: infotext,
 				// The font to use
@@ -89,7 +93,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				// Whether to automatically wrap the text or not
 				wrap: false,
 				// Whether to automatically resize the element based on the text width
-				autoSize: true,
+				autoSize: false,
 				//make the text smaller :)
 				textScale: 1.0,
 				// The text's colour
@@ -161,6 +165,51 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			unlocklist.Push(filedata[i]);
 			//console.printf("%s", filedata[i]);
 		}
+	}
+	
+	virtual string FindCVARProgress(string checkname)
+	{
+		for (int i = 0; i < unlocklist.Size(); ++i)
+		{
+			array<string> curline;
+			unlocklist[i].Split(curline, " ");
+			console.printf("'%s', '%s'", checkname, curline[1]);
+			if (checkname == curline[1])
+			{
+				if (curline.Size() == 3) {return curline[2];}
+				else {return "";}
+			}
+		}
+		
+		return "";
+	}
+	
+	virtual void ParseBlacklistCVAR()
+	{
+		string fullblacklist = blacklistcvar.getstring();
+		fullblacklist.Split(blacklistdata, ",");
+	}
+	
+	virtual void UpdateBlacklistCVAR(string newitem)
+	{
+		//adds item if not found, removes item if found.
+	
+		//update handler's list
+		int itempos = blacklistdata.Find(newitem);
+		if (itempos < blacklistdata.Size())
+		{
+			blacklistdata.Delete(itempos);
+		}
+		else {blacklistdata.Push(newitem);}
+		
+		//sync the cvar
+		string newcvar;
+		for (int i = 0; i < blacklistdata.Size(); ++i)
+		{
+			newcvar.AppendFormat("%s,", blacklistdata[i]);
+		}
+		console.printf("new data:\n%s", newcvar);
+		blacklistcvar.SetString(newcvar);
 	}
 	
 	virtual void UpdateUnlocks()
@@ -265,9 +314,38 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				buttonimage.Push(curboximage2);
 				curboximage2.Pack(mainFrame);
 				
+				//CREATE THE BLACKLIST IMAGE
+				let blimg = 'graphics/hat/HATIDLE.png';
+				vector2 blimgsize = (40 * buttonscale, 40 * buttonscale);
+				if (buttonmode == 1)
+				{
+					name curclass = curline[1];
+					for (int j = 0; j < blacklistdata.Size(); ++j)
+					{
+						if (curclass == blacklistdata[j])
+						{
+							blimg = 'graphics/hat/DIBLACKLIST.png';
+						}
+					}
+				}
+				let curtex3 = boxparty_ZF_BoxTextures.CreateSingleTexture(blimg, true);
+				let curboximage3 = boxparty_ZF_BoxImage.Create
+				(
+					// Position
+					(startx, starty),
+					// Size
+					blimgsize,
+					// Texture
+					curtex3,
+					// Scale
+					(buttonscale, buttonscale)
+				);
+				blacklistimage.Push(curboximage3);
+				curboximage3.Pack(mainFrame);
+				
 				let docommand = "sorrynothing";
-				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[0]);}
-				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[0]);}
+				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[1]);}
+				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[1]);}
 				//CREATE THE BUTTON ITSELF
 				let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
 				let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATHOVER.png", true);
@@ -368,10 +446,26 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				buttonimage[i].setBoxTex(curtex2);
 				buttonimage[i].setBoxScale((sizescale, sizescale));
 				
+				//UPDATE THE BLACKLIST IMAGE
+				let blimg = 'graphics/hat/HATIDLE.png';
+				if (buttonmode == 1)
+				{
+					name curclass = curline[1];
+					for (int j = 0; j < blacklistdata.Size(); ++j)
+					{
+						if (curclass == blacklistdata[j])
+						{
+							blimg = 'graphics/hat/DIBLACKLIST.png';
+						}
+					}
+				}
+				let curtex3 = boxparty_ZF_BoxTextures.CreateSingleTexture(blimg, true);
+				blacklistimage[i].setBoxTex(curtex3);
+				
 				//UPDATE BUTTON COMMAND
 				let docommand = "sorrynothing";
-				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[0]);}
-				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[0]);}
+				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[1]);}
+				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[1]);}
 				buttonlist[i].setCommand(docommand);
 			}
 		}
@@ -498,5 +592,59 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
         // Add the button element into the main frame.
 		buttonlist.Push(aButton);
         aButton.Pack (mainFrame);
+	}
+	
+	virtual void CreateTabButtons()
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			// Create the box image's textures.
+			string icontex = string.Format("graphics/catalog/TABICON%d.png", i);
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(icontex, (0, 0), (38, 26), true, true);
+			// Add a box image.
+			let boxSize = (38, 26);
+			let aBoxImage = boxparty_ZF_BoxImage.Create
+			(
+				// Position
+				(
+					(172 + (50 * i)) * 2,
+					24
+				),
+				// Size
+				boxSize * 2,
+				// Texture
+				boxTexture
+			);
+			// Add the box image element into the main frame.
+			aBoxImage.Pack (mainFrame);
+			buttonimage.Push(aBoxImage);
+			
+			// Create the button's textures.
+			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
+			let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/TABICON_HOVER.png", true);
+			let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/TABICON_CLICK.png", true);
+			// Add a button.
+			let aButton = boxparty_ZF_Button.Create
+			(
+				// Position
+				(
+					(172 + (50 * i)) * 2,
+					24
+				),
+				// Size
+				boxSize * 2,
+				// Our command handler
+				cmdHandler: handler,
+				// A command string for the button
+				command: string.Format("switchtab%d", i),
+				// The button's textures
+				inactive: buttonIdle,
+				hover: buttonHover,
+				click: buttonClick
+			);
+			// Add the button element into the main frame.
+			aButton.Pack (mainFrame);
+			buttonlist.Push(aButton);
+		}
 	}
 }
