@@ -239,13 +239,13 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 						if (sizey == 0) {sizey = 1;}
 						sizescale = (32 * buttonscale) / sizex; //get scale from X
 						float sizescaley = (32 * buttonscale) / sizey; //get scale from Y
-						if (sizescaley > sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
+						if (sizescaley < sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
 						if (sizescale > (3.0 * buttonscale)) {sizescale = (3.0 * buttonscale);} //default size is 3x.
 						sizex *= sizescale;
 						sizey *= sizescale;
 						iconsize = (sizex, sizey);
-						bonusx = ((40 * buttonscale) - sizex) / 2;
-						bonusy = ((40 * buttonscale) - sizey) / 2; //place texture in the center of the whitespace.
+						bonusx = ((41 * buttonscale) - sizex) / 2;
+						bonusy = ((41 * buttonscale) - sizey) / 2; //place texture in the center of the whitespace.
 						//console.printf("%s, %s\n%d+%d, %d+%d\n%.1f, %.1f, %.1f", curline[0], unlockimg, startx, bonusx, starty, bonusy, sizex, sizey, sizescale);
 					}
 					else {unlockimg = 'graphics/hat/HATIDLE.png';}
@@ -351,13 +351,13 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 						if (sizey == 0) {sizey = 1;}
 						sizescale = (32 * buttonscale) / sizex; //get scale from X
 						float sizescaley = (32 * buttonscale) / sizey; //get scale from Y
-						if (sizescaley > sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
+						if (sizescaley < sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
 						if (sizescale > (3.0 * buttonscale)) {sizescale = (3.0 * buttonscale);} //default size is 3x.
 						sizex *= sizescale;
 						sizey *= sizescale;
 						iconsize = (sizex, sizey);
-						bonusx = ((40 * buttonscale) - sizex) / 2;
-						bonusy = ((40 * buttonscale) - sizey) / 2; //place texture in the center of the whitespace.
+						bonusx = ((41 * buttonscale) - sizex) / 2;
+						bonusy = ((41 * buttonscale) - sizey) / 2; //place texture in the center of the whitespace.
 						//console.printf("%s, %s\n%d+%d, %d+%d\n%.1f, %.1f, %.1f", curline[0], unlockimg, startx, bonusx, starty, bonusy, sizex, sizey, sizescale);
 					}
 					else {unlockimg = 'graphics/hat/HATIDLE.png';}
