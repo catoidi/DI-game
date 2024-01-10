@@ -6,10 +6,12 @@
 [Weapon] NormalWeapon;
 [Weapon] FantasyWeapon;
 [Weapon] BoxWeapon;
+[Weapon] StartWeapon;
 [PermaWeapon] BasicWeapon;
 [PermaWeapon] NormalWeapon;
 [PermaWeapon] FantasyWeapon;
 [PermaWeapon] BoxWeapon;
+[PermaWeapon] StartWeapon;
 >>
 >>These are categories. They give the shops which items to display, their price, and their rarity.
 >>First, you give the name of the category. This will be called by the shop iteself. THIS IS CASE SENSITIVE!!!!!!
@@ -17,6 +19,7 @@
 >>Third, you give a sprite name to for the shop to display. This does not have to match the item given.
 >>Fourth, you give the base price of the item. Keep in mind certain shops like Perma Shops will multiply this base value.
 >>Fifth, OPTIONALLY, you can assign a rarity to the item. The lower the number, the higher chance this item is not added to a shop's item pool. 1 is the minimum. 256 is guaranteed.
+>>Sixth, OPTIONALLY, you can assign a BOOL CVAR that must be set to true for this item to appear.
 >>
 >>Basic Weapons...
 BasicWeapon GreenShotgun SHOTZ 10;
@@ -31,7 +34,11 @@ FantasyWeapon StunCrossbow SBOWZ 25;
 BoxWeapon LaserPointer LAZRE 35;
 BoxWeapon PartyShotty SHUTZ 25;
 BoxWeapon PopcornGun POPGM 25;
-BoxWeapon PartyShotty2 SHU1Z 30 128;
+BoxWeapon PartyShotty2 SHU1Z 30 128 di_unlock_item_partyshotty2;
+>>Starting Weapons...
+StartWeapon StarPistol PISTZ 25 128 di_unlock_item_starpistol;
+StartWeapon Glowstick GLOWA 25 128 di_unlock_item_glowstick;
+StartWeapon CheeseGun CHESZ 20 128 di_unlock_item_cheesegun;
 >>Armor...
 Armor DI_TopHat ARMOA 30;
 Armor DI_TopHat2 ARMOB 67 224;
@@ -85,16 +92,16 @@ DamagePassive DI_Shoe POWRY 7;
 DamagePassive DI_BulletSplitter POWRG 105 64;
 DamagePassive DI_TooManyBullets POWRH 126 64;
 DamagePassive DI_AmmoGiver POWRI 28;
-DamagePassive DI_Firestarter POW1F 14;
-DamagePassive DI_Farsight POW1M 14;
+DamagePassive DI_Firestarter POW1F 14 256 di_unlock_item_fred2;
+DamagePassive DI_Farsight POW1M 14 256 di_unlock_item_fred4;
 >>Defense Passives...
 DefensePassive DI_BloodyHeart POWRD 7;
-DefensePassive DI_BonusArmor POWRE 7;
+DefensePassive DI_BonusArmor POWRE 7 256 di_unlock_item_fred1;
 DefensePassive DI_HatHat POWRM 14 192;
 DefensePassive DI_FreshRegen POWRX 14;
 DefensePassive DI_Consumer POW1A 7;
 DefensePassive DI_PeerPressure POW1C 14 192;
-DefensePassive DI_LastStand POW1G 7;
+DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 35;
 ComboPassive DI_FreshBonusGiver POWRC 14;
@@ -113,8 +120,8 @@ StatusPassive DI_StatusGiver_Rainbow POWRV 21 64;
 StatusPassive DI_AcidBlood POW1D 7;
 StatusPassive DI_DeathMark POW1J 14;
 >>Rental Only Passives...
-OnlyRentPassive DI_ComboDamage POWRF 84 64;
-OnlyRentPassive DI_ComboDamageMult POWRT 84 128;
+OnlyRentPassive DI_ComboDamage POWRF 84 64 di_unlock_item_combobase;
+OnlyRentPassive DI_ComboDamageMult POWRT 84 128 di_unlock_item_combomult;
 >>Permanent Only Passives...
-OnlyPermaPassive DI_RewardsProgram POWRW 21;
-OnlyPermaPassive DI_CreditFraud POW1H 14;
+OnlyPermaPassive DI_RewardsProgram POWRW 21 256 di_unlock_item_rewardsprogram;
+OnlyPermaPassive DI_CreditFraud POW1H 14 256 di_unlock_item_creditfraud;

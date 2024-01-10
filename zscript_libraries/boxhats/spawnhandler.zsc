@@ -2,26 +2,10 @@ class UniversalHatHandler : EventHandler
 {
 	Array<String> HatLines;
 	Array<String> HatCVARs;
-
-	override void PlayerEntered(PlayerEvent e)
-	{
-		let p = players[e.PlayerNumber].mo;
-		if (p) SpawnPlayerHats(p);
-	}
 	
 	override void NetworkProcess(ConsoleEvent event)
 	{
 		if (event.name == "ResetHats") {ResetAllHats();}
-	}
-	
-	void SpawnPlayerHats(PlayerPawn p)
-	{
-		//Spawns a hat actor for every player in the game.
-		if (p) 
-		{
-			p.A_SpawnItemEX("BoxHatPlayer", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_TRANSFERTRANSLATION);
-			p.A_SpawnItemEX("BoxHatPlayer2", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
-		}
 	}
 	
 	void ResetAllHats(void)

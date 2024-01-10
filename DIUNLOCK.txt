@@ -1,0 +1,17 @@
+>>this is for the unlock menu.
+>>Arg #1: Bool CVAR for this unlock.
+>>Arg #2: Shop Item tied to the unlock.
+>>Arg #3: Which Category to place the item into. 1 = Weapon, 2 = Passive, 3 = Other.
+>>Arg #4 (Optional): An integer CVAR to display the progress for this item.
+di_unlock_item_starpistol StarPistol 1;
+di_unlock_item_glowstick Glowstick 1;
+di_unlock_item_cheesegun CheeseGun 1;
+di_unlock_item_partyshotty2 PartyShotty2 1;
+di_unlock_item_fred1 DI_BonusArmor 2 di_fredcount;
+di_unlock_item_fred2 DI_Firestarter 2 di_fredcount;
+di_unlock_item_fred3 DI_LastStand 2 di_fredcount;
+di_unlock_item_fred4 DI_Farsight 2 di_fredcount;
+di_unlock_item_combobase DI_ComboDamage 2;
+di_unlock_item_combomult DI_ComboDamageMult 2;
+di_unlock_item_rewardsprogram DI_RewardsProgram 2;
+di_unlock_item_creditfraud DI_CreditFraud 2;
