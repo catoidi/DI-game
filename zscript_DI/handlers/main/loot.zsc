@@ -64,7 +64,7 @@ extend class DIHandler
 		{
 			e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 		}
-		if (notweapon == false)
+		if ((plr.CountInv("Glowstick") > 0) && (notweapon == false))
 		{
 			if ((plr.player.ReadyWeapon is "Glowstick") && (plr.health < plr.DIMaxHealth()))
 			{
