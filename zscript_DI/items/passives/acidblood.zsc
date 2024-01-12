@@ -106,7 +106,7 @@ Class DI_AcidBlood_Pool : DI_Actor
 	Default
 	{
 		DI_Actor.IgnoreWeapon true;
-		DamageType "Poison";
+		DamageType "FakePoison";
 		+FLATSPRITE;
 		-SOLID;
 	}
@@ -146,6 +146,30 @@ Class DI_AcidBlood_Pool : DI_Actor
 			{
 				A_DIScale(0.9, 0.9, true);
 				A_FadeOut(0.1);
+			}
+			Wait;
+	}
+}
+
+Class DI_AcidBlood_PoolAlt : DI_AcidBlood_Pool
+{
+	States
+	{
+		Spawn:
+			POOL AAAAAAAAA 1 A_DIScale(0.1, 0.1);
+			POOL A 15
+			{
+				++acidtimer;
+				let timermax = 20 * acidstrength;
+				if (acidtimer >= timermax)
+				{
+					return ResolveState("Finished");
+				}
+				else 
+				{
+					A_Explode(acidstrength, 40, XF_HURTSOURCE | XF_THRUSTLESS | XF_CIRCULAR | XF_EXPLICITDAMAGETYPE, fulldamagedistance: 40, damagetype: "FakePoison");
+				}
+				return ResolveState(null);
 			}
 			Wait;
 	}
