@@ -36,7 +36,7 @@ GameInfo
 
 DamageType "Spawner" {}
 
-DamageType "FakeLightning"
-{
-	Factor = 0.0 //does no damage to anything except for DI_Monsters.
-}
+DamageType "FakeLightning" {Factor = 0.0}
+DamageType "FakeFire" {Factor = 0.0}
+DamageType "FakeIce" {Factor = 0.0}
+DamageType "FakePoison" {Factor = 0.0}

@@ -136,7 +136,7 @@ Class DI_AcidBlood_Pool : DI_Actor
 				}
 				else 
 				{
-					A_Explode(acidstrength, 40, XF_THRUSTLESS | XF_CIRCULAR, fulldamagedistance: 40);
+					A_Explode(acidstrength, 40, XF_NOSPLASH | XF_THRUSTLESS | XF_CIRCULAR, fulldamagedistance: 40);
 				}
 				return ResolveState(null);
 			}
@@ -167,7 +167,7 @@ Class DI_AcidBlood_PoolAlt : DI_AcidBlood_Pool
 				}
 				else 
 				{
-					A_Explode(acidstrength, 40, XF_HURTSOURCE | XF_THRUSTLESS | XF_CIRCULAR | XF_EXPLICITDAMAGETYPE, fulldamagedistance: 40, damagetype: "FakePoison");
+					A_Explode(acidstrength, 40, XF_NOSPLASH | XF_HURTSOURCE | XF_THRUSTLESS | XF_CIRCULAR | XF_EXPLICITDAMAGETYPE, fulldamagedistance: 40, damagetype: "FakePoison");
 				}
 				return ResolveState(null);
 			}
