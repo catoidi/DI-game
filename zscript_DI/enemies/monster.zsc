@@ -164,6 +164,8 @@ Class DI_Monster : DI_Actor abstract
 			if (icenum > 0) {damage *= 2;}
 			if (hearted) {damage *= 1.25;}
 		}
+		
+		if (hearttimer > 0) {++hearttimer;}
 	
 		return Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
 	}
