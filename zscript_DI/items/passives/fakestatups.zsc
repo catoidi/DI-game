@@ -13,6 +13,12 @@ Class DI_BaseDamageGiver : DIPassiveInventory
 		Inventory.MaxAmount 25;
 	}
 	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return plr.countinv(GetClassName());
+	}
+	
 	States
 	{
 		Spawn:
@@ -29,6 +35,12 @@ Class DI_ComboDamage : DIPassiveInventory
 		Inventory.Icon "POWRF0";
 		Inventory.PickupMessage "Combo Damage Acquired! (+1 DMG per Combo)";
 		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return (plr.countinv(GetClassName()) * (plr.combonum - 1));
 	}
 	
 	States
@@ -49,6 +61,12 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 		Inventory.MaxAmount 5;
 	}
 	
+	override int GiveExtraCoin()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName());
+	}
+	
 	States
 	{
 		Spawn:
@@ -67,6 +85,12 @@ Class DI_FreshBonusGiver : DIPassiveInventory
 		Inventory.MaxAmount 5;
 	}
 	
+	override int GiveFreshBonus()
+	{
+		if (!wpn || !plr) {return 0;}
+		return (plr.CountInv(GetClassName()) * wpn.default.wpn_freshbonus);
+	}
+	
 	States
 	{
 		Spawn:
@@ -83,6 +107,12 @@ Class DI_FreshBonusCharger : DIPassiveInventory
 		Inventory.Icon "POWRL0";
 		Inventory.PickupMessage "Fast Fresh Acquired! (Shortens Fresh Weapon Cooldown)";
 		Inventory.MaxAmount 5;
+	}
+	
+	override int GiveFreshCharge()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName());
 	}
 	
 	States
@@ -104,6 +134,18 @@ Class DI_BulletSplitter : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
+	override int GiveProjectiles()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName());
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0.0;}
+		return (plr.CountInv(GetClassName()) * 3.0);
+	}
+	
 	States
 	{
 		Spawn:
@@ -120,6 +162,18 @@ Class DI_TooManyBullets : DIPassiveInventory
 		Inventory.Icon "POWRH0";
 		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -5 DMG)";
 		Inventory.MaxAmount 5;
+	}
+	
+	override int GiveProjectiles()
+	{
+		if (!wpn || !plr) {return 0;}
+		return (plr.CountInv(GetClassName()) * wpn.default.wpn_projectiles);
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * -5;
 	}
 	
 	States
@@ -140,6 +194,20 @@ Class DI_AmmoGiver : DIPassiveInventory
 		Inventory.MaxAmount 10;
 	}
 	
+	override int GiveMaxAmmo1()
+	{
+		if (!wpn || !plr) {return 0;}
+		if (!wpn.Ammo1) {return 0;}
+		else return plr.CountInv(GetClassName()) + (plr.CountInv(GetClassName()) * (wpn.Ammo1.MaxAmount / 3));
+	}
+	
+	override int GiveMaxAmmo2()
+	{
+		if (!wpn || !plr) {return 0;}
+		if (!wpn.Ammo2) {return 0;}
+		else return plr.CountInv(GetClassName()) + (plr.CountInv(GetClassName()) * (wpn.Ammo2.MaxAmount / 3));
+	}
+	
 	States
 	{
 		Spawn:
@@ -158,6 +226,15 @@ Class DI_PainStar : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		int painstarnum = plr.CountInv("DI_PainStar") * 6;
+		painstarnum -= plr.CountInv("DI_PainStar") * plr.combonum;
+		if (painstarnum < 0) {painstarnum = 0;}
+		return painstarnum;
+	}
+	
 	States
 	{
 		Spawn:
@@ -174,6 +251,12 @@ Class DI_Gunslinger : DIPassiveInventory
 		Inventory.Icon "POWRK0";
 		Inventory.PickupMessage "Gunslinger Acquired! (Gain +1 DMG for every weapon you own.)";
 		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return plr.weaponnum * plr.CountInv(GetClassName());
 	}
 	
 	States

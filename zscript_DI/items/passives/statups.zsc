@@ -12,16 +12,10 @@ Class DI_DamageMultGiver : DIPassiveInventory
 		Inventory.MaxAmount 25;
 	}
 	
-	override void DoEffect(void)
+	override double GiveDamageMult()
 	{
-		Super.DoEffect();
-		
-		if (owner is "DI_PlayerBase")
-		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			double adddam = 0.1 * plr.countinv("DI_DamageMultGiver");
-			plr.ExtraDamageMult += adddam;
-		}
+		if (!plr) {return 0.0;}
+		return 0.1 * plr.countinv(GetClassName());
 	}
 	
 	States
@@ -42,16 +36,10 @@ Class DI_ComboDamageMult : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
-	override void DoEffect(void)
+	override double GiveDamageMult()
 	{
-		Super.DoEffect();
-		
-		if (owner is "DI_PlayerBase")
-		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			double adddam = (0.1 * (plr.combonum - 1)) * plr.countinv("DI_ComboDamageMult");
-			plr.ExtraDamageMult += adddam;
-		}
+		if (!plr) {return 0.0;}
+		return (0.1 * (plr.combonum - 1)) * plr.countinv(GetClassName());
 	}
 	
 	States
@@ -72,19 +60,13 @@ Class DI_PainRhombus : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
-	override void DoEffect(void)
+	override double GiveDamageMult()
 	{
-		Super.DoEffect();
-		
-		if (owner is "DI_PlayerBase")
-		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			int painstarnum = plr.CountInv("DI_PainRhombus") * 6;
-			painstarnum -= plr.CountInv("DI_PainRhombus") * plr.combonum;
-			if (painstarnum < 0) {painstarnum = 0;}
-			double adddam = 0.1 * painstarnum;
-			plr.ExtraDamageMult += adddam;
-		}
+		if (!plr) {return 0.0;}
+		int painstarnum = plr.CountInv("DI_PainRhombus") * 6;
+		painstarnum -= plr.CountInv("DI_PainRhombus") * plr.combonum;
+		if (painstarnum < 0) {painstarnum = 0;}
+		return 0.1 * painstarnum;
 	}
 	
 	States
@@ -105,16 +87,10 @@ Class DI_GunHoarder : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
-	override void DoEffect(void)
+	override double GiveDamageMult()
 	{
-		Super.DoEffect();
-		
-		if (owner is "DI_PlayerBase")
-		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			double adddam = (0.1 * plr.weaponnum) * plr.countinv("DI_GunHoarder");
-			plr.ExtraDamageMult += adddam;
-		}
+		if (!plr) {return 0.0;}
+		return (0.1 * plr.weaponnum) * plr.countinv("DI_GunHoarder");
 	}
 	
 	States
@@ -135,24 +111,13 @@ Class DI_RewardsProgram : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
-	override void DoEffect(void)
+	override int GiveExtraCoin()
 	{
-		Super.DoEffect();
-		
-		if (owner is "DI_PlayerBase")
-		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			if (plr.player.ReadyWeapon is "DI_Weapon")
-			{
-				DI_Weapon wepon = DI_Weapon(plr.player.ReadyWeapon);
-				int addcoin = plr.countinv("DI_RewardsProgram");
-				if (plr.score < 0) {addcoin *= 3;}
-				else if (plr.countinv("DI_Degen") == 0) {addcoin = 0;} //still give some coins if player has lost hp to debt.
-				wepon.wpn_extracoin += addcoin;
-				//when making an item that increases coin drops, you must edit the weapon's extra coins, NOT the player's extra coins.
-				//idk why adding it to the player doesn't work, but since this works just fine im not gonna take the time to figure out a better solution.
-			}
-		}
+		if (!plr) {return 0;}
+		int addcoin = plr.countinv("DI_RewardsProgram");
+		if (plr.score < 0) {addcoin *= 3;}
+		else if (plr.countinv("DI_Degen") == 0) {addcoin = 0;} //still give some coins if player has lost hp to debt.
+		return addcoin;
 	}
 	
 	States
@@ -169,10 +134,10 @@ Class DI_FastWeapon : DIPassiveInventory
 	{
 		inventory.maxamount 10;
 	}
-
-	override void PassiveTick(DI_PlayerBase plr, DI_Weapon wpn)
+	
+	override double GiveWeaponSpeed()
 	{
-		super.passivetick(plr, wpn);
-		wpn.wpn_speed_reload -= 0.5 * plr.countinv(GetClassName());
+		if (!plr) {return 0.0;}
+		return 0.15 * plr.countinv(GetClassName());
 	}
 }

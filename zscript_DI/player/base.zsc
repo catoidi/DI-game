@@ -41,6 +41,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	Array<String> wavewipe; //a list of items to wipe every wave.
 	Array<String> wavekeep; //any items you've purchased that should not be wiped every wave.
 	Array<String> renteditems; //a list of all items you've rented this round.
+	
+	Array<String> knownpassives; //NOT A LIST OF ITEMS CURRENTLY IN YOUR INVENTORY. this shows every passive you've every interacted with.
 	int boxammonum;
 	
 	int lastscore; //the score you had last round.
@@ -51,16 +53,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 	Vector2 OldMove;
 	
 	int weaponnum;
-	int ExtraBaseDamage;
-	int ExtraExtraCoin;
-	int ExtraFreshBonus;
-	int ExtraFreshCharge;
-	double ExtraAccuracy;
-	int ExtraProjectiles;
-	double ExtraDamageMult;
-	double ExtraWeaponSpeed;
-	double ExtraFirerate;
-	double ExtraReloadSpeed;
 	
 	int chance_ice; //chance of your attack dealing this damage type.
 	int chance_fire;
@@ -96,7 +88,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 			ScaleSquish();
 			ComboCounter();
 			BoxAmmoChecker();
-			ExtraWeaponValues();
 			StatusChance();
 			AutoOffset();
 			weaponnum = 0;
@@ -192,7 +183,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
 		if (notweapon == true) {freshnum = 0;}
 		
-		int freshcharge = 1 + CountInv("DI_FreshBonusCharger");
+		int freshcharge = 1 + curwpn.wpn_freshcharge;
 		
 		int islastweapon = 1;
 		if (CurrentWeaponKill == LastWeaponKill) {islastweapon = 2;}
@@ -209,25 +200,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if (FindInventory("LaserPointer")) {++boxammonum;}
 		if (FindInventory("PartyShotty")) {++boxammonum;}
 		if (FindInventory("PopcornGun")) {++boxammonum;}
-	}
-	
-	virtual void ExtraWeaponValues(void)
-	{
-		int painstarnum = CountInv("DI_PainStar") * 6;
-		painstarnum -= CountInv("DI_PainStar") * combonum;
-		if (painstarnum < 0) {painstarnum = 0;}
-	
-		ExtraBaseDamage = 
-			CountInv("DI_BaseDamageGiver") 
-			+ (CountInv("DI_ComboDamage") * (combonum - 1)) 
-			- (CountInv("DI_TooManyBullets") * 5)
-			+ painstarnum
-			+ (weaponnum * CountInv("DI_Gunslinger")); //i am very aware that DamageFactor exists.
-		ExtraExtraCoin = CountInv("DI_ExtraCoinGiver");
-		ExtraFreshBonus = CountInv("DI_FreshBonusGiver");
-		ExtraFreshCharge = CountInv("DI_FreshBonusCharger");
-		ExtraAccuracy = (CountInv("DI_BulletSplitter") * 3);
-		ExtraProjectiles = CountInv("DI_BulletSplitter");
 	}
 	
 	virtual void StatusChance(void)
@@ -313,22 +285,22 @@ Class DI_PlayerBase : PlayerPawn abstract
 				}
 				else {combonum_bonus += combonum + 1;}
 			}
-		}
-		
-		if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
-		{
-			A_TakeInventory("DI_TokenComboTimer", combodrain);
-			if (LastKillTimer > 0) {LastKillTimer -= 1 + ExtraFreshCharge;}
-			if (LastKillTimer < 0) {LastKillTimer = 0;}
 			
-			if ((LastKillTimer == 0) && (freshmsg == false))
+			if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
 			{
-				ACS_ScriptCall("FreshReadyMSG", 0, 0, 0, 0);
-				freshmsg = true;
+				A_TakeInventory("DI_TokenComboTimer", combodrain);
+				if (LastKillTimer > 0) {LastKillTimer -= 1 + diwep.wpn_freshcharge;}
+				if (LastKillTimer < 0) {LastKillTimer = 0;}
+				
+				if ((LastKillTimer == 0) && (freshmsg == false))
+				{
+					ACS_ScriptCall("FreshReadyMSG", 0, 0, 0, 0);
+					freshmsg = true;
+				}
+				else if ((LastKillTimer > 0) && (freshmsg == true)) {freshmsg = false;}
 			}
-			else if ((LastKillTimer > 0) && (freshmsg == true)) {freshmsg = false;}
-		}
-		A_SetInventory("DI_TokenCombo", combonum_bonus);
+			A_SetInventory("DI_TokenCombo", combonum_bonus);
+			}
 	}
 	
 	virtual void ScaleSquish(void)

@@ -5,12 +5,40 @@ class DIPassiveInventory : Inventory
 	//this is used for tracking purposes for the Item HUD.
 	bool dipassive_hidden; //if enabled, this item is not shown on the item hud.
 	
+	DI_PlayerBase plr;
+	DI_Weapon wpn;
+	
 	property DIHidden: dipassive_hidden;
 	
 	default
 	{
 		+BRIGHT;
 		+FLOATBOB;
+	}
+	
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		
+		if (other is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(other);
+			if (plr.knownpassives.Find(GetClassName()) == plr.knownpassives.Size())
+			{
+				plr.knownpassives.Push(GetClassName());
+			}
+		}
+	}
+	
+	override void DetachFromOwner()
+	{
+		Super.DetachFromOwner();
+		
+		if (plr)
+		{
+			int spot = plr.knownpassives.Find(GetClassName());
+			if (spot != plr.knownpassives.Size()) {plr.knownpassives.Delete(spot);} //forget about it!!!!!!
+		}
 	}
 	
 	override void DoEffect()
@@ -20,13 +48,27 @@ class DIPassiveInventory : Inventory
 		if (owner is "DI_PlayerBase")
 		{
 			let playerbase = DI_PlayerBase(owner);
+			plr = playerbase;
 			if (playerbase.player.ReadyWeapon is "DI_Weapon")
 			{
 				let playerweapon = DI_Weapon(playerbase.player.ReadyWeapon);
-				PassiveTick(playerbase, playerweapon);
+				wpn = playerweapon;
 			}
 		}
 	}
 	
-	virtual void PassiveTick(DI_PlayerBase plr, DI_Weapon wpn) {}
+	virtual int GiveExtraCoin() {return 0;}
+	virtual int GiveFreshBonus() {return 0;}
+	virtual int GiveFreshCharge() {return 0;}
+	virtual int GiveBaseDamage() {return 0;}
+	virtual double GiveDamageMult() {return 0.0;}
+	virtual double GiveAccuracy() {return 0.0;}
+	virtual double GiveRecoil() {return 0.0;}
+	virtual double GiveRecoilRecover() {return 0.0;}
+	virtual int GiveProjectiles() {return 0;}
+	virtual double GiveWeaponSpeed() {return 0.0;}
+	virtual double GiveFirerate() {return 0.0;}
+	virtual double GiveReloadSpeed() {return 0.0;}
+	virtual int GiveMaxAmmo1() {return 0;}
+	virtual int GiveMaxAmmo2() {return 0;}
 }

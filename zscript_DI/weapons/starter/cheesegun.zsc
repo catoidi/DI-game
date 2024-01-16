@@ -38,9 +38,9 @@ Class CheeseGun : DI_Weapon
 		}
 	}
 	
-	override void GetProjectiles()
+	override void GetWeaponValues()
 	{
-		super.GetProjectiles();
+		super.GetWeaponValues();
 		wpn_projectiles += owner.CountInv("CheeseGunAmmo");
 	}
 

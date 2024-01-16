@@ -10,25 +10,19 @@ Class DI_CreditFraud : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
-	override void DoEffect(void)
+	override double GiveDamageMult()
 	{
-		Super.DoEffect();
-		
-		if (owner is "DI_PlayerBase")
+		if (!plr) {return 0.0;}
+		if (plr.score < 0)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			if (plr.score < 0)
-			{
-				double adddam = 0.5 * plr.countinv("DI_CreditFraud");
-				plr.ExtraDamageMult += adddam;
-			}
-			else if (plr.countinv("DI_Degen") > 0)
-			{
-				//still award a smaller amount of damage if the player has lost hp to debt.
-				double adddam = 0.15 * plr.countinv("DI_CreditFraud");
-				plr.ExtraDamageMult += adddam;
-			}
+			return 0.5 * plr.countinv("DI_CreditFraud");
 		}
+		else if (plr.countinv("DI_Degen") > 0)
+		{
+			//still award a smaller amount of damage if the player has lost hp to debt.
+			return 0.15 * plr.countinv("DI_CreditFraud");
+		}
+		else {return 0.0;}
 	}
 	
 	States
