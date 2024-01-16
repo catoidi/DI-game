@@ -87,9 +87,6 @@ user bool pc_disable_no_weapon = true;
 user bool pc_target_health = false;
 user float pc_y;
 
-//speed scale
-server float weapon_speed_scale = 0.0;
-
 //aim assist (base)
 	User Bool cl_aim_assist_enabled = false;
 	User Float cl_aim_assist_angle_max = 8;

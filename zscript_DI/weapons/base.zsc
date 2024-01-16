@@ -19,6 +19,14 @@ Class DI_Weapon : Weapon abstract
 	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
 	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
 	
+	private int wpn_speed_mode; //determines which "mode" the weapon is in. 0 is neutral. 1 is firing. 2 is reloading.
+	double wpn_speed_current; //weapon speed for this specific tic.
+	double wpn_speed; //speed multiplier for the entire weapon.
+	double wpn_speed_fire; //firerate multiplier.
+	double wpn_speed_reload; //reload speed multiplier.
+	array<string> firestates; //if the weapon is in a state listed here, the weapon speed will switch to "fire" mode.
+	array<string> reloadstates; //if the weapon is in a state listed here, the weapon speed will switch to "reload" mode.
+	
 	int wpn_ammo1hud, wpn_ammo2hud; 
 	//how the ammo bar will be rendered on the HUD. 0 is default (unlimited ammo). 1 is used for limited ammo weapons. 2 is used for recharging weapons. 3 is used for heat ammo, 4 is used for box ammo.
 	
@@ -82,6 +90,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.Ammo2HUD 0;
 		Weapon.WeaponScaleY 1.0;
 		+WEAPON.AMMO_OPTIONAL;
+		+WEAPON.ALT_AMMO_OPTIONAL;
 	}
 	
 	override void postbeginplay(void)
@@ -93,6 +102,9 @@ Class DI_Weapon : Weapon abstract
 			if (ammo1) {wpn_ammo1restore = plr.CountInv(ammo1.GetClassName());}
 			if (ammo2) {wpn_ammo2restore = plr.CountInv(ammo2.GetClassName());}
 		}
+		
+		SetFireStates();
+		SetReloadStates();
 	}
 	
 	override void tick(void)
@@ -100,7 +112,7 @@ Class DI_Weapon : Weapon abstract
 		super.tick();
 		
 		if (Owner && Owner.player && Owner.player.ReadyWeapon == self)
-			scalers.Tick(self, weapon_speed_scale);
+			scalers.Tick(self, wpn_speed_current);
 		else if (scalers.first)
 			scalers.Clear();
 		
@@ -118,6 +130,7 @@ Class DI_Weapon : Weapon abstract
 				GetProjectiles();
 				GetMaxAmmo1();
 				GetMaxAmmo2();
+				GetWeaponSpeed();
 				
 				RecoilTick();
 				//AutoOffset(); //handled through the player actor now, since it doesn't appear to work when called from the gun itself ???????????????????????????????????????
@@ -230,6 +243,40 @@ Class DI_Weapon : Weapon abstract
 		if (wpn_dontgiveammo2 == false) {Ammo2.MaxAmount += plr.CountInv("DI_AmmoGiver") + (plr.CountInv("DI_AmmoGiver") * (Ammo2.MaxAmount / 3));}
 	}
 	
+	virtual void SetFireStates()
+	{
+		firestates.push("Fire");
+		firestates.push("AltFire");
+		firestates.push("Zoom");
+	}
+	
+	virtual void SetReloadStates()
+	{
+		reloadstates.push("Reload");
+	}
+	
+	action void WeaponMode(int mode)
+	{
+		invoker.wpn_speed_mode = mode;
+	}
+	
+	virtual void GetWeaponSpeed()
+	{	
+		wpn_speed_current = default.wpn_speed_current;
+		
+		wpn_speed += plr.ExtraWeaponSpeed;
+		wpn_speed_fire += plr.ExtraFirerate;
+		wpn_speed_reload += plr.ExtraReloadSpeed;
+	
+		if (wpn_speed_mode == 0) {wpn_speed_current = wpn_speed;}
+		else if (wpn_speed_mode == 1) {wpn_speed_current = wpn_speed + wpn_speed_fire;}
+		else if (wpn_speed_mode == 2) {wpn_speed_current = wpn_speed + wpn_speed_reload;}
+		
+		wpn_speed = default.wpn_speed;
+		wpn_speed_fire = default.wpn_speed_fire;
+		wpn_speed_reload = default.wpn_speed_reload;
+	}
+	
 	virtual void RecoilTick()
 	{
 		if (current_recoil != 0.0) {current_recoil *= 1.0 - (0.05 * wpn_recoil_recover);} //recovers exponentially faster farther from 0.
@@ -260,11 +307,36 @@ Class DI_Weapon : Weapon abstract
 	action void DI_WeaponReady(int flags = 0)
 	{
 		flags += WRF_NOBOB; //always disable vanilla weapon bobbing
+		WeaponMode(0);
 		A_WeaponReady(flags);
+	}
+	
+	action state DI_FireCheck(bool altmode = false)
+	{
+		WeaponMode(1);
+		if (!altmode) {if (CountInv(invoker.Ammo1.GetClassName()) < invoker.AmmoUse1) {return ResolveState("NoReload");}}
+		else 
+		{
+			if (CountInv(invoker.Ammo2.GetClassName()) < invoker.AmmoUse2) {return ResolveState("NoReload");}
+		}
+		return ResolveState(null);
+	}
+	
+	action state DI_ReloadCheck(bool altmode = false)
+	{
+		WeaponMode(2);
+		if (!altmode) {if (CountInv(invoker.Ammo1.GetClassName()) >= invoker.Ammo1.MaxAmount) {return ResolveState("NoReload");}}
+		else 
+		{
+			if (CountInv(invoker.Ammo2.GetClassName()) >= invoker.Ammo2.MaxAmount) {return ResolveState("NoReload");}
+		}
+		return ResolveState(null);
 	}
 	
 	action void DI_BasicBullet(int dmgnum = 0, bool useammo = true, string defpuff = "DI_BulletPuff", bool isRecoil = true)
 	{
+		WeaponMode(1);
+	
 		if (dmgnum == 0) {dmgnum = invoker.wpn_damage;}
 		dmgnum *= invoker.damagemult;
 		if (dmgnum < 1) {dmgnum = 1;}
@@ -294,6 +366,8 @@ Class DI_Weapon : Weapon abstract
 	
 	action void DI_BasicMelee(int damage = 0, int flags = 0, string defpuff = "ProjectileSmoke", float range = 0, float lifesteal = 0, int lifestealmax = 0, string armorbonustype = "", sound meleesound = 0, sound misssound = "", bool isRecoil = false)
 	{
+		WeaponMode(1);
+	
 		if (range == 0) {range = DEFMELEERANGE;}
 	
 		if (invoker.plr) 
@@ -319,6 +393,8 @@ Class DI_Weapon : Weapon abstract
 	
 	action void DI_FireProjectile(class<Actor> missiletype, int projectiles = -32768, double angle = -32768, int ammouse = -32768, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0, double pitch = -32768, bool isRecoil = true)
 	{
+		WeaponMode(1);
+	
 		if (projectiles == -32768) {projectiles = invoker.wpn_projectiles;}
 		if (ammouse == -32768) {ammouse = invoker.AmmoUse1;}
 		
@@ -361,5 +437,16 @@ Class DI_Weapon : Weapon abstract
 	action void DI_EjectMagazine(string magactor)
 	{
 		A_SpawnItemEX(magactor, 4, 0, invoker.owner.height / 2, flags: SXF_NOCHECKPOSITION);
+	}
+	
+	States
+	{
+		NoReload:
+			#### # 0 A_StartSound("noammo", starttime: 0.1);
+			#### # 0 WeaponMode(0);
+			#### # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
+			#### #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
+			#### # 4;
+			#### # 0 A_Jump(256, "Ready");
 	}
 }

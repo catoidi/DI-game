@@ -162,3 +162,17 @@ Class DI_RewardsProgram : DIPassiveInventory
 			Stop;
 	}
 }
+
+Class DI_FastWeapon : DIPassiveInventory
+{
+	default
+	{
+		inventory.maxamount 10;
+	}
+
+	override void PassiveTick(DI_PlayerBase plr, DI_Weapon wpn)
+	{
+		super.passivetick(plr, wpn);
+		wpn.wpn_speed_reload -= 0.5 * plr.countinv(GetClassName());
+	}
+}

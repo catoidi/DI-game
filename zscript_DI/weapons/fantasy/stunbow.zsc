@@ -48,20 +48,16 @@ CLASS StunCrossbow : DI_Weapon
 			SBOW # 0 A_Jump(256, "NoReload");
 			SBOW B 2 BRIGHT 
 			{
-				//A_SetPitch(pitch - 3);
 				DI_FireProjectile("StunCrossbowBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE);
 				A_StartSound("pistpow");
-				//A_OverlayOffset(PSP_WEAPON, -4, 4, WOF_ADD);
-				//if (invoker.recnum < 3) invoker.recnum += 1;
 			}
-			SBOW CCDDDD 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			SBOW CCDDDD 1;
 			SBOW D 0 A_Refire;
-			SBOW DD 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
-			//#### # 0 {invoker.recnum = 0;}
+			SBOW DD 1;
 			Goto Ready;
 		Reload:
+			SBOW # 0 DI_ReloadCheck();
 			SBOW # 0 A_JumpIfInventory("StunCrossbowReload", 1, "ReloadStart");
-			SBOW # 0 A_JumpIfInventory("StunCrossbowAmmo", invoker.Ammo1.MaxAmount, "NoReload");
 			SBOW ## 1 A_OverlayOffset(PSP_WEAPON, 3.0, -0.5, WOF_ADD);
 			SBOW DDDDDD 1 A_OverlayOffset(PSP_WEAPON, 9, -2, WOF_ADD);
 			Goto ReloadStart+2;
@@ -86,12 +82,6 @@ CLASS StunCrossbow : DI_Weapon
 		ReloadEnd:
 			#### # 0 A_TakeInventory("StunCrossbowReload");
 			SBOW AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -9, 2, WOF_ADD);
-			Goto Ready;
-		NoReload:
-			#### # 0 A_StartSound("noammo", starttime: 0.1);
-			SBOW # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
-			SBOW #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
-			SBOW # 4;
 			Goto Ready;
 		Spawn:
 			SBOW Z -1;

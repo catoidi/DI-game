@@ -62,6 +62,7 @@ CLASS Glowstick : DI_Weapon //20010
 			GLOW L 1
 			{
 				A_WeaponReady();
+				WeaponMode(0);
 				if (CheckInventory("GlowstickPower", 1)) 
 				{
 					A_Overlay(2, "Glowverlay");
@@ -93,6 +94,7 @@ CLASS Glowstick : DI_Weapon //20010
 		Fire:
 		//the glowstick does does a swipe attack coming from the top left and going to the bottom right.
 			TNT1 A 0 A_AttachLightDef("Glower", "GLOWGREEN");
+			#### # 0 WeaponMode(1);
 			GLOW B 1 BRIGHT {
 				A_WeaponOffset(30, 20, WOF_INTERPOLATE); 
 				A_GiveInventory("GlowstickPower", 35);
@@ -112,6 +114,7 @@ CLASS Glowstick : DI_Weapon //20010
 			//checks if you have enough ammo to throw glowstick.
 			//if not, go to melee attack.
 			TNT1 A 0 A_AttachLightDef("Glower", "GLOWGREEN");
+			#### # 0 WeaponMode(1);
 			GLOW B 1 BRIGHT A_JumpIfInventory("GlowstickAmmo", 1, "YouGotIt");
 			Goto Fire;
 		YouGotIt:

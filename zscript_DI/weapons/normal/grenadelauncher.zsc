@@ -45,33 +45,31 @@ CLASS GrenadeLauncher : DI_Weapon
 			GLAN # 1 A_Raise;
 			Loop;
 		Fire:
-			GLAN # 0 A_JumpIfInventory("GrenadeLauncherAmmo", 1, 2);
-			GLAN # 0 A_Jump(256, "NoReload");
+			GLAN # 0 DI_FireCheck();
 			GLAN # 2 
 			{
 				A_SetPitch(pitch - 3);
 				DI_FireProjectile("GrenadeLauncherBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE, isRecoil: true);
 				A_StartSound("pistpow");
-				//A_OverlayOffset(PSP_WEAPON, -4, 4, WOF_ADD);
 				A_Overlay(-10, "PuffSmoke");
 			}
 			GLAN # 0 A_JumpIfInventory("GrenadeLauncherAmmo", 2, 2);
 			GLAN # 0 A_Jump(256, "Fire_LowAmmo");
-			GLAN CCDDDD 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			GLAN CCDDDD 1;
 			GLAN D 0 A_Refire;
-			GLAN DD 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			GLAN DD 1;
 			Goto Ready;
 		Fire_LowAmmo:
-			GLAN CCGGGG 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			GLAN CCGGGG 1;
 			GLAN G 0 A_Refire;
-			GLAN GG 1; //A_OverlayOffset(PSP_WEAPON, 0.5, -0.5, WOF_ADD);
+			GLAN GG 1;
 			Goto Ready;
 		PuffSmoke:
 			GLAN B 2;
 			Stop;
 		Reload:
+			GLAN # 0 DI_ReloadCheck();
 			GLAN # 0 A_JumpIfInventory("GrenadeLauncherReload", 1, "ReloadStart");
-			GLAN # 0 A_JumpIfInventory("GrenadeLauncherAmmo", invoker.Ammo1.MaxAmount, "NoReload");
 			GLAN ###### 1 A_OverlayOffset(PSP_WEAPON, 10, -2, WOF_ADD);
 			Goto ReloadStart;
 		ReloadStart:
@@ -95,6 +93,7 @@ CLASS GrenadeLauncher : DI_Weapon
 			Goto Ready;
 		NoReload:
 			#### # 0 A_StartSound("noammo", starttime: 0.1);
+			#### # 0 WeaponMode(0);
 			GLAN # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
 			GLAN #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
 			GLAN # 4;

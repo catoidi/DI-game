@@ -38,9 +38,11 @@ CLASS LaserPointer : DI_Weapon //20020
 	States
 	{
 		Ready:
+			#### # 0 WeaponMode(0);
 			LAZR A 1 A_WeaponReady;
 			Loop;
 		Fire:
+			LAZR B 0 BRIGHT DI_FireCheck();
 			LAZR B 0 BRIGHT DI_FireProjectile("LaserPointerBullet", -32768, -32768, -32768, -4, 4, FPF_AIMATANGLE, isRecoil: false);
 			LAZR B 0 BRIGHT A_StartSound("weapons/laser/lasrpew");
 			LAZR B 1 BRIGHT A_WeaponOffset(-2, 30, WOF_INTERPOLATE);
@@ -50,10 +52,7 @@ CLASS LaserPointer : DI_Weapon //20020
 			LAZR A 2 A_Refire;
 			Goto Ready;
 		AltFire:
-			LAZR A 0;
-			LAZR A 0 A_JumpIfInventory("BoxAmmo", 5, 3);
-			LAZR A 0 A_Jump(256, "NoReload");
-			LAZR A 0 A_Jump(256, "Ready");
+			LAZR A 0 DI_FireCheck();
 			LAZR A 0 {invoker.bNOALERT = true;} //dont alert enemies when charging
 			LAZR FGFG 8 A_WeaponOffset(random(-1, 1), random(19, 21), WOF_INTERPOLATE);
 		AltFire2:
@@ -69,12 +68,6 @@ CLASS LaserPointer : DI_Weapon //20020
 			LAZR A 6;
 			LAZR A 0 A_Refire("AltFire");
 			LAZR AAA 2 A_WeaponOffset(6, 6, WOF_ADD | WOF_INTERPOLATE);
-			Goto Ready;
-		NoReload:
-			#### # 0 A_StartSound("noammo", starttime: 0.1);
-			LAZR A 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
-			LAZR AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
-			LAZR A 4;
 			Goto Ready;
 		Deselect:
 			LAZR A 0 A_Lower;

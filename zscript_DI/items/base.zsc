@@ -12,4 +12,21 @@ class DIPassiveInventory : Inventory
 		+BRIGHT;
 		+FLOATBOB;
 	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			let playerbase = DI_PlayerBase(owner);
+			if (playerbase.player.ReadyWeapon is "DI_Weapon")
+			{
+				let playerweapon = DI_Weapon(playerbase.player.ReadyWeapon);
+				PassiveTick(playerbase, playerweapon);
+			}
+		}
+	}
+	
+	virtual void PassiveTick(DI_PlayerBase plr, DI_Weapon wpn) {}
 }

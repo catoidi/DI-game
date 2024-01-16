@@ -61,6 +61,7 @@ CLASS PartyShotty : DI_Weapon //20009
 	States
 	{
 		Ready:
+			#### # 0 WeaponMode(0);
 			SHUT A 1 A_WeaponReady;
 			Loop;
 		Deselect:
@@ -72,8 +73,7 @@ CLASS PartyShotty : DI_Weapon //20009
 			Loop;
 		Fire:
 			SHUT B 0;
-			SHUT B 0 A_JumpIfInventory("BoxAmmo", 2, 2);
-			SHUT B 0 A_Jump(256, 2);
+			SHUT B 0 DI_FireCheck();
 			SHUT B 0 A_BoxPartyShoot();
 			SHUT B 1 A_WeaponOffset(-15, 35, WOF_INTERPOLATE);
 			SHUT B 1 A_WeaponOffset(-20, 40, WOF_INTERPOLATE);
@@ -90,8 +90,7 @@ CLASS PartyShotty : DI_Weapon //20009
 			Goto Ready;
 		AltFire:
 			SHUT B 0;
-			SHUT B 0 A_JumpIfInventory("BoxAmmo", 2, 2);
-			SHUT B 0 A_Jump(256, 2);
+			SHUT B 0 DI_FireCheck();
 			SHUT B 0 A_BoxPartyShootAlt();
 			SHUT B 1 A_WeaponOffset(-15, 35, WOF_INTERPOLATE);
 			SHUT B 1 A_WeaponOffset(-20, 40, WOF_INTERPOLATE);

@@ -58,6 +58,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 	double ExtraAccuracy;
 	int ExtraProjectiles;
 	double ExtraDamageMult;
+	double ExtraWeaponSpeed;
+	double ExtraFirerate;
+	double ExtraReloadSpeed;
 	
 	int chance_ice; //chance of your attack dealing this damage type.
 	int chance_fire;
