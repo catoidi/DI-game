@@ -24,6 +24,8 @@ Class DI_Weapon : Weapon abstract
 	
 	double damagemult;
 	
+	private PSpriteSpeedScalerSet scalers;
+	
 	property ExtraCoin: wpn_extracoin;
 	property FreshBonus: wpn_freshbonus;
 	property BaseDamage: wpn_damage;
@@ -96,6 +98,11 @@ Class DI_Weapon : Weapon abstract
 	override void tick(void)
 	{
 		super.tick();
+		
+		if (Owner && Owner.player && Owner.player.ReadyWeapon == self)
+			scalers.Tick(self, weapon_speed_scale);
+		else if (scalers.first)
+			scalers.Clear();
 		
 		if ((owner) && (owner is "DI_PlayerBase"))
 		{

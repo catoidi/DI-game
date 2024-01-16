@@ -190,6 +190,9 @@ version "4.11"
 #include "zscript_libraries/precisecrosshair/settings/pc_settings_pack.zs"
 #include "zscript_libraries/precisecrosshair/settings/pc_settings.zs"
 
+//weapon speed scaling
+#include "zscript_libraries/speedscale/psprite-speed-scaler.zc"
+
 //////////////////////////////////////////////////////////////
 //The below included code is under the MIT License.
 //You can find the details either embedded in the file itself,

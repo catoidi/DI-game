@@ -5,7 +5,7 @@ This only includes the data that falls under the "GPLv3" License. See "LICENSE" 
 
 This repository alone is not enough to play DI. You also need a file called "di-content.pk3", which is not yet publicly released.
 
-### This also contains modified versions of the following open source repos:
+### This also contains (modified!) versions of the following open source repos:
 - [Universal Hats, by me](https://github.com/catoidi/universal-hats)
 - [Box Party Hud, by me](https://github.com/catoidi/box-party-hud)
 - [BoxHPBar, my fork of NashHPBar, by nashmuhandes](https://github.com/catoidi/BoxHPBar)
@@ -14,6 +14,7 @@ This repository alone is not enough to play DI. You also need a file called "di-
 - [ZForms, by Gutawer](https://gitlab.com/Gutawer/gzdoom-zforms)
 - [Aim Assist, by RichardLuis0](https://github.com/RicardoLuis0/AimAssist)
 - [Precise Crosshair, by mmaulwurff](https://github.com/mmaulwurff/precise-crosshair)
+- [PSprite speed scaler, by argv_minus_one](https://github.com/argv-minus-one/gzdoom-psprite-speed-scaling)
 
 
 This repo also shares A LOT of code from my previous project, [Box Party.](https://github.com/catoidi/box-party-demo) 
