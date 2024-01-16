@@ -24,13 +24,6 @@ version "4.11"
 //ZForms (uses MIT License)
 #include "zscript_libraries/ZForms/Include.zsc"
 
-//boxhats (uses MIT License)
-#include "zscript_libraries/boxhats/spawnhandler.zsc"
-#include "zscript_libraries/boxhats/menuhandler.zsc"
-#include "zscript_libraries/boxhats/hatmenu.zsc"
-#include "zscript_libraries/boxhats/hat.zsc"
-#include "zscript_libraries/boxhats/hatdummy.zsc"
-
 //ui
 #include "zscript_DI/ui/MainMenu.zsc"
 #include "zscript_DI/ui/NewGame.zsc"

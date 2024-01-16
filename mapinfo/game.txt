@@ -29,7 +29,6 @@ GameInfo
 		"PaintHandler", //controls the paintings.
 		"NashHPBarHandler", //HP bar + Shop UI combo.
 		"DamNumEventHandler", //Damage Numbers.
-		"UniversalHatHandler", //Controlling the Hats.
 		"AimAssistHandler", //controls everything Aim Assist related.
 		"pc_EventHandler" //controls everything Precise Crosshair related.
 }
