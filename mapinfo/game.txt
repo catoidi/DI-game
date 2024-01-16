@@ -23,15 +23,15 @@ GameInfo
 		"DIHandler", //the main DI system, including monsters/spawners/waves/loot/etc.
 		"DIEventHandler", //random event handler.
 		"DIXHairHandler", //crosshair.
+		"DIUnlockHandler", //For controlling unlocks and stuff.
+		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
+		"DeathscreenHandler", //The end screen that appears upon your inevitable death.
+		"PaintHandler", //controls the paintings.
 		"NashHPBarHandler", //HP bar + Shop UI combo.
 		"DamNumEventHandler", //Damage Numbers.
 		"UniversalHatHandler", //Controlling the Hats.
-		"HatTrackHandler", //For controlling unlocks and stuff.
-		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
-		"DeathscreenHandler", //The end screen that appears upon your inevitable death.
 		"AimAssistHandler", //controls everything Aim Assist related.
-		"pc_EventHandler", //controls everything Precise Crosshair related.
-		"PaintHandler" //controls the paintings.
+		"pc_EventHandler" //controls everything Precise Crosshair related.
 }
 
 DamageType "Spawner" {}

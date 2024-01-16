@@ -210,7 +210,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
 			array<string> curline;
 			filedata[i].Split(curline, " ");
-			if ((curline.Size() < 3) && (curline.Size() > 4)) {continue;} //each valid line must contain 2 or 3 arguments.
+			if ((curline.Size() < 3) && (curline.Size() > 4)) {continue;} //each valid line must contain 3 or 4 arguments.
 			fulllist.Push(filedata[i]);
 			//console.printf("%s", filedata[i]);
 		}

@@ -1,6 +1,6 @@
 //fart
 
-Class HatTrackHandler : EventHandler
+Class DIUnlockHandler : EventHandler
 {
 	//used to track a majority of the hats unlockable in DI.
 	//also can display unlock popups for hats/players/levels.
@@ -184,6 +184,7 @@ Class HatTrackHandler : EventHandler
 				}
 			}
 		}
+		else if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -253,5 +254,66 @@ Class HatTrackHandler : EventHandler
 			if (boxamount >= 2) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_plr_box");}
 		}
 		boxtimer = 0;
+	}
+	
+	virtual void ParseDIUNLOCK(array<string> parseddata)
+	{
+		//copy/pasted from unlock menu code.
+	
+		array<string> diunlock_filedata;
+	
+		int ThisLump = Wads.FindLump("DIUNLOCK", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(diunlock_filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < diunlock_filedata.Size(); ++i)
+		{
+			if (diunlock_filedata[i].Left(2) == ">>") {continue;} //comment
+			if (diunlock_filedata[i].Length() < 3) {continue;} //too small
+			int linesize = diunlock_filedata[i].IndexOf(";"); //end of line
+			diunlock_filedata[i] = diunlock_filedata[i].Left(linesize); //only use data left of the ;
+			array<string> curline;
+			diunlock_filedata[i].Split(curline, " ");
+			if ((curline.Size() < 3) && (curline.Size() > 4)) {continue;} //each valid line must contain 3 or 4 arguments.
+			parseddata.Push(diunlock_filedata[i]);
+		}
+	}
+	
+	virtual void ResetItems()
+	{
+		array<string> unlocklines;
+		array<string> unlockcvars;
+		
+		//parse the DIUNLOCK data for cvars to reset.
+		ParseDIUNLOCK(unlocklines);
+		
+		//get the cvars from the parsed lines.
+		for (int i = 0; i < UnlockLines.Size(); i++)
+		{
+			array<string> curline;
+			unlocklines[i].Split(curline, " ");
+			
+			unlockcvars.push(curline[0]);
+			if (curline.size() == 4) {unlockcvars.push(curline[3]);}
+		}
+	
+		//it's time to reset the hats.
+		for (int i = 0; i < UnlockCVARs.Size(); i++)
+		{
+			console.printf("num %d: '%s'", i, unlockcvars[i]);
+			cvar CurrentCVAR = cvar.getcvar(UnlockCVARs[i]);
+			if (CurrentCVAR)
+			{
+				CurrentCVAR.ResetToDefault();
+			}
+		}
+		
+		console.printf("%s", "every item you've unlocked just exploded into dust.\nbye bye :)");
 	}
 }
