@@ -94,10 +94,12 @@ CLASS BlueSMG : DI_Weapon
 			BSMG FFFFFFFF 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
 			Stop;
 		Flash:
-			BSMG D 2 BRIGHT;
+			BSMG D 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
 			Stop;
 		Flash2:
-			BSMG H 2 BRIGHT;
+			BSMG H 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
 			Stop;
 		Spawn:
 			BSMG Z -1;

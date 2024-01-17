@@ -385,6 +385,9 @@ Class DI_Weapon : Weapon abstract
 		}
 	}
 	
+	action void DI_MuzzleFlash(string flash = "BULLETSHOOT") {A_AttachLightDef("shoot", flash);}
+	action void DI_ClearFlash() {A_RemoveLight("shoot");}
+	
 	action void DI_BulletCasing(int casingtype = 0)
 	{
 		//0 = shells.

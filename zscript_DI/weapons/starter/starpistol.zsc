@@ -80,7 +80,8 @@ CLASS StarPistol : DI_Weapon
 			PIST EEEEEEE 1 A_OverlayOffset(-2, -4.5, -18, WOF_ADD);
 			Stop;
 		Flash:
-			PIST C 2 BRIGHT;
+			PIST C 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
 			Stop;
 		Spawn:
 			PIST Z -1;

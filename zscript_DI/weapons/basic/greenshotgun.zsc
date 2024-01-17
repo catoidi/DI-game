@@ -114,7 +114,8 @@ CLASS GreenShotgun : DI_Weapon
 			SHOT AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, 2, WOF_ADD);
 			Goto Ready;
 		Flash:
-			SHOT E 2 BRIGHT;
+			SHOT E 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
 			Stop;
 		Spawn:
 			SHOT Z -1;

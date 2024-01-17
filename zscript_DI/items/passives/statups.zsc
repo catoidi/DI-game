@@ -132,12 +132,12 @@ Class DI_FastWeapon : DIPassiveInventory
 {
 	default
 	{
-		inventory.maxamount 10;
+		inventory.maxamount 5;
 	}
 	
 	override double GiveWeaponSpeed()
 	{
 		if (!plr) {return 0.0;}
-		return 0.15 * plr.countinv(GetClassName());
+		return -0.15 * plr.countinv(GetClassName());
 	}
 }

@@ -134,7 +134,8 @@ Class DoubleShotgun : GreenShotgun
 			PUSG A 4;
 			Goto Ready;
 		Flash:
-			PUSG E 2 BRIGHT;
+			PUSG E 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
 			Stop;
 		Spawn:
 			PUSG Z -1;
