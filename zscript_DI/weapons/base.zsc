@@ -120,14 +120,6 @@ Class DI_Weapon : Weapon abstract
 			if (GetClassName() == plr.player.readyweapon.GetClassName()) //only run this code if this weapon is selected.
 			{
 				GetWeaponValues();
-				//GetBaseDamage();
-				//GetDamageMult();
-				//GetExtraCoin();
-				//GetFreshBonus();
-				//GetAccuracy();
-				//GetProjectiles();
-				//GetMaxAmmo1();
-				//GetMaxAmmo2();
 				GetWeaponSpeed();
 				
 				RecoilTick();
