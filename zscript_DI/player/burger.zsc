@@ -17,8 +17,9 @@ class DI_PlayerBurger : DI_PlayerBase
 		Player.StartItem "DI_JuiceBox", 1;
 		Player.ViewHeight 40;
 		Player.ViewBob 0.5;
-		+NOBLOOD;
-		+NOBLOODDECALS;
+		Player.DamageScreenColor "Yellow";
+		BloodColor "Yellow";
+		BloodType "DI_Blood_Burger";
 	}
 
 	States
@@ -29,5 +30,20 @@ class DI_PlayerBurger : DI_PlayerBase
 		See:
 			#### A 8;
 			Loop;
+	}
+}
+
+class DI_Blood_Burger : DI_Blood
+{	
+	states
+	{
+		Spawn:
+			TNT1 AAA 0 NoDelay;
+			TNT1 A 0
+			{
+				if (random(0, 1) == 1) {A_SetTranslation("DamRed");}
+			}
+			TNT1 A 0 NoDelay A_Jump(256, "Roller");
+			Stop;
 	}
 }
