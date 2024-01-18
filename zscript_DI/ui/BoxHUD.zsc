@@ -203,9 +203,11 @@ class DI_HUD : BaseStatusBar
 		}
 		
 		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+		let regfont = Font.CR_GREEN;
+		if (GetAmount("DI_Regen") > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
 		if (GetAmount("DI_Regen") > 0)
 		{
-			DrawString(SmallFont, FormatNumber(GetAmount("DI_Regen"), 0), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, Font.CR_GREEN, 0.5);
+			DrawString(SmallFont, FormatNumber(GetAmount("DI_Regen"), 0), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);
 		}
 		
 		//DrawTexture(GetMugShot(5), GlobalOffset + (-36, -36), DI_ITEM_OFFSETS);
