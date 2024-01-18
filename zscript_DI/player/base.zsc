@@ -276,6 +276,15 @@ Class DI_PlayerBase : PlayerPawn abstract
 		else {return cnum;}
 	}
 	
+	clearscope virtual int GetScore()
+	{
+		double skillmult = 1.0;
+		int wavenum = CallACS("DICheckWave");
+		if (skill == 0) {skillmult = 0.25;}
+	
+		return ((((wavenum - 1) * 100) * (0.2 * wavenum)) + (killcounter * 3) + (buycounter * 25) + (Score + moneyspent)) * skillmult;
+	}
+	
 	virtual void ComboCounter(void)
 	{
 		combonum = GetCombo();

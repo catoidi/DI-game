@@ -55,12 +55,6 @@ Class DeathscreenHandler : EventHandler
 	{
 		if (plr && (IsDead == true))
 		{
-			double skillmult = 1.0;
-			switch(skill)
-			{
-				case 0: skillmult = 0.25; break;
-			}
-		
 			let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
 			Screen.DrawTexture(blackscreen, false,
 				0, 0,
@@ -151,7 +145,7 @@ Class DeathscreenHandler : EventHandler
 			}
 			if (DeathTimer > 230)
 			{
-				int totalscore = ((((wavenum - 1) * 100) * (0.2 * wavenum)) + (plr.killcounter * 3) + (plr.buycounter * 25) + (plr.Score + plr.moneyspent)) * skillmult;
+				int totalscore = plr.GetScore();
 				string totalcolor = "\cf";
 				if (totalscore < 0) {totalcolor = "\ca";}
 				string died = string.format("\n\n\n\n\n\n\n\n\n\n%sFinal Rating: %d", totalcolor, totalscore);
