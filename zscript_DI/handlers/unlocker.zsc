@@ -191,12 +191,11 @@ Class DIUnlockHandler : EventHandler
 	{
 		let unlockcvar = cvar.getcvar(unlockstring);
 	
-		if (unlockcvar)
+		if (unlockcvar && (unlockcvar.getbool() == false))
 		{
+			listunlocks.push(unlockstring);
 			unlockcvar.setbool(true);
 		}
-		
-		listunlocks.push(unlockstring);
 	}
 	
 	virtual void KillCounter()
