@@ -12,5 +12,6 @@ class DI_PlayerFredrick : DI_PlayerBase
 		Player.ViewHeight 33;
 		Player.DamageScreenColor "Purple";
 		BloodColor "Purple";
+		DI_PlayerBase.AutoBlacklist "StarPistol";
 	}
 }

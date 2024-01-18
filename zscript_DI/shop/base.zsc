@@ -100,7 +100,6 @@ Class DIShop_Base : SwitchableDecoration abstract
 		}
 	}
 	
-	
 	Default
 	{
 		Radius 20;

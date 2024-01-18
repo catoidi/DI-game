@@ -16,6 +16,7 @@ class DI_PlayerBox : DI_PlayerBase
 		Player.StartItem "DI_Pizza", 3;
 		Player.ViewHeight 48;
 		Player.ViewBob 0.5;
+		DI_PlayerBase.AutoBlacklist "Glowstick";
 		+NOBLOOD;
 		+NOBLOODDECALS;
 	}

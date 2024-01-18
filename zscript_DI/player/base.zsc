@@ -18,12 +18,10 @@ Class DI_PlayerBase : PlayerPawn abstract
 		Player.Colorset 0, "$TXT_COLOR_GREEN", 144, 191, 144;
 		Player.Colorset 1, "$TXT_COLOR_RED", 96, 143, 96;
 		Player.Colorset 2, "$TXT_COLOR_BLUE", 192, 239, 192;
-		//Player.DisplayName "Fredrick";
-		//Player.WeaponSlot 1, "StarPistol";
-		//Player.StartItem "StarPistol";
-		//Player.StartItem "StarPistolAmmo", 13;
-		//Player.ViewHeight 33;
 	}
+	
+	string autoblacklist;
+	Property AutoBlacklist : autoblacklist; //Add multiple items to this list by separating them with a comma.
 	
 	bool diefade;
 	int combonum;
@@ -77,6 +75,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 			ThisLump = NextLump;
 			NextLump = Wads.FindLump("DIWIPE", ThisLump + 1, 1);
 		}
+		
+		DoAutoBlacklist();
 	}
 	
 	override void Tick(void)
@@ -137,6 +137,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 		Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
 		
 		return damage;
+	}
+	
+	void DoAutoBlacklist()
+	{
+		array<string> thelist;
+		autoblacklist.split(thelist, ","); //Use commas to add multiple items to the blacklist.
+		for (int i = 0; i < thelist.size(); ++i)
+		{
+			let cmd = string.format("autoblacklist %s", thelist[i]);
+			eventhandler.sendnetworkevent(cmd);
+		}
 	}
 	
 	static void PlayerDoUnlock(string uncvar, int plrnum = 0)

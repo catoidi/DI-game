@@ -56,7 +56,7 @@ Class DIShop : DIShop_Base
 		shop_itemstock = user_itemstock;
 		
 		SpawnShopExtras();
-		canshop = true;
+		if (IsBlacklisted(shop_currentitem) == false) {canshop = true;}
 	}
 	
 	override void tick(void)
@@ -120,6 +120,7 @@ Class DIShop : DIShop_Base
 	
 	virtual bool AddBlacklist(string newitem, bool forcereroll = false)
 	{
+		console.printf("attempting to add %s to shop blacklist...", newitem); 
 		bool alreadydone = false;
 		int blacklistnum = blacklist.Find(newitem);
 		if (blacklistnum < blacklist.Size()) {alreadydone = true;} //skip if item already blacklisted
@@ -130,14 +131,19 @@ Class DIShop : DIShop_Base
 			int poolnum = itempool.Find(newitem); //see if blacklist is in item pool
 			if (poolnum < itempool.Size())
 			{
+				console.printf("\cq%s has been removed from this shop's pool.", newitem);
 				itempool_blacklist.Push(itempool[poolnum]); //add to blacklisted pool
 				itempool.Delete(poolnum); //remove from item pool
 			}
-			if (newitem == shop_currentitem) {RerollShopItem();} //reroll shop if current item is now blacklisted
+			if (newitem == shop_currentitem) {console.printf("\cq%s", "rerolling shop..."); RerollShopItem();} //reroll shop if current item is now blacklisted
 			else if (forcereroll) {RerollShopItem();}
 			return true;
 		}
-		else {return false;}
+		else 
+		{
+			console.printf("%s", "\cgblacklist attempt has failed.");
+			return false;
+		}
 	}
 	
 	virtual bool RemoveBlacklist(string delitem, bool forcereroll = false)
@@ -161,7 +167,7 @@ Class DIShop : DIShop_Base
 	virtual bool IsBlacklisted(string itemfind)
 	{
 		int itemnum = blacklist.Find(itemfind);
-		if (itemnum < blacklist.Size()) {return true;}
+		if (itemnum < blacklist.Size()) {console.printf("%s", "BLACKLISTED ITEM DETECTED!!!!!"); return true;}
 		else {return false;}
 	}
 	
@@ -221,12 +227,16 @@ Class DIShop : DIShop_Base
 			for (int j = 0; j < groupdata.Size(); j++)
 			{
 				bool correctgroup = false;
+				bool singleitemmode = false;
 				if (currentline[0] == groupdata[j]) {correctgroup = true;} //case sensitive cuz i didnt make it a name instead of a string for some reason!
-				else if (user_shoptype == "") {correctgroup = true;} //if no group is defined, load EVERY item.
+				else if ((user_shoptype == "") || (user_shoptype == " ")) {correctgroup = true;} //if no group is defined, load EVERY item.
+				
+				if ((user_currentitem != "") && (user_currentitem != " ")) {singleitemmode = true;}
 				
 				if (correctgroup)
 				{
-					if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+					if (singleitemmode) {if (user_currentitem != currentline[1]) {continue;}}
+					else if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
 					if ((currentline.Size() > 5) && (docheat == false))
 					{
 						cvar curcvar = cvar.getcvar(currentline[5]);
@@ -246,12 +256,13 @@ Class DIShop : DIShop_Base
 	virtual void RestockShop(void)
 	{
 		//override this if you want the shop to not restock every round.
-		shop_itemstock = user_itemstock;
+		if (IsBlacklisted(shop_currentitem) == false) {shop_itemstock = user_itemstock;}
+		else {shop_itemstock = 0;}
 	}
 	
 	virtual void ChooseNewShopItem(void)
 	{
-		if (itempool.Size() == 0) {canshop = false;}//{ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
+		if (itempool.Size() == 0) {console.printf("%s", "we selling NOTHING bruh"); canshop = false;}//{ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
 		else if ((canshop == true) || (user_alwaysreroll == true))
 		{
 			int chosenitem = random(0, itempool.Size() - 1);
@@ -279,8 +290,9 @@ Class DIShop : DIShop_Base
 		A_DIScale(0.25, -0.25);
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		ChooseNewShopItem();
-		shop_itemstock = user_itemstock;
+		RestockShop();
 		if (shop_itemstock != 0) {canshop = true;}
+		if (IsBlacklisted(shop_currentitem)) {canshop = false;}
 	}
 	
 	override void PurchaseShopItem(void)

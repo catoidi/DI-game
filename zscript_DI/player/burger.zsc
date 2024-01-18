@@ -18,6 +18,7 @@ class DI_PlayerBurger : DI_PlayerBase
 		Player.ViewHeight 40;
 		Player.ViewBob 0.5;
 		Player.DamageScreenColor "Yellow";
+		DI_PlayerBase.AutoBlacklist "CheeseGun";
 		BloodColor "Yellow";
 		BloodType "DI_Blood_Burger";
 	}

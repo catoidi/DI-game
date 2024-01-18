@@ -37,7 +37,7 @@ class DIHandler : EventHandler
 	
 	int currentspawners; //amount of spawners currently spawning enemies.
 	
-	Array<Actor> shoparray; //pointers to all shops currently in the level.
+	Array<DIShop> shoparray; //pointers to all shops currently in the level.
 	
 	bool waveinprogress; //true if there is a wave happening right now.
 	

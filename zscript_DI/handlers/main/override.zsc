@@ -62,7 +62,7 @@ extend class DIHandler
 			}
 			if (e.Thing is "DIShop")
 			{
-				shoparray.Push(e.Thing);
+				shoparray.Push(DIShop(e.Thing));
 			}
 			if (e.Thing is "DI_FloorActor")
 			{
@@ -166,6 +166,14 @@ extend class DIHandler
 		{
 			console.printf("waitnum: %d\ncurrentspawners: %d\nspawnqueue: %d\nalive monsters: %d\nenemycount: %d", waitnum, currentspawners, spawnqueue.Size(), Level.Total_Monsters - Level.Killed_Monsters, enemycount);
 			//if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1) && (enemycount <= 0))
+		}
+		else if (e.Name.Left(14) == "autoblacklist ")
+		{
+			name newblacklist = e.Name.Mid(14);
+			foreach(mo : shoparray)
+			{
+				if (mo) {mo.AddBlacklist(newblacklist);}
+			}
 		}
 	}
 }
