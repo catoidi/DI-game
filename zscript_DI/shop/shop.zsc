@@ -26,6 +26,8 @@ Class DIShop : DIShop_Base
 	
 	bool user_dontprogress; //dont progress the shop level, if applicable.
 	
+	bool user_debugpool; //prints the itempool to the console.
+	
 	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
@@ -120,7 +122,7 @@ Class DIShop : DIShop_Base
 	
 	virtual bool AddBlacklist(string newitem, bool forcereroll = false)
 	{
-		console.printf("attempting to add %s to shop blacklist...", newitem); 
+		//console.printf("attempting to add %s to shop blacklist...", newitem); 
 		bool alreadydone = false;
 		int blacklistnum = blacklist.Find(newitem);
 		if (blacklistnum < blacklist.Size()) {alreadydone = true;} //skip if item already blacklisted
@@ -128,20 +130,35 @@ Class DIShop : DIShop_Base
 		if (alreadydone == false) 
 		{
 			blacklist.Push(newitem);
-			int poolnum = itempool.Find(newitem); //see if blacklist is in item pool
-			if (poolnum < itempool.Size())
+			bool wasinpool = false;
+			for(int i = 0; i < itempool.Size(); ++i)
 			{
-				console.printf("\cq%s has been removed from this shop's pool.", newitem);
-				itempool_blacklist.Push(itempool[poolnum]); //add to blacklisted pool
-				itempool.Delete(poolnum); //remove from item pool
+				Array<String> currentitem;
+				itempool[i].Split(currentitem, " ", TOK_SKIPEMPTY);
+			
+				if (currentitem[1] == newitem)
+				{
+					if (user_debugpool) {console.printf("\cq%s has been removed from this shop's pool.", newitem);}
+					itempool_blacklist.Push(itempool[i]); //add to blacklisted pool
+					itempool.Delete(i); //remove from item pool
+					wasinpool = true;
+				}
 			}
-			if (newitem == shop_currentitem) {console.printf("\cq%s", "rerolling shop..."); RerollShopItem();} //reroll shop if current item is now blacklisted
+			if (user_debugpool && (wasinpool == false)) {console.printf("\ca%s is blacklisted, but wasn't in this shop's itempool!", newitem);}
+			if (newitem == shop_currentitem) 
+			{
+				if (user_debugpool) {console.printf("\cq%s", "rerolling shop...");}
+				RerollShopItem(); //reroll shop if current item is now blacklisted
+			}
 			else if (forcereroll) {RerollShopItem();}
+			
+			if (user_debugpool) {console.printf("\ca%s has been successfully blacklisted.", newitem);}
+			
 			return true;
 		}
 		else 
 		{
-			console.printf("%s", "\cgblacklist attempt has failed.");
+			//console.printf("%s", "\cgblacklist attempt has failed.");
 			return false;
 		}
 	}
@@ -152,11 +169,15 @@ Class DIShop : DIShop_Base
 		if (itemnum < blacklist.Size())
 		{
 			blacklist.Delete(itemnum); //remove from blacklist
-			int poolnum = itempool_blacklist.Find(delitem); //see if item was removed from shop pool
-			if (poolnum < itempool_blacklist.Size())
+			for (int i = 0; i < itempool_blacklist.size(); ++i)
 			{
-				itempool.Push(itempool_blacklist[poolnum]); //add item back into shop pool
-				itempool_blacklist.Delete(poolnum); //remove from removed items list
+				Array<String> currentitem;
+				itempool_blacklist[i].Split(currentitem, " ", TOK_SKIPEMPTY);
+				if (currentitem[1] == delitem)
+				{
+					itempool.Push(itempool_blacklist[i]); //add item back into shop pool
+					itempool_blacklist.Delete(i); //remove from removed items list
+				}
 			}
 			if (forcereroll) {RerollShopItem();} //rerolling can give the shops a chance to immediately display the newly unblacklisted item.
 			return true;
@@ -167,7 +188,11 @@ Class DIShop : DIShop_Base
 	virtual bool IsBlacklisted(string itemfind)
 	{
 		int itemnum = blacklist.Find(itemfind);
-		if (itemnum < blacklist.Size()) {console.printf("%s", "BLACKLISTED ITEM DETECTED!!!!!"); return true;}
+		if (itemnum < blacklist.Size()) 
+		{
+			//console.printf("%s", "BLACKLISTED ITEM DETECTED!!!!!"); 
+			return true;
+		}
 		else {return false;}
 	}
 	
@@ -209,8 +234,10 @@ Class DIShop : DIShop_Base
 		else {groupdata.Push(user_shoptype);} //this is just 1 category, no grouping needed.
 		
 		//add valid items to this shop's pool
+		int debugline;
 		for (int i = 0; i < filedata.Size(); i++)
 		{
+			if (user_debugpool) {++debugline;}
 			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
 			if (filedata[i].Length() < 3) {continue;}
 			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
@@ -235,34 +262,80 @@ Class DIShop : DIShop_Base
 				
 				if (correctgroup)
 				{
-					if (singleitemmode) {if (user_currentitem != currentline[1]) {continue;}}
-					else if (random(0, 255) > pushchance) {continue;} //random chance to not add item to array.
+					if (singleitemmode) 
+					{
+						if (user_currentitem != currentline[1]) {continue;} 
+					}
+					else if (random(0, 255) > pushchance) 
+					{
+						if (debugline > 0) 
+						{
+							console.printf("%s wasn't added due to random chance.", currentline[1]);
+							debugline = 0;
+						}
+						continue; //random chance to not add item to array.
+					}
 					if ((currentline.Size() > 5) && (docheat == false))
 					{
 						cvar curcvar = cvar.getcvar(currentline[5]);
-						if ((curcvar) && (curcvar.getbool() == false)) {continue;} //dont add item if it's still locked.
+						if ((curcvar) && (curcvar.getbool() == false)) 
+						{
+							if (debugline > 0) 
+							{
+								console.printf("%s hasn't been unlocked yet.", currentline[1]);
+								debugline = 0;
+							}
+							continue; //dont add item if it's still locked.
+						}
 					}
 					if (blacklist.Find(currentline[1]) != blacklist.Size())
 					{
 						itempool_blacklist.Push(filedata[i]);
+						if (debugline > 0) 
+						{
+							console.printf("%s wasn't added because it was blacklisted.", currentline[1]);
+							debugline = 0;
+						}
 						continue;
 					}
 					itempool.Push(filedata[i]); //only add relevant item pool data to this array.
+					if (user_debugpool) 
+					{
+						if (debugline > 1) 
+						{
+							console.printf("\ck%d DISHOP lines skipped.", debugline - 1);
+						}
+						debugline = 0;
+						console.printf("\cd%s added successfully.", currentline[1]);
+					}
 				}
 			}
+		}
+		if (debugline > 0) 
+		{
+			console.printf("\ck%d DISHOP lines skipped.\n\ctDEBUG: Shop has completed parsing data.", debugline);
+			debugline = 0;
 		}
 	}
 	
 	virtual void RestockShop(void)
 	{
 		//override this if you want the shop to not restock every round.
-		if (IsBlacklisted(shop_currentitem) == false) {shop_itemstock = user_itemstock;}
+		if (IsBlacklisted(shop_currentitem) == false) 
+		{
+			shop_itemstock = user_itemstock;
+			if (shop_itemstock < 1) {shop_itemstock = 1;}
+		}
 		else {shop_itemstock = 0;}
 	}
 	
 	virtual void ChooseNewShopItem(void)
 	{
-		if (itempool.Size() == 0) {console.printf("%s", "we selling NOTHING bruh"); canshop = false;}//{ThrowAbortException("Shop's Item Pool Size cannot be 0!");}
+		if (itempool.Size() == 0) 
+		{
+			//console.printf("%s", "we selling NOTHING bruh"); 
+			canshop = false;
+		}
 		else if ((canshop == true) || (user_alwaysreroll == true))
 		{
 			int chosenitem = random(0, itempool.Size() - 1);
@@ -324,7 +397,15 @@ Class DIShop : DIShop_Base
 			{
 				A_StartSound("player/noway");
 				string failmsg;
-				if (canshop == false) {failmsg = "\crthis shop is out of stock.";}
+				if (itempool.Size() == 0) 
+				{
+					if (itempool_blacklist.Size() > 0)
+					{
+						failmsg = "\crthis shop has no items to sell.\n\ckmaybe the shop items were blacklisted?";
+					}
+					else {failmsg = "\crthis shop does not have any valid items to sell.";}
+				}
+				else if (canshop == false) {failmsg = "\crthis shop is out of stock.";}
 				else if (hasroom == false) {failmsg = "\cryou're out of inventory space.";}
 				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this item.";}
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this item while in debt.";}
