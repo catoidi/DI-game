@@ -17,9 +17,7 @@ CLASS StarPistol : DI_Weapon
 		Weapon.AmmoGive 8;
 		Weapon.AmmoType "StarPistolAmmo";
 		Inventory.Icon "PISTZ0";
-		//Inventory.Icon "PISTG0";
-		//Obituary "$BOX_DIE_STUPID";
-		//Inventory.Pickupmessage "$BOX_WEAPON_STUPID";
+		Inventory.Pickupmessage "Picked up the Star Pistol! (Damage increases with higher combos.)";
 		Tag "Star Pistol";
 		//$Category "DI/Weapons/"
 		//$Title "Star Pistol"

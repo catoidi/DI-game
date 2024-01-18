@@ -21,7 +21,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 	}
 	
 	string autoblacklist;
+	string permastart;
 	Property AutoBlacklist : autoblacklist; //Add multiple items to this list by separating them with a comma.
+	Property Permastart : permastart;
 	
 	bool diefade;
 	int combonum;
@@ -76,6 +78,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			NextLump = Wads.FindLump("DIWIPE", ThisLump + 1, 1);
 		}
 		
+		DoPermaStart();
 		DoAutoBlacklist();
 	}
 	
@@ -137,6 +140,13 @@ Class DI_PlayerBase : PlayerPawn abstract
 		Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
 		
 		return damage;
+	}
+	
+	void DoPermaStart()
+	{
+		array<string> currentline;
+		permastart.split(currentline, ","); //Use commas to add multiple items to the wavekeep array.
+		for (int i = 0; i < currentline.size(); ++i) {BuyPermaItem(currentline[i]);}
 	}
 	
 	void DoAutoBlacklist()
@@ -283,6 +293,12 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if (skill == 0) {skillmult = 0.25;}
 	
 		return ((((wavenum - 1) * 100) * (0.2 * wavenum)) + (killcounter * 3) + (buycounter * 25) + (Score + moneyspent)) * skillmult;
+	}
+	
+	clearscope virtual string ScoreUnlock()
+	{
+		//if you'd like any player unlocks tied to their final score, this is where you'd put them.
+		return "";
 	}
 	
 	virtual void ComboCounter(void)

@@ -13,5 +13,12 @@ class DI_PlayerFredrick : DI_PlayerBase
 		Player.DamageScreenColor "Purple";
 		BloodColor "Purple";
 		DI_PlayerBase.AutoBlacklist "StarPistol";
+		DI_PlayerBase.PermaStart "StarPistol";
+	}
+	
+	override string ScoreUnlock()
+	{
+		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_starpistol";}
+		else return "";
 	}
 }

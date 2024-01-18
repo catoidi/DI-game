@@ -17,6 +17,7 @@ class DI_PlayerBox : DI_PlayerBase
 		Player.ViewHeight 48;
 		Player.ViewBob 0.5;
 		DI_PlayerBase.AutoBlacklist "Glowstick";
+		DI_PlayerBase.PermaStart "Glowstick";
 		+NOBLOOD;
 		+NOBLOODDECALS;
 	}
@@ -35,6 +36,12 @@ class DI_PlayerBox : DI_PlayerBase
 	{
 		Super.BoxAmmoChecker();
 		if (boxammonum > 0) {++boxammonum;} //1 extra chance for box ammo if playing as box partyer.
+	}
+	
+	override string ScoreUnlock()
+	{
+		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_glowstick";}
+		else return "";
 	}
 
 	States

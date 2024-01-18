@@ -34,6 +34,9 @@ DIPOPUP_di_unlock_item_fred1 = "Bonus Armor";
 DIPOPUP_di_unlock_item_fred2 = "Firestarter";
 DIPOPUP_di_unlock_item_fred3 = "Last Stand";
 DIPOPUP_di_unlock_item_fred4 = "Farsight";
+DIPOPUP_di_unlock_item_starpistol = "Star Pistol";
+DIPOPUP_di_unlock_item_glowstick = "Glowstick";
+DIPOPUP_di_unlock_item_cheesegun = "Cheese Cannon";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

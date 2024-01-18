@@ -21,6 +21,7 @@ Class CheeseGun : DI_Weapon
 		Weapon.AmmoType "CheeseGunAmmo";
 		Weapon.AmmoType2 "CheeseGunHeat";
 		Inventory.Icon "CHESZ0";
+		Inventory.Pickupmessage "Picked up the Cheese Cannon! (Generates heat over time. Does fire damage with enough heat.)";
 		Tag "Cheese Cannon";
 	}
 	

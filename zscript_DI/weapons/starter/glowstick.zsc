@@ -35,7 +35,7 @@ CLASS Glowstick : DI_Weapon //20010
 		Weapon.AmmoUse1 1;
 		Weapon.AmmoGive1 4;
 		Weapon.AmmoType1 "GlowstickAmmo";
-		Inventory.PickupMessage "Acquired the Glowstick weapon.";
+		Inventory.PickupMessage "Picked up the Glowstick! (Killing enemies with the Glowstick will make enemies drop health.)";
 		Inventory.Icon "GLOWA0";
 		//Inventory.AltHUDIcon "AMMOA0";
 		Obituary "$BOX_DIE_GLOW";

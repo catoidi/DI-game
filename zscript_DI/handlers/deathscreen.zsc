@@ -39,6 +39,10 @@ Class DeathscreenHandler : EventHandler
 			{
 				float newmove = 0.02 + ((4.0 - diedmove) / 35);
 				diedmove += newmove;
+				if (plr.ScoreUnlock() != "")
+				{
+					eventhandler.sendinterfaceevent(consoleplayer, plr.ScoreUnlock());
+				}
 			}
 			else if (diedmove > 4.0) {diedmove = 4.0;}
 			else if (diedmove < 2.0) {diedmove = 2.0;}
@@ -70,6 +74,11 @@ Class DeathscreenHandler : EventHandler
 				{
 					case 1: died = "MEMENTO MORI"; break;
 					case 2: died = "u ded lmao"; break;
+					case 3: died = "rip bozo"; break;
+					case 4: died = "better luck next time"; break;
+					case 5: died = "unlucky"; break;
+					case 6: died = "99% of players died here"; break;
+					case 7: died = "your life has expired"; break;
 				}
 				int scaley = (bigfont.GetHeight() * (CleanYFac * 1.3)) / 2;
 				Screen.DrawText(bigfont, Font.CR_BRICK,
