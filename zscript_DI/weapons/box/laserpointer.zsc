@@ -1,6 +1,6 @@
 //zboxscript/weapons/laserpointer.zsc
 
-//zscript code for the laser pointer. (and later the laser pointer upgrade.)
+//zscript code for the laser pointer.
 
 CLASS LaserPointer : DI_Weapon //20020
 {
@@ -28,8 +28,6 @@ CLASS LaserPointer : DI_Weapon //20020
 		
 		+WEAPON.ALT_USES_BOTH;
 		-WEAPON.AMMO_OPTIONAL;
-		+CASTSPRITESHADOW;
-		+COUNTITEM;
 		//$Category "Box Party/Weapons"
 		//$Title "Laser Pointer"
 		//$Color 9
@@ -38,7 +36,7 @@ CLASS LaserPointer : DI_Weapon //20020
 	States
 	{
 		Ready:
-			#### # 0 WeaponMode(0);
+			LAZR A 0 WeaponMode(0);
 			LAZR A 1 A_WeaponReady;
 			Loop;
 		Fire:

@@ -69,6 +69,7 @@ version "4.11"
 #include "zscript_DI/pickups/base.zsc"
 #include "zscript_DI/pickups/coin.zsc"
 #include "zscript_DI/pickups/flash.zsc"
+#include "zscript_DI/pickups/bag.zsc"
 
 //items
 #include "zscript_DI/items/mixin.zsc"

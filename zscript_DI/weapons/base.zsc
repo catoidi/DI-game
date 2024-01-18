@@ -98,9 +98,6 @@ Class DI_Weapon : Weapon abstract
 			if (ammo1) {wpn_ammo1restore = plr.CountInv(ammo1.GetClassName());}
 			if (ammo2) {wpn_ammo2restore = plr.CountInv(ammo2.GetClassName());}
 		}
-		
-		SetFireStates();
-		SetReloadStates();
 	}
 	
 	override void tick(void)
@@ -172,6 +169,8 @@ Class DI_Weapon : Weapon abstract
 	
 	virtual void GetWeaponValues()
 	{
+		//this handles getting stat changes from passive items.
+	
 		wpn_damage = Default.wpn_damage;
 		damagemult = Default.damagemult;
 		wpn_extracoin = Default.wpn_extracoin;
@@ -208,18 +207,6 @@ Class DI_Weapon : Weapon abstract
 		}
 		
 		if (wpn_damage < 1) {wpn_damage = 1;}
-	}
-	
-	virtual void SetFireStates()
-	{
-		firestates.push("Fire");
-		firestates.push("AltFire");
-		firestates.push("Zoom");
-	}
-	
-	virtual void SetReloadStates()
-	{
-		reloadstates.push("Reload");
 	}
 	
 	action void WeaponMode(int mode)

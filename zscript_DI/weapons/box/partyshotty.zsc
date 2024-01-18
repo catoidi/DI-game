@@ -2,10 +2,6 @@
 
 CLASS PartyShotty : DI_Weapon //20009
 {
-	//the primary fire shoots out a volley of 6 snack mix pellets that each do 10 damage.
-	//the secondary fire is a melee attack, which is slower than the glowstick attack, but does double damage.
-	//i may or may not change the secondary fire to something else later.
-
 	Default
 	{
 		Radius 20;
@@ -61,7 +57,7 @@ CLASS PartyShotty : DI_Weapon //20009
 	States
 	{
 		Ready:
-			#### # 0 WeaponMode(0);
+			SHUT A 0 WeaponMode(0);
 			SHUT A 1 A_WeaponReady;
 			Loop;
 		Deselect:

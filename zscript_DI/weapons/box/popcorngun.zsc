@@ -75,7 +75,7 @@ CLASS PopcornGun : DI_Weapon //200
 	States
 	{
 		Ready:
-			#### # 0 WeaponMode(0);
+			POPG A 0 WeaponMode(0);
 			POPG A 1 A_WeaponReady;
 			Loop;
 		Deselect:
