@@ -94,7 +94,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			let lvlnum = lvlstr.ToInt(10);
 			string lvlclass = link.lvllabels[lvlnum].GetText();
 			link.levelname = link.levelpool[lvlnum];
-			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass)); 
+			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass), string.format("\cbBest Player Score: %d", link.GetHighScore(link.playername, link.levelpool[lvlnum]))); 
 			//console.printf("%s", lvlclass);
 			if (currentlvl == lvlnum) {link.pagenum = 2;}
 			else {link.SetKeyPos(lvlnum);}

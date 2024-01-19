@@ -96,8 +96,37 @@ extend class DINewGameMenu
 				aBoxImage.Pack (mainFrame);
 				lvlboximages.Push(aBoxImage);
 			}
+			
+			//Get the level's high score for the current player.
+			int currentscore = GetHighScore(playername, levelpool[i]);
+			if (currentscore >= 10000)
+			{
+				int heartamount = 1;
+				if (currentscore >= 150000) {heartamount = 5;}
+				else if (currentscore >= 100000) {heartamount = 4;}
+				else if (currentscore >= 60000) {heartamount = 3;}
+				else if (currentscore >= 30000) {heartamount = 2;}
+				vector2 heartsize = (10, 10);
+				vector2 heartsize2 = (10 * heartamount, 10);
+				
+				// Create the box image's textures.
+				let boxTexture_String = string.format("%s", "graphics/level/HEART_ICON.png");
+				let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(boxTexture_String, (0, 0), heartsize, false, false);
+				// Add a box image.
+				let aBoxImage = boxparty_ZF_BoxImage.Create
+				(
+					currentpos + (8, 8),
+					// Size
+					heartsize2,
+					// Texture
+					boxTexture
+				);
+				// Add the box image element into the main frame.
+				aBoxImage.Pack (mainFrame);
+				heartboximages.Push(aBoxImage);
+			}
 
-            // Get the player's name.
+            // Get the level's name.
             string currentlevel = Stringtable.Localize(String.Format("$dimenu_select_%s", levelpool[i]));
 			
             // Add a label.
@@ -190,5 +219,13 @@ extend class DINewGameMenu
             boximage.Unpack();
             boximage.Destroy();
         }
+		while (heartboximages.Size() > 0)
+		{
+			let heartbox = heartboximages[0];
+			heartboximages.Delete(0, 1);
+			
+			heartbox.Unpack();
+			heartbox.Destroy();
+		}
 	}
 }

@@ -16,13 +16,15 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	int pagenum, pagenum_tick, keypos, curkey;
 	
 	string playername, levelname; //for finding high scores with.
+	double heartalpha;
+	int hearttimer;
 	
 	Font bigFont, smallFont;
 	boxparty_ZF_Image background, plrinfo;
 	string TopLabel_text, TopLabel2_text;
 	boxparty_ZF_Label TopLabel, TopLabel2;
 	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
-	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, sklboximages;
+	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, heartboximages, sklboximages;
 	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels, skllabels;
     Array<boxparty_ZF_Button> tutbuttons, plrbuttons, lvlbuttons, sklbuttons;
 	
@@ -82,6 +84,22 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		else {UpdateKeySelect();}
 		if ((justkeyed == false) && (curkey != -1)) {curkey = -1;}
 		justkeyed = false;
+		
+		if (heartboximages.Size() > 0)
+		{
+			++hearttimer;
+			if ((hearttimer / 50) % 2 == 0) 
+			{
+				heartalpha += 0.02;
+			}
+			else {heartalpha -= 0.02;}
+			
+			for (int i = 0; i < heartboximages.Size(); ++i)
+			{
+				heartboximages[i].SetAlpha(heartalpha);
+			}
+		}
+		
 		Super.Ticker();
 	}
 	
