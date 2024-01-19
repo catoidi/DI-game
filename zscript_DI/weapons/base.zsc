@@ -116,8 +116,8 @@ Class DI_Weapon : Weapon abstract
 			plr = DI_PlayerBase(owner);
 			if (GetClassName() == plr.player.readyweapon.GetClassName()) //only run this code if this weapon is selected.
 			{
-				GetWeaponValues();
-				GetWeaponSpeed();
+				UpdateWeaponValues();
+				UpdateWeaponSpeed();
 				
 				RecoilTick();
 				//AutoOffset(); //handled through the player actor now, since it doesn't appear to work when called from the gun itself ???????????????????????????????????????
@@ -147,7 +147,7 @@ Class DI_Weapon : Weapon abstract
 			//the ammo will only be reset if the value is below the starting amount or above the maximum amount.
 			let ammo1name = ammo1.GetClassName();
 			let startammo1 = wpn_ammo1restore;
-			let maxammo1 = ammo1.maxamount;
+			let maxammo1 = GetMaxAmmo();
 			bool restore1 = false;
 			if (plr.CountInv(ammo1name) < startammo1) {restore1 = true;}
 			else if (plr.CountInv(ammo1name) > maxammo1) {restore1 = true;}
@@ -158,7 +158,7 @@ Class DI_Weapon : Weapon abstract
 		{
 			let ammo2name = ammo2.GetClassName();
 			let startammo2 = wpn_ammo2restore;
-			let maxammo2 = ammo2.maxamount;
+			let maxammo2 = GetMaxAmmo(true);
 			bool restore2 = false;
 			if (plr.CountInv(ammo2name) < startammo2) {restore2 = true;}
 			else if (plr.CountInv(ammo2name) > maxammo2) {restore2 = true;}
@@ -167,9 +167,12 @@ Class DI_Weapon : Weapon abstract
 		
 	}
 	
-	virtual void GetWeaponValues()
+	virtual void UpdateWeaponValues()
 	{
 		//this handles getting stat changes from passive items.
+		//IMPORTANT NOTE: these values will only apply when the weapon is currently "ready".
+		//AKA, this only applies to the weapon you currently have selected.
+		//this is done on purpose for performance concerns.
 	
 		wpn_damage = Default.wpn_damage;
 		damagemult = Default.damagemult;
@@ -209,12 +212,32 @@ Class DI_Weapon : Weapon abstract
 		if (wpn_damage < 1) {wpn_damage = 1;}
 	}
 	
+	virtual int GetMaxAmmo(bool doammo2 = false)
+	{
+		//the updated stats for weapons only apply when the weapon is currently ready.
+		//this allows you to bypass that, but maybe we shouldn't call this function often so that we aren't adding even more inventory checks every frame.
+		int returnvalue = 0;
+		if (!doammo2) {returnvalue = Ammo1.Default.MaxAmount;}
+		else {returnvalue = Ammo2.Default.MaxAmount;}
+		for (int i = 0; i < plr.knownpassives.Size(); ++i)
+		{
+			DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+			if (curinv)
+			{
+				if (!doammo2) {returnvalue += curinv.GiveMaxAmmo1();}
+				else {returnvalue += curinv.GiveMaxAmmo2();}
+			}
+		}
+		console.printf("%d", returnvalue);
+		return returnvalue;
+	}
+	
 	action void WeaponMode(int mode)
 	{
 		invoker.wpn_speed_mode = mode;
 	}
 	
-	virtual void GetWeaponSpeed()
+	virtual void UpdateWeaponSpeed()
 	{	
 		wpn_speed_current = default.wpn_speed_current;
 	
