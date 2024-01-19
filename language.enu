@@ -18,8 +18,11 @@ DI_OPENCATALOGUE = "Open Catalogue";
 DIMENU_SELECT_DI00 = "Tutorial";
 DIMENU_SELECT_DI01 = "ur 1st death";
 DIMENU_SELECT_DI02 = "the party area";
-DIMENU_LOCKED_PLAYER_BOX_PARTYER = "\ccunlocked by owning 2 Box Party Weapons at once.";
-DIMENU_LOCKED_PLAYER_BURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
+DIMENU_SELECT_DI_PLAYERFREDRICK = "Fredrick";
+DIMENU_SELECT_DI_PLAYERBOX = "Box Partyer";
+DIMENU_SELECT_DI_PLAYERBURGER = "Burger";
+DIMENU_LOCKED_DI_PLAYERBOX = "\ccunlocked by owning 2 Box Party Weapons at once.";
+DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 
 //Unlocks

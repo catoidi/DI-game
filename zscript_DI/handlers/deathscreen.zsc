@@ -96,7 +96,6 @@ Class DeathscreenHandler : EventHandler
 				}
 			}
 		}
-		console.printf("%d", currentscore);
 		return currentscore;
 	}
 	

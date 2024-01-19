@@ -15,6 +15,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	int pagenum, pagenum_tick, keypos, curkey;
 	
+	string playername, levelname; //for finding high scores with.
+	
 	Font bigFont, smallFont;
 	boxparty_ZF_Image background, plrinfo;
 	string TopLabel_text, TopLabel2_text;
@@ -284,6 +286,53 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 			}
 			else {console.printf("failed: %s", currentline[0]);}
 		}
+	}
+	
+	virtual int GetHighScore(name findplayer = '*', name findlevel = '*')
+	{
+		cvar highscores = cvar.findcvar("di_highscore");
+		string fullscores = highscores.getstring();
+		array<string> scorelines;
+		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
+		if (scorelines.size() < 1) {return 0;}
+		int currentscore;
+		bool combinescore;
+		for (int i = 0; i < scorelines.size(); ++i)
+		{
+			array<string> currentline;
+			scorelines[i].split(currentline, " ", TOK_SKIPEMPTY);
+			if (currentline.size() != 3) 
+			{
+				//something has gone terribly wrong!
+				console.printf("%s", "\caWARNING: Junk data was detected in the highscore CVAR!");
+				continue;
+			}
+			else
+			{
+				let levelfinder = currentline[1].MakeLower();
+				let playerfinder = string.format("%s", currentline[0].MakeLower());
+				if ((findplayer != "*") && (currentline[0] != findplayer)) {continue;}
+				if ((findlevel != "*") && (levelfinder != findlevel)) {continue;}
+				if (levelpool.Find(levelfinder) == levelpool.Size()) {console.printf("invalid level %s found, skipping score.", levelfinder); continue;}
+				if (playerpool.Find(playerfinder) == playerpool.Size()) {console.printf("invalid player %s found, skipping score.", playerfinder); continue;}
+				
+				if (findlevel == "*") {combinescore = true;}
+				int lsize = currentline[2].Length();
+				if (currentline[2].Left(1) == "E")
+				{
+					string newcheck = currentline[2].Mid(1, lsize - 1);
+					if (combinescore) {currentscore += newcheck.ToInt(10);}
+					else if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+				else 
+				{
+					string newcheck = currentline[2];
+					if (combinescore) {currentscore += newcheck.ToInt(10);}
+					else if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+			}
+		}
+		return currentscore;
 	}
 	
 	virtual void UpdateKeySelect(bool newpage = false)

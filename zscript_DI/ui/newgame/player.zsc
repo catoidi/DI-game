@@ -52,7 +52,7 @@ extend class DINewGameMenu
 			plrboximages.Push(aBoxImage);
 
             // Get the player's name.
-            let currentplayer = playerpool[i];
+            let currentplayer = stringtable.localize(string.format("$dimenu_select_%s", playerpool[i]));
 			if (currentplayer.CodePointCount() > 16)
 			{
 				currentplayer = String.Format("%s...", currentplayer.Left(15));

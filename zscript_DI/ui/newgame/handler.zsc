@@ -53,9 +53,8 @@ Class DINewGameHandler : boxparty_ZF_Handler
 		{
 			let plrstr = cmd.Mid(12);
 			let plrnum = plrstr.ToInt(10);
-			string plrclass = link.plrlabels[plrnum].GetText();
-			plrclass.Replace(" ", "_");
-			string plrlocked = Stringtable.Localize(String.Format("$dimenu_locked_player_%s", plrclass));
+			string plrclass = link.playerpool[plrnum];
+			string plrlocked = Stringtable.Localize(String.Format("$dimenu_locked_%s", plrclass));
 			link.UpdateTopLabel(String.Format("%s", "\cgthis character is locked."), plrlocked);
 			currentclass = -1;
 			link.SetKeyPos(plrnum);
@@ -65,11 +64,14 @@ Class DINewGameHandler : boxparty_ZF_Handler
 		{
 			let plrstr = cmd.Mid(6);
 			let plrnum = plrstr.ToInt(10);
-			string plrclass = link.plrlabels[plrnum].GetText();
+			string plrclass = string.format("$dimenu_select_%s", link.playerpool[plrnum]);
+			plrclass = stringtable.localize(plrclass);
+			link.playername = link.playerpool[plrnum];
 			string infopic = String.Format("%s%s.png", "graphics/info_", plrclass);
 			//console.printf("%s", infopic);
+			string scoreline = string.format("\cbTotal Score: %d", link.GetHighScore(link.playerpool[plrnum]));
 			link.plrinfo.SetImage(infopic);
-			link.UpdateTopLabel(String.Format("\cnselected: %s", plrclass)); 
+			link.UpdateTopLabel(String.Format("\cnselected: %s", plrclass), scoreline); 
 			if (currentclass == plrnum) {link.pagenum = 1;}
 			currentclass = plrnum;
 			link.SetKeyPos(plrnum);
@@ -91,6 +93,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			let lvlstr = cmd.Mid(5);
 			let lvlnum = lvlstr.ToInt(10);
 			string lvlclass = link.lvllabels[lvlnum].GetText();
+			link.levelname = link.levelpool[lvlnum];
 			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass)); 
 			//console.printf("%s", lvlclass);
 			if (currentlvl == lvlnum) {link.pagenum = 2;}
