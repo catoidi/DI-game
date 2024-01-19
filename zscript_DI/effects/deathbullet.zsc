@@ -30,6 +30,16 @@ Class DI_BulletSpawner : DI_Actor
 		bulletspin = 8 - (16 * random(0, 1));		
 	}
 	
+	virtual void ShootBullet()
+	{
+		A_FaceTarget();
+		A_StartSound("bullet");
+		A_SpawnProjectile("Ron_Bullet", 0);
+		A_DIScale(0.85, 0.85);
+		A_FadeOut(0.5);
+		A_RemoveLight("fancylight");
+	}
+	
 	States
 	{
 		Spawn:
@@ -49,19 +59,23 @@ Class DI_BulletSpawner : DI_Actor
 			}
 			Loop;
 		Shoot:
-			#### # 1 BRIGHT 
-			{
-				A_FaceTarget();
-				A_StartSound("bullet");
-				A_SpawnProjectile("Ron_Bullet", 0);
-				A_DIScale(0.85, 0.85);
-				A_FadeOut(0.5);
-				A_RemoveLight("fancylight");
-			}
+			#### # 1 BRIGHT ShootBullet();
 			#### ############ 0 BRIGHT A_SpawnParticle("3f0000", SPF_FULLBRIGHT, 18, 5 * invoker.Scale.X, 0, 0, 0, 0, random(-8, 8), random(-8, 8), random(-4, 4));
 		Death:
 			#### # 0 A_DIScale(0.1, 0.1); 
 			#### # 1 A_FadeOut(0.05);
 			Loop;
+	}
+}
+
+Class DI_BulletSpawner_NoAim : DI_BulletSpawner
+{
+	override void ShootBullet()
+	{
+		A_StartSound("bullet");
+		A_SpawnProjectile("Ron_Bullet", 0, 0, angle, CMF_ABSOLUTEANGLE | CMF_ABSOLUTEPITCH, 0);
+		A_DIScale(0.85, 0.85);
+		A_FadeOut(0.5);
+		A_RemoveLight("fancylight");
 	}
 }

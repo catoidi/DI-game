@@ -1,0 +1,38 @@
+//zscript_DI/effects/walltrap.zsc
+
+class DI_WallTrap : Actor
+{
+	Default
+	{
+		Height 20;
+		Radius 10;
+		-SOLID;
+		+NOINTERACTION;
+		+NOLIFTDROP;
+		+NOGRAVITY;
+		+THRUACTORS;
+		+WALLSPRITE;
+		+SPRITEANGLE;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_Jump(128, "Failure"); //50% chance to fail spawning.
+			TRAP C 35 A_SpawnItemEX("ProjectileSmokeBig", 8, 0, 10, flags: SXF_NOCHECKPOSITION);
+			TRAP C 35
+			{
+				if (CheckRange(256) == false) {return ResolveState("Shoot");}
+				return ResolveState(null);
+			}
+			Wait;
+		Shoot:
+			TRAP B 35 BRIGHT A_SpawnItemEX("DI_BulletSpawner_NoAim", 16, 0, 10, flags: SXF_NOCHECKPOSITION);
+			TRAP A 35;
+			TRAP C 35;
+			Goto Spawn+2;
+		Failure:
+			TNT1 A 10;
+			Stop;
+	}
+}

@@ -25,4 +25,5 @@ DoomEdNums
 	20022 = TropicalBush
 	20023 = StaticPainting
 	20024 = DI_DI01Canvas
+	20025 = DI_WallTrap
 }

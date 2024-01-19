@@ -58,6 +58,7 @@ version "4.11"
 #include "zscript_DI/effects/canvas.zsc"
 #include "zscript_DI/effects/casings.zsc"
 #include "zscript_DI/effects/splashes.zsc"
+#include "zscript_DI/effects/walltrap.zsc"
 
 //player
 #include "zscript_DI/player/base.zsc"
