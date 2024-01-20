@@ -60,4 +60,11 @@ Class DI_AmmoSatchel : Inventory
 			else {return false;}
 		}
 	}
+	
+	States
+	{
+		Spawn:
+			SACK A -1;
+			Stop;
+	}
 }
