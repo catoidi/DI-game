@@ -73,7 +73,7 @@ Class DI_Toast_Powerup : DIPowerup
 	
 	Default
 	{
-		Tag "Toast (Powerup)";
+		Tag "\cvToast (Powerup)";
 		Inventory.Icon "POW1Q0";
 		Inventory.MaxAmount 160;
 	}
