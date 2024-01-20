@@ -10,6 +10,7 @@ CLASS PartyShotty : DI_Weapon //20009
 		DI_Weapon.BaseDamage 13;
 		DI_Weapon.Projectiles 6;
 		DI_Weapon.BaseAccuracy 6;
+		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 1;
 		DI_Weapon.RecoilRecover 2;
 		DI_Weapon.AutoOffset false;

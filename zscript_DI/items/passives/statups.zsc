@@ -31,8 +31,8 @@ Class DI_ComboDamageMult : DIPassiveInventory
 	Default
 	{
 		Tag "Combo DMG Mult";
-		Inventory.Icon "POWRS0";
-		Inventory.PickupMessage "Combo Damage Multiplier Acquired! (+10% DMG per Combo)";
+		Inventory.Icon "POWRT0";
+		Inventory.PickupMessage "Combo Damage Multiplier Acquired! (+10% DMG, -5 Speed per Combo)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -42,10 +42,16 @@ Class DI_ComboDamageMult : DIPassiveInventory
 		return (0.1 * (plr.combonum - 1)) * plr.countinv(GetClassName());
 	}
 	
+	override double GivePlayerSpeed()
+	{
+		if (!plr) {return 0.0;}
+		return (-0.05 * (plr.combonum - 1)) * plr.countinv(GetClassName());
+	}
+	
 	States
 	{
 		Spawn:
-			POWR S -1;
+			POWR T -1;
 			Stop;
 	}
 }
@@ -55,7 +61,7 @@ Class DI_PainRhombus : DIPassiveInventory
 	Default
 	{
 		Tag "Pain Rhombus";
-		Inventory.Icon "POWRT0";
+		Inventory.Icon "POWRS0";
 		Inventory.PickupMessage "Pain Rhombus Acquired! (+50% DMG, -10% per combo.)";
 		Inventory.MaxAmount 3;
 	}
@@ -72,7 +78,7 @@ Class DI_PainRhombus : DIPassiveInventory
 	States
 	{
 		Spawn:
-			POWR T -1;
+			POWR S -1;
 			Stop;
 	}
 }

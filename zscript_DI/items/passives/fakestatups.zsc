@@ -33,7 +33,7 @@ Class DI_ComboDamage : DIPassiveInventory
 	{
 		Tag "Combo DMG +";
 		Inventory.Icon "POWRF0";
-		Inventory.PickupMessage "Combo Damage Acquired! (+1 DMG per Combo)";
+		Inventory.PickupMessage "Combo Damage Acquired! (+1 DMG to You/Enemies per Combo)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -41,6 +41,15 @@ Class DI_ComboDamage : DIPassiveInventory
 	{
 		if (!plr) {return 0;}
 		return (plr.countinv(GetClassName()) * (plr.combonum - 1));
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (passive == true)
+		{
+			newdamage = damage + plr.CountInv(GetClassName());
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
 	
 	States
@@ -130,7 +139,7 @@ Class DI_BulletSplitter : DIPassiveInventory
 	{
 		Tag "Bullet Splitter";
 		Inventory.Icon "POWRG0";
-		Inventory.PickupMessage "Bullet Splitter Acquired! (+1 Projectile, -3 Accuracy)";
+		Inventory.PickupMessage "Bullet Splitter Acquired! (+1 Projectile, -50% Firerate)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -140,10 +149,10 @@ Class DI_BulletSplitter : DIPassiveInventory
 		return plr.CountInv(GetClassName());
 	}
 	
-	override double GiveAccuracy()
+	override double GiveFirerate()
 	{
 		if (!plr) {return 0.0;}
-		return (plr.CountInv(GetClassName()) * 3.0);
+		return (plr.CountInv(GetClassName()) * 0.5);
 	}
 	
 	States
@@ -160,7 +169,7 @@ Class DI_TooManyBullets : DIPassiveInventory
 	{
 		Tag "TooManyBullets";
 		Inventory.Icon "POWRH0";
-		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -5 DMG)";
+		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -100% Reload Speed)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -170,10 +179,10 @@ Class DI_TooManyBullets : DIPassiveInventory
 		return (plr.CountInv(GetClassName()) * wpn.default.wpn_projectiles);
 	}
 	
-	override int GiveBaseDamage()
+	override double GiveReloadSpeed()
 	{
 		if (!plr) {return 0;}
-		return plr.CountInv(GetClassName()) * -5;
+		return plr.CountInv(GetClassName()) * 1.0;
 	}
 	
 	States

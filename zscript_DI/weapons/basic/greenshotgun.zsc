@@ -8,6 +8,7 @@ CLASS GreenShotgun : DI_Weapon
 		DI_Weapon.BaseDamage 8;
 		DI_Weapon.BaseAccuracy 5;
 		DI_Weapon.Projectiles 8;
+		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 4.0;
 		DI_Weapon.RecoilOffset 4.0;
 		DI_Weapon.RecoilRecover 2.0;

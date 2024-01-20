@@ -71,4 +71,5 @@ class DIPassiveInventory : Inventory
 	virtual double GiveReloadSpeed() {return 0.0;}
 	virtual int GiveMaxAmmo1() {return 0;}
 	virtual int GiveMaxAmmo2() {return 0;}
+	virtual double GivePlayerSpeed() {return 0.0;}
 }

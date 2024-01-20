@@ -87,7 +87,7 @@ extend class DIHandler
 	{
 		int armorchance = plr.CountInv("DI_BonusArmor");
 		
-		for (int i = 0; i < armorchance; ++i)
+		if (random(1, 3) <= armorchance)
 		{
 			e.Thing.A_SpawnItemEx("DI_BonusArmorPickup", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION, 128);
 		}

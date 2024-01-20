@@ -17,6 +17,8 @@ Class DI_Weapon : Weapon abstract
 	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
 	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
 	
+	double plr_speed;
+	
 	private int wpn_speed_mode; //determines which "mode" the weapon is in. 0 is neutral. 1 is firing. 2 is reloading.
 	double wpn_speed_current; //weapon speed for this specific tic.
 	double wpn_speed; //speed multiplier for the entire weapon.
@@ -45,6 +47,7 @@ Class DI_Weapon : Weapon abstract
 	property RecoilOffset_Y: wpn_recoil_offset_y;
 	property AutoOffset: wpn_autooffset;
 	property Projectiles: wpn_projectiles;
+	property PlayerSpeed: plr_speed;
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
@@ -118,6 +121,7 @@ Class DI_Weapon : Weapon abstract
 			{
 				UpdateWeaponValues();
 				UpdateWeaponSpeed();
+				UpdatePlayerSpeed();
 				
 				RecoilTick();
 				//AutoOffset(); //handled through the player actor now, since it doesn't appear to work when called from the gun itself ???????????????????????????????????????
@@ -187,6 +191,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_speed = Default.wpn_speed;
 		wpn_speed_fire = Default.wpn_speed_fire;
 		wpn_speed_reload = Default.wpn_speed_reload;
+		plr_speed = Default.plr_speed;
 		
 		for (int i = 0; i < plr.knownpassives.Size(); ++i)
 		{
@@ -206,6 +211,7 @@ Class DI_Weapon : Weapon abstract
 				wpn_speed += curinv.GiveWeaponSpeed();
 				wpn_speed_fire += curinv.GiveFirerate();
 				wpn_speed_reload += curinv.GiveReloadSpeed();
+				plr_speed += curinv.GivePlayerSpeed();
 			}
 		}
 		
@@ -244,6 +250,13 @@ Class DI_Weapon : Weapon abstract
 		if (wpn_speed_mode == 0) {wpn_speed_current = wpn_speed;}
 		else if (wpn_speed_mode == 1) {wpn_speed_current = wpn_speed + wpn_speed_fire;}
 		else if (wpn_speed_mode == 2) {wpn_speed_current = wpn_speed + wpn_speed_reload;}
+	}
+	
+	virtual void UpdatePlayerSpeed()
+	{
+		plr.Speed = plr.default.Speed + plr_speed;
+		if (plr.Speed < 0.1) {plr.Speed = 0.1;}
+		//console.printf("%d", plr.Vel.X + plr.Vel.Y);
 	}
 	
 	virtual void RecoilTick()

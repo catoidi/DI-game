@@ -8,6 +8,7 @@ CLASS BlueSMG : DI_Weapon
 	{
 		DI_Weapon.FreshBonus 3;
 		DI_Weapon.BaseDamage 11;
+		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 2.0;
 		DI_Weapon.RecoilRecover 1.0;
 		DI_Weapon.BaseAccuracy 3;

@@ -36,6 +36,7 @@ CLASS PopcornGun : DI_Weapon //200
 		DI_Weapon.Ammo1HUD 4;
 		DI_Weapon.Ammo2HUD 1;
 		DI_Weapon.BaseAccuracy 3;
+		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 1;
 		DI_Weapon.RecoilRecover 2;
 		DI_Weapon.AutoOffset false;

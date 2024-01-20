@@ -6,6 +6,7 @@ CLASS PinkRifle : DI_Weapon
 	{
 		DI_Weapon.FreshBonus 3;
 		DI_Weapon.BaseDamage 20;
+		DI_Weapon.PlayerSpeed -0.1;
 		DI_Weapon.Recoil 5.0;
 		DI_Weapon.RecoilRecover 1.25;
 		DI_Weapon.RecoilOffset 2.5;
