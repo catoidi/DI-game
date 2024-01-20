@@ -240,7 +240,10 @@ Level DI01;
 		MultSpawn 1;
 		MultHealth 1;
 		MultDamage 1;
+		MultSpeed 0.2;
+		MultPrice 1;
 		Spawn Fred3, 1, DISpawnerSpot_Big;
+		EndScript endless_dejavu, 0, 0, 0, 0;
 	}
 }
 
@@ -266,5 +269,6 @@ Level DI02;
 		Spawn Fred, 1;
 		MultSpeed 0.1;
 		SetSpeed 1.5;
+		MultPrice 1;
 	}
 }

@@ -200,6 +200,37 @@ extend class DIHandler
 					if (endless_speedmult < speed_num) {endless_speedmult = speed_num;}
 					continue;
 				}
+				else if (endlessdata[i].Left(9) == "MultPrice")
+				{
+					string price_string = endlessdata[i].Mid(9);
+					int price_int = price_string.ToInt(10);
+					foreach(mo : shoparray)
+					{
+						if (mo) 
+						{
+							mo.AddPriceMult(price_int);
+						}
+					}
+				}
+				else if (endlessdata[i].Left(9) == "EndScript")
+				{
+					//"EndScript" allows you to run a script specifically when endless mode loops back to the beginning wave.
+					//Use "Script" instead if you wish the script to run on every wave during endless mode.
+					string spawn_string = wavedata[i].Mid(9);
+					array<string> spawn_array;
+					spawn_string.Split(spawn_array, ",");
+					if (spawn_array.Size() != 5) {ThrowAbortException("\crDIWAVE ERROR: \clInvalid Script Command '\ck%s\cl' at Line %d.", spawn_string, i);}
+					int spawn_array_arg1 = spawn_array[1].ToInt(10);
+					int spawn_array_arg2 = spawn_array[2].ToInt(10);
+					int spawn_array_arg3 = spawn_array[3].ToInt(10);
+					int spawn_array_arg4 = spawn_array[4].ToInt(10);
+					
+					e.Thing.ACS_ScriptCall(spawn_array[0], spawn_array_arg1, spawn_array_arg2, spawn_array_arg3, spawn_array_arg4);
+				}
+				else if (endlessdata[i].Left(4) == "Wait") {ThrowAbortException("\crDIWAVE ERROR: \clEndless Mode attempted to run an illegal command at Line %d.", i);}
+				else if (endlessdata[i].Left(3) == "Cap") {ThrowAbortException("\crDIWAVE ERROR: \clEndless Mode attempted to run an illegal command at Line %d.", i);}
+				else if (endlessdata[i].Left(4) == "Rate") {ThrowAbortException("\crDIWAVE ERROR: \clEndless Mode attempted to run an illegal command at Line %d.", i);}
+				else if (endlessdata[i].Left(4) == "Time") {ThrowAbortException("\crDIWAVE ERROR: \clEndless Mode attempted to run an illegal command at Line %d.", i);}
 				else
 				{
 					addwavedata.Push(endlessdata[i]);

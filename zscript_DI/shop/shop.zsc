@@ -13,7 +13,7 @@ Class DIShop : DIShop_Base
 	string user_currentitem, shop_currentitem; //what item is currently available at this shop.
 	int user_baseprice, shop_baseprice; //the base price of the user_currentitem.
 	string user_shoptype; //for use with random shops, this tells the shop which item pool to look through.
-	int user_pricemult; //multiplier for the base price.
+	int user_pricemult, extra_pricemult, default_pricemult; //multiplier for the base price.
 	bool user_alwaysreroll; //forces the shop to always reroll their item upon every restock.
 	string user_blacklist; //map editor defined item blacklist. can be used to fine-tune your item shops. uses same format as regular blacklist.
 	
@@ -49,6 +49,7 @@ Class DIShop : DIShop_Base
 		ParseDISHOP();
 		
 		if (user_pricemult < 1) {user_pricemult = 1;}
+		default_pricemult = user_pricemult;
 		if (user_itemstock == 0) {user_itemstock = 1;}
 		
 		ChooseNewShopItem();
@@ -465,6 +466,14 @@ Class DIShop : DIShop_Base
 	virtual void PurchaseMessage(int price)
 	{
 		console.printf("\cfPurchased an item for %d coins.", price);
+	}
+	
+	virtual void AddPriceMult(int addmult)
+	{
+		if (extra_pricemult < 1) {extra_pricemult = 1;}
+		extra_pricemult += addmult;
+		user_pricemult = default_pricemult * extra_pricemult;
+		console.printf("%d", user_pricemult);
 	}
 }
 
