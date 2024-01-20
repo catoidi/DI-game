@@ -18,7 +18,7 @@ Class DI_LeadSwitch : DIPassiveInventory
 		if (owner is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(owner);
-			if (plr.player.ReadyWeapon.GetClassName() != oldwpn)
+			if ((plr.player.ReadyWeapon.GetClassName() != oldwpn) && (plr.FreshKillCount() > 0))
 			{
 				DIGiveAmmo(plr);
 				oldwpn = plr.player.ReadyWeapon.GetClassName();

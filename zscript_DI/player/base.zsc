@@ -193,6 +193,11 @@ Class DI_PlayerBase : PlayerPawn abstract
 		console.printf("\cnfresh weapon bonus! (+%d)", diwep_fresh);
 	}
 	
+	virtual int FreshKillCount()
+	{
+		return freshlist.Size();
+	}
+	
 	virtual void DIMonsterKilled(bool notweapon = false)
 	{
 		++killcounter;
