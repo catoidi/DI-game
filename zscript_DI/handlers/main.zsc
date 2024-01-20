@@ -9,6 +9,7 @@ class DIHandler : EventHandler
 	Array<String> leveldata; //all text for the current level.
 	Array<String> wavedata; //all data for current wave.
 	Array<String> endlessdata; //all data for endless stuff.
+	Array<String> addwavedata; //stuff from endless mode that needs to be added to every wave.
 	int wavemax; //how many waves there are total for this level.
 	int wavenum; //the current wave.
 	int batchnum; //the current batch.
@@ -33,6 +34,7 @@ class DIHandler : EventHandler
 	int endless_spawnmult; //multiply the enemies by this number.
 	int endless_healthmult; //multiply the enemy's health by this number.
 	int endless_damagemult; //multiply the enemy's damage by this number.
+	double endless_speedmult; //multiply the enemy's speed by this number.
 	bool doendless; //do the endless stuff this wave.
 	
 	int currentspawners; //amount of spawners currently spawning enemies.

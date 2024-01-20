@@ -48,17 +48,23 @@ extend class DIHandler
 	
 	virtual void DIMonsterHandler(WorldEvent e)
 	{	
+		DI_Monster mon = DI_Monster(e.Thing);
+		
 		if (endless_healthmult != 1)
 		{
-			int starthp = e.Thing.Health * endless_healthmult;
+			int starthp = mon.Health * endless_healthmult;
 			if (starthp < 1) {starthp = 1;}
-			e.Thing.Health = starthp;
-			e.Thing.StartHealth = starthp  / G_SkillPropertyFloat(SKILLP_MonsterHealth);
+			mon.Health = starthp;
+			mon.StartHealth = starthp  / G_SkillPropertyFloat(SKILLP_MonsterHealth);
 		}
 		if (endless_damagemult != 1)
 		{
-			double startdmg = e.Thing.DamageMultiply * endless_damagemult;
-			e.Thing.DamageMultiply = startdmg;
+			double startdmg = mon.DamageMultiply * endless_damagemult;
+			mon.DamageMultiply = startdmg;
+		}
+		if (endless_speedmult != 1.0)
+		{
+			mon.speedmult *= endless_speedmult;
 		}
 		
 		//code for DI_Firestarter Passive Item.
@@ -74,8 +80,8 @@ extend class DIHandler
 			if (random(1, 20) <= firechance)
 			{
 				let firedmg = 4 + (firenum * 4);
-				if (firedmg >= e.Thing.Health) {firedmg = e.Thing.Health - 1;}
-				e.Thing.A_DamageSelf(firedmg, "Fire");
+				if (firedmg >= mon.Health) {firedmg = mon.Health - 1;}
+				mon.A_DamageSelf(firedmg, "Fire");
 			}
 		}
 		
@@ -91,7 +97,7 @@ extend class DIHandler
 			if (random(1, 20) <= (markednum * 3))
 			{
 				//multiple death marks dont make the marks stronger, just more likely to appear.
-				e.Thing.A_GiveInventory("DI_DeathMark_Enemy", 1);
+				mon.A_GiveInventory("DI_DeathMark_Enemy", 1);
 			}
 		}
 		
@@ -102,6 +108,6 @@ extend class DIHandler
 			if (farnum >= 5) {farnum = 5; continue;}
 			if (playeringame[i]) {farnum += players[i].mo.CountInv("DI_Farsight");}
 		}
-		if (farnum > 0) {e.Thing.A_GiveInventory("DI_Farsight_Enemy", farnum);}
+		if (farnum > 0) {mon.A_GiveInventory("DI_Farsight_Enemy", farnum);}
 	}
 }

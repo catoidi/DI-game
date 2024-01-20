@@ -83,7 +83,7 @@ extend class DIHandler
 			{
 				//console.printf("%d", finalwave);
 				++endlessnum;
-				getendless = true; //for getting endless data.
+				if (endlessnum == 1) {getendless = true;} //for getting endless data.
 				doendless = true; //for sending endless data to the game.
 				if (leveldata[i].Mid(7) == "Restart")
 				{
@@ -185,28 +185,35 @@ extend class DIHandler
 					endless_damagemult += damage_int;
 					continue;
 				}
+				else if (endlessdata[i].Left(9) == "MultSpeed")
+				{
+					string speed_string = endlessdata[i].Mid(9);
+					double speed_num = speed_string.ToDouble();
+					endless_speedmult += speed_num;
+					continue;
+				}
+				else if (endlessdata[i].Left(8) == "SetSpeed")
+				{
+					//only applies the speed buff if it's below the specified value.
+					string speed_string = endlessdata[i].Mid(8);
+					double speed_num = speed_string.ToDouble();
+					if (endless_speedmult < speed_num) {endless_speedmult = speed_num;}
+					continue;
+				}
+				else
+				{
+					addwavedata.Push(endlessdata[i]);
+				}
 			}
 			doendless = false;
 		}
 		
+		wavedata.Append(addwavedata);
+		
 		//calculate the number of enemies before doing anything else.
 		if (enemycounted == false)
 		{
-			for (int i = 0; i < wavedata.Size(); i++)
-			{
-				if (wavedata[i].Left(5) == "Spawn") 
-				{
-					string spawn_string = wavedata[i].Mid(5);
-					array<string> spawn_array;
-					spawn_string.Split(spawn_array, ",");
-				
-					int spawn_array_int = spawn_array[1].ToInt(10);
-					spawn_array_int *= endless_spawnmult;
-				
-					for (int j = 0; j < spawn_array_int; j++) {++enemycount;}
-					continue;
-				}
-			}
+			enemycount = GetEnemyCount();
 			enemycounted = true;
 		}
 	
@@ -289,6 +296,27 @@ extend class DIHandler
 		EventHandler.SendInterfaceEvent(consoleplayer, "newwave_ui", wavenum);
 		
 		currentspawners = e.Thing.ACS_ScriptCall("CheckSpawner", spawnamount, spawntime);
+	}
+	
+	virtual int GetEnemyCount()
+	{
+		int returnvalue;
+		for (int i = 0; i < wavedata.Size(); i++)
+		{
+			if (wavedata[i].Left(5) == "Spawn") 
+			{
+				string spawn_string = wavedata[i].Mid(5);
+				array<string> spawn_array;
+				spawn_string.Split(spawn_array, ",");
+			
+				int spawn_array_int = spawn_array[1].ToInt(10);
+				spawn_array_int *= endless_spawnmult;
+			
+				for (int j = 0; j < spawn_array_int; j++) {++returnvalue;}
+				continue;
+			}
+		}
+		return returnvalue;
 	}
 	
 	virtual void DoWaveEvent(WorldEvent e)

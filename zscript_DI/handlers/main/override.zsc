@@ -10,6 +10,7 @@ extend class DIHandler
 		++endless_spawnmult;
 		++endless_healthmult;
 		++endless_damagemult;
+		++endless_speedmult;
 		
 		ParseDIWAVE(e);
 		//GetWaveData(e);

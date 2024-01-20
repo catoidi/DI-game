@@ -240,7 +240,7 @@ Level DI01;
 		MultSpawn 1;
 		MultHealth 1;
 		MultDamage 1;
-		Add Fred3, 1, DISpawnerSpot_Big;
+		Spawn Fred3, 1, DISpawnerSpot_Big;
 	}
 }
 
@@ -252,15 +252,19 @@ Level DI02;
 		Rate 1;
 		Time 1;
 		Spawn FruitPuncher, 1;
-		Wait 1;
-		Time 35;
-		Spawn FruitPuncher, 7;
+	}
+	Wave 2:
+	{
+		Cap 3;
+		Rate 1;
+		Time 1;
+		Spawn Ron, 1;
 	}
 	
 	Endless Restart;
 	{
-		MultCap 1;
-		MultRate 1;
-		MultSpawn 1;
+		Spawn Fred, 1;
+		MultSpeed 0.1;
+		SetSpeed 1.5;
 	}
 }
