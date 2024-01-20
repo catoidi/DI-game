@@ -114,6 +114,7 @@ ComboPassive DI_FreshBullets POW1E 14;
 ComboPassive DI_LeadRecycling POW1B 21 128;
 ComboPassive DI_LeadSwitch POW1I 14 128;
 ComboPassive DI_CoinMagnet POW1L 21;
+ComboPassive DI_Toaster POW1P 14;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 7 128 di_unlock_item_icebullet;
 StatusPassive DI_StatusGiver_Fire POWRO 7 128 di_unlock_item_firebullet;
@@ -130,3 +131,5 @@ OnlyPermaPassive DI_CreditFraud POW1H 14 256 di_unlock_item_creditfraud;
 >>FAKE SHOP ITEMS. These are only here to allow them to appear in the item hud.
 FakeShopItem DI_FastForward_Powerup POW1O 1;
 FakeShopItem DI_AmmoSatchel_Powerup SACKA 1;
+FakeShopItem DI_Toast POW1Q 1;
+FakeShopItem DI_Toast_Powerup POW1Q 1;

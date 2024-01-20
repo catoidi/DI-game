@@ -52,3 +52,4 @@ DI_Farsight;
 StarPistol;
 Glowstick;
 CheeseGun;
+DI_Toaster;

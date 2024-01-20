@@ -112,4 +112,16 @@ extend class DIHandler
 			ammogivetick = true; //only give 1 ammo per tick.
 		}
 	}
+	
+	virtual void ToastDrop(WorldEvent e, DI_PlayerBase plr)
+	{
+		int toastnum = plr.CountInv("DI_Toaster");
+		if (toastnum > 0)
+		{
+			if (random(1, 4) <= toastnum)
+			{
+				e.Thing.A_SpawnItemEX("DI_Toast", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
+		}
+	}
 }

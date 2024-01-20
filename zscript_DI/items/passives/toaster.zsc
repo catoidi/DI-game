@@ -1,0 +1,87 @@
+//zscript_DI/items/passives/toaster.zsc
+
+//there are multiple parts to this.
+//1. the toaster passive itself that you buy from the shop.
+//2. the script that makes enemies drop toast upon death.
+//3. the toast pickup itself.
+//4. the toast powerup that gives you the buff.
+
+Class DI_Toaster : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Toaster";
+		Inventory.Icon "POW1P0";
+		Inventory.PickupMessage "Toaster Acquired! (Enemies have a chance to drop toast consumables, which give a temporary buff upon use.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 P -1;
+			Stop;
+	}
+}
+
+Class DI_Toast : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else
+		{
+			if (owner is "DI_PlayerBase")
+			{
+				let plr = DI_PlayerBase(owner);
+				plr.ACS_NamedExecuteAlways("DoLeafFlash");
+				plr.GiveInventory("DI_Toast_Powerup", plr.CountInv(GetClassName()) * 5);
+				DIUsed();
+				plr.TakeInventory("DI_Toast", 10000);
+				return true;
+			}
+			else {return false;}
+		}
+	}
+	
+	Default
+	{
+		Tag "Toast";
+		Inventory.Icon "POW1Q0";
+		Inventory.PickupMessage "Toast Acquired!";
+		Inventory.MaxAmount 32;
+		+INVENTORY.INVBAR;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 Q -1;
+			Stop;
+	}
+}
+
+Class DI_Toast_Powerup : DIPowerup
+{
+	override double GiveWeaponSpeed() {return -0.25;}
+	
+	Default
+	{
+		Tag "Toast (Powerup)";
+		Inventory.Icon "POW1Q0";
+		Inventory.MaxAmount 160;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 Q -1;
+			Stop;
+	}
+}

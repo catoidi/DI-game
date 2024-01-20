@@ -300,6 +300,10 @@ SHOPDESC_DI_FARSIGHT = "Enemies take more damage from\nfarther distances.";
 SHOPDESC2_DI_FARSIGHT = "\cbOne itemstack can do a maximum of +100% DMG. Doesn't have to be weapon damage to work.";
 SHOPTYPE_DI_FARSIGHT = "\cd[Passive] \cl[Max: 5]";
 SHOPLOCK_DI_FARSIGHT = "\cbMurder 1,000 Fred's to unlock this item.";
+SHOPITEM_DI_TOASTER = "Toaster";
+SHOPDESC_DI_TOASTER = "Enemies have a chance to drop\ntoast consumables on death.\nIncrease weapon speed on use.";
+SHOPDESC2_DI_TOASTER = "\cbChance for toast drop is 25% per toaster stack. Toast provides a 25% weapon speed buff on use. All currently held toasts are consumed upon use.";
+SHOPTYPE_DI_TOASTER = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
@@ -310,3 +314,11 @@ SHOPITEM_DI_AMMOSATCHEL_POWERUP = "\cvAmmo Satchel (Active)";
 SHOPDESC_DI_AMMOSATCHEL_POWERUP = "Increases reload speed by 100% for a limited time.";
 SHOPDESC2_DI_AMMOSATCHEL_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_AMMOSATCHEL_POWERUP = "\cv[Powerup] \cl[Max Timer: 60]";
+SHOPITEM_DI_TOAST = "Toast";
+SHOPDESC_DI_TOAST = "Grants a temporary weapon\nweapon buff upon use. Consumes all\ntoast items upon use.";
+SHOPDESC2_DI_TOAST = "Each toast item is worth 5 seconds of weapon speed buff.";
+SHOPTYPE_DI_TOAST = "\ct[Consumable] \cl[Max: 32]";
+SHOPITEM_DI_TOAST_POWERUP = "\cvToast (Active)";
+SHOPDESC_DI_TOAST_POWERUP = "Increases weapon speed for a limited time.";
+SHOPDESC2_DI_TOAST_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_TOAST_POWERUP = "\cv[Powerup] \cl[Max Timer: 160]";

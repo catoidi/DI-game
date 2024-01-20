@@ -99,6 +99,8 @@ extend class DIHandler
 						BoxDrops(e, plr, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
 						BonusArmorDrop(e, plr);
 						BonusAmmoGiver(e, plr); //used for DI_LeadRecycling.
+						
+						ToastDrop(e, plr);
 					}
 				}
 			}
