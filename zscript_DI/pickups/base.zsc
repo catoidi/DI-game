@@ -18,6 +18,12 @@ Class DI_Pickup : ScoreItem abstract
 		+INVENTORY.NOSCREENFLASH;
 	}
 	
+	override void PostBeginPlay()
+	{
+		super.postbeginplay();
+		if (!(target is "DI_PlayerBase")) {A_LookEX(LOF_NOJUMP, 0, 512, 512, 360);}
+	}
+	
 	override void tick()
 	{
 		super.tick();
