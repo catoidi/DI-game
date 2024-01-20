@@ -482,7 +482,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         itemtitle = boxparty_ZF_Label.Create
         (
             (startx - 180, 180),
-            (240, 48),
+            (480, 48),
             text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 1.5, textColor: Font.CR_GOLD
         );
         itemtitle.Pack (mainFrame);
