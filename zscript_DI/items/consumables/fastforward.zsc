@@ -1,0 +1,63 @@
+//zscript_DI/items/consumables/fastforward.zsc
+
+Class DI_FastForward : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	Default
+	{
+		Tag "Fast Forward";
+		Inventory.MaxAmount 3;
+		Inventory.Icon "POW1O0";
+		Inventory.PickupMessage "Got a fast forward button. (Increases movement and weapon speed for 30 seconds.)";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else 
+		{
+			if (owner) 
+			{
+				owner.ACS_NamedExecuteAlways("DoLeafFlash");
+				owner.A_GiveInventory("DI_FastForward_Powerup", 30);
+			}
+			DIUsed(); 
+			Super.Use(pickup); 
+			return true;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 A -1;
+			Stop;
+	}
+}
+
+Class DI_FastForward_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvFast Forward";
+		Inventory.MaxAmount 90;
+		Inventory.Icon "POW1O0";
+		Inventory.PickupMessage "Got a fast forward button. (Increases movement and weapon speed for 30 seconds.)";
+	}
+	
+	override double GiveWeaponSpeed() {return -0.5;}
+	override double GivePlayerSpeed() {return 0.25;}
+
+	States
+	{
+		Spawn:
+			POW1 A -1;
+			Stop;
+	}
+}

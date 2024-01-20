@@ -139,6 +139,10 @@ SHOPDESC_DI_9LEAFCLOVER = "Maxxes out your combo meter.";
 SHOPDESC2_DI_9LEAFCLOVER = "\cbUse it wisely.";
 SHOPTYPE_DI_9LEAFCLOVER = "\ct[Consumable] \cl[Max: 1]";
 SHOPLOCK_DI_9LEAFCLOVER = "\cbReach a combo of 7 to unlock this item.";
+SHOPITEM_DI_FASTFORWARD = "Fast Forward";
+SHOPDESC_DI_FASTFORWARD = "Increases weapon/movement speed\nfor a limited time.";
+SHOPDESC2_DI_FASTFORWARD = "\cb+50% weapon speed, +25% movement speed for 30 seconds. Can be stacked.";
+SHOPTYPE_DI_FASTFORWARD = "\ct[Consumable] \cl[Max: 3]";
 
 //Passives
 SHOPITEM_DI_BASEDAMAGEGIVER = "Damage Up";
@@ -290,3 +294,9 @@ SHOPDESC_DI_FARSIGHT = "Enemies take more damage from\nfarther distances.";
 SHOPDESC2_DI_FARSIGHT = "\cbOne itemstack can do a maximum of +100% DMG. Doesn't have to be weapon damage to work.";
 SHOPTYPE_DI_FARSIGHT = "\cd[Passive] \cl[Max: 5]";
 SHOPLOCK_DI_FARSIGHT = "\cbMurder 1,000 Fred's to unlock this item.";
+
+//Fake Shop Items
+SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
+SHOPDESC_DI_FASTFORWARD_POWERUP = "Increases weapon/movement speed\nfor a limited time.";
+SHOPDESC2_DI_FASTFORWARD_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_FASTFORWARD_POWERUP = "\cv[Powerup] \cl[Max Timer: 90]";
