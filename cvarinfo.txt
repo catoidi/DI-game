@@ -42,8 +42,13 @@ server cheat bool di_unlock_item_icebullet = false; //get 10 ice kills to unlock
 server cheat bool di_unlock_item_shockbullet = false; //get 10 shock kills to unlock.
 server cheat bool di_unlock_item_firebullet = false; //get 10 fire kills to unlock.
 server cheat bool di_unlock_item_poisonbullet = false; //get 10 poison kills to unlock.
-server cheat bool di_unlock_item_rainbowbullet = false; //unlock all other status bullets to unlock.
-server cheat int di_wavesdone = 0; //how many waves you've completed so far.
+server cheat bool di_unlock_item_rainbowbullet = false; //get 100 fire/ice/shock/poison kills to unlock.
+server cheat int di_icekills = 0;
+server cheat int di_shockkills = 0;
+server cheat int di_firekills = 0;
+server cheat int di_poisonkills = 0;
+server cheat int di_statuskills = 0;
+server cheat int di_debtwaves = 0; //how many waves you've completed while in debt.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).

@@ -16,6 +16,7 @@ extend class DIHandler
 					++wavenum;
 					++fakewavenum;
 					e.Thing.ACS_NamedExecuteAlways("DIWaveFinished", 0, wavenum, 0, 0);
+					eventhandler.sendnetworkevent("DIWaveFinished", wavenum, 0, 0);
 					waveinprogress = false;
 					//GetWaveData(e);
 					//ParseWaveData(e);

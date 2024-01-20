@@ -6,7 +6,7 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 	{
 		Tag "Ice Bullets";
 		Inventory.Icon "POWRN0";
-		Inventory.PickupMessage "Acquired Bullet Freezer! (Small chance for all weapons to do Ice damage.)";
+		Inventory.PickupMessage "Acquired Bullet Freezer! (Chance for weapons to do Ice damage. Enemies take 20% more ice damage.)";
 		Inventory.MaxAmount 10;
 		DIPassiveInventory.DIHidden true;
 	}
@@ -24,6 +24,16 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 			if (plr.CountInv("DI_StatusGiver_Ice") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
 			else {dipassive_hidden = false;}
 		}
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == false) && (owner))
+		{
+			if ((damageType == 'Ice') || (damageType == 'FakeIce'))
+			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
 	
 	States
@@ -60,6 +70,16 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 		}
 	}
 	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == false) && (owner))
+		{
+			if ((damageType == 'Fire') || (damageType == 'FakeFire'))
+			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
 	States
 	{
 		Spawn:
@@ -94,6 +114,16 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 		}
 	}
 	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == false) && (owner))
+		{
+			if ((damageType == 'Lightning') || (damageType == 'FakeLightning'))
+			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
 	States
 	{
 		Spawn:
@@ -126,6 +156,16 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 			if (plr.CountInv("DI_StatusGiver_Poison") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
 			else {dipassive_hidden = false;}
 		}
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == false) && (owner))
+		{
+			if ((damageType == 'Poison') || (damageType == 'FakePoison'))
+			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
 	
 	States

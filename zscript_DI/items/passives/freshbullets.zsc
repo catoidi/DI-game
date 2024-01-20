@@ -6,7 +6,7 @@ Class DI_FreshBullets : DIPassiveInventory
 	{
 		Tag "Fresh Bullets";
 		Inventory.Icon "POW1E0";
-		Inventory.PickupMessage "Acquired Fresh Bullets! (Gain 33% Ammo upon getting a Fresh Weapon Bonus.)";
+		Inventory.PickupMessage "Acquired Fresh Bullets! (Gain 33% Ammo upon getting a Fresh Weapon Bonus. Reduce reload speed by 50%.)";
 		Inventory.MaxAmount 3;
 	}
 
@@ -39,6 +39,12 @@ Class DI_FreshBullets : DIPassiveInventory
 				}
 			}
 		}
+	}
+	
+	override double GiveReloadSpeed()
+	{
+		if (!plr) {return 0.0;}
+		return 0.5 * plr.CountInv(GetClassName());
 	}
 	
 	States

@@ -61,6 +61,24 @@ Class DIUnlockHandler : EventHandler
 		}
 	}
 	
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.newdamage >= e.Thing.health)
+		{
+			if (e.Thing is "DI_Monster")
+			{
+				let mon = DI_Monster(e.Thing);
+				bool multicheck = false;
+				if (mon.icenum > 0) {StatusKill(0, multicheck); multicheck = true;}
+				if (mon.firenum > 0) {StatusKill(1, multicheck); multicheck = true;}
+				if (mon.poisonnum > 0) {StatusKill(2, multicheck); multicheck = true;}
+				if (mon.isshocked == true) {StatusKill(3, multicheck); multicheck = true;}
+				if (mon.hearted == true) {StatusKill(4, multicheck); multicheck = true;}
+				if (mon.CountInv("DI_DeathMark_Enemy") > 0) {StatusKill(5, multicheck); multicheck = true;}
+			}
+		}
+	}
+	
 	override void WorldTick(void)
 	{
 		KillCounter(); //unlocks related to getting kills.
@@ -185,6 +203,7 @@ Class DIUnlockHandler : EventHandler
 			}
 		}
 		else if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
+		else if (e.Name == "DIWaveFinished") {WaveFinished();}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -314,5 +333,56 @@ Class DIUnlockHandler : EventHandler
 		}
 		
 		console.printf("%s", "every item you've unlocked just exploded into dust.\nbye bye :)");
+	}
+	
+	virtual void WaveFinished()
+	{
+		if (diplr.Score < 0)
+		{
+			cvar debtwaves = cvar.getcvar("di_debtwaves");
+			int newdebt = debtwaves.GetInt() + 1;
+			debtwaves.SetInt(newdebt);
+			if (newdebt >= 5) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_rewardsprogram");}
+			if (newdebt >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_creditfraud");}
+		}
+	}
+	
+	virtual void StatusKill(int whichstatus, bool multicheck)
+	{
+		//ice, fire, poison, shock, heart, marked
+		if (multicheck == false)
+		{
+			cvar statuskills = cvar.getcvar("di_statuskills");
+			int newstatus = statuskills.GetInt() + 1;
+			statuskills.SetInt(newstatus);
+			if (newstatus >= 100) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_rainbowbullet");}
+		}
+		switch(whichstatus)
+		{
+			case 0:
+				cvar icekills = cvar.getcvar("di_icekills");
+				int newice = icekills.GetInt() + 1;
+				icekills.SetInt(newice);
+				if (newice >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_icebullet");}
+				break;
+			case 1:
+				cvar firekills = cvar.getcvar("di_firekills");
+				int newfire = firekills.GetInt() + 1;
+				firekills.SetInt(newfire);
+				if (newfire >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_firebullet");}
+				break;
+			case 2:
+				cvar poisonkills = cvar.getcvar("di_poisonkills");
+				int newpoison = poisonkills.GetInt() + 1;
+				poisonkills.SetInt(newpoison);
+				if (newpoison >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_poisonbullet");}
+				break;
+			case 3:
+				cvar shockkills = cvar.getcvar("di_shockkills");
+				int newshock = shockkills.GetInt() + 1;
+				shockkills.SetInt(newshock);
+				if (newshock >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shockbullet");}
+				break;
+		}
 	}
 }

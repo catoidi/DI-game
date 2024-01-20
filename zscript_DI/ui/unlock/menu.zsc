@@ -89,7 +89,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				// Position
 				(40, 80),
 				// Size.
-				(smallfont.stringwidth(infotext), 40),
+				(500, 40),
 				// The label's text
 				text: infotext,
 				// The font to use

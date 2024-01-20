@@ -40,6 +40,13 @@ DIPOPUP_di_unlock_item_fred4 = "Farsight";
 DIPOPUP_di_unlock_item_starpistol = "Star Pistol";
 DIPOPUP_di_unlock_item_glowstick = "Glowstick";
 DIPOPUP_di_unlock_item_cheesegun = "Cheese Cannon";
+DIPOPUP_di_unlock_item_firebullet = "Fire Bullets";
+DIPOPUP_di_unlock_item_icebullet = "Ice Bullets";
+DIPOPUP_di_unlock_item_poisonbullet = "Poison Bullets";
+DIPOPUP_di_unlock_item_shockbullet = "Shock Bullets";
+DIPOPUP_di_unlock_item_rainbowbullet = "Rainbow Bullets";
+DIPOPUP_di_unlock_item_rewardsprogram = "Rewards Program";
+DIPOPUP_di_unlock_item_creditfraud = "Credit Fraud";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
