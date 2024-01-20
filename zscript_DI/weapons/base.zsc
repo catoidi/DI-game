@@ -234,7 +234,6 @@ Class DI_Weapon : Weapon abstract
 				else {returnvalue += curinv.GiveMaxAmmo2();}
 			}
 		}
-		console.printf("%d", returnvalue);
 		return returnvalue;
 	}
 	
