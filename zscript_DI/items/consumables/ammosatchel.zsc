@@ -9,7 +9,7 @@ Class DI_AmmoSatchel : Inventory
 		Tag "Ammo Satchel";
 		Inventory.MaxAmount 3;
 		Inventory.Icon "SACKA0";
-		Inventory.PickupMessage "Got an Ammo Satchel! Refills all ammo for your weapons upon use.";
+		Inventory.PickupMessage "Got an Ammo Satchel! Refills all ammo for your weapons, then increases reload speed by 100% for 20 seconds upon use.";
 		+INVENTORY.INVBAR;
 	}
 	
@@ -51,7 +51,8 @@ Class DI_AmmoSatchel : Inventory
 					}
 				}
 				
-				//TODO: make like a green flash and some particles appear upon using this item
+				plr.ACS_NamedExecuteAlways("DoLeafFlash");
+				plr.A_GiveInventory("DI_AmmoSatchel_Powerup", 20);
 			
 				DIUsed(); 
 				Super.Use(pickup); 
@@ -61,6 +62,25 @@ Class DI_AmmoSatchel : Inventory
 		}
 	}
 	
+	States
+	{
+		Spawn:
+			SACK A -1;
+			Stop;
+	}
+}
+
+Class DI_AmmoSatchel_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvAmmo Satchel";
+		Inventory.MaxAmount 60;
+		Inventory.Icon "SACKA0";
+	}
+	
+	override double GiveReloadSpeed() {return -1.0;}
+
 	States
 	{
 		Spawn:
