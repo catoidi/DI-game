@@ -133,3 +133,4 @@ FakeShopItem DI_FastForward_Powerup POW1O 1;
 FakeShopItem DI_AmmoSatchel_Powerup SACKA 1;
 FakeShopItem DI_Toast POW1Q 1;
 FakeShopItem DI_Toast_Powerup POW1Q 1;
+FakeShopItem DI_LeadSwitch_Powerup POW1R 1;

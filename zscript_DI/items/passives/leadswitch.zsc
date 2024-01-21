@@ -7,7 +7,7 @@ Class DI_LeadSwitch : DIPassiveInventory
 	{
 		Tag "Lead Switch";
 		Inventory.Icon "POW1I0";
-		Inventory.PickupMessage "Lead Switch acquired! (Switching to a fresh weapon will give you +1 ammo.)";
+		Inventory.PickupMessage "Lead Switch acquired! (Switching to a fresh weapon will give you +1 ammo and faster reloading.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -36,6 +36,7 @@ Class DI_LeadSwitch : DIPassiveInventory
 			let curammo2 = curwpn.AmmoType2;
 			if ((curwpn.GetClassName() != plr.LastWeaponKill) && (curwpn.GetClassName() != prevwpn))
 			{
+				plr.GiveInventory("DI_LeadSwitch_Powerup", ammogivenum * 5);
 				if (curammo1 && (curwpn.wpn_dontgiveammo1 == false))
 				{
 					plr.GiveInventory(curammo1, ammogivenum);
@@ -56,4 +57,16 @@ Class DI_LeadSwitch : DIPassiveInventory
 			POW1 I -1;
 			Stop;
 	}
+}
+
+Class DI_LeadSwitch_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvLead Switch (Powerup)";
+		Inventory.Icon "POW1R0";
+		Inventory.MaxAmount 30;
+	}
+	
+	override double GiveReloadSpeed() {return -0.5;}
 }
