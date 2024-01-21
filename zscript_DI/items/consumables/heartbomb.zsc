@@ -37,7 +37,7 @@ Class DI_HeartBomb_Projectile : DI_ThrowBomb_Projectile
 		Death:
 			TNT1 F 1 
 			{
-				A_Explode(1, 64, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 64, damagetype: "Heart");
+				A_Explode(1, 192, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 64, damagetype: "Heart");
 				A_SpawnItemEX("SafeBoom", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
 			}
 			Stop;
