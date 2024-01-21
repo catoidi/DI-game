@@ -8,7 +8,7 @@ Class DI_Consumer : DIPassiveInventory
 	{
 		Tag "Consumer";
 		Inventory.Icon "POW1A0";
-		Inventory.PickupMessage "Consumer acquired! (Using consumables gives +3 Regen.)";
+		Inventory.PickupMessage "Consumer acquired! (Using consumables gives +3 Regen and 3 seconds of +25% DMG.)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -16,6 +16,28 @@ Class DI_Consumer : DIPassiveInventory
 	{
 		Spawn:
 			POW1 A -1;
+			Stop;
+	}
+}
+
+Class DI_Consumer_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvConsumer (Active)";
+		Inventory.Icon "POW1S0";
+		Inventory.MaxAmount 45;
+	}
+	
+	override double GiveDamageMult()
+	{
+		return 0.25;
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 S -1;
 			Stop;
 	}
 }

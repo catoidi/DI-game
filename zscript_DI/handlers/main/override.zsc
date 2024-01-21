@@ -158,11 +158,16 @@ extend class DIHandler
 		}
 		else if (e.Name.Left(16) == "diplayeritemused")
 		{
+			//code for DI_Consumer.
 			let itemplr = players[e.Player].mo;
 			if (itemplr)
 			{
 				int consumer = itemplr.CountInv("DI_Consumer");
-				if (consumer > 0) {itemplr.GiveInventory("DI_Regen", 3 * consumer);}
+				if (consumer > 0) 
+				{
+					itemplr.GiveInventory("DI_Regen", 3 * consumer);
+					itemplr.GiveInventory("DI_Consumer_Powerup", 3 * consumer);
+				}
 			}
 		}
 		else if (e.Name == "wave_debug")
