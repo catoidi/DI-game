@@ -47,7 +47,7 @@ Class DI_FastForward_Powerup : DIPowerup
 	{
 		Tag "\cvFast Forward";
 		Inventory.MaxAmount 90;
-		Inventory.Icon "POW1O0";
+		Inventory.Icon "POW1T0";
 		Inventory.PickupMessage "Got a fast forward button. (Increases movement and weapon speed for 30 seconds.)";
 	}
 	
@@ -57,7 +57,7 @@ Class DI_FastForward_Powerup : DIPowerup
 	States
 	{
 		Spawn:
-			POW1 A -1;
+			POW1 T -1;
 			Stop;
 	}
 }

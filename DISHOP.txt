@@ -129,8 +129,8 @@ StatusPassive DI_PeerPressure POW1C 14;
 OnlyPermaPassive DI_RewardsProgram POWRW 21 256 di_unlock_item_rewardsprogram;
 OnlyPermaPassive DI_CreditFraud POW1H 14 256 di_unlock_item_creditfraud;
 >>FAKE SHOP ITEMS. These are only here to allow them to appear in the item hud.
-FakeShopItem DI_FastForward_Powerup POW1O 1;
-FakeShopItem DI_AmmoSatchel_Powerup SACKA 1;
+FakeShopItem DI_FastForward_Powerup POW1T 1;
+FakeShopItem DI_AmmoSatchel_Powerup SACKB 1;
 FakeShopItem DI_Toast POW1Q 1;
 FakeShopItem DI_Toast_Powerup POW1Q 1;
 FakeShopItem DI_LeadSwitch_Powerup POW1R 1;

@@ -74,9 +74,9 @@ Class DI_AmmoSatchel_Powerup : DIPowerup
 {
 	Default
 	{
-		Tag "\cvAmmo Satchel";
+		Tag "\cvAmmo Satchel (Active)";
 		Inventory.MaxAmount 60;
-		Inventory.Icon "SACKA0";
+		Inventory.Icon "SACKB0";
 	}
 	
 	override double GiveReloadSpeed() {return -1.0;}
@@ -84,7 +84,7 @@ Class DI_AmmoSatchel_Powerup : DIPowerup
 	States
 	{
 		Spawn:
-			SACK A -1;
+			SACK B -1;
 			Stop;
 	}
 }
