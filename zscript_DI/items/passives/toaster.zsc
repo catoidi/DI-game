@@ -74,14 +74,14 @@ Class DI_Toast_Powerup : DIPowerup
 	Default
 	{
 		Tag "\cvToast (Powerup)";
-		Inventory.Icon "POW1Q0";
+		Inventory.Icon "POW1U0";
 		Inventory.MaxAmount 160;
 	}
 	
 	States
 	{
 		Spawn:
-			POW1 Q -1;
+			POW1 U -1;
 			Stop;
 	}
 }

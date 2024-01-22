@@ -133,6 +133,6 @@ Unused DI_HeartBomb GRENF 2;
 FakeShopItem DI_FastForward_Powerup POW1T 1;
 FakeShopItem DI_AmmoSatchel_Powerup SACKB 1;
 FakeShopItem DI_Toast POW1Q 1;
-FakeShopItem DI_Toast_Powerup POW1Q 1;
+FakeShopItem DI_Toast_Powerup POW1U 1;
 FakeShopItem DI_LeadSwitch_Powerup POW1R 1;
 FakeShopItem DI_Consumer_Powerup POW1S 1;
