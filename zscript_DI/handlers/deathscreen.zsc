@@ -12,6 +12,7 @@ Class DeathscreenHandler : EventHandler
 	ui bool unlockedscore;
 	ui bool scoredone;
 	ui int prevscore;
+	ui int finalscore; //prevent extra score from being calculated after death.
 	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
@@ -156,6 +157,20 @@ Class DeathscreenHandler : EventHandler
 				DTA_DestHeight, Screen.GetHeight(),
 				DTA_Alpha, DeathFade
 			);
+			
+			if (!scoredone)
+			{
+				prevscore = GetHighScore();
+				finalscore = plr.GetScore();
+				if (finalscore > prevscore)
+				{
+					bool iseasy = false;
+					if (skill == 0) {iseasy = true;}
+					UpdateHighScore(finalscore, iseasy);
+				}
+				scoredone = true;
+			}
+			
 			if (DeathTimer > 35)
 			{
 				string died = "DEATH IS INEVITABLE";
@@ -244,10 +259,9 @@ Class DeathscreenHandler : EventHandler
 			}
 			if (DeathTimer > 230)
 			{
-				int totalscore = plr.GetScore();
 				string totalcolor = "\cf";
-				if (totalscore < 0) {totalcolor = "\ca";}
-				string died = string.format("\n\n\n\n\n\n\n\n\n\n%sFinal Rating: %d", totalcolor, totalscore);
+				if (finalscore < 0) {totalcolor = "\ca";}
+				string died = string.format("\n\n\n\n\n\n\n\n\n\n%sFinal Rating: %d", totalcolor, finalscore);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
 					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
@@ -258,22 +272,10 @@ Class DeathscreenHandler : EventHandler
 				);
 			}
 			if (DeathTimer > 245)
-			{
-				if (!scoredone)
-				{
-					prevscore = GetHighScore();
-					if (plr.GetScore() > prevscore)
-					{
-						bool iseasy = false;
-						if (skill == 0) {iseasy = true;}
-						UpdateHighScore(plr.GetScore(), iseasy);
-					}
-					scoredone = true;
-				}
-				
+			{	
 				string totalcolor = "\ci";
 				string newbest = "";
-				if (plr.GetScore() > prevscore) {newbest = "\n\cv(New Best!)";}
+				if (finalscore > prevscore) {newbest = "\n\cv(New Best!)";}
 				string died = string.format("\n\n\n\n\n\n\n\n\n\n\n\n%sPrevious Score: %d%s", totalcolor, prevscore, newbest);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
@@ -284,6 +286,10 @@ Class DeathscreenHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.3
 				);
 			}
+		}
+		else if (!IsDead)
+		{
+			scoredone = false;
 		}
 	}
 }
