@@ -47,6 +47,8 @@ DIPOPUP_di_unlock_item_shockbullet = "Shock Bullets";
 DIPOPUP_di_unlock_item_rainbowbullet = "Rainbow Bullets";
 DIPOPUP_di_unlock_item_rewardsprogram = "Rewards Program";
 DIPOPUP_di_unlock_item_creditfraud = "Credit Fraud";
+DIPOPUP_di_unlock_item_coinmagnet = "Coin Magnet";
+DIPOPUP_di_unlock_item_shoe = "Shoe";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

@@ -58,6 +58,7 @@ Class DIUnlockHandler : EventHandler
 		{
 			//kill tracker (applies to every player currently in game, regardless of how the monster died.)
 			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
+			else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
 		}
 	}
 	
@@ -252,6 +253,11 @@ Class DIUnlockHandler : EventHandler
 			else if ((killnum >= 600) && (fred3.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred3");}
 			else if ((killnum >= 300) && (fred2.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred2");}
 			else if ((killnum >= 100) && (fred1.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred1");}
+		}
+		else if (killtracker = cvar.getcvar("di_roncount"))
+		{
+			let shoe = cvar.getcvar("di_unlock_item_shoe");
+			if ((killnum >= 100) && (shoe.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shoe");}
 		}
 	}
 

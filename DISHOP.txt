@@ -112,7 +112,7 @@ ComboPassive DI_WealthJar POWRZ 14;
 ComboPassive DI_FreshBullets POW1E 14;
 ComboPassive DI_LeadRecycling POW1B 21 128;
 ComboPassive DI_LeadSwitch POW1I 14 128;
-ComboPassive DI_CoinMagnet POW1L 21;
+ComboPassive DI_CoinMagnet POW1L 21 256 di_unlock_item_coinmagnet;
 ComboPassive DI_Toaster POW1P 14;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 7 128 di_unlock_item_icebullet;
