@@ -30,7 +30,7 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 		DamageFunction (256);
 		+NOGRAVITY;
 		+BLOODSPLATTER;
-		+EXTREMEDEATH;
+		//+EXTREMEDEATH;
 	}
 	
 	override int SpecialMissileHit(Actor victim)
@@ -54,6 +54,11 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 			HAWK A 1 A_SetRoll(roll - 12);
 			Wait;
 		Death:
+			HAWK A 1 A_ProjectileSmoke();
+			TNT1 A 5 A_SpawnItemEX("DI_Tomahawk", 0, 0, 0, random(-2, 2), random(-2, 2), random(4, 6), flags: SXF_NOCHECKPOSITION);
+			Stop;
+		XDeath:
+		Crash:
 			TNT1 A 1
 			{
 				A_ProjectileSmoke();
