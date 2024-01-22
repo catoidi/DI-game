@@ -4,8 +4,8 @@ Class DI_WealthJar : DIPassiveInventory
 	{
 		Tag "Wealth Jar";
 		Inventory.Icon "POWRZ0";
-		Inventory.PickupMessage "Jar of Wealth Acquired! (Your minimum combo is increased by 2.)";
-		Inventory.MaxAmount 3;
+		Inventory.PickupMessage "Jar of Wealth Acquired! (Your minimum combo is increased by 1. Combos are easier to fill.)";
+		Inventory.MaxAmount 8;
 	}
 	
 	override void DoEffect(void)
@@ -16,8 +16,7 @@ Class DI_WealthJar : DIPassiveInventory
 		{
 			DI_PlayerBase plr = DI_PlayerBase(owner);
 			
-			int cret = plr.ComboThreshold((plr.CountInv("DI_WealthJar") * 2) + 1, true);
-			if (plr.CountInv("DI_TokenComboTimer") < cret) {plr.SetInventory("DI_TokenComboTimer", cret);}
+			if (plr.CountInv("DI_TokenComboTimer") == 0) {plr.GiveInventory("DI_TokenComboTimer", 1);}
 		}
 	}
 	

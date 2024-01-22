@@ -67,7 +67,7 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 		Tag "Inflation";
 		Inventory.Icon "POWRB0";
 		Inventory.PickupMessage "Inflation Rate Increased! (+1 Coin from all enemies)";
-		Inventory.MaxAmount 5;
+		Inventory.MaxAmount 3;
 	}
 	
 	override int GiveExtraCoin()

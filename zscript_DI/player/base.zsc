@@ -253,8 +253,14 @@ Class DI_PlayerBase : PlayerPawn abstract
 	{
 		//use this to check how much combo points the player must generate to reach certain combo numbers.
 		int cret = 0;
-		switch (cnum)
+		int numcheck = cnum;
+		if (ignoreitems == false)
 		{
+			numcheck -= CountInv("DI_WealthJar");
+		}
+		switch (numcheck)
+		{
+			default: cret = 0; break;
 			case 2: cret = 350; break;
 			case 3: cret = 1050; break;
 			case 4: cret = 2100; break;
@@ -264,12 +270,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			case 8: cret = 21000; break;
 			case 9: cret = 42000; break;
 		}
-		
-		if ((cnum <= ((CountInv("DI_WealthJar") * 2) + 1)) && (ignoreitems == false))
-		{
-			return 0;
-		}
-		
+
 		return cret;
 	}
 	
