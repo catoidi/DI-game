@@ -53,6 +53,8 @@ server cheat bool di_unlock_item_coinmagnet = false; //pop 15 coin bags on Level
 server cheat int di_roncount = 0; //how many rons have died.
 server cheat bool di_unlock_item_shoe = false; //kill 100 rons to unlock the shoe.
 server cheat bool di_unlock_item_wealthjar = false; //fully upgrade the shop in Level 1.
+server cheat int di_deathcounter = 0; //how many times you've died.
+server cheat bool di_unlock_item_deathmark = false; //die 10 times to unlock this.
 //shop unlocks (LEVEL 2)
 server cheat int di_sidequests = 0; //how many side quests you've completed.
 server cheat bool di_unlock_item_partyshotty = false; //complete 10 side quests in Level 2.

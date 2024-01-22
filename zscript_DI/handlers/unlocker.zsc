@@ -60,6 +60,14 @@ Class DIUnlockHandler : EventHandler
 			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
 			else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
 		}
+		else if (e.Thing is "DI_PlayerBase")
+		{
+			cvar deathcounter = cvar.getcvar("di_deathcounter");
+			int deathnum = deathcounter.getint() + 1;
+			deathcounter.setint(deathnum);
+			
+			if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
+		}
 	}
 	
 	override void WorldThingDamaged(WorldEvent e)

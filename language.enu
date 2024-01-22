@@ -49,6 +49,8 @@ DIPOPUP_di_unlock_item_rewardsprogram = "Rewards Program";
 DIPOPUP_di_unlock_item_creditfraud = "Credit Fraud";
 DIPOPUP_di_unlock_item_coinmagnet = "Coin Magnet";
 DIPOPUP_di_unlock_item_shoe = "Shoe";
+DIPOPUP_di_unlock_item_wealthjar = "Wealth Jar";
+DIPOPUP_di_unlock_item_deathmark = "Marked for Death";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
