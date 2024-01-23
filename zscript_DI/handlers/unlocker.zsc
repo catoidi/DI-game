@@ -91,6 +91,7 @@ Class DIUnlockHandler : EventHandler
 	override void WorldTick(void)
 	{
 		KillCounter(); //unlocks related to getting kills.
+		CloverTracker();
 		++boxtimer;
 		if (boxtimer > 35) {BoxTracker();} //for unlocking the Box Partyer player.
 	}
@@ -266,6 +267,18 @@ Class DIUnlockHandler : EventHandler
 		{
 			let shoe = cvar.getcvar("di_unlock_item_shoe");
 			if ((killnum >= 100) && (shoe.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shoe");}
+		}
+	}
+	
+	virtual void CloverTracker()
+	{
+		cvar clovercvar = cvar.getcvar("di_unlock_item_9leafclover");
+		if (diplr && (clovercvar.GetBool() == false))
+		{
+			if (diplr.GetCombo() == 9)
+			{
+				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
+			}
 		}
 	}
 

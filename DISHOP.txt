@@ -59,7 +59,7 @@ Consumable DI_Tomahawk HAWKA 2;
 Consumable DI_HeartBomb GRENF 2;
 Consumable DI_AmmoSatchel SACKA 6;
 Consumable DI_Brick BRIKA 10;
-Consumable DI_9LeafClover LEAFA 36;
+Consumable DI_9LeafClover LEAFA 36 di_unlock_item_9leafclover;
 Consumable DI_FastForward POW1O 10;
 >>Permanent Consumables...
 PermaConsumable DI_ThrowBomb GRENA 1;
@@ -70,7 +70,7 @@ PermaConsumable DI_JuiceBox HEALD 10;
 PermaConsumable DI_Tomahawk HAWKA 2;
 PermaConsumable DI_AmmoSatchel SACKA 6;
 PermaConsumable DI_FastForward POW1O 12;
-PermaConsumable DI_9LeafClover LEAFA 36 36;
+PermaConsumable DI_9LeafClover LEAFA 36 36 di_unlock_item_9leafclover;
 >>Passive Grouping... (Split between rentals/permanents, in case you want specific items to not show up as a rental/permanent.)
 [Passive] DamagePassive;
 [Passive] DefensePassive;
