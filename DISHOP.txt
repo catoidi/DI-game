@@ -102,7 +102,7 @@ DefensePassive DI_BloodyHeart POWRD 7;
 DefensePassive DI_BonusArmor POWRE 7 256 di_unlock_item_fred1;
 DefensePassive DI_HatHat POWRM 14 128;
 DefensePassive DI_FreshRegen POWRX 14;
-DefensePassive DI_Consumer POW1A 7;
+DefensePassive DI_Consumer POW1A 7 256 di_unlock_item_consumer;
 DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 28;

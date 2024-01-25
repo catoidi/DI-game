@@ -13,6 +13,7 @@ di_unlock_item_shoe DI_Shoe 2 di_roncount;
 di_unlock_item_coinmagnet DI_CoinMagnet 2 di_coinbags;
 di_unlock_item_wealthjar DI_WealthJar 2;
 di_unlock_item_deathmark DI_DeathMark 2 di_deathcounter;
+di_unlock_item_consumer DI_Consumer 2;
 di_unlock_item_9leafclover DI_9LeafClover 3;
 di_unlock_item_rewardsprogram DI_RewardsProgram 2 di_debtwaves;
 di_unlock_item_creditfraud DI_CreditFraud 2 di_debtwaves;

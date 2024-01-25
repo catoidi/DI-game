@@ -25,7 +25,7 @@ DIMENU_LOCKED_DI_PLAYERBOX = "\ccunlocked by owning 2 Box Party Weapons at once.
 DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 
-//Unlocks
+//Unlocks (i could've maybe done this in a better way....)
 DIPOPUP_dihat_unlock_07 = "Fred Hat";
 DIPOPUP_dihat_unlock_08 = "Hatted Fred";
 DIPOPUP_dihat_unlock_09 = "Teeny Fred";
@@ -52,6 +52,7 @@ DIPOPUP_di_unlock_item_shoe = "Shoe";
 DIPOPUP_di_unlock_item_wealthjar = "Wealth Jar";
 DIPOPUP_di_unlock_item_deathmark = "Marked for Death";
 DIPOPUP_di_unlock_item_9leafclover = "9 Leaf Clover";
+DIPOPUP_di_unlock_item_consumer = "Consumer";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

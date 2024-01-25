@@ -18,10 +18,14 @@ Class DIUnlockHandler : EventHandler
 	ui double unlockalpha, unlockalpha2;
 	ui int fontcolor;
 	
+	int consumed;
+	
 	array<string> filedata, shoplist_group, shoplist_item;
 	
 	override void WorldLoaded(WorldEvent e)
 	{
+		consumed = 0;
+		
 		//not designed with multiplayer in mind yet :)
 		diplr = DI_PlayerBase(players[consoleplayer].mo);
 	
@@ -214,6 +218,15 @@ Class DIUnlockHandler : EventHandler
 		}
 		else if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
 		else if (e.Name == "DIWaveFinished") {WaveFinished();}
+		else if (e.Name.Left(17) == "diplayeritemused ")
+		{
+			++consumed;
+			if (consumed >= 25)
+			{
+				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_consumer");
+			}
+		}
+		
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)

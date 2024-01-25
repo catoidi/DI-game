@@ -306,6 +306,9 @@ Class DI_Weapon : Weapon abstract
 	action state DI_ReloadCheck(bool altmode = false)
 	{
 		WeaponMode(2);
+		
+		eventhandler.sendnetworkevent("diweaponreload", 0, 0, 0);
+		
 		if (!altmode) {if (CountInv(invoker.Ammo1.GetClassName()) >= invoker.Ammo1.MaxAmount) {return ResolveState("NoReload");}}
 		else 
 		{
