@@ -190,6 +190,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
 		int diwep_fresh = diwep.wpn_freshbonus;
 		ACS_ScriptCall("dofreshflash");
+		eventhandler.sendnetworkevent("diplayerfreshbonus");
 		console.printf("\cnfresh weapon bonus! (+%d)", diwep_fresh);
 	}
 	

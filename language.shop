@@ -271,6 +271,7 @@ SHOPITEM_DI_FRESHBULLETS = "Fresh Bullets";
 SHOPDESC_DI_FRESHBULLETS = "Gives ammo everytime you\nget a fresh weapon bonus.\n\caAlso makes reloading slower.";
 SHOPDESC2_DI_FRESHBULLETS = "\cbThis will give 1/3 of your current gun's ammo, plus an extra one for free. When maxxed out, this item will fully refill your gun's ammo. \caEach stack also reduces reloading by 50%.";
 SHOPTYPE_DI_FRESHBULLETS = "\cd[Passive] \cl[Max: 3]";
+SHOPLOCK_DI_FRESHBULLETS = "\cbGet 10 fresh bonuses in a row without reloading to unlock this item.";
 SHOPITEM_DI_FIRESTARTER = "Firestarter";
 SHOPDESC_DI_FIRESTARTER = "Enemies have a chance to\nspawn on fire.";
 SHOPDESC2_DI_FIRESTARTER = "\cbBurn chance is 30% + 15% per extra item stack. Does 16 total Fire DMG, +8 for each extra item stack. If stacked enough, this can spawnkill lesser enemies.";

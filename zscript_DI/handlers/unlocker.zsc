@@ -19,12 +19,16 @@ Class DIUnlockHandler : EventHandler
 	ui int fontcolor;
 	
 	int consumed;
+	int freshwave;
+	int freshreload;
 	
 	array<string> filedata, shoplist_group, shoplist_item;
 	
 	override void WorldLoaded(WorldEvent e)
 	{
 		consumed = 0;
+		freshreload = 0;
+		freshwave = 0;
 		
 		//not designed with multiplayer in mind yet :)
 		diplr = DI_PlayerBase(players[consoleplayer].mo);
@@ -226,7 +230,11 @@ Class DIUnlockHandler : EventHandler
 				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_consumer");
 			}
 		}
-		
+		else if (e.Name == "diplayerfreshbonus") {FreshTracker();}
+		else if (e.Name == "diweaponreload")
+		{
+			freshreload = 0;
+		}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -292,6 +300,25 @@ Class DIUnlockHandler : EventHandler
 			{
 				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
 			}
+		}
+	}
+	
+	virtual void FreshTracker()
+	{
+		++freshwave;
+		++freshreload;
+		
+		if (freshreload >= 10)
+		{
+			cvar freshbullet = cvar.getcvar("di_unlock_item_freshbullets");
+			if (freshbullet.GetBool() == false)
+			{
+				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_freshbullets");
+			}
+		}
+		if (freshwave >= 25)
+		{
+			//cvar freshwave =
 		}
 	}
 
@@ -377,6 +404,9 @@ Class DIUnlockHandler : EventHandler
 	
 	virtual void WaveFinished()
 	{
+		freshreload = 0;
+		freshwave = 0;
+	
 		if (diplr.Score < 0)
 		{
 			cvar debtwaves = cvar.getcvar("di_debtwaves");
