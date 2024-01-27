@@ -316,9 +316,13 @@ Class DIUnlockHandler : EventHandler
 				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_freshbullets");
 			}
 		}
-		if (freshwave >= 25)
+		if (freshwave >= 40)
 		{
-			//cvar freshwave =
+			cvar freshcharger = cvar.getcvar("di_unlock_item_freshcharger");
+			if (freshcharger.GetBool() == false)
+			{
+				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_freshcharger");
+			}
 		}
 	}
 

@@ -106,8 +106,8 @@ DefensePassive DI_Consumer POW1A 7 256 di_unlock_item_consumer;
 DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 28;
-ComboPassive DI_FreshBonusGiver POWRC 14;
-ComboPassive DI_FreshBonusCharger POWRL 14;
+ComboPassive DI_FreshBonusGiver POWRC 21;
+ComboPassive DI_FreshBonusCharger POWRL 14 256 di_unlock_item_freshcharger;
 ComboPassive DI_WealthJar POWRZ 35 128 di_unlock_item_wealthjar;
 ComboPassive DI_FreshBullets POW1E 28 256 di_unlock_item_freshbullets;
 ComboPassive DI_LeadRecycling POW1B 21 128;
