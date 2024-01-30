@@ -155,6 +155,12 @@ Class DI_BulletSplitter : DIPassiveInventory
 		return (plr.CountInv(GetClassName()) * 0.5);
 	}
 	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * 2;
+	}
+	
 	States
 	{
 		Spawn:
@@ -169,7 +175,7 @@ Class DI_TooManyBullets : DIPassiveInventory
 	{
 		Tag "TooManyBullets";
 		Inventory.Icon "POWRH0";
-		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -100% Reload Speed)";
+		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -35% Reload and DMG)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -182,7 +188,19 @@ Class DI_TooManyBullets : DIPassiveInventory
 	override double GiveReloadSpeed()
 	{
 		if (!plr) {return 0;}
-		return plr.CountInv(GetClassName()) * 1.0;
+		return plr.CountInv(GetClassName()) * 0.35;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * -0.35;
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * 3;
 	}
 	
 	States
