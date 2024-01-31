@@ -459,4 +459,27 @@ Class DIUnlockHandler : EventHandler
 				break;
 		}
 	}
+	
+	virtual int UnlockCounter()
+	{
+		int totalcount = 0;
+		if (diplr)
+		{
+			array<string> countline;
+			ParseDIUNLOCK(countline);
+			
+			foreach(mo : countline)
+			{
+				array<string> currentline;
+				mo.Split(currentline, " ");
+				
+				cvar curcvar = cvar.getcvar(currentline[0]);
+				if (curcvar && (curcvar.GetBool() == true))
+				{
+					++totalcount;
+				}
+			}
+		}
+		return totalcount;
+	}
 }
