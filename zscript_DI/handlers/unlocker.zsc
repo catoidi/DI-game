@@ -18,6 +18,8 @@ Class DIUnlockHandler : EventHandler
 	ui double unlockalpha, unlockalpha2;
 	ui int fontcolor;
 	
+	int unlockcount;
+	
 	int consumed;
 	int freshwave;
 	int freshreload;
@@ -32,6 +34,7 @@ Class DIUnlockHandler : EventHandler
 		
 		//not designed with multiplayer in mind yet :)
 		diplr = DI_PlayerBase(players[consoleplayer].mo);
+		unlockcount = UnlockCounter();
 	
 		int ThisLump = Wads.FindLump("DISHOP", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DISHOP", ThisLump + 1, Wads.ANYNAMESPACE);
@@ -345,7 +348,7 @@ Class DIUnlockHandler : EventHandler
 		boxtimer = 0;
 	}
 	
-	virtual void ParseDIUNLOCK(array<string> parseddata)
+	clearscope virtual void ParseDIUNLOCK(array<string> parseddata)
 	{
 		//copy/pasted from unlock menu code.
 	
@@ -460,8 +463,9 @@ Class DIUnlockHandler : EventHandler
 		}
 	}
 	
-	virtual int UnlockCounter()
+	clearscope virtual int UnlockCounter()
 	{
+		//count how many unlocks the player has currently.
 		int totalcount = 0;
 		if (diplr)
 		{
@@ -481,5 +485,14 @@ Class DIUnlockHandler : EventHandler
 			}
 		}
 		return totalcount;
+	}
+	
+	virtual void UnlockCountUnlocker()
+	{
+		//for items that are unlocked based on how many other unlocks the player has.
+		if (unlockcount >= 15)
+		{
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletsplitter");
+		}
 	}
 }
