@@ -54,6 +54,8 @@ DIPOPUP_di_unlock_item_deathmark = "Marked for Death";
 DIPOPUP_di_unlock_item_9leafclover = "9 Leaf Clover";
 DIPOPUP_di_unlock_item_consumer = "Consumer";
 DIPOPUP_di_unlock_item_freshbullets = "Fresh Bullets";
+DIPOPUP_di_unlock_item_bulletsplitter = "Bullet Splitter";
+DIPOPUP_di_unlock_item_toomanybullets = "Too Many Bullets";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

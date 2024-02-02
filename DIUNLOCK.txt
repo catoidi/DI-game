@@ -28,3 +28,5 @@ di_unlock_item_firebullet DI_StatusGiver_Fire 2 di_firekills;
 di_unlock_item_shockbullet DI_StatusGiver_Lightning 2 di_shockkills;
 di_unlock_item_poisonbullet DI_StatusGiver_Poison 2 di_poisonkills;
 di_unlock_item_rainbowbullet DI_StatusGiver_Rainbow 2 di_statuskills;
+di_unlock_item_bulletsplitter DI_BulletSplitter 2;
+di_unlock_item_toomanybullets DI_TooManyBullets 2;

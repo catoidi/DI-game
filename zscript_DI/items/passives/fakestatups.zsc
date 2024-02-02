@@ -161,6 +161,16 @@ Class DI_BulletSplitter : DIPassiveInventory
 		return plr.CountInv(GetClassName()) * 2;
 	}
 	
+	override void Tick()
+	{
+		super.tick();
+		
+		if (plr && (plr.CountInv(GetClassName()) >= 3))
+		{
+			eventhandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_toomanybullets");
+		}
+	}
+	
 	States
 	{
 		Spawn:

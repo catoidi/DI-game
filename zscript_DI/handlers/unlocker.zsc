@@ -104,7 +104,12 @@ Class DIUnlockHandler : EventHandler
 		KillCounter(); //unlocks related to getting kills.
 		CloverTracker();
 		++boxtimer;
-		if (boxtimer > 35) {BoxTracker();} //for unlocking the Box Partyer player.
+		if (boxtimer > 35) 
+		{
+			unlockcount = UnlockCounter();
+			UnlockCountUnlocker();
+			BoxTracker(); //for unlocking the Box Partyer player.
+		}
 	}
 	
 	override void UiTick(void)
