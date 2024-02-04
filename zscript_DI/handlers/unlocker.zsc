@@ -70,6 +70,7 @@ Class DIUnlockHandler : EventHandler
 			//kill tracker (applies to every player currently in game, regardless of how the monster died.)
 			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
 			else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
+			else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
 		}
 		else if (e.Thing is "DI_PlayerBase")
 		{
@@ -77,6 +78,8 @@ Class DIUnlockHandler : EventHandler
 			int deathnum = deathcounter.getint() + 1;
 			deathcounter.setint(deathnum);
 			
+			if (deathnum >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_painstar");}
+			if (deathnum >= 20) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_acidblood");}
 			if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
 		}
 	}
@@ -103,6 +106,7 @@ Class DIUnlockHandler : EventHandler
 	{
 		KillCounter(); //unlocks related to getting kills.
 		CloverTracker();
+		DMGMultTracker();
 		++boxtimer;
 		if (boxtimer > 35) 
 		{
@@ -243,6 +247,14 @@ Class DIUnlockHandler : EventHandler
 		{
 			freshreload = 0;
 		}
+		else if (e.Name == "DIRerollShops")
+		{
+			cvar reroller = cvar.getcvar("di_rerollshop");
+			int newreroll = reroller.GetInt() + 1;
+			if (newreroll >= 25) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_dice");}
+			
+			reroller.SetInt(newreroll);
+		}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -292,10 +304,15 @@ Class DIUnlockHandler : EventHandler
 			else if ((killnum >= 300) && (fred2.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred2");}
 			else if ((killnum >= 100) && (fred1.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_fred1");}
 		}
-		else if (killtracker = cvar.getcvar("di_roncount"))
+		else if (killtracker == cvar.getcvar("di_roncount"))
 		{
 			let shoe = cvar.getcvar("di_unlock_item_shoe");
 			if ((killnum >= 100) && (shoe.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shoe");}
+		}
+		else if (killtracker == cvar.getcvar("di_meloncount"))
+		{
+			let melon = cvar.getcvar("di_unlock_item_melon");
+			if ((killnum >= 100) && (melon.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_melon");}
 		}
 	}
 	
@@ -307,6 +324,19 @@ Class DIUnlockHandler : EventHandler
 			if (diplr.GetCombo() == 9)
 			{
 				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
+			}
+		}
+	}
+	
+	virtual void DMGMultTracker()
+	{
+		cvar dmgcvar = cvar.getcvar("di_unlock_item_combomult");
+		if (diplr && (dmgcvar.getbool() == false))
+		{
+			let wpn = DI_Weapon(diplr.player.readyweapon);
+			if (wpn)
+			{
+				if (wpn.damagemult >= 2.0) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combomult");}
 			}
 		}
 	}
@@ -498,6 +528,10 @@ Class DIUnlockHandler : EventHandler
 		if (unlockcount >= 15)
 		{
 			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletsplitter");
+		}
+		if (unlockcount >= 30)
+		{
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combobase");
 		}
 	}
 }
