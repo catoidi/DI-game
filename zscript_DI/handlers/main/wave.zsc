@@ -355,7 +355,6 @@ extend class DIHandler
 		//adds the specified enemy data to the wave.
 		//the enemy gets added to the current batch only.
 		if (addspawner == "None") {addspawner = "DISpawnerSpot";} //failsafe
-		console.printf("%s, %d, %s", addclass, addamount, addspawner);
 		for (int j = 0; j < addamount; j++) 
 		{
 			spawnqueue.Push(addclass);

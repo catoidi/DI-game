@@ -161,6 +161,7 @@ version "4.11"
 #include "zscript_DI/enemies/basic/fred.zsc"
 #include "zscript_DI/enemies/basic/ron.zsc"
 #include "zscript_DI/enemies/box/fruitpuncher.zsc"
+#include "zscript_DI/enemies/box/THEHAMMER.zsc"
 #include "zscript_DI/enemies/special/debtcollector.zsc"
 
 //shop

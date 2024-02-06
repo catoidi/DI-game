@@ -21,6 +21,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
 			AddRonEvent(eventnum);
 		}
+		else if (e.Name == "dievent_hammertime")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			HammerTime(eventnum);
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
@@ -73,6 +78,12 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		int ronnum = wavenum * 2;
 		string cmd = string.format("addwaveenemy Ron %d", ronnum);
 		console.printf("%s", cmd);
+		SendNetworkEvent(cmd);
+	}
+	
+	virtual void HammerTime(int wavenum)
+	{
+		string cmd = string.format("addwaveenemy THEHAMMER %d", wavenum);
 		SendNetworkEvent(cmd);
 	}
 }

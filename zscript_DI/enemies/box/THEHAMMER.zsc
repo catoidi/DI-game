@@ -1,0 +1,356 @@
+class THEHAMMER : DI_Monster
+{
+	Default
+	{
+		Speed 16;
+		Health 200;
+		Radius 32;
+		Height 48;
+		Mass 2000;
+		MeleeRange 72;
+		MeleeThreshold 200;
+		DamageFactor "Enemy", 0.0;
+		DamageFactor "Lightning", 1.6;
+		DamageFactor "FakeLightning", 1.6;
+		BloodType "DI_HammerBlood";
+		DI_Monster.GibType "DI_HammerExplosion";
+		DI_Monster.DIDrop "DI_Money";
+		Species "Ham";
+		Tag "THE HAMMER";
+		Obituary "$BOX_DIE_HAMMER";
+		+FLOORCLIP;
+		+NOBLOODDECALS;
+		+MISSILEMORE;
+		+MISSILEEVENMORE;
+		+SLIDESONWALLS;
+		//$Category "Box Party/Enemies/"
+		//$Title "THE HAMMER"
+		//$Color 4
+	}
+	
+	action bool BoxHammerCheck(void)
+	{
+		//used to check if there is room to dash before dashing.
+	
+		//this is probably really inefficient.
+		
+		double radnum = self.radius;
+		
+		if 
+		(
+			(CheckBlock(0, AAPTR_DEFAULT, radnum, 0, 0, 0) == true) || 
+			(CheckBlock(0, AAPTR_DEFAULT, (radnum * 2.0), 0, 0, 0) == true)
+		)
+		{
+			return true;
+		}
+		else {return false;}
+	}
+	
+	States
+	{
+		Spawn:
+			HAMM A 10 A_Look;
+			Loop;
+		See:
+			HAMM AABB 8 Fast A_Chase;
+			Loop;
+		NoMissile: //move randomly, but still melee in-range targets.
+			HAMM AABBAABB 6 Fast {A_Wander(); A_Chase("Melee", null, CHF_DONTMOVE);}
+			Goto See;
+		Melee:
+			HAMM A 0;
+			HAMM A 0 A_JumpIfTargetInLOS("Melee2", 0, 0, 60); //prevents player from dodging attacks by standing on hammer's head.
+			HAMM C 0 A_FaceTarget;
+			HAMM CC 5 A_DIScale(-0.1, 0.1);
+			HAMM D 0 A_Recoil(3);
+			HAMM D 0 ThrustThingZ(0, 15, 0, 1);
+			HAMM D 0 A_StartSound("slam2");
+			HAMM D 0 A_CustomMeleeAttack(1, " ", " ", "Melee", false);
+			//HAMM DDDDDDDDDDDDDDDD 0 A_SpawnItemEX("BoomSmoke", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-8, 8), frandom(-8, 8), frandom(4, 8), 0, SXF_NOCHECKPOSITION, 64);
+			HAMM D 0 {
+				A_SpawnItemEX("HammerSlam", 48, 0, 0, 0, 0, 0, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+				A_SpawnItemEX("HammerSlamPuff", 48, 0, 0, 0, 0, 0, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+				A_DIScale(0.4, -0.4);
+			}
+			HAMM DDDD 6 A_DIScale(-0.05, 0.05);
+			Goto See;
+		Melee2:
+			HAMM F 0 A_FaceTarget;
+			HAMM FF 5 Slow A_DIScale(-0.025, 0.05);
+			HAMM G 0 A_Recoil(-16);
+			HAMM G 0 A_CustomMeleeAttack(20, "slam", "whiff2", "Melee", false);
+			HAMM G 10 A_DIScale(0.05, -0.1);
+			Goto See;
+		Missile:
+			HAMM A 0 A_FaceTarget;
+			HAMM A 0
+			{
+				if (BoxHammerCheck() == true) {SetStateLabel("NoMissile", false);}
+			}
+			HAMM A 10 Slow A_FaceTarget;
+			//HAMM B 0 A_SpawnItemEX("BoxSlamWall", 0, 0, 28, -4, 0, 0, 0, SXF_NOCHECKPOSITION);
+			HAMM B 0 A_Recoil(-20);
+			HAMM B 0 ThrustThingZ(0, 15, 0, 1);
+			HAMM B 16;
+			Goto See;
+		Pain:
+			#### # 0 A_ResetScale();
+			HAMM E 0 A_Pain;
+			HAMM E 10;
+			Goto See;
+		Death:
+			#### # 0 A_DITargetPlayer();
+			#### # 0 A_DIDie();
+			#### ### 0 A_DIDieBlood();
+			#### # 0 A_SpawnItemEX("HammerHammer", 0, 0, 24, 0, 0, 4, 0, SXF_NOCHECKPOSITION);
+			#### # 0 A_Jump(256, "DeathLoop");
+		Death.Lightning:
+			#### # 0 A_Jump(256, "XDeath.Lightning");
+			Stop;
+		XDeath:
+			#### # 0 A_ResetScale();
+			HAMM H 1 A_FaceTarget;
+			HAMM H 1 A_Recoil(3);
+			HAMM H 4 ThrustThingZ(0, 15, 0, 1);
+			#### # 0 A_DITargetPlayer();
+			#### # 0 A_DIDie();
+			#### ### 0 A_DIDieBlood();
+			#### # 0 A_DIGibExplode();
+			#### # 0 A_SpawnItemEX("SafeBoom", 0, 0, 24, 0, 0, 4, 0, SXF_NOCHECKPOSITION);
+			#### # 0 A_SpawnItemEX("HammerHammer", 0, 0, 24, 0, 0, 4, 0, SXF_NOCHECKPOSITION);
+			#### # 0 A_DISpawnBloodCoins();
+			HAMM I 10;
+			#### # 0 A_RemoveLight("deathlight");
+			HAMM JKJKJKJKJKJK 10;
+			HAMM L 175;
+			HAMM L 0 A_Jump(256, "DeathLoop");
+	}
+}
+
+CLASS HammerHammer : DI_FloorActor //dropped when the hammer dies.
+{
+	Default
+	{
+		Height 8;
+		Radius 8;
+		Gravity 0.25;
+		
+		Projectile;
+		-NOGRAVITY;
+		-SOLID;
+		-BLOCKEDBYSOLIDACTORS;
+		+THRUACTORS;
+		+INTERPOLATEANGLES;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+FORCEXYBILLBOARD;
+		//+MOVEWITHSECTOR;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			HAMM Q 0 A_StartSound("whiff2", 10, CHANF_LOOP);
+			HAMM Q 1 A_Jump(128, "SpeenLeft");
+			Goto SpeenRight;
+		SpeenRight:
+			#### # 1 A_SetRoll(roll - 12);
+			Loop;
+		SpeenLeft:
+			#### # 1 A_SetRoll(roll + 12);
+			Loop;
+		Death:
+			HAMM Q 0 
+			{
+				A_StartSound("slam", 10);
+				A_SpawnItemEX("HammerSlam", 48, 0, 0, 0, 0, 0, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+				A_SpawnItemEX("HammerSlamPuff", 48, 0, 0, 0, 0, 0, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+				if (self.Pos.Z ~== self.FloorZ) {bFLATSPRITE = true;} else {bFLATSPRITE = false;}
+			}
+			//HAMM QQQQQQQQQQQQQQQQ 0 A_SpawnItemEX("BoomSmoke", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-8, 8), frandom(-8, 8), frandom(4, 8), 0, SXF_NOCHECKPOSITION, 64);
+			HAMM Q 0 {bMOVEWITHSECTOR = true;}
+			HAMM Q 1050 A_SetTics(floortic);
+			#### # 1 A_FadeOut(0.05);
+			Wait;
+	}
+}
+
+CLASS HammerSlam : DI_Actor
+{
+	//horizontal ring shockwave effect summoned by THE HAMMER's sledgehammer attack.
+	Default
+	{
+		FloatBobPhase 0;
+		RenderStyle "Translucent";
+		Alpha 0.7;
+		+NOGRAVITY;
+		+FLATSPRITE;
+		+NOBLOCKMAP;
+		+NOINTERACTION;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			SLAM B 0 
+			{	
+				A_Explode(19, 32, XF_THRUSTZ, true, 16, 0, 0, "BulletPuff", "Melee");
+				A_QuakeEX(3, 3, 3, 35, 0, 128, 0);
+			}
+			Goto Looper;
+		Looper:
+			#### # 1 {
+				A_DIScale(0.05, 0.05);
+				A_FadeOut(0.05);
+			}
+			Loop;
+	}	
+}
+
+CLASS HammerSlamPuff : DI_Actor
+{
+	Default
+	{
+		FloatBobPhase 0;
+		RenderStyle "Translucent";
+		Alpha 0.7;
+		Scale 0.5;
+		+NOGRAVITY;
+		+NOBLOCKMAP;
+		+NOINTERACTION;
+	}
+
+	States
+	{
+		Spawn:
+			SLAM A 1 {
+				A_DIScale(0.01, 0.05);
+				A_FadeOut(0.05);
+			}
+			Loop;
+	}
+}
+
+CLASS BoxSlam : HammerSlam //non-damaging version of hammerslam. used for certain visual effects.
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			SLAM B 0;
+			Goto Looper;
+	}
+}
+
+CLASS BoxSlamWall : BoxSlam
+{
+	Default
+	{
+		-FLATSPRITE;
+		+WALLSPRITE;
+	}
+}
+
+CLASS DI_HammerBlood : DI_Actor
+{
+	mixin DI_BoxBloodMixin;
+
+	Default
+	{
+		+NOINTERACTION;
+	}
+	
+	override void postbeginplay(void)
+	{
+		super.postbeginplay();
+		DI_BoxGib("HAMMP0", 10);
+		DI_BoxGib("HAMMP0", 10);
+		DI_BoxGib("HAMMP0", 10);
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 5 NoDelay A_ProjectileSmoke();
+			Stop;
+	}
+}
+
+Class DI_HammerExplosion : DI_GibExplosion
+{	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		gibamount = 4;
+	}
+
+	override name GetGib(int gibnum) 
+	{
+		switch(gibnum)
+		{
+			case 1: return "DI_HammerGib1"; break;
+			case 2: return "DI_HammerGib2"; break;
+			case 3: return "DI_HammerGib3"; break;
+			case 4: return "DI_HammerGib4"; break;
+		}
+		return "";
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 10 NoDelay StartGibbing();
+			Stop;
+	}
+}
+
+Class DI_HammerGib1 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			HAMM M 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_HammerGib2 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			HAMM N 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_HammerGib3 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			HAMM O 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_HammerGib4 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			HAMM R 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
