@@ -207,7 +207,7 @@ Class DI_Weapon : Weapon abstract
 				wpn_recoil_recover += curinv.GiveRecoilRecover();
 				wpn_projectiles += curinv.GiveProjectiles();
 				if ((Ammo1) && (wpn_dontgiveammo1 == false)) {Ammo1.MaxAmount += curinv.GiveMaxAmmo1();}
-				if ((Ammo2) && (wpn_dontgiveammo2 == false)) {Ammo1.MaxAmount += curinv.GiveMaxAmmo2();}
+				if ((Ammo2) && (wpn_dontgiveammo2 == false)) {Ammo2.MaxAmount += curinv.GiveMaxAmmo2();}
 				wpn_speed += curinv.GiveWeaponSpeed();
 				wpn_speed_fire += curinv.GiveFirerate();
 				wpn_speed_reload += curinv.GiveReloadSpeed();
