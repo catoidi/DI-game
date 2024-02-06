@@ -16,6 +16,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dofredpunch = true;
 		}
+		else if (e.Name == "dievent_addron")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			AddRonEvent(eventnum);
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
@@ -60,5 +65,14 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	virtual void BulletDeath(DI_Monster mon)
 	{
 		mon.A_SpawnItemEX("DI_BulletSpawner", 0, 0, mon.Height / 2, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
+	}
+	
+	virtual void AddRonEvent(int wavenum)
+	{
+		//example script to add new enemies to a wave.
+		int ronnum = wavenum * 2;
+		string cmd = string.format("addwaveenemy Ron %d", ronnum);
+		console.printf("%s", cmd);
+		SendNetworkEvent(cmd);
 	}
 }

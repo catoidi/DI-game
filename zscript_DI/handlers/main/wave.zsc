@@ -350,6 +350,21 @@ extend class DIHandler
 		return returnvalue;
 	}
 	
+	virtual void AddWaveEnemy(name addclass, int addamount, name addspawner = "DISpawnerSpot")
+	{
+		//adds the specified enemy data to the wave.
+		//the enemy gets added to the current batch only.
+		if (addspawner == "None") {addspawner = "DISpawnerSpot";} //failsafe
+		console.printf("%s, %d, %s", addclass, addamount, addspawner);
+		for (int j = 0; j < addamount; j++) 
+		{
+			spawnqueue.Push(addclass);
+			spawnqueue_spawner.Push(addspawner);
+		}
+		enemycount += addamount;
+		players[consoleplayer].mo.ACS_ScriptCall("EnemyCount", enemycount);
+	}
+	
 	virtual void DoWaveEvent(WorldEvent e)
 	{
 		if (eventdata.Size() == 0)

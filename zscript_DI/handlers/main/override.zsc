@@ -183,5 +183,22 @@ extend class DIHandler
 				if (mo) {mo.AddBlacklist(newblacklist);}
 			}
 		}
+		else if (e.Name.Left(13) == "addwaveenemy ")
+		{
+			array<string> newenemy;
+			e.Name.Split(newenemy, " ");
+			int datasize = newenemy.Size();
+			if (datasize >= 2)
+			{
+				name addname = newenemy[1];
+				int addnum = 0;
+				string addspawner = "";
+				if (datasize >= 3) {addnum = newenemy[2].ToInt(10);}
+				if (datasize >= 4) {addspawner = newenemy[3];}
+				
+				AddWaveEnemy(addname, addnum, addspawner);
+			}
+			else {ThrowAbortException("\cqInvalid Add Wave Enemy Command: '%s'", e.Name);}
+		}
 	}
 }

@@ -7,4 +7,5 @@
 DI01, Event, dievent_bulletdeath, 50, 1;
 DI01, Event, dievent_fredpuncher, 30, 1;
 DI01, ACS, dievent_spawnwalltraps, 8, 1;
+>>DI01, Event, dievent_addron, 0, 1;
 DI02, Event, FakeEventPLSIgnore, 1, 1;
