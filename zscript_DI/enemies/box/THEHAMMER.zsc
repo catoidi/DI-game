@@ -53,10 +53,10 @@ class THEHAMMER : DI_Monster
 			HAMM A 10 A_Look;
 			Loop;
 		See:
-			HAMM AABB 8 Fast A_Chase;
+			HAMM AABB 4 A_Chase;
 			Loop;
 		NoMissile: //move randomly, but still melee in-range targets.
-			HAMM AABBAABB 6 Fast {A_Wander(); A_Chase("Melee", null, CHF_DONTMOVE);}
+			HAMM AABBAABB 3 {A_Wander(); A_Chase("Melee", null, CHF_DONTMOVE);}
 			Goto See;
 		Melee:
 			HAMM A 0;
