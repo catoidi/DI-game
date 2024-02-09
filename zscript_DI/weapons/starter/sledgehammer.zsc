@@ -1,0 +1,102 @@
+class Sledgehammer : DI_Weapon
+{
+	Default
+	{
+		Radius 20;
+		Height 24;
+		DI_Weapon.FreshBonus 1;
+		DI_Weapon.BaseDamage 80;
+		Weapon.SelectionOrder 1000;
+		Weapon.SlotNumber 1;
+		Weapon.SlotPriority 1;
+		Weapon.Kickback 500;
+		Inventory.PickupMessage "Picked up the Sledgehammer! (Slow, but powerful melee weapon.)";
+		Inventory.Icon "HAMRA0";
+		Tag "Sledgehammer";
+		DamageType "Melee";
+		+BLOODSPLATTER;
+		+WEAPON.MELEEWEAPON;
+		+WEAPON.AMMO_OPTIONAL;
+		+WEAPON.ALT_AMMO_OPTIONAL;
+		+INVENTORY.UNDROPPABLE;
+		+CASTSPRITESHADOW;
+	}
+	
+	int holdtime;
+	
+	action void HammerCharge()
+	{
+		if (invoker.holdtime < 16)
+		{
+			invoker.fovscale -= 0.01;
+			A_WeaponOffset(-2, -1, WOF_ADD);
+		}
+	}
+	
+	States
+	{
+		Ready:
+			HAMR A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Deselect:
+			HAMR A 0 A_Lower;
+			Loop;
+		Select:
+			HAMR AAA 0 A_Raise;
+			HAMR A 1 A_Raise;
+			Loop;
+		Fire:
+			HAMR A 0 
+			{
+				invoker.fovscale = 1.0;
+				WeaponMode(1);
+			}
+			#### # 0 A_Jump(256, "Charge");
+		Charge:
+			HAMR # 0
+			{
+				++invoker.holdtime;
+				int newframe = invoker.holdtime / 8;
+				if (newframe > 2) {newframe = 2;}
+				switch(newframe)
+				{
+					default: return ResolveState("Charge1"); break;
+					case 1: return ResolveState("Charge2"); break;
+					case 2: return ResolveState("Charge3"); break;
+				}
+				return ResolveState(null);
+			}
+		Charge1:
+			HAMR A 1 HammerCharge();
+			#### # 0 A_Refire("Charge");
+		Charge2:
+			HAMR B 1 HammerCharge();
+			#### # 0 A_Refire("Charge");
+		Charge3:
+			HAMR C 1 HammerCharge();
+			#### # 0 A_Refire("Charge3");
+		Release:
+			HAMR DEF 4 {invoker.holdtime = 0;}
+		/*
+			HAMR B 1 A_WeaponOffset(30, 20, WOF_INTERPOLATE);
+			HAMR B 1 A_WeaponOffset(-60, -40, WOF_INTERPOLATE);
+			HAMR B 0 A_StartSound("weapons/glowstick/glowswsh");
+			HAMR BBB 1 A_WeaponOffset(30, 20, WOF_ADD | WOF_INTERPOLATE);
+			HAMR N 1 {
+				A_WeaponOffset(60, 40, WOF_INTERPOLATE);
+				DI_BasicMelee(invoker.wpn_damage, CPF_PULLIN, "ProjectileSmoke", MeleeSound: "weapons/glowstick/glowbonk");
+			}
+			HAMR BBBBB 1 A_WeaponOffset(30, 20, WOF_ADD | WOF_INTERPOLATE);
+			HAMR C 3 A_WeaponOffset(5, 40, WOF_INTERPOLATE);
+			HAMR B 3 A_Refire("Fire");
+			#### # 0 A_WeaponOffset(0, 32);
+		*/
+			//placeholder
+			#### # 0 
+			{
+				invoker.fovscale = 1.0;
+				A_WeaponOffset(30, 15, WOF_ADD);
+			}
+			Goto Ready;
+	}
+}

@@ -120,6 +120,7 @@ version "4.11"
 #include "zscript_DI/weapons/starter/starpistol.zsc"
 #include "zscript_DI/weapons/starter/glowstick.zsc"
 #include "zscript_DI/weapons/starter/cheesegun.zsc"
+#include "zscript_DI/weapons/starter/sledgehammer.zsc"
 //#include "zscript_DI/weapons/starter/poisoner.zsc"
 //basic weapons
 #include "zscript_DI/weapons/basic/greenshotgun.zsc"
