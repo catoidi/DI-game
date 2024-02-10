@@ -131,13 +131,6 @@ Class DI_Weapon : Weapon abstract
 		}
 	}
 	
-	override void PlayUpSound(Actor origin)
-	{
-		origin.A_WeaponOffset(0, 0, WOF_KEEPY); //gross hack to fix X offset when weapon is dropped mid-animation.
-		
-		super.PlayUpSound(origin);
-	}
-	
 	virtual void RestoreStartAmmo()
 	{
 		//reset ammo back to starting values.

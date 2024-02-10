@@ -51,6 +51,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	int moneyspent; //how much money you've spent at shops.
 	
 	Vector2 OldMove;
+	bool switchtime;
+	Weapon oldweapon;
 	
 	int weaponnum;
 	
@@ -92,7 +94,15 @@ Class DI_PlayerBase : PlayerPawn abstract
 			ComboCounter();
 			BoxAmmoChecker();
 			StatusChance();
-			AutoOffset();
+			if (player.ReadyWeapon == oldweapon)
+			{
+				AutoOffset();
+			}
+			else
+			{
+				ResetAutoOffset();
+				oldweapon = player.ReadyWeapon;
+			}
 			weaponnum = 0;
 			
 			JustKilled = false;
@@ -524,7 +534,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		//this setup cannot be used with the default weapon bobbing enabled, as it will cause visual issues.
 		//you can disable autooffset in the weapon's properties.
 		
-		if (diwep && diwep.wpn_autooffset == true)
+		if (diwep && diwep.wpn_autooffset == true && invoker.switchtime == false)
 		{
 			//recoil part
 			double newoffset = diwep.current_recoil * diwep.wpn_recoil_offset;
@@ -561,10 +571,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 				);
 				
 				A_WeaponOffset(moveoffset.x, moveoffset.y, WOF_ADD);
-				
 				invoker.OldMove = NewMove;
 			}
 		}
+		invoker.switchtime = false;
+	}
+	
+	action void ResetAutoOffset()
+	{
+		invoker.switchtime = true;
+		invoker.OldMove = (0, 0);
+		A_WeaponOffset(0, 64);
 	}
 
 	States
