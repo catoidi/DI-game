@@ -24,12 +24,19 @@ class Sledgehammer : DI_Weapon
 	
 	int holdtime;
 	
+	override void UpdateWeaponValues()
+	{
+		super.UpdateWeaponValues();
+		wpn_accuracy += (25 - holdtime) / 4.0;
+	}
+	
 	action void HammerCharge()
 	{
-		if (invoker.holdtime < 16)
+		if (invoker.holdtime <= 24)
 		{
 			invoker.fovscale -= 0.01;
-			A_WeaponOffset(-2, -1, WOF_ADD);
+			A_WeaponOffset(-4, -2, WOF_ADD);
+			console.printf("%d", invoker.holdtime);
 		}
 	}
 	
@@ -55,11 +62,12 @@ class Sledgehammer : DI_Weapon
 		Charge:
 			HAMR # 0
 			{
-				++invoker.holdtime;
-				int newframe = invoker.holdtime / 8;
+				int newframe = invoker.holdtime / 12;
 				if (newframe > 2) {newframe = 2;}
+				++invoker.holdtime;
 				switch(newframe)
 				{
+					//doing "frame = num" isnt working???????????
 					default: return ResolveState("Charge1"); break;
 					case 1: return ResolveState("Charge2"); break;
 					case 2: return ResolveState("Charge3"); break;
@@ -69,14 +77,22 @@ class Sledgehammer : DI_Weapon
 		Charge1:
 			HAMR A 1 HammerCharge();
 			#### # 0 A_Refire("Charge");
+			Goto Release;
 		Charge2:
 			HAMR B 1 HammerCharge();
 			#### # 0 A_Refire("Charge");
+			Goto Release;
 		Charge3:
-			HAMR C 1 HammerCharge();
+			HAMR C 1; //HammerCharge();
 			#### # 0 A_Refire("Charge3");
+			Goto Release;
 		Release:
-			HAMR DEF 4 {invoker.holdtime = 0;}
+			HAMR DDDD 1 A_WeaponOffset(2.4, 1.2, WOF_ADD);
+			HAMR EEEE 1 A_WeaponOffset(4.8, 2.4, WOF_ADD);
+			HAMR FFFF 1 A_WeaponOffset(7.2, 3.6, WOF_ADD);
+			HAMR GGGG 1 A_WeaponOffset(9.6, 4.8, WOF_ADD);
+			HAMR GGGGGG 1 A_WeaponOffset(19.2, 9.6, WOF_ADD);
+			//HAMR DEFG 4 {invoker.holdtime = 0;}
 		/*
 			HAMR B 1 A_WeaponOffset(30, 20, WOF_INTERPOLATE);
 			HAMR B 1 A_WeaponOffset(-60, -40, WOF_INTERPOLATE);
@@ -92,10 +108,12 @@ class Sledgehammer : DI_Weapon
 			#### # 0 A_WeaponOffset(0, 32);
 		*/
 			//placeholder
-			#### # 0 
+			#### # 0 {invoker.holdtime = 0;}
+			#### # 0 A_WeaponOffset(-115.2, -28.8, WOF_ADD);
+			HAMR AAAA 1 
 			{
 				invoker.fovscale = 1.0;
-				A_WeaponOffset(30, 15, WOF_ADD);
+				A_WeaponOffset(0, -7.2, WOF_ADD);
 			}
 			Goto Ready;
 	}
