@@ -70,7 +70,7 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 			{
 				case 1: labelmsg = "\cbNow displaying: \cgonly weapons."; break;
 				case 2: labelmsg = "\cbNow displaying: \cdonly passives."; break;
-				case 3: labelmsg = "\cbNow displaying: \cvmisc items."; break;
+				case 3: labelmsg = "\cbNow displaying: \cvonly consumables."; break;
 			}
 			if (tabnum == link.tabnum) {labelmsg = "\cbNow displaying: \ccall items.";}
 			link.GenerateUnlocks(tabnum);
