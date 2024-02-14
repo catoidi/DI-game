@@ -24,7 +24,7 @@ user cheat string di_highscore = ""; //stores every high score for every level f
 
 //DI shop item unlocks (LEVEL 1)
 user bool di_unlock_tutorial = false; //do a menu tutorial the first time you open it.
-user bool di_unlock_morebuttons = false; //show 60 buttons at once instead of 15.
+user bool di_unlock_morebuttons = true; //show 60 buttons at once instead of 15.
 server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
 server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
 server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
@@ -63,6 +63,10 @@ server cheat bool di_unlock_item_dice = false; //reroll the shop 25 times.
 server cheat int di_rerollshop = 0; //how many times the shop has been rerolled.
 server cheat bool di_unlock_item_melon = false; //kill 100 melons.
 server cheat int di_meloncount = 0; //number of melons killed.
+server cheat bool di_unlock_item_toaster = false; //kill 25 THE HAMMERs.
+server cheat int di_hammercount = 0; //number of THE HAMMERs killed.
+server cheat bool di_unlock_item_bloodyheart = false; //get 10 tomahawk kills to unlock.
+server cheat int di_tomahawkcount = 0; //number of Tomahawk related kills.
 //shop unlocks (LEVEL 2)
 server cheat bool di_unlock_item_freshbullets = false; //get 10 fresh bonuses without reloading.
 server cheat bool di_unlock_item_freshcharger = false; //get 40 fresh bonuses in 1 run.

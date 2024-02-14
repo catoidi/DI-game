@@ -71,6 +71,7 @@ Class DIUnlockHandler : EventHandler
 			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
 			else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
 			else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
+			else if (e.Thing is "THEHAMMER") {listkills.Push("di_hammercount");}
 		}
 		else if (e.Thing is "DI_PlayerBase")
 		{
@@ -255,6 +256,7 @@ Class DIUnlockHandler : EventHandler
 			
 			reroller.SetInt(newreroll);
 		}
+		else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -313,6 +315,16 @@ Class DIUnlockHandler : EventHandler
 		{
 			let melon = cvar.getcvar("di_unlock_item_melon");
 			if ((killnum >= 100) && (melon.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_melon");}
+		}
+		else if (killtracker == cvar.getcvar("di_hammercount"))
+		{
+			let hammer = cvar.getcvar("di_unlock_item_toaster");
+			if ((killnum >= 25) && (hammer.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_toaster");}
+		}
+		else if (killtracker == cvar.getcvar("di_tomahawkcount"))
+		{
+			let bloodyheart = cvar.getcvar("di_unlock_item_bloodyheart");
+			if ((killnum >= 10) && (bloodyheart.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bloodyheart");}
 		}
 	}
 	

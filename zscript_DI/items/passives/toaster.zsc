@@ -12,7 +12,7 @@ Class DI_Toaster : DIPassiveInventory
 	{
 		Tag "Toaster";
 		Inventory.Icon "POW1P0";
-		Inventory.PickupMessage "Toaster Acquired! (Enemies have a chance to drop toast consumables, which give a temporary buff upon use.)";
+		Inventory.PickupMessage "Toaster Acquired! (Enemies have a chance to drop toast consumables, which gives you regen and firerate buff upon use.)";
 		Inventory.MaxAmount 4;
 	}
 	
@@ -41,7 +41,8 @@ Class DI_Toast : Inventory
 			{
 				let plr = DI_PlayerBase(owner);
 				plr.ACS_NamedExecuteAlways("DoLeafFlash");
-				plr.GiveInventory("DI_Toast_Powerup", plr.CountInv(GetClassName()) * 5);
+				plr.GiveInventory("DI_Toast_Powerup", plr.CountInv(GetClassName()) * 3);
+				plr.GiveInventory("DI_Regen", plr.CountInv(GetClassName()));
 				DIUsed();
 				plr.TakeInventory("DI_Toast", 10000);
 				return true;
@@ -55,27 +56,28 @@ Class DI_Toast : Inventory
 		Tag "Toast";
 		Inventory.Icon "POW1Q0";
 		Inventory.PickupMessage "Toast Acquired!";
-		Inventory.MaxAmount 32;
+		Inventory.MaxAmount 16;
 		+INVENTORY.INVBAR;
 	}
 	
 	States
 	{
 		Spawn:
-			POW1 Q -1;
-			Stop;
+			POW1 Q 140;
+			POW1 Q 105 A_FadeOut(0.25);
+			Wait;
 	}
 }
 
 Class DI_Toast_Powerup : DIPowerup
 {
-	override double GiveWeaponSpeed() {return -0.25;}
+	override double GiveWeaponSpeed() {return -0.2;}
 	
 	Default
 	{
 		Tag "\cvToast (Powerup)";
 		Inventory.Icon "POW1U0";
-		Inventory.MaxAmount 160;
+		Inventory.MaxAmount 64;
 	}
 	
 	States
