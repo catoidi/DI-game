@@ -95,3 +95,40 @@ class DIPowerup : DIPassiveInventory
 		}
 	}
 }
+
+class DIBundle : Inventory
+{
+	//instantly gives the player a set amount of items on pickup.
+	//if the item is meant to be permanent, will remove itself and add the corresponding item as permanent to the player.
+	
+	int bundleamount;
+	string bundleitem;
+	
+	property BundleAmount : bundleamount;
+	property BundleItem : bundleitem;
+	
+	Default
+	{
+		DIBundle.BundleAmount 1;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(owner);
+			let itemnum = plr.CountInv(self.GetClassName());
+			
+			if (plr.GetPermaItemAmount(self.GetClassName()) > 0)
+			{
+				plr.BuyPermaItem(bundleitem, BundleAmount * itemnum);
+				plr.BuyPermaItem(self.GetClassName(), itemnum * -1);
+			}
+			
+			plr.GiveInventory(bundleitem, BundleAmount);
+			plr.TakeInventory(self.GetClassName(), 1);
+		}
+	}
+}

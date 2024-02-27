@@ -200,5 +200,32 @@ extend class DIHandler
 			}
 			else {ThrowAbortException("\cqInvalid Add Wave Enemy Command: '%s'", e.Name);}
 		}
+		else if (e.Name.Left(13) == "addpermaitem ")
+		{
+			if (players[e.Player].mo && (sv_cheats == true))
+			{
+				Array<String> cmd;
+				e.Name.Split(cmd, " ");
+				int cmdnum = 1;
+				if (cmd.size() == 3) {cmdnum = cmd[2].ToInt(10);}
+				let plr = DI_PlayerBase(players[e.Player].mo);
+				
+				plr.GiveInventory(cmd[1], cmdnum);
+				plr.BuyPermaItem(cmd[1], cmdnum);
+				console.printf("Added %d %s to your inventory.", cmdnum, cmd[1]);
+			}
+			else {console.printf("%s", "You cannot use this command while cheats are disabled.");}
+		}
+		else if (e.Name.Left(15) == "checkpermaitem ")
+		{
+			if (players[e.Player].mo && (sv_cheats == true))
+			{
+				Array<String> cmd;
+				e.Name.Split(cmd, " ");
+				let plr = DI_PlayerBase(players[e.Player].mo);
+				let num = plr.GetPermaItemAmount(cmd[1]);
+				console.printf("You have %d of these.", num);
+			}
+		}
 	}
 }

@@ -389,34 +389,83 @@ Class DI_PlayerBase : PlayerPawn abstract
 		return heal;
 	}
 	
-	action void BuyPermaItem(string itemsave)
+	action void BuyPermaItem(string itemsave, int addamount = 1)
 	{
-		//note: this could've also been done by deleting the item from the wipe array,
-		//but i'd rather keep this separate so that perma items can potentially be removed by something.
+		//marks an item in a player's inventory as permanent, which means they'll always keep that item when their items get wiped at the end of a wave.
+		//can also accept multiple permanent items.
+		//you can remove permanent items by setting addamount to a negative number.
+		//setting addamount to 0 will completely remove that item from the permanent list.
+		
+		Array<String> removelist;
 	
 		string pushstring;
 		bool alreadyadded = false;
-		for (int j = 0; j < invoker.wavekeep.Size(); j++) //side note: i hate this code
+		for (int j = 0; j < invoker.wavekeep.Size(); j++)
 		{
 			int itemlength = itemsave.Length();
-			if (invoker.wavekeep[j].Left(itemlength) == itemsave)
+			if (invoker.wavekeep[j].Left(itemlength) ~== itemsave)
 			{
 				string oldamount_str = invoker.wavekeep[j].Mid(itemlength + 1);
 				//console.printf("old num: %s", oldamount_str);
 				int oldamount = oldamount_str.ToInt(10);
-				++oldamount;
-				pushstring = string.format("%s,%d", itemsave, oldamount);
-				invoker.wavekeep[j] = pushstring;
+				if (addamount != 0) {oldamount += addamount;}
+				else {oldamount = 0;}
+				
+				if (oldamount > 0)
+				{
+					pushstring = string.format("%s,%d", itemsave, oldamount);
+					invoker.wavekeep[j] = pushstring;
+				}
+				else 
+				{
+					removelist.Push(invoker.wavekeep[j]);
+					//invoker.wavekeep.Delete(j);
+				}
+				
 				alreadyadded = true;
 				j = invoker.wavekeep.Size();
 			}
 		}
-		if ((alreadyadded == false) || (invoker.wavekeep.Size() == 0))
+		if (addamount > 0)
 		{
-			pushstring = string.format("%s,1", itemsave);
-		
-			invoker.wavekeep.Push(pushstring);
+			if ((alreadyadded == false) || (invoker.wavekeep.Size() == 0))
+			{
+				pushstring = string.format("%s,%d", itemsave, addamount);
+			
+				invoker.wavekeep.Push(pushstring);
+			}
 		}
+		for (int i = 0; i < removelist.Size(); ++i)
+		{
+			let spot = invoker.wavekeep.Find(removelist[i]);
+			if (spot < invoker.wavekeep.Size())
+			{
+				invoker.wavekeep.Delete(spot);
+			}
+		}
+	}
+	
+	virtual int GetPermaItemAmount(string itemcheck = "")
+	{
+		//returns how much the player has permanent versions of a specific item.
+		//if no item is specified, returns how many perma items the player owns in totality.
+	
+		int returnnum = 0;
+	
+		bool checkall = false;
+		if (itemcheck == "") {checkall = true;}
+		
+		for (int i = 0; i < wavekeep.Size(); i++)
+		{
+			Array<String> keeparray;
+			wavekeep[i].Split(keeparray, ",");
+			int keepnum = keeparray[1].ToInt(10);
+			
+			if (checkall) {returnnum += keepnum;}
+			else if (itemcheck ~== keeparray[0]) {returnnum += keepnum;}
+		}
+		
+		return returnnum;
 	}
 	
 	action void DIWave_Start(void)
