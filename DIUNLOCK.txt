@@ -36,3 +36,5 @@ di_unlock_item_bulletsplitter DI_BulletSplitter 2;
 di_unlock_item_toomanybullets DI_TooManyBullets 2;
 di_unlock_item_combobase DI_ComboDamage 2;
 di_unlock_item_combomult DI_ComboDamageMult 2;
+>>Swag Level Unlocks
+di_unlock_item_bombbundle DI_ThrowBomb_Bundle 3;

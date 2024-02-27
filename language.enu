@@ -64,6 +64,7 @@ DIPOPUP_di_unlock_item_bulletsplitter = "Bullet Splitter";
 DIPOPUP_di_unlock_item_toomanybullets = "Too Many Bullets";
 DIPOPUP_di_unlock_item_combobase = "Super Base DMG Up";
 DIPOPUP_di_unlock_item_combomult = "Super DMG Mult Up";
+DIPOPUP_di_unlock_item_bombbundle = "Bundle of Bombs";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbto unlock this weapon.";
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbto unlock this weapon.";
@@ -101,6 +102,7 @@ SHOPLOCK_DI_LASTSTAND = "\cbMurder 600 Fred's to unlock this item.";
 SHOPLOCK_DI_FARSIGHT = "\cbMurder 1,000 Fred's to unlock this item.";
 SHOPLOCK_DI_COINMAGNET = "\cbPop 15 coin bags in Level 1 to unlock this item.";
 SHOPLOCK_DI_TOASTER = "\cbKill 25 THE HAMMER's to unlock this item.";
+SHOPLOCK_DI_THROWBOMB_BUNDLE = "\cbReach \ctSwag Level 1 \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

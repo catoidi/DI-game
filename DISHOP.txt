@@ -50,7 +50,7 @@ Health DI_Melon HEALE 16 192 di_unlock_item_melon;
 Health DI_Pizza HEALB 4 192;
 Health DI_JuiceBox HEALD 6 192;
 >>Consumables...
-Consumable DI_ThrowBomb GRENA 1;
+Consumable DI_ThrowBomb_Bundle GRENG 5;
 Consumable DI_Pizza HEALB 6;
 Consumable DITurret TURRC 10;
 Consumable DI_Dice DICEA 4 256 di_unlock_item_dice;
@@ -62,7 +62,7 @@ Consumable DI_Brick BRIKA 10;
 Consumable DI_9LeafClover LEAFA 36 256 di_unlock_item_9leafclover;
 Consumable DI_FastForward POW1O 10;
 >>Permanent Consumables...
-PermaConsumable DI_ThrowBomb GRENA 1;
+PermaConsumable DI_ThrowBomb_Bundle GRENG 5;
 PermaConsumable DI_Pizza HEALB 6;
 PermaConsumable DITurret TURRC 10;
 PermaConsumable DI_Dice DICEA 4 256 di_unlock_item_dice;
@@ -128,6 +128,7 @@ StatusPassive DI_PeerPressure POW1C 14;
 >>Rental Only Passives...
 >>Permanent Only Passives...
 >>Unused Shop Items
+Unused DI_ThrowBomb GRENA 1;
 Unused DI_HeartBomb GRENF 2;
 >>FAKE SHOP ITEMS. These are only here to allow them to appear in the item hud.
 FakeShopItem DI_FastForward_Powerup POW1T 1;

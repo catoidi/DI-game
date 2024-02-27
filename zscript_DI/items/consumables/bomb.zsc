@@ -67,3 +67,21 @@ Class DI_ThrowBomb_Projectile : DI_Actor
 			Stop;
 	}
 }
+
+Class DI_ThrowBomb_Bundle : DIBundle
+{
+	Default
+	{
+		Tag "Bundle of Bombs";
+		DIBundle.BundleItem "DI_ThrowBomb";
+		DIBundle.BundleAmount 5;
+		Inventory.PickupMessage "Got a 5-pack of bombs. Fuses are pre-lit for your convenience.";
+	}
+	
+	States
+	{
+		Spawn:
+			GREN G -1;
+			Stop;
+	}
+}
