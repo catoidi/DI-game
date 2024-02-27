@@ -179,6 +179,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	clearscope virtual bool CanFreshKill(void)
 	{
+		if (!player.ReadyWeapon) {return false;}
 		if ((LastWeaponKill != player.ReadyWeapon.GetClassName()) && (LastKillTimer < 1)) {return true;}
 		else if (JustKilled == true) {return true;}
 		else {return false;}
@@ -214,20 +215,25 @@ Class DI_PlayerBase : PlayerPawn abstract
 	{
 		++killcounter;
 		
-		CurrentWeaponKill = player.ReadyWeapon.GetClassName();
-		DI_Weapon curwpn = DI_Weapon(player.ReadyWeapon);
-		
 		int freshnum = 1;
-		if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
-		if (notweapon == true) {freshnum = 0;}
-		
-		int freshcharge = 1 + curwpn.wpn_freshcharge;
-		
+		int freshcharge = 1;
 		int islastweapon = 1;
-		if (CurrentWeaponKill == LastWeaponKill) {islastweapon = 2;}
+		
+		if (player.ReadyWeapon)
+		{
+			CurrentWeaponKill = player.ReadyWeapon.GetClassName();
+			DI_Weapon curwpn = DI_Weapon(player.ReadyWeapon);
+			
+			if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
+			if (notweapon == true) {freshnum = 0;}
+			
+			freshcharge += curwpn.wpn_freshcharge;
+			
+			if (CurrentWeaponKill == LastWeaponKill) {islastweapon = 2;}
+		}
 		
 		int killbonus = ((combonum * 10) + (freshnum * 3) * islastweapon) + (freshcharge * 15);
-		
+			
 		LastKillTimer -= killbonus;
 		if (LastKillTimer < 1) {LastKillTimer = 0;}
 	}
