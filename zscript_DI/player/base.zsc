@@ -445,7 +445,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		}
 	}
 	
-	virtual int GetPermaItemAmount(string itemcheck = "")
+	clearscope virtual int GetPermaItemAmount(string itemcheck = "")
 	{
 		//returns how much the player has permanent versions of a specific item.
 		//if no item is specified, returns how many perma items the player owns in totality.
