@@ -2,12 +2,27 @@
 
 mixin class DI_ConsumableMixin
 {
+	bool dopermacheck;
+	
 	bool DIUsed(void)
 	{
 		//allows eventhandlers to track consumable item usage.
 		string command = string.format("%s", "diplayeritemused ");
 		EventHandler.SendNetworkEvent(command);
 		return true;
+	}
+	
+	virtual void PermaCheck(DI_PlayerBase plr)
+	{
+		if ((plr.GetPermaItemAmount(self.GetClassName()) > 0) && (di_depletedperma == true)) {bKEEPDEPLETED = true;}
+		else {bKEEPDEPLETED = false;}
+	}
+	
+	override void DepleteOrDestroy()
+	{
+		if (owner is "DI_PlayerBase") {PermaCheck(DI_PlayerBase(owner));}
+		
+		Super.DepleteOrDestroy();
 	}
 	
 	default

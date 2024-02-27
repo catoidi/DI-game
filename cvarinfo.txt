@@ -79,6 +79,7 @@ server cheat bool di_unlock_item_partyshotty = false; //complete 10 side quests 
 server cheat bool di_unlock_item_laserpointer = false; //fully upgrade the shop in Level 2.
 server cheat bool di_unlock_item_popcorngun = false; //reach the first endless loop in Level 2.
 server cheat bool di_unlock_item_partyshotty2 = false; //unlocked by holding 4 Box Party weapons at once.
+server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
@@ -100,6 +101,7 @@ user float di_itemhud_alpha = 0.75; //opacity of the item hud.
 user int box_hudshake = 2; //how much hud shakes when taking damage
 user bool di_showfreshtimer = false;
 user noarchive bool di_photomode = false; //hides all HUD elements. gets reset on game restart.
+server bool di_depletedperma = true; //show perma consumables in item hud, even if item is fully depleted.
 
 //nashhpbar
 user bool nashhpbar_enable = true;

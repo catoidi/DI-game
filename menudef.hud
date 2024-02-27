@@ -14,6 +14,8 @@ OptionMenu "DIHudOptions"
 	Tooltip "Controls how much the HUD will 'shake' upon you taking damage.\n\nAlso influences the minimum threshold of damage needed for shake to occur."
 	Option "Show Fresh Timer", "di_showfreshtimer", OnOff
 	Tooltip "Adds a number timer beside the 'Fresh' meter.\n\nCan help you understand the fresh bonus cooldown a bit more."
+	Option "Show Depleted Items", "di_depletedperma", OnOff
+	Tooltip "When enabled, permanent consumable items will stay in your inventory bar, even when you currently have none."
 	StaticText ""
 	Option "Photo Mode", "di_photomode", OnOff
 	Tooltip "Hides all HUD elements.  Does not get rid of popup messages.\n\nThis option is reset back to off upon closing the game."
