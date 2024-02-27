@@ -146,6 +146,36 @@ Class DeathscreenHandler : EventHandler
 		highscores.setstring(newcvar);
 	}
 	
+	ui virtual void UpdateSwag(int newscore)
+	{
+		if (!plr) {return;}
+		cvar swaglevel = cvar.findcvar("di_swaglevel");
+		cvar experience = cvar.findcvar("di_experience");
+		int curexp = experience.getint();
+		int curlvl = swaglevel.getint();
+		
+		int newexp = newscore;
+		int bonusexp = (newscore - prevscore) * 2; //give +200% exp for high score.
+		if (bonusexp > 0) {newexp += bonusexp;}
+		curexp += newexp;
+		
+		int expmax = 15000 * (1 + curlvl);
+		int newlvl = 0;
+		while (curexp >= expmax)
+		{
+			curlvl += 1;
+			newlvl += 1;
+			curexp -= expmax;
+		}
+		
+		console.printf("\cnExp: %d/%d \cf(+%d)", curexp, expmax, newexp);
+		console.printf("\ctSwag Lvl: %d", curlvl);
+		if (newlvl == 1) {console.printf("\cfYou gained %d swag level this game.");}
+		else if (newlvl > 1) {console.printf("\cfYou gained %d swag levels this game.");}
+		swaglevel.setint(curlvl);
+		experience.setint(curexp);
+	}
+	
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (plr && (IsDead == true))
@@ -168,6 +198,7 @@ Class DeathscreenHandler : EventHandler
 					if (skill == 0) {iseasy = true;}
 					UpdateHighScore(finalscore, iseasy);
 				}
+				UpdateSwag(finalscore);
 				scoredone = true;
 			}
 			
