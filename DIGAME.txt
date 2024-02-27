@@ -14,10 +14,10 @@
 >>[PLAYERS]
 >>Player 1, Fredrick, always unlocked.
 Add, Player, DI_PlayerFredrick;
->>Player 2, Box.
-Add, Player, DI_PlayerBox, di_unlock_plr_box;
->>Player 3, Burger.
+>>Player 2, Burger.
 Add, Player, DI_PlayerBurger, di_unlock_plr_burger;
+>>Player 3, Box.
+Add, Player, DI_PlayerBox, di_unlock_plr_box;
 >>
 >>[EPISODES]
 >>Tutorial Level.

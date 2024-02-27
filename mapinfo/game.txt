@@ -15,7 +15,7 @@ GameInfo
 	FullscreenAutoAspect = 3
 	DimColor = "0b 0b 0b"
 	DimAmount = 0.8
-	PlayerClasses = "DI_PlayerFredrick", "DI_PlayerBox", "DI_PlayerBurger" //DIGAME.txt MUST match this or the game will EXPLODE AND DIE.
+	PlayerClasses = "DI_PlayerFredrick", "DI_PlayerBurger", "DI_PlayerBox" //DIGAME.txt MUST match this or the game will EXPLODE AND DIE.
 	StatusbarClass = "DI_HUD"
 	InfoPage = "guide01"
 	
