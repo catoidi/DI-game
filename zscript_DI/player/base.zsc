@@ -66,6 +66,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	int degenforgive;
 	
+	bool iamfrozen;
+	
 	override void PostBeginPlay(void)
 	{
 		Super.PostBeginPlay();
@@ -90,6 +92,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		
 		if (self.health > 0)
 		{
+			TimeFreezeCheck();
 			ScaleSquish();
 			ComboCounter();
 			BoxAmmoChecker();
@@ -360,7 +363,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				else if ((LastKillTimer > 0) && (freshmsg == true)) {freshmsg = false;}
 			}
 			A_SetInventory("DI_TokenCombo", combonum_bonus);
-			}
+		}
 	}
 	
 	virtual void ScaleSquish(void)
@@ -379,6 +382,20 @@ Class DI_PlayerBase : PlayerPawn abstract
 		{
 			A_FadeTo(1.0, 99999.0);
 			diefade = false;
+		}
+	}
+	
+	virtual void TimeFreezeCheck()
+	{
+		if (isFrozen() && (iamfrozen == false)) 
+		{
+			A_GiveInventory("DI_TokenComboFreeze", 1);
+			iamfrozen = true;
+		}
+		else if ((isFrozen() == false) && iamfrozen) 
+		{
+			A_TakeInventory("DI_TokenComboFreeze", 1);
+			iamfrozen = false;
 		}
 	}
 	
