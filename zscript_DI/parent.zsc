@@ -62,4 +62,29 @@ Class DI_WaveStarter : Actor
 	}
 }
 
+Class DI_WaveSpawnTimer : Actor
+{
+	//allows spawn timer to be controlled with items such as time freeze or random events.
+	
+	int user_wavetimer;
+
+	Default
+	{
+		+NOINTERACTION;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1 NoDelay
+			{
+				ACS_ScriptCall("SpawnSpawners");
+				if (invoker.user_wavetimer < 1) {ThrowAbortException("%s", "WAVE ERROR: Spawn Timer cannot be below 1 tic! (Maybe just increase the spawn rate instead?)");}
+				else {A_SetTics(invoker.user_wavetimer);}
+				//console.printf("%d", invoker.user_wavetimer);
+			}
+			Loop;
+	}
+}
+
 Class DI_ClearPlayerItems : DI_WaveStarter {}

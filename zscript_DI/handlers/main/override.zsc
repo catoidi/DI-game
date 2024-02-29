@@ -44,6 +44,7 @@ extend class DIHandler
 					}
 				}
 				DoWaveEvent(e);
+				e.Thing.Spawn("DI_WaveSpawnTimer");
 			}
 			if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
 			{
@@ -68,6 +69,11 @@ extend class DIHandler
 			if (e.Thing is "DI_FloorActor")
 			{
 				GiveFloorTime(DI_FloorActor(e.Thing));
+			}
+			if (e.Thing is "DI_WaveSpawnTimer")
+			{
+				if (wavetimeractor) {ThrowAbortException("%s", "WAVE ERROR: Attmepted to start the same wave multiple times!");}
+				else {wavetimeractor = DI_WaveSpawnTimer(e.Thing);}
 			}
 		}
 	}
@@ -226,6 +232,10 @@ extend class DIHandler
 				let num = plr.GetPermaItemAmount(cmd[1]);
 				console.printf("You have %d of these.", num);
 			}
+		}
+		else if (e.Name == "DIWaveFinished")
+		{
+			wavetimeractor.Destroy();
 		}
 	}
 }

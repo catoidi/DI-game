@@ -3,7 +3,6 @@
 
 int curwave;
 int spawntime;
-int spawntime_delay;
 bool okspawn;
 int spawnercount;
 int spawnamount;
@@ -32,22 +31,18 @@ SCRIPT "openscript" (void) //run this script on your map to enable the waves.
 	ACS_NamedExecute("DIStartWave", 0, 0, 0, 0);
 }
 
-SCRIPT "SpawnSpawners" OPEN
+SCRIPT "SpawnSpawners" (void)
 {
 	if (okspawn == true)
 	{
-		++spawntime_delay;
-		if (spawntime_delay >= spawntime)
+		SetUserVariable(0, "user_wavetimer", spawntime);
+		for (int i = 0; i < spawnamount; ++i)
 		{
-			for (int i = 0; i < spawnamount; ++i)
-			{
-				Spawn("DISpawner", 0, 0, 0, 0, 0);
-			}
-			spawntime_delay = 0;
+			Spawn("DISpawner", 0, 0, 0, 0, 0);
 		}
 	}
+	else {SetUserVariable(0, "user_wavetimer", 1);}
 	Delay(1);
-	Restart;
 }
 
 script "activateself" (void)

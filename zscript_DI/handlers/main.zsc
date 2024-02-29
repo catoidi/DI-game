@@ -49,4 +49,6 @@ class DIHandler : EventHandler
 	transient cvar floorcvar;
 	int floortimer;
 	int floortic;
+	
+	DI_WaveSpawnTimer wavetimeractor;
 }
