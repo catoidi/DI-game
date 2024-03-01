@@ -235,6 +235,7 @@ Class DI_Weapon : Weapon abstract
 		invoker.wpn_speed_mode = mode;
 	}
 	
+	bool wpnfrozen;
 	virtual void UpdateWeaponSpeed()
 	{	
 		wpn_speed_current = default.wpn_speed_current;
@@ -242,6 +243,9 @@ Class DI_Weapon : Weapon abstract
 		if (wpn_speed_mode == 0) {wpn_speed_current = wpn_speed;}
 		else if (wpn_speed_mode == 1) {wpn_speed_current = wpn_speed + wpn_speed_fire;}
 		else if (wpn_speed_mode == 2) {wpn_speed_current = wpn_speed + wpn_speed_reload;}
+		
+		if (owner.IsFrozen()) {wpn_speed_current = 99999999; wpnfrozen = true;}
+		else if (wpnfrozen == true) {scalers.Clear(); wpnfrozen = false;}
 	}
 	
 	virtual void UpdatePlayerSpeed()
