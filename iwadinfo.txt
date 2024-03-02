@@ -2,12 +2,15 @@
 
 IWad 
 {
-    Name = "DI (beta build v0.8)"
+    Name = "DI (beta build v0.8.1)"
     Autoname = "DI"
     Game = "Doom"
     Config = "DI"
     IWADname = "DI.ipk3"
-	Load = "di-content.pk3", "di-gearbox.pk3"
+	Load = "di-content.pk3", "di-bonus.pk3", "di-gearbox.pk3"
+	LoadLights = 0
+	LoadBrightmaps = 0
+	LoadWidescreen = 0
 	Mapinfo = "mapinfo/mindefaults.txt"
     BannerColors = "FFFFFF", "000000"
 	//StartupType = "Hexen"
