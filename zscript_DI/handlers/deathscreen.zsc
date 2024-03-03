@@ -159,19 +159,20 @@ Class DeathscreenHandler : EventHandler
 		if (bonusexp > 0) {newexp += bonusexp;}
 		curexp += newexp;
 		
-		int expmax = 15000 * (1 + curlvl);
+		int expmax = 10000 * (1 + curlvl);
 		int newlvl = 0;
 		while (curexp >= expmax)
 		{
 			curlvl += 1;
 			newlvl += 1;
 			curexp -= expmax;
+			expmax = 10000 * (1 + curlvl);
 		}
 		
 		console.printf("\cnExp: %d/%d \cf(+%d)", curexp, expmax, newexp);
 		console.printf("\ctSwag Lvl: %d", curlvl);
-		if (newlvl == 1) {console.printf("\cfYou gained %d swag level this game.");}
-		else if (newlvl > 1) {console.printf("\cfYou gained %d swag levels this game.");}
+		if (newlvl == 1) {console.printf("\cfYou gained %d swag level this game.", newlvl);}
+		else if (newlvl > 1) {console.printf("\cfYou gained %d swag levels this game.", newlvl);}
 		swaglevel.setint(curlvl);
 		experience.setint(curexp);
 	}
@@ -199,6 +200,7 @@ Class DeathscreenHandler : EventHandler
 					UpdateHighScore(finalscore, iseasy);
 				}
 				UpdateSwag(finalscore);
+				eventhandler.sendnetworkevent("swagcheck");
 				scoredone = true;
 			}
 			
@@ -230,11 +232,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("Current Wave: \ck%d", wavenum);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 			if (DeathTimer > 170)
@@ -242,11 +244,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("\n\nEnemies Killed: \cr%d", plr.killcounter);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 			if (DeathTimer > 185)
@@ -254,11 +256,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("\n\n\n\nItems Bought: \cn%d", plr.buycounter);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 			if (DeathTimer > 200)
@@ -266,11 +268,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("\n\n\n\n\n\nMoney Spent: \cp$%d", plr.moneyspent);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 			if (DeathTimer > 215)
@@ -281,11 +283,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("\n\n\n\n\n\n\n\nCurrent Worth: %s%d", dollar, worth);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 			if (DeathTimer > 230)
@@ -295,11 +297,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("\n\n\n\n\n\n\n\n\n\n%sFinal Rating: %d", totalcolor, finalscore);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 			if (DeathTimer > 245)
@@ -310,11 +312,11 @@ Class DeathscreenHandler : EventHandler
 				string died = string.format("\n\n\n\n\n\n\n\n\n\n\n\n%sPrevious Score: %d%s", totalcolor, prevscore, newbest);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
-					DTA_ScaleX, CleanXFac * 1.3,
-					DTA_ScaleY, CleanYFac * 1.3
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
 		}

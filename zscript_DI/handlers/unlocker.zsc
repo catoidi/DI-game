@@ -300,6 +300,7 @@ Class DIUnlockHandler : EventHandler
 			reroller.SetInt(newreroll);
 		}
 		else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
+		else if (e.Name == "swagcheck") {DoSwagCheck();}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -550,6 +551,41 @@ Class DIUnlockHandler : EventHandler
 				shockkills.SetInt(newshock);
 				if (newshock >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shockbullet");}
 				break;
+		}
+	}
+	
+	virtual void DoSwagCheck()
+	{
+		array<string> swagdata;
+	
+		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(swagdata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISWAG", ThisLump + 1, 1);
+		}
+		
+		foreach(swag : swagdata)
+		{
+			if (swag.Left(2) == ">>") {continue;}
+			string realline = swag.Left(swag.IndexOf(";"));
+			array<string> curline;
+			realline.split(curline, " ");
+			if (curline.size() != 2) {ThrowAbortException("DISWAG Error: Expected 2 arguments, found %d in '%s'.", curline.size(), swag);}
+			int swagneed = curline[0].ToInt(10);
+			if (swagneed <= di_swaglevel)
+			{
+				cvar swagcvar = cvar.findcvar(curline[1]);
+				if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected in '%s'.", swag);}
+				else if (!swagcvar.GetBool()) 
+				{
+					string cmd = string.format("diunlock_%s", curline[1]);
+					SendInterfaceEvent(consoleplayer, cmd);
+				}
+			}
 		}
 	}
 	

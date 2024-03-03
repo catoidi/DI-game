@@ -1,0 +1,5 @@
+1 di_unlock_item_bombbundle;
+>>2 DoubleShotgun;
+>>4 GrenadeLauncher;
+>>6 LaserPointer;
+>>8 FingerGun;
