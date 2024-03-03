@@ -62,20 +62,20 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 	{
 		Super.DoEffect();
 		
-		++hptick;
-		if (hptick >= 35)
+		if (owner && (owner.isFrozen() == false))
 		{
-			if (CallACS("DICheckWaveProgress") == true)
+			++hptick;
+			if (hptick >= 35)
 			{
-				if (owner)
+				if (CallACS("DICheckWaveProgress") == true)
 				{
 					int maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
 					if (owner.health < maxhp) {Use(false);}
 					if (owner.CountInv("DI_Regen") > maxhp) {owner.SetInventory("DI_Regen", maxhp);}
 					else {owner.A_TakeInventory("DI_Regen", 1);} //will remove the item, regardless if the player can regenerate or not.
 				}
+				hptick = 0;
 			}
-			hptick = 0;
 		}
 	}
 }

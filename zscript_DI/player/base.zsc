@@ -92,7 +92,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		
 		if (self.health > 0)
 		{
-			TimeFreezeCheck();
+			ComboFreezer();
 			ScaleSquish();
 			ComboCounter();
 			BoxAmmoChecker();
@@ -120,23 +120,26 @@ Class DI_PlayerBase : PlayerPawn abstract
 			if (cointimer > 50) {cointimer *= 0.98;}
 			else if (cointimer > 0) {--cointimer;}
 			
-			int degenmax = 210;
-			if (self.CountInv("DI_Degen") > 0) {degenmax /= 3;}
-			if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")) * 2) {degenmax /= 7;}
-			if (self.degentimer > degenmax)
+			if (isFrozen() == false)
 			{
-				if (CallACS("DICheckWaveProgress") == true)
+				int degenmax = 210;
+				if (self.CountInv("DI_Degen") > 0) {degenmax /= 3;}
+				if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")) * 2) {degenmax /= 7;}
+				if (self.degentimer > degenmax)
 				{
-					if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")))
+					if (CallACS("DICheckWaveProgress") == true)
 					{
-						A_SetHealth(self.Health - 1);
-						if (self.Health < 1) {self.A_Die();}
-						if (bNOBLOOD == false) {A_DISpawnPlayerBlood();}
+						if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")))
+						{
+							A_SetHealth(self.Health - 1);
+							if (self.Health < 1) {self.A_Die();}
+							if (bNOBLOOD == false) {A_DISpawnPlayerBlood();}
+						}
 					}
+					self.degentimer = 0;
 				}
-				self.degentimer = 0;
+				else {++self.degentimer;}
 			}
-			else {++self.degentimer;}
 		}
 	}
 	
@@ -385,7 +388,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		}
 	}
 	
-	virtual void TimeFreezeCheck()
+	virtual void ComboFreezer()
 	{
 		if (isFrozen() && (iamfrozen == false)) 
 		{

@@ -84,7 +84,7 @@ class DIPowerup : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if (plr)
+		if (plr && (plr.isFrozen() == false))
 		{
 			++poweruptimer;
 			if (poweruptimer >= 35)
