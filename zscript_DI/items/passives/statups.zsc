@@ -121,7 +121,9 @@ Class DI_RewardsProgram : DIPassiveInventory
 	{
 		if (!plr) {return 0;}
 		int addcoin = plr.countinv("DI_RewardsProgram");
-		if (plr.score < 0) {addcoin *= 3;}
+		if (plr.score <= -500) {addcoin *= 3;}
+		else if (plr.score <= -250) {addcoin *= 2;}
+		else if (plr.score < 0) {addcoin = 1;}
 		else if (plr.countinv("DI_Degen") == 0) {addcoin = 0;} //still give some coins if player has lost hp to debt.
 		return addcoin;
 	}

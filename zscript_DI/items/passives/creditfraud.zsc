@@ -15,12 +15,14 @@ Class DI_CreditFraud : DIPassiveInventory
 		if (!plr) {return 0.0;}
 		if (plr.score < 0)
 		{
-			return 0.5 * plr.countinv("DI_CreditFraud");
+			float fraud = 0.10 + (0.0008 * -plr.score); //max dmg is 50% at -500 or lower score.
+			if (fraud > 0.5) {fraud = 0.5;}
+			return fraud * plr.countinv("DI_CreditFraud");
 		}
 		else if (plr.countinv("DI_Degen") > 0)
 		{
 			//still award a smaller amount of damage if the player has lost hp to debt.
-			return 0.15 * plr.countinv("DI_CreditFraud");
+			return 0.1 * plr.countinv("DI_CreditFraud");
 		}
 		else {return 0.0;}
 	}
