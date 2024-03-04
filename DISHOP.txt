@@ -32,8 +32,8 @@ NormalWeapon DoubleShotgun PUSGZ 20 256 di_unlock_item_doubleshotgun;
 FantasyWeapon StunCrossbow SBOWZ 25;
 >>Box Party Weapons...
 BoxWeapon LaserPointer LAZRE 35 256 di_unlock_item_laserpointer;
-BoxWeapon PartyShotty SHUTZ 25;
-BoxWeapon PopcornGun POPGM 25;
+BoxWeapon PartyShotty SHUTZ 25 256 di_unlock_item_partyshotty;
+BoxWeapon PopcornGun POPGM 25 256 di_unlock_item_popcorngun;
 BoxWeapon PartyShotty2 SHU1Z 30 128 di_unlock_item_partyshotty2;
 >>Starting Weapons...
 StartWeapon StarPistol PISTZ 25 128 di_unlock_item_starpistol;
@@ -52,27 +52,28 @@ Health DI_JuiceBox HEALD 6 192;
 Health DI_HeartBomb GRENF 5 64 di_unlock_item_heartbomb;
 >>Consumables...
 Consumable DI_ThrowBomb_Bundle GRENG 5;
-Consumable DI_Pizza HEALB 6;
+Consumable DI_Pizza HEALB 6 64;
 Consumable DITurret TURRC 10;
 Consumable DI_Dice DICEA 4 256 di_unlock_item_dice;
-Consumable DI_JuiceBox HEALD 10;
+Consumable DI_JuiceBox HEALD 10 64;
 Consumable DI_Tomahawk HAWKA 2;
-Consumable DI_HeartBomb GRENF 8 256 di_unlock_item_heartbomb;
+Consumable DI_HeartBomb GRENF 8 192 di_unlock_item_heartbomb;
 Consumable DI_AmmoSatchel SACKA 6;
 Consumable DI_Brick BRIKA 10;
 Consumable DI_9LeafClover LEAFA 36 256 di_unlock_item_9leafclover;
 Consumable DI_FastForward POW1O 10;
 >>Permanent Consumables...
 PermaConsumable DI_ThrowBomb_Bundle GRENG 5;
-PermaConsumable DI_Pizza HEALB 6;
+PermaConsumable DI_Pizza HEALB 6 256;
 PermaConsumable DITurret TURRC 10;
 PermaConsumable DI_Dice DICEA 4 256 di_unlock_item_dice;
-PermaConsumable DI_JuiceBox HEALD 10;
+PermaConsumable DI_JuiceBox HEALD 10 256;
 PermaConsumable DI_Tomahawk HAWKA 2;
-PermaConsumable DI_AmmoSatchel SACKA 6;
-PermaConsumable DI_FastForward POW1O 12;
-PermaConsumable DI_9LeafClover LEAFA 36 36 di_unlock_item_9leafclover;
 PermaConsumable DI_HeartBomb GRENF 8 256 di_unlock_item_heartbomb;
+PermaConsumable DI_AmmoSatchel SACKA 6;
+PermaConsumable DI_Brick BRIKA 10;
+PermaConsumable DI_9LeafClover LEAFA 36 256 di_unlock_item_9leafclover;
+PermaConsumable DI_FastForward POW1O 10;
 >>Passive Grouping... (Split between rentals/permanents, in case you want specific items to not show up as a rental/permanent.)
 [Passive] DamagePassive;
 [Passive] DefensePassive;
