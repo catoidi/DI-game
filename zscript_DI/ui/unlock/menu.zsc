@@ -214,12 +214,12 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			let unlockpos = 0;
 			if (curline.Size() == 5) 
 			{
-				console.printf("unlock position found, %d", curline[4].ToInt(10));
+				//console.printf("unlock position found, %d", curline[4].ToInt(10));
 				unlockpos = curline[4].ToInt(10);
 			}
 			else
 			{
-				console.printf("%s", "editing line");
+				//console.printf("%s", "editing line");
 				curline.Reserve(5 - curline.Size());
 				curline[4] = string.format("%d", unlockpos);
 				filedata[i] = string.format("%s %s %s %s %s", curline[0], curline[1], curline[2], curline[3], curline[4]);
@@ -228,17 +228,17 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			bool foundspot;
 			if (fulllist.Size() > 0)
 			{
-				console.printf("%s", "items already in list");
+				//console.printf("%s", "items already in list");
 				for (int j = 0; j < fulllist.Size(); ++j)
 				{
 					array<string> listline;
 					fulllist[j].Split(listline, " ");
 					if (listline[4].ToInt(10) <= unlockpos) 
 					{
-						console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
+						//console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
 						continue;
 					}
-					console.printf("%s %d", "inserting item at line", j);
+					//console.printf("%s %d", "inserting item at line", j);
 					fulllist.Insert(j, filedata[i]);
 					foundspot = true;
 					j = fulllist.Size();
@@ -246,7 +246,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			}
 			if (foundspot == false) 
 			{
-				console.printf("%s", "adding item to end of list");
+				//console.printf("%s", "adding item to end of list");
 				fulllist.Push(filedata[i]);
 			}
 			//console.printf("%s", filedata[i]);
@@ -357,7 +357,6 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				else
 				{
 					//console.printf("%s", "getting cvar #%d", i);
-					console.printf("unlock item: '%s'", unlocklist[i]);
 					unlocklist[i].Split(curline, " ");
 					cvar curcvar = cvar.getcvar(curline[0], plr);
 					
