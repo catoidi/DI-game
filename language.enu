@@ -21,8 +21,10 @@ DIMENU_SELECT_DI02 = "the party area";
 DIMENU_SELECT_DI_PLAYERFREDRICK = "Fredrick";
 DIMENU_SELECT_DI_PLAYERBOX = "Box Partyer";
 DIMENU_SELECT_DI_PLAYERBURGER = "Burger";
+DIMENU_SELECT_DI_PLAYERHAM = "Hamill";
 DIMENU_LOCKED_DI_PLAYERBOX = "\ccunlocked by owning 2 Box Party Weapons at once.";
 DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
+DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by getting 10 enemies killed by THE HAMMER.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 
 //Unlocks (i could've maybe done this in a better way....)

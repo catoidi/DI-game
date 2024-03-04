@@ -1,0 +1,48 @@
+class DI_PlayerHam : DI_PlayerBase
+{
+	Default
+	{
+		Speed 0.46; //the slowest speed in the game.
+		Height 58;
+		Health 160;
+		Player.MaxHealth 160;
+		Player.DisplayName "Hamill";
+		Player.Portrait "graphics/info_hammer.png";
+		Player.ViewHeight 41;
+		Player.WeaponSlot 1, "Sledgehammer";
+		Player.StartItem "Sledgehammer";
+		DI_PlayerBase.AutoBlacklist "Sledgehammer";
+		DI_PlayerBase.PermaStart "Sledgehammer";
+		BloodType "DI_HammerBlood";
+	}
+	
+	override string ScoreUnlock()
+	{
+		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_sledgehammer";}
+		else return "";
+	}
+	
+	States
+	{
+		Spawn:
+			HAMM A -1;
+			Loop;
+		//Make sure these match the base.zsc...
+		See:
+			#### AB 8;
+			Loop;
+		Missile:
+			#### # 1;
+			#### # 11;
+			Goto Spawn;
+		Melee:
+			#### # 1 BRIGHT {A_DIScale(0.05, -0.05); A_AttachLightDef("shoot", "BULLETSHOOT");}
+			#### # 1 BRIGHT;
+			#### # 2 A_RemoveLight("shoot");
+			#### # 0 A_DIScale(-0.05, 0.05);
+			Goto Missile;
+		Pain:
+			#### E 8 A_DIPlayerPain(true);
+			Goto Spawn;
+	}
+}

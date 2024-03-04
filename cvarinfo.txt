@@ -20,6 +20,7 @@ server cheat bool di_unlock_lvl_di04 = false; //unlocks Level 4. unlocked throug
 server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked through purchasing 2 Box Party weapons at once.
 server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player.
 server noarchive cheat int di_burgercount = 0; //you must consume 5 burger in 1 game to unlock burger.
+server cheat bool di_unlock_plr_hammer = false;
 user cheat string di_highscore = ""; //stores every high score for every level for every character.
 server cheat int di_experience = 0; //goes up based on your final score. high scores will give triple experience.
 server cheat int di_swaglevel = 0; //goes up once per 25k experience multiplied by level. each level is harder than the last to get. unlocks are tied behind each level.

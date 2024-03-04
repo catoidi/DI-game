@@ -65,6 +65,7 @@ version "4.11"
 #include "zscript_DI/player/fredrick.zsc"
 #include "zscript_DI/player/box.zsc"
 #include "zscript_DI/player/burger.zsc"
+#include "zscript_DI/player/hamill.zsc"
 
 //pickups
 #include "zscript_DI/pickups/base.zsc"
