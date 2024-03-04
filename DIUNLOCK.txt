@@ -44,5 +44,8 @@ di_unlock_item_combomult DI_ComboDamageMult 2  999999;
 >>Swag Level Unlocks
 di_unlock_item_bombbundle DI_ThrowBomb_Bundle 3 di_swaglevel 1000001;
 di_unlock_item_doubleshotgun DoubleShotgun 1 di_swaglevel 1000002;
+di_unlock_item_dmgmult DI_DamageMultGiver 2 di_swaglevel 1000003;
 di_unlock_item_grenadelauncher GrenadeLauncher 1 di_swaglevel 1000004;
+di_unlock_item_gunslinger DI_Gunslinger 2 di_swaglevel 1000005;
 di_unlock_item_laserpointer LaserPointer 1 di_swaglevel 1000006;
+di_unlock_item_bowtie DI_BowTie 3 di_swaglevel 1000007;

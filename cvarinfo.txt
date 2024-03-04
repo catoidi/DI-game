@@ -85,8 +85,11 @@ server cheat bool di_unlock_item_partyshotty2 = false; //fully upgrade the shop 
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 2.
+server cheat bool di_unlock_item_dmgmult = false; //reach swag level 3.
 server cheat bool di_unlock_item_grenadelauncher = false; //reach swag level 4.
+server cheat bool di_unlock_item_gunslinger = false; //reach swag level 5.
 server cheat bool di_unlock_item_laserpointer = false; //reach swag level 6.
+server cheat bool di_unlock_item_bowtie = false; //swag 7.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).

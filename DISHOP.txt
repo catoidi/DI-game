@@ -43,7 +43,7 @@ StartWeapon CheeseGun CHESZ 20 128 di_unlock_item_cheesegun;
 Armor DI_TopHat ARMOA 30;
 Armor DI_TopHat2 ARMOB 67 224;
 Armor DI_PartyHat ARMOC 120 192;
-Armor DI_BowTie ARMOD 50 192;
+Armor DI_BowTie ARMOD 50 192 di_unlock_item_bowtie;
 >>Health...
 Health DI_FullHeal HEALA 12;
 Health DI_Melon HEALE 16 192 di_unlock_item_melon;
@@ -85,12 +85,12 @@ PermaConsumable DI_HeartBomb GRENF 8 256 di_unlock_item_heartbomb;
 [PermaPassive] StatusPassive;
 [PermaPassive] OnlyPermaPassive;
 >>Damage Passives...
-DamagePassive DI_BaseDamageGiver POWRA 7 64;
-DamagePassive DI_PainStar POWRJ 35 64 di_unlock_item_painstar;
-DamagePassive DI_Gunslinger POWRK 28 64;
-DamagePassive DI_DamageMultGiver POWRR 7;
-DamagePassive DI_PainRhombus POWRS 35 128;
-DamagePassive DI_GunHoarder POWRU 28 128;
+DamagePassive DI_BaseDamageGiver POWRA 14;
+DamagePassive DI_PainStar POWRJ 28 192 di_unlock_item_painstar;
+DamagePassive DI_Gunslinger POWRK 35 256 di_unlock_item_gunslinger;
+DamagePassive DI_DamageMultGiver POWRR 7 256 di_unlock_item_dmgmult;
+>>DamagePassive DI_PainRhombus POWRS 35 128;
+>>DamagePassive DI_GunHoarder POWRU 28 128;
 DamagePassive DI_Shoe POWRY 7 256 di_unlock_item_shoe;
 DamagePassive DI_BulletSplitter POWRG 49 256 di_unlock_item_bulletsplitter;
 DamagePassive DI_TooManyBullets POWRH 49 256 di_unlock_item_toomanybullets;
