@@ -49,6 +49,7 @@ Health DI_FullHeal HEALA 12;
 Health DI_Melon HEALE 16 192 di_unlock_item_melon;
 Health DI_Pizza HEALB 4 192;
 Health DI_JuiceBox HEALD 6 192;
+Health DI_HeartBomb GRENF 5 64 di_unlock_item_heartbomb;
 >>Consumables...
 Consumable DI_ThrowBomb_Bundle GRENG 5;
 Consumable DI_Pizza HEALB 6;
@@ -56,7 +57,7 @@ Consumable DITurret TURRC 10;
 Consumable DI_Dice DICEA 4 256 di_unlock_item_dice;
 Consumable DI_JuiceBox HEALD 10;
 Consumable DI_Tomahawk HAWKA 2;
-Consumable DI_HeartBomb GRENF 2;
+Consumable DI_HeartBomb GRENF 8 256 di_unlock_item_heartbomb;
 Consumable DI_AmmoSatchel SACKA 6;
 Consumable DI_Brick BRIKA 10;
 Consumable DI_9LeafClover LEAFA 36 256 di_unlock_item_9leafclover;
@@ -71,6 +72,7 @@ PermaConsumable DI_Tomahawk HAWKA 2;
 PermaConsumable DI_AmmoSatchel SACKA 6;
 PermaConsumable DI_FastForward POW1O 12;
 PermaConsumable DI_9LeafClover LEAFA 36 36 di_unlock_item_9leafclover;
+PermaConsumable DI_HeartBomb GRENF 8 256 di_unlock_item_heartbomb;
 >>Passive Grouping... (Split between rentals/permanents, in case you want specific items to not show up as a rental/permanent.)
 [Passive] DamagePassive;
 [Passive] DefensePassive;
@@ -129,7 +131,6 @@ StatusPassive DI_PeerPressure POW1C 14;
 >>Permanent Only Passives...
 >>Unused Shop Items
 Unused DI_ThrowBomb GRENA 1;
-Unused DI_HeartBomb GRENF 2;
 >>FAKE SHOP ITEMS. These are only here to allow them to appear in the item hud.
 FakeShopItem DI_FastForward_Powerup POW1T 1;
 FakeShopItem DI_AmmoSatchel_Powerup SACKB 1;

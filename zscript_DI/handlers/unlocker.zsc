@@ -301,6 +301,17 @@ Class DIUnlockHandler : EventHandler
 		}
 		else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
 		else if (e.Name == "swagcheck") {DoSwagCheck();}
+		else if (e.Name == "doheartpickup")
+		{
+			let heart = cvar.getcvar("di_heartcount");
+			int heartnum = heart.getint() + 1;
+			heart.setint(heartnum);
+			
+			if ((heartnum >= 100) && (di_unlock_item_heartbomb == false))
+			{
+				sendinterfaceevent(consoleplayer, "diunlock_di_unlock_item_heartbomb");
+			}
+		}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)

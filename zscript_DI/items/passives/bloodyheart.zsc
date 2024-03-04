@@ -67,6 +67,12 @@ Class DI_BloodyHeart_Pickup : Health
 		+BRIGHT;
 	}
 	
+	override void DoPickupSpecial(Actor toucher)
+	{
+		eventhandler.sendnetworkevent("doheartpickup");
+		Super.DoPickupSpecial(toucher);
+	}
+	
 	States
 	{
 		Spawn:

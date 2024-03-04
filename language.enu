@@ -73,6 +73,7 @@ DIPOPUP_di_unlock_item_doubleshotgun = "Double Shotgun";
 DIPOPUP_di_unlock_item_grenadelauncher = "Grenade Launcher";
 DIPOPUP_di_unlock_item_laserpointer = "Laser Pointer";
 DIPOPUP_di_unlock_item_sledgehammer = "Sledgehammer";
+DIPOPUP_di_unlock_item_heartbomb = "Heart Bomb";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbto unlock this weapon.";
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbto unlock this weapon.";
@@ -114,6 +115,7 @@ SHOPLOCK_DOUBLESHOTGUN = "\cbReach \ctSwag Level 2 \cbto unlock this item.";
 SHOPLOCK_GRENADELAUNCHER = "\cbReach \ctSwag Level 4 \cbto unlock this item.";
 SHOPLOCK_LASERPOINTER = "\cbReach \ctSwag Level 6 \cbto unlock this item.";
 SHOPLOCK_SLEDGEHAMMER = "\cfThis unlock will be available in v0.9.";
+SHOPLOCK_DI_HEARTBOMB = "\cbPickup 100 hearts to unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
