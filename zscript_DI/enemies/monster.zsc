@@ -72,6 +72,11 @@ Class DI_Monster : DI_Actor abstract
 			plrtarget = PlayerPawn(target);
 		}
 		
+		if (Level.IsFrozen() == false) {StatusTick();}
+	}
+	
+	virtual void StatusTick()
+	{
 		++ticker;
 		if ((ticker >= 20) && (health > 0))
 		{
