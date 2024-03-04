@@ -65,13 +65,15 @@ DIPOPUP_di_unlock_item_toomanybullets = "Too Many Bullets";
 DIPOPUP_di_unlock_item_combobase = "Super Base DMG Up";
 DIPOPUP_di_unlock_item_combomult = "Super DMG Mult Up";
 DIPOPUP_di_unlock_item_bombbundle = "Bundle of Bombs";
+DIPOPUP_di_unlock_item_doubleshotgun = "Double Shotgun";
+DIPOPUP_di_unlock_item_grenadelauncher = "Grenade Launcher";
+DIPOPUP_di_unlock_item_laserpointer = "Laser Pointer";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbto unlock this weapon.";
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbto unlock this weapon.";
 SHOPLOCK_CHEESEGUN = "\cbReach 10k score as \cvBurger \cbto unlock this weapon.";
-SHOPLOCK_PARTYSHOTTY = "\cbKill 100 enemies in Level 2 to unlock this weapon.";
-SHOPLOCK_LASERPOINTER = "\cbKill 250 enemies in Level 2 to unlock this weapon.";
-SHOPLOCK_POPCORNGUN = "\cbKill 500 enemies in Level 2 to unlock this weapon.";
+SHOPLOCK_PARTYSHOTTY = "\cbplaceholder message.";
+SHOPLOCK_POPCORNGUN = "\cbplaceholder message.";
 SHOPLOCK_PARTYSHOTTY2 = "\cfThis unlock will be available in v0.9.";//"\cbKill 1,000 enemies in Level 2 to unlock this weapon.";
 SHOPLOCK_DI_MELON = "\cbKill 100 Fruit Puncher's to unlock this health item.";
 SHOPLOCK_DI_DICE = "\cbReroll the shop 25 times to unlock this item.";
@@ -103,6 +105,9 @@ SHOPLOCK_DI_FARSIGHT = "\cbMurder 1,000 Fred's to unlock this item.";
 SHOPLOCK_DI_COINMAGNET = "\cbPop 15 coin bags in Level 1 to unlock this item.";
 SHOPLOCK_DI_TOASTER = "\cbKill 25 THE HAMMER's to unlock this item.";
 SHOPLOCK_DI_THROWBOMB_BUNDLE = "\cbReach \ctSwag Level 1 \cbto unlock this item.";
+SHOPLOCK_DOUBLESHOTGUN = "\cbReach \ctSwag Level 2 \cbto unlock this item.";
+SHOPLOCK_GRENADELAUNCHER = "\cbReach \ctSwag Level 4 \cbto unlock this item.";
+SHOPLOCK_LASERPOINTER = "\cbReach \ctSwag Level 6 \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

@@ -1,5 +1,6 @@
 1 di_unlock_item_bombbundle;
->>2 DoubleShotgun;
->>4 GrenadeLauncher;
->>6 LaserPointer;
->>8 FingerGun;
+2 di_unlock_item_doubleshotgun;
+4 di_unlock_item_grenadelauncher;
+6 di_unlock_item_laserpointer;
+>>This one is found within "di-bonus.pk3".
+>>8 di_unlock_item_fingergun;

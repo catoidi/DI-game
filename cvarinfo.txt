@@ -69,17 +69,20 @@ server cheat bool di_unlock_item_toaster = false; //kill 25 THE HAMMERs.
 server cheat int di_hammercount = 0; //number of THE HAMMERs killed.
 server cheat bool di_unlock_item_bloodyheart = false; //get 10 tomahawk kills to unlock.
 server cheat int di_tomahawkcount = 0; //number of Tomahawk related kills.
-//shop unlocks (LEVEL 2)
 server cheat bool di_unlock_item_freshbullets = false; //get 10 fresh bonuses without reloading.
 server cheat bool di_unlock_item_freshcharger = false; //get 40 fresh bonuses in 1 run.
 server cheat bool di_unlock_item_bulletsplitter = false; //unlock 15 items.
 server cheat bool di_unlock_item_toomanybullets = false; //get 3 bullet splitters.
+//shop unlocks (LEVEL 2)
 server cheat int di_sidequests = 0; //how many side quests you've completed.
 server cheat bool di_unlock_item_partyshotty = false; //complete 10 side quests in Level 2.
-server cheat bool di_unlock_item_laserpointer = false; //fully upgrade the shop in Level 2.
 server cheat bool di_unlock_item_popcorngun = false; //reach the first endless loop in Level 2.
-server cheat bool di_unlock_item_partyshotty2 = false; //unlocked by holding 4 Box Party weapons at once.
+server cheat bool di_unlock_item_partyshotty2 = false; //fully upgrade the shop in Level 2.
+//swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
+server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 2.
+server cheat bool di_unlock_item_grenadelauncher = false; //reach swag level 4.
+server cheat bool di_unlock_item_laserpointer = false; //reach swag level 6.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
