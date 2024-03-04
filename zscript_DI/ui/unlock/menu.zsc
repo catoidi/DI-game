@@ -210,8 +210,45 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
 			array<string> curline;
 			filedata[i].Split(curline, " ");
-			if ((curline.Size() < 3) && (curline.Size() > 4)) {continue;} //each valid line must contain 3 or 4 arguments.
-			fulllist.Push(filedata[i]);
+			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
+			let unlockpos = 0;
+			if (curline.Size() == 5) 
+			{
+				console.printf("unlock position found, %d", curline[4].ToInt(10));
+				unlockpos = curline[4].ToInt(10);
+			}
+			else
+			{
+				console.printf("%s", "editing line");
+				curline.Reserve(5 - curline.Size());
+				curline[4] = string.format("%d", unlockpos);
+				filedata[i] = string.format("%s %s %s %s %s", curline[0], curline[1], curline[2], curline[3], curline[4]);
+			}
+			
+			bool foundspot;
+			if (fulllist.Size() > 0)
+			{
+				console.printf("%s", "items already in list");
+				for (int j = 0; j < fulllist.Size(); ++j)
+				{
+					array<string> listline;
+					fulllist[j].Split(listline, " ");
+					if (listline[4].ToInt(10) <= unlockpos) 
+					{
+						console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
+						continue;
+					}
+					console.printf("%s %d", "inserting item at line", j);
+					fulllist.Insert(j, filedata[i]);
+					foundspot = true;
+					j = fulllist.Size();
+				}
+			}
+			if (foundspot == false) 
+			{
+				console.printf("%s", "adding item to end of list");
+				fulllist.Push(filedata[i]);
+			}
 			//console.printf("%s", filedata[i]);
 		}
 	}
@@ -251,7 +288,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			//console.printf("'%s', '%s'", checkname, curline[1]);
 			if (checkname == curline[1])
 			{
-				if (curline.Size() == 4) {return curline[3];}
+				if (curline.Size() >= 4) {return curline[3];}
 				else {return "";}
 			}
 		}
@@ -320,6 +357,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				else
 				{
 					//console.printf("%s", "getting cvar #%d", i);
+					console.printf("unlock item: '%s'", unlocklist[i]);
 					unlocklist[i].Split(curline, " ");
 					cvar curcvar = cvar.getcvar(curline[0], plr);
 					
