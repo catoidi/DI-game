@@ -22,7 +22,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	Font bigFont, smallFont;
 	boxparty_ZF_Image background, plrinfo;
 	string TopLabel_text, TopLabel2_text;
-	boxparty_ZF_Label TopLabel, TopLabel2;
+	boxparty_ZF_Label TopLabel, TopLabel2, swaglevel, explabel;
 	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
 	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, heartboximages, sklboximages;
 	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels, skllabels;
@@ -101,6 +101,46 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		}
 		
 		Super.Ticker();
+	}
+	
+	override void Drawer()
+	{
+		Super.Drawer();
+		
+		if (pagenum == 2)
+		{
+			float barscale = mainFrame.GetScale();
+			
+			int startx3 = (Screen.GetWidth() / 2) - (80 * barscale);
+			int starty = 346 * barscale;
+			string fill1 = "9999ea";
+			string fill2 = "000073";
+			string dim1 = "404040";
+			string dim2 = "121212";
+			Screen.Dim(dim2, 1.0, startx3 - (2 * barscale), starty - (2 * barscale), 
+				164 * barscale, 
+				10 * barscale
+			);
+			Screen.Dim(dim1, 1.0, startx3, starty, 
+				160 * barscale, 
+				6 * barscale
+			);
+			
+			int exp2 = (di_swaglevel + 1) * 10000;
+			float remainder = ((exp2 - di_experience) / (1.0 * exp2)) * (160.0 * barscale);
+				
+			if (remainder > 0)
+			{
+				Screen.Dim(fill2, 1.0, startx3 - (2 * barscale), starty - (2 * barscale), 
+					(162 * barscale) - remainder, 
+					10 * barscale
+				);
+				Screen.Dim(fill1, 1.0, startx3, starty, 
+					(160 * barscale) - remainder, 
+					6 * barscale
+				);
+			}
+		}
 	}
 	
 	virtual void UpdatePage()

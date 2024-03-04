@@ -134,6 +134,70 @@ extend class DINewGameMenu
 		// Add the box image element into the main frame.
 		aBoxImage.Pack (mainFrame);
 		sklboximages.Push(aBoxImage);
+		
+		// Add Swag XP elements to this part of the menu.
+		string swagstring = string.format("%s \cb%d", "\ctSwag Level:", di_swaglevel);
+		swaglevel = boxparty_ZF_Label.Create(
+			// Position.
+            (
+                // Horizontal position.
+                194 + 126 - ((smallFont.StringWidth(swagstring) * 1.5) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                330
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (swagstring) * 1.5,
+                // Get the font's height.
+                smallFont.GetHeight() * 1.5
+            ),
+            // The label's text.
+            text: swagstring,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+			// scaling of the text.
+			textScale: 1.5,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+		);
+		swaglevel.Pack(mainFrame);
+		
+		//Add EXP below the level and the bar.
+		string expstring = string.format("\cnExp: \cb%d\cn/\cb%d", di_experience, (di_swaglevel + 1) * 10000);
+		explabel = boxparty_ZF_Label.Create(
+			// Position.
+            (
+                // Horizontal position.
+                194 + 126 - (smallFont.StringWidth(expstring) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                358
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (expstring),
+                // Get the font's height.
+                smallFont.GetHeight()
+            ),
+            // The label's text.
+            text: expstring,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+		);
+		explabel.Pack(mainFrame);
 	}
 	
 	virtual void DestroySkill()
@@ -163,5 +227,16 @@ extend class DINewGameMenu
             boximage.Unpack();
             boximage.Destroy();
         }
+		
+		if (swaglevel)
+		{
+			swaglevel.Unpack();
+			swaglevel.Destroy();
+		}
+		if (explabel)
+		{
+			explabel.Unpack();
+			explabel.Destroy();
+		}
 	}
 }
