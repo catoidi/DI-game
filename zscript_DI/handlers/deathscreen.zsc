@@ -161,7 +161,6 @@ Class DeathscreenHandler : EventHandler
 		
 		//insert DIUNLOCK cvar search here
 		newexp *= 1.0 + (0.01 * GetUnlockNum());
-		console.printf("unlocks: %d", GetUnlockNum());
 		
 		curexp += newexp;
 		int expmax = 10000 * (1 + curlvl);
