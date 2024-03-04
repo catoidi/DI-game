@@ -11,6 +11,7 @@ Class DI_LastStand : DIPassiveInventory
 	}
 	
 	int lasttimer;
+	bool savinggrace;
 
 	override void DoEffect(void)
 	{
@@ -18,9 +19,10 @@ Class DI_LastStand : DIPassiveInventory
 		
 		++lasttimer;
 		
-		if (owner && (lasttimer >= (70 - (owner.CountInv("DI_LastStand") * 5))))
+		if (owner && (lasttimer >= (75 - (owner.CountInv("DI_LastStand") * 5))))
 		{
-			if (owner is "DI_PlayerBase")
+			if (savinggrace == false) {savinggrace = true;}
+			else if (owner is "DI_PlayerBase")
 			{
 				if (CallACS("DICheckWaveProgress") == true)
 				{
@@ -35,6 +37,20 @@ Class DI_LastStand : DIPassiveInventory
 			}
 			lasttimer = 0;
 		}
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((newdamage >= 1) && (owner) && (passive == true))
+		{
+			if ((newdamage >= owner.health) && (owner.health > 1) && (savinggrace == true))
+			{
+				newdamage = owner.health - 1;
+				savinggrace = false;
+			}
+		}
+	
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
 	
 	States
