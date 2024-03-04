@@ -5,8 +5,8 @@ Class CheeseGun : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
-		DI_Weapon.BaseDamage 8;
-		DI_Weapon.Projectiles 5;
+		DI_Weapon.BaseDamage 16;
+		DI_Weapon.Projectiles 2;
 		DI_Weapon.Recoil 10;
 		DI_Weapon.RecoilRecover 0.5;
 		DI_Weapon.RecoilOffset 1.5;
