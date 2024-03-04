@@ -22,7 +22,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	Font bigFont, smallFont;
 	boxparty_ZF_Image background, plrinfo;
 	string TopLabel_text, TopLabel2_text;
-	boxparty_ZF_Label TopLabel, TopLabel2, swaglevel, explabel;
+	boxparty_ZF_Label TopLabel, TopLabel2, swaglevel, explabel, unlocklabel;
 	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
 	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, heartboximages, sklboximages;
 	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels, skllabels;
@@ -492,4 +492,36 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	virtual void SetKeyPos(int newpos) {keypos = newpos;}
 	virtual int GetKeyPos() {return keypos;}
+	
+	virtual clearscope int GetUnlockNum()
+	{
+		int returnnum;
+		array<string> filedata;
+	
+		int ThisLump = Wads.FindLump("DIUNLOCK", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); ++i)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //comment
+			if (filedata[i].Length() < 3) {continue;} //too small
+			int linesize = filedata[i].IndexOf(";"); //end of line
+			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
+			array<string> curline;
+			filedata[i].Split(curline, " ");
+			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
+			
+			let unlockcvar = cvar.getcvar(curline[0]);
+			if (unlockcvar.getbool() == true) {++returnnum;}
+		}
+		
+		return returnnum;
+	}
 }

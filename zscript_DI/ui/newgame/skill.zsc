@@ -198,6 +198,37 @@ extend class DINewGameMenu
             textColor: Font.CR_WHITE
 		);
 		explabel.Pack(mainFrame);
+		
+		//Add unlock bonus exp info here as well.
+		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum());
+		unlocklabel = boxparty_ZF_Label.Create(
+			// Position.
+            (
+                // Horizontal position.
+                194 + 126 - (smallFont.StringWidth(unlockstring) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                370
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (unlockstring),
+                // Get the font's height.
+                smallFont.GetHeight()
+            ),
+            // The label's text.
+            text: unlockstring,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+		);
+		unlocklabel.Pack(mainFrame);
 	}
 	
 	virtual void DestroySkill()
@@ -237,6 +268,11 @@ extend class DINewGameMenu
 		{
 			explabel.Unpack();
 			explabel.Destroy();
+		}
+		if (unlocklabel)
+		{
+			unlocklabel.Unpack();
+			unlocklabel.Destroy();
 		}
 	}
 }
