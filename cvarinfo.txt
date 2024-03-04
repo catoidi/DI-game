@@ -31,6 +31,7 @@ user bool di_unlock_morebuttons = true; //show 60 buttons at once instead of 15.
 server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
 server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
 server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
+server cheat bool di_unlock_item_sledgehammer = false; //10k points as Hamill.
 server cheat int di_fredcount = 0; //how many freds you killed.
 server cheat bool di_unlock_item_fred1 = false; //unlock the bonus armor item by getting 100 fred kills.
 server cheat bool di_unlock_item_fred2 = false; //unlock the firestarter item by getting 300 fred kills.

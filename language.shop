@@ -24,6 +24,10 @@ SHOPITEM_CHEESEGUN = "Cheese Cannon";
 SHOPDESC_CHEESEGUN = "Fires 6 melted cheese pellets.\nGenerates heat over time.";
 SHOPDESC2_CHEESEGUN = "\cbFiring uses 70 heat. If there's at least 70 heat, the pellets deal fire damage. Damage is multiplied by heat. Ammo upgrades improve this gun massively.";
 SHOPTYPE_CHEESEGUN = "\cv[Starting Weapon]";
+SHOPITEM_SLEDGEHAMMER = "Sledgehammer";
+SHOPDESC_SLEDGEHAMMER = "Extremely powerful melee weapon.";
+SHOPDESC2_SLEDGEHAMMER = "\cbThis is a \ctBox Party \cbitem. Primary charges a regular melee attack that does 160 DMG. Secondary lifts the hammer over your head, then slams it back on the ground, doing 80 splash DMG.";
+SHOPTYPE_SLEDGEHAMMER = "\cb[Starting Weapon]";
 
 //Weapons
 SHOPITEM_GREENSHOTGUN = "Green Shotgun";
@@ -259,7 +263,7 @@ SHOPDESC_DI_LASTSTAND = "Gives you slow passive regen\nwhen you're at low health
 SHOPDESC2_DI_LASTSTAND = "\cbRegens base 25% of your Max HP, +15% for each extra item stack. More stacks also makes regen slightly faster. This item is affected by Debts.";
 SHOPTYPE_DI_LASTSTAND = "\cd[Passive] \cl[Max: 4]";
 SHOPITEM_DI_CREDITFRAUD = "Credit Fraud";
-SHOPDESC_DI_CREDITFRAUD = "Gain +50% DMG while in debt.";
+SHOPDESC_DI_CREDITFRAUD = "Gain up to +50% DMG while in debt.";
 SHOPDESC2_DI_CREDITFRAUD = "\cbStarts at +10% DMG, and maxxes out at 50% when you have $500+ in debt. If you're no longer in debt, but your health is reduced by debts, you will instead gain 10% damage.";
 SHOPTYPE_DI_CREDITFRAUD = "\cd[Passive] \cl[Max: 3]";
 SHOPITEM_DI_LEADSWITCH = "Lead Switch";
