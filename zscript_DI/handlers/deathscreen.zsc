@@ -396,6 +396,8 @@ Class DeathscreenHandler : EventHandler
 				
 				float remainder = ((exp2 - exp1) / exp2) * (160.0 * CleanXFac);
 				float gained = ((exp2 - (exp1 - exp3)) / exp2) * (160.0 * CleanXFac);
+				if (remainder > (160 * CleanXFac)) {remainder = 160 * CleanXFac;}
+				if (gained > (160 * CleanXFac)) {gained = 160 * CleanXFac;}
 				
 				if (remainder > 0)
 				{
