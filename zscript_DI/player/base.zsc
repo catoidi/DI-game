@@ -64,8 +64,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	bool freshmsg;
 	
-	int degenforgive;
-	
 	bool iamfrozen;
 	
 	override void PostBeginPlay(void)
@@ -496,12 +494,26 @@ Class DI_PlayerBase : PlayerPawn abstract
 	action void DIWave_End(void)
 	{
 		//forgive some debts
-		if ((invoker.score >= 0) && (invoker.CountInv("DI_Degen") > 0))
+		int scoregained = invoker.score - invoker.lastscore; //how much money you earned this round.
+		float interestrate = 1.2 - (0.002 * (invoker.GetMaxHealth(true) - invoker.CountInv("DI_Degen"))); //intrest on borrowed health is itself to the power of 1.4, subtracted by your max health.
+		if (interestrate < 0.6) {interestrate = 0.6;} //dont let interest get too stupidly low.
+		else if (interestrate > 1.4) {interestrate = 1.4;} //interest cant go above 40%.
+		int interest = invoker.CountInv("DI_Degen") ** interestrate;
+		if (interest > scoregained) {interest = scoregained;} //caps interest to whatever amount of money you made this round.
+		if (interest > 0) 
 		{
-			++invoker.degenforgive;
-			invoker.A_TakeInventory("DI_Degen", invoker.degenforgive);
+			invoker.score += interest;
+			console.printf("\cxYou've received %d in interest from borrowed health.", interest);
 		}
-		else {invoker.degenforgive = 0;}
+		int curdegen = invoker.CountInv("DI_Degen");
+		if ((invoker.score >= 0) && (curdegen > 0)) //calculate returned health after interest is done.
+		{
+			if (curdegen > 10) {curdegen *= 0.9;}
+			else {--curdegen;}
+			
+			console.printf("\cx%d borrowed health has been returned.", invoker.CountInv("DI_Degen") - curdegen); //return 10% of borrowed health to players with no debts.
+			invoker.A_SetInventory("DI_Degen", curdegen);
+		}
 	
 		Array<String> keeparray;
 		
@@ -548,20 +560,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		
 		console.printf("%s", "\cxReturning any rented items...");
 		
-		int scoregained = invoker.score - invoker.lastscore;
 		console.printf("\cxYou earned %d coins this round.", scoregained);
-		
-		if (invoker.score < -25)
-		{
-			invoker.score += 25;
-			invoker.score *= 0.75;
-			console.printf("%s", "\cxYour debts have been reduced.");
-		}
-		else if (invoker.score < 0)
-		{
-			invoker.score = 0;
-			console.printf("%s", "\cxYour debts have been forgiven.");
-		}
 		
 		//reset all weapon's ammo counts to default values
 		Array<String> allwpns;
