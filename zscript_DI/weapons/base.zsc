@@ -117,7 +117,7 @@ Class DI_Weapon : Weapon abstract
 		{
 			//reccur = recnum * wpn_recoil;
 			plr = DI_PlayerBase(owner);
-			if (GetClassName() == plr.player.readyweapon.GetClassName()) //only run this code if this weapon is selected.
+			if ((plr.player.readyweapon) && (GetClassName() == plr.player.readyweapon.GetClassName())) //only run this code if this weapon is selected.
 			{
 				UpdateWeaponValues();
 				UpdateWeaponSpeed();
