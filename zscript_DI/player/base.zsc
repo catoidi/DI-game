@@ -531,7 +531,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 				if (currentwipe[0] == keeparray[0])
 				{
 					saveitemnum = keeparray[1].ToInt(10);
-					console.printf("found %d %s... currentwipe: %s", saveitemnum, keeparray[0], currentwipe[0]);
 					j = invoker.wavekeep.Size();
 				}
 				else {keeparray.Clear();}
