@@ -524,16 +524,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 			
 			int saveitemnum = 0;
 			
-			for (int i = 0; i < invoker.wavekeep.Size(); i++)
+			keeparray.Clear();
+			for (int j = 0; j < invoker.wavekeep.Size(); j++)
 			{
-				int itemlength = currentwipe[0].Length();
-				if (invoker.wavekeep[i].Left(itemlength) == currentwipe[0])
+				invoker.wavekeep[j].Split(keeparray, ",");
+				if (currentwipe[0] == keeparray[0])
 				{
-					keeparray.Clear();
-					invoker.wavekeep[i].Split(keeparray, ",");
 					saveitemnum = keeparray[1].ToInt(10);
-					i = invoker.wavekeep.Size();
+					console.printf("found %d %s... currentwipe: %s", saveitemnum, keeparray[0], currentwipe[0]);
+					j = invoker.wavekeep.Size();
 				}
+				else {keeparray.Clear();}
 			}
 			
 			invoker.A_SetInventory(currentwipe[0], saveitemnum);
