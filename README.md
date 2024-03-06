@@ -5,6 +5,8 @@ This only includes the data that falls under the "GPLv3" License. See "LICENSE" 
 
 This repository alone is not enough to play DI. You also need a file called "di-content.pk3", which is not yet publicly released.
 
+Wanna make your own DI weapon? [Check out the repo for this addon file.](https://github.com/catoidi/DI-bonus)
+
 ### This also contains (modified!) versions of the following open source repos:
 - [Universal Hats, by me](https://github.com/catoidi/universal-hats)
 - [Box Party Hud, by me](https://github.com/catoidi/box-party-hud)
