@@ -173,7 +173,7 @@ Class DI_GibExplosion : DI_Actor
 	{
 		super.tick();
 		
-		Vel.Z += 0.05;
+		if (level.IsFrozen() == false) {Vel.Z += 0.05;}
 	}
 	
 	virtual name GetGib(int gibnum = 0)

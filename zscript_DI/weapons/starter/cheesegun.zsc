@@ -32,6 +32,7 @@ Class CheeseGun : DI_Weapon
 		super.tick();
 		
 		if (!owner) {return;}
+		if (owner.IsFrozen()) {return;}
 		if ((owner.CountInv("CheeseGunHeat") < Ammo2.MaxAmount) && (owner.CountInv("CheeseGunAmmo") > 0)) 
 		{
 			owner.A_GiveInventory("CheeseGunHeat", owner.CountInv("CheeseGunAmmo"));

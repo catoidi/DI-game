@@ -71,11 +71,15 @@ Class DITurret_Actor : DI_Actor
 	override void tick()
 	{
 		super.tick();
-		++hptime;
-		if (hptime >= 35)
+
+		if (level.IsFrozen() == false)
 		{
-			if (health < default.health) {health += 1;}
-			hptime = 0;
+			++hptime;
+			if (hptime >= 35)
+			{
+				if (health < default.health) {health += 1;}
+				hptime = 0;
+			}
 		}
 	}
 	
