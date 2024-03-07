@@ -6,8 +6,8 @@ Class DI_FreshRegen : DIPassiveInventory
 	{
 		Tag "Fresh Regen";
 		Inventory.Icon "POWRX0";
-		Inventory.PickupMessage "Acquired Fresh Regen! (Gain 5 Health Regen upon getting a Fresh Weapon Bonus.)";
-		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Acquired Fresh Regen! (Fresh Bonuses give regen based on current health.)";
+		Inventory.MaxAmount 3;
 	}
 
 	override void DoEffect(void)
@@ -17,12 +17,15 @@ Class DI_FreshRegen : DIPassiveInventory
 		if (owner is "DI_PlayerBase")
 		{
 			DI_PlayerBase plr = DI_PlayerBase(owner);
-			
-			int regennum = 5 * plr.CountInv("DI_FreshRegen");
-			
 			if (plr.JustKilled == true)
 			{
-				if (plr.health < plr.DIMaxHealth()) {plr.A_GiveInventory("DI_Regen", regennum);}
+				if (plr.health < plr.DIMaxHealth()) 
+				{
+					int regennum = 4 - (plr.Health / (plr.DIMaxHealth() / 4));
+					if (regennum < 1) {regennum = 1;}
+					regennum *= plr.CountInv("DI_FreshRegen");
+					plr.A_GiveInventory("DI_Regen", regennum);
+				}
 			}
 		}
 	}

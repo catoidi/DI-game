@@ -9,7 +9,7 @@ Class DI_DamageMultGiver : DIPassiveInventory
 		Tag "DMG Mult +";
 		Inventory.Icon "POWRR0";
 		Inventory.PickupMessage "Damage Multiplier Increased! (+10% DMG)";
-		Inventory.MaxAmount 25;
+		Inventory.MaxAmount 5;
 	}
 	
 	override double GiveDamageMult()
@@ -113,7 +113,7 @@ Class DI_RewardsProgram : DIPassiveInventory
 	{
 		Tag "Rewards Program";
 		Inventory.Icon "POWRW0";
-		Inventory.PickupMessage "Acquired Rewards Program! (Enemies drop +3 Coins, but only while you're in debt.)";
+		Inventory.PickupMessage "Acquired Rewards Program! (Up to +3 coins per enemy, but only while in lots of debt.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -121,10 +121,8 @@ Class DI_RewardsProgram : DIPassiveInventory
 	{
 		if (!plr) {return 0;}
 		int addcoin = plr.countinv("DI_RewardsProgram");
-		if (plr.score <= -500) {addcoin *= 3;}
-		else if (plr.score <= -250) {addcoin *= 2;}
-		else if (plr.score < 0) {addcoin = 1;}
-		else if (plr.countinv("DI_Degen") == 0) {addcoin = 0;} //still give some coins if player has lost hp to debt.
+		if (plr.score <= -2000) {addcoin *= 3;}
+		else if (plr.score <= -1000) {addcoin *= 2;}
 		return addcoin;
 	}
 	
