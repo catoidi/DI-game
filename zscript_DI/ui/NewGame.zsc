@@ -309,7 +309,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		{
 			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
 			ThisLump = NextLump;
-			NextLump = Wads.FindLump("DISHOP", ThisLump + 1, 1);
+			NextLump = Wads.FindLump("DIGAME", ThisLump + 1, 1);
 		}
 		
 		for (int i = 0; i < filedata.Size(); i++)

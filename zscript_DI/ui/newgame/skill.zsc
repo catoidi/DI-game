@@ -135,8 +135,10 @@ extend class DINewGameMenu
 		aBoxImage.Pack (mainFrame);
 		sklboximages.Push(aBoxImage);
 		
+		let maxswag = GetMaxSwag();
+		
 		// Add Swag XP elements to this part of the menu.
-		string swagstring = string.format("%s \cb%d", "\ctSwag Level:", di_swaglevel);
+		string swagstring = string.format("%s \cb%d/%d", "\ctSwag Level:", di_swaglevel, maxswag);
 		swaglevel = boxparty_ZF_Label.Create(
 			// Position.
             (
@@ -274,5 +276,32 @@ extend class DINewGameMenu
 			unlocklabel.Unpack();
 			unlocklabel.Destroy();
 		}
+	}
+	
+	clearscope virtual int GetMaxSwag()
+	{
+		array<string> swaglist;
+	
+		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(swaglist, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISWAG", ThisLump + 1, 1);
+		}
+		
+		int bigswag = 0;
+		for (int i = 0; i < swaglist.Size(); ++i)
+		{
+			if (swaglist[i].Left(2) == ">>") {continue;}
+			array<string> currentswag;	
+			swaglist[i].Split(currentswag, " ");
+			if (currentswag.Size() != 2) {continue;}
+			int swagnum = currentswag[0].ToInt(10);
+			if (swagnum > bigswag) {bigswag = swagnum;}
+		}
+		return bigswag;
 	}
 }
