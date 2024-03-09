@@ -2,6 +2,8 @@
 
 Class DI_BonusArmor : DIPassiveInventory
 {
+	//handled within the loot.zsc portion of the main eventhandler.
+
 	Default
 	{
 		Tag "Bonus Armor";
@@ -29,7 +31,7 @@ Class DI_BonusArmorPickup : BasicArmorBonus
 		Inventory.PickupMessage "+2 Armor";
 		Inventory.Icon "ARMOE0";
 		Armor.SavePercent 25;
-		Armor.MaxSaveAmount 100;
+		Armor.MaxSaveAmount 300;
 		Armor.SaveAmount 2;
 		+BRIGHT;
 		+FLOATBOB;
