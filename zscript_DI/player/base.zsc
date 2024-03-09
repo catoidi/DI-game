@@ -127,7 +127,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				{
 					if (CallACS("DICheckWaveProgress") == true)
 					{
-						if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")))
+						if ((self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen"))) && (self.CountInv("DI_Regen") == 0))
 						{
 							A_SetHealth(self.Health - 1);
 							if (self.Health < 1) {self.A_Die();}
@@ -400,7 +400,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		}
 	}
 	
-	virtual int DIMaxHealth()
+	clearscope virtual int DIMaxHealth()
 	{
 		let heal = GetMaxHealth(true);
 		heal -= CountInv("DI_Degen");

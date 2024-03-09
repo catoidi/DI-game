@@ -202,9 +202,11 @@ class DI_HUD : BaseStatusBar
 			DrawBar("graphics/boxhud/HUDBARB2.png", "graphics/boxhud/HUDBARB0.png", GetAmount("DI_Degen"), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-80, -8), 0, DI_ITEM_OFFSETS);
 		}
 		
-		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+		let hpfont = Font.CR_WHITE;
+		if (cplayer.health > diplayer.DIMaxHealth()) {hpfont = Font.CR_BRICK;}
+		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, hpfont);
 		let regfont = Font.CR_GREEN;
-		if (GetAmount("DI_Regen") > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
+		if (regenamount > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
 		if (GetAmount("DI_Regen") > 0)
 		{
 			DrawString(SmallFont, FormatNumber(GetAmount("DI_Regen"), 0), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);
