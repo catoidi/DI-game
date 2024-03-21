@@ -73,6 +73,7 @@ extend class DINewGameMenu
 			if (levellock[i] != "u")
 			{
 				currentcvar = Cvar.GetCVAR(levellock[i]);
+				if (cheatcvar.getbool() == true) {currentcvar = cheatcvar;}
 				//console.printf("%s", levellock[i]);
 				if (currentcvar.GetBool() == false) {isLocked = true;}
 			}

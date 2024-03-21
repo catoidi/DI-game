@@ -23,6 +23,7 @@ extend class DINewGameMenu
 			if (playerlock[i] != "u")
 			{
 				currentcvar = Cvar.GetCVAR(playerlock[i]);
+				if (cheatcvar.getbool() == true) {currentcvar = cheatcvar;}
 				if (currentcvar.GetBool() == false) {isLocked = true;}
 			}
 			

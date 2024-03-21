@@ -9,7 +9,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 
 	DINewGameHandler handler;
 	
-	cvar tutcvar; //tutorial check
+	cvar tutcvar, cheatcvar;
 	
 	bool pageupdate, justkeyed;
 	
@@ -41,6 +41,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		setbaseresolution((640, 400));
 		bigFont = Font.GetFont("BigFont");
 		smallFont = Font.GetFont("SmallFont");
+		
+		cheatcvar = cvar.getcvar("di_unlock_cheat");
 		
         handler = new('DINewGameHandler');
         handler.link = self;
