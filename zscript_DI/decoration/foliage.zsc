@@ -117,6 +117,48 @@ CLASS TallGrass2 : TallGrass
 	}
 }
 
+CLASS TallerGrass : DI_Actor
+{
+	Default
+	{
+		Radius 20;
+		Height 20;
+		-SOLID;
+		+NOGRAVITY;
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tall Grass"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			GRAS B -1;
+			Stop;
+	}
+}
+
+CLASS TallerGrass2 : DI_Actor //20005
+{
+	Default
+	{
+		Radius 20;
+		Height 20;
+		-SOLID;
+		+NOGRAVITY;
+		//$Category "Box Party/Decor/Foliage/"
+		//$Title "Tall Grass"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			GRAS C -1;
+			Stop;
+	}
+}
+
 CLASS Bush : DI_Actor //20002
 {
 	Default

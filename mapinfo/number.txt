@@ -27,4 +27,6 @@ DoomEdNums
 	20024 = DI_DI01Canvas
 	20025 = DI_WallTrap
 	20026 = FakeWindow
+	20027 = TallerGrass
+	20028 = TallerGrass2
 }
