@@ -43,7 +43,7 @@ Map "di01" "Your first death"
 	Sky1 = "textures/sky1.png"
 }
 
-Map "di02" "Where the boxes go party"
+Map "di02" "The afterparty"
 {
 	Sky1 = "textures/sky2.png"
 }

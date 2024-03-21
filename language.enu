@@ -17,7 +17,7 @@ DI_OPENCATALOGUE = "Open Catalogue";
 //NewGameMenu
 DIMENU_SELECT_DI00 = "Tutorial";
 DIMENU_SELECT_DI01 = "ur 1st death";
-DIMENU_SELECT_DI02 = "the party area";
+DIMENU_SELECT_DI02 = "the afterparty";
 DIMENU_SELECT_DI_PLAYERFREDRICK = "Fredrick";
 DIMENU_SELECT_DI_PLAYERBOX = "Box Partyer";
 DIMENU_SELECT_DI_PLAYERBURGER = "Burger";
