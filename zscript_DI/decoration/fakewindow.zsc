@@ -1,0 +1,20 @@
+//zscript_DI/decoration/fakewindow.zsc
+
+CLASS FakeWindow : Actor
+{
+	Default
+	{
+		Height 64;
+		Radius 16;
+		-SOLID;
+		+NOINTERACTION;
+		+WALLSPRITE;
+	}
+	
+	States
+	{
+		Spawn:
+			WNDW A -1;
+			Stop;
+	}
+}
