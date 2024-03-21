@@ -297,6 +297,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	virtual void GetDIGAMEData()
 	{
+		//IF YOU CHANGE THIS, ALSO CHANGE IT IN THE DEATH SCREEN!!!!!!!!!!!!!!!!!!!!!
+	
 		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
 		filedata.Clear();
 		playerpool.Clear();
@@ -348,6 +350,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	virtual int GetHighScore(name findplayer = '*', name findlevel = '*')
 	{
+		//also used in death screen (getscorebonus)
 		cvar highscores = cvar.findcvar("di_highscore");
 		string fullscores = highscores.getstring();
 		array<string> scorelines;
@@ -495,6 +498,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	virtual clearscope int GetUnlockNum()
 	{
+		//also used in death screen
 		int returnnum;
 		array<string> filedata;
 	

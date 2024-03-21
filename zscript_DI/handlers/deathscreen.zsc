@@ -15,6 +15,10 @@ Class DeathscreenHandler : EventHandler
 	ui int finalscore; //prevent extra score from being calculated after death.
 	ui float exp1, exp2, exp3, lvl1, lvl2;
 	
+	//from newgamemenu
+	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
+	ui bool getgamedata;
+	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
 		if (e.Name == "newwave_ui")
@@ -25,6 +29,12 @@ Class DeathscreenHandler : EventHandler
 
 	override void UITick()
 	{
+		if (!getgamedata) 
+		{
+			GetDIGAMEData();
+			getgamedata = true;
+		}
+		
 		plr = DI_PlayerBase(players[consoleplayer].mo);
 		if (!plr) {return;}
 		if (plr.Health <= 0) {IsDead = true;}
@@ -58,6 +68,59 @@ Class DeathscreenHandler : EventHandler
 			DeathFade = 0.0;
 			DeathTimer = 0;
 			diedmove = 2.0;
+		}
+	}
+	
+	ui virtual void GetDIGAMEData()
+	{
+		//copy/pasted this function from newgamemenu.
+	
+		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
+		filedata.Clear();
+		playerpool.Clear();
+		playerlock.Clear();
+	
+		int ThisLump = Wads.FindLump("DIGAME", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIGAME", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIGAME", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i] = filedata[i].MakeLower();
+			filedata[i].Split(currentline, ", ", TOK_SKIPEMPTY);
+			if (currentline[0] == "add")
+			{
+				if ((currentline[1] == "player") && (currentline[2]))
+				{
+					playerpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {playerlock.Push(currentline[3]);}
+					else {playerlock.Push("u");}
+					//console.printf("%s", currentline[2]);
+				}
+				else if ((currentline[1] == "level") && (currentline[2]))
+				{
+					levelpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {levellock.Push(currentline[3]);}
+					else {levellock.Push("u");}
+					//console.printf("%s", currentline[2]);
+				}
+			}
+			else if (currentline[0] == "delete")
+			{
+				console.printf("%s", "'delete' feature not implemented yet.");
+			}
+			else {console.printf("failed: %s", currentline[0]);}
 		}
 	}
 	
@@ -147,6 +210,55 @@ Class DeathscreenHandler : EventHandler
 		highscores.setstring(newcvar);
 	}
 	
+	ui virtual int GetScoreBonus(name findplayer = '*', name findlevel = '*')
+	{
+		//copy/pasted the gethighscore function from the newgamemenu.
+	
+		cvar highscores = cvar.findcvar("di_highscore");
+		string fullscores = highscores.getstring();
+		array<string> scorelines;
+		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
+		if (scorelines.size() < 1) {return 0;}
+		int currentscore;
+		bool combinescore;
+		for (int i = 0; i < scorelines.size(); ++i)
+		{
+			array<string> currentline;
+			scorelines[i].split(currentline, " ", TOK_SKIPEMPTY);
+			if (currentline.size() != 3) 
+			{
+				//something has gone terribly wrong!
+				console.printf("%s", "\caWARNING: Junk data was detected in the highscore CVAR!");
+				continue;
+			}
+			else
+			{
+				let levelfinder = currentline[1].MakeLower();
+				let playerfinder = string.format("%s", currentline[0].MakeLower());
+				if ((findplayer != "*") && (currentline[0] != findplayer)) {continue;}
+				if ((findlevel != "*") && (levelfinder != findlevel)) {continue;}
+				if (levelpool.Find(levelfinder) == levelpool.Size()) {console.printf("invalid level %s found, skipping score.", levelfinder); continue;}
+				if (playerpool.Find(playerfinder) == playerpool.Size()) {console.printf("invalid player %s found, skipping score.", playerfinder); continue;}
+				
+				if (findlevel == "*") {combinescore = true;}
+				int lsize = currentline[2].Length();
+				if (currentline[2].Left(1) == "E")
+				{
+					string newcheck = currentline[2].Mid(1, lsize - 1);
+					if (combinescore) {currentscore += newcheck.ToInt(10);}
+					else if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+				else 
+				{
+					string newcheck = currentline[2];
+					if (combinescore) {currentscore += newcheck.ToInt(10);}
+					else if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+			}
+		}
+		return currentscore / 1000;
+	}
+	
 	ui virtual void UpdateSwag(int newscore)
 	{
 		if (!plr) {return;}
@@ -160,7 +272,7 @@ Class DeathscreenHandler : EventHandler
 		if (bonusexp > 0) {newexp += bonusexp;}
 		
 		//insert DIUNLOCK cvar search here
-		newexp *= 1.0 + (0.01 * GetUnlockNum());
+		newexp *= 1.0 + (0.01 * ((GetUnlockNum() * 2) + GetScoreBonus()));
 		
 		curexp += newexp;
 		int expmax = 10000 * (1 + curlvl);

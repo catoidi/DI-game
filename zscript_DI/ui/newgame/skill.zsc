@@ -202,7 +202,8 @@ extend class DINewGameMenu
 		explabel.Pack(mainFrame);
 		
 		//Add unlock bonus exp info here as well.
-		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum());
+		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum() * 2);
+		unlockstring.appendformat("\n\cc+%d%% EXP from high scores", GetHighScore() / 1000);
 		unlocklabel = boxparty_ZF_Label.Create(
 			// Position.
             (
@@ -217,7 +218,7 @@ extend class DINewGameMenu
                 // Calculate the horizontal size of the text.
                 smallFont.StringWidth (unlockstring),
                 // Get the font's height.
-                smallFont.GetHeight()
+                smallFont.GetHeight() * 2.5
             ),
             // The label's text.
             text: unlockstring,
