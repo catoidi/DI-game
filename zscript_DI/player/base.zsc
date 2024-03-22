@@ -620,7 +620,10 @@ Class DI_PlayerBase : PlayerPawn abstract
 					(newoffset - diwep.autooffset_prev) * diwep.wpn_recoil_offset_x,
 					(newoffset - diwep.autooffset_prev) * diwep.wpn_recoil_offset_y
 				);
-			
+				
+				//Use these 2 debug things if you're having issues with weapon offsets.
+				//console.printf("newoffset: %.1f\nautooffset_prev: %.1f\nx: %.1f\ny: %.1f", newoffset, diwep.autooffset_prev, diwep.wpn_recoil_offset_x, diwep.wpn_recoil_offset_y);
+				//console.printf("\ct%s: %.1f, %.1f", diwep.GetClassName(), shootoffset.x, shootoffset.y);
 				A_WeaponOffset(shootoffset.x, shootoffset.y, WOF_ADD);
 			
 				diwep.autooffset_prev = newoffset;

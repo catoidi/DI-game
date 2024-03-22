@@ -280,7 +280,11 @@ Class DI_Weapon : Weapon abstract
 		invoker.current_recoil += recoil_amount;
 	}
 	
-	virtual void ResetRecoil() {current_recoil = 0.0;}
+	virtual void ResetRecoil() 
+	{
+		current_recoil = 0.0;
+		autooffset_prev = 0.0;
+	}
 	
 	action void DI_WeaponReady(int flags = 0)
 	{
