@@ -1,0 +1,59 @@
+//zscript_DI/handlers/main/supporters.zsc
+
+extend class DIHandler
+{
+	//many items here are set to private as i do not wish for mods to modify this, for obvious reasons.
+	
+	private int supportwait; //how long to wait before displaying the first message.
+	private int supporttime; //how long should each message last.
+	private float supportalpha; //text opacity.
+
+	private void GetSupporters()
+	{
+		//list of all people who have supported me after the previous version of DI.
+		//if the supporter list gets to more than 5 at once, i'll redo this to support text scrolling.
+		supporters.Clear();
+		supporters.Push("\clGlace");
+		supporters.Push("\csNuts");
+		supporters.Push("\clMuffins");
+		supporters.Push("\clTheatreHeathen20");
+	}
+	
+	virtual void TitlemapTick() 
+	{
+		++supportwait;
+		supportalpha = (supportwait - 190) / 35.0;
+		if (supportalpha > 1.0) {supportalpha = 1.0;}
+	}
+	
+	private ui void ShowSupporters(RenderEvent e)
+	{
+		string txt;
+		cvar scalefactor = cvar.getcvar("hud_scalefactor");
+		
+		for (int i = 0; i < supporters.Size(); ++i) 
+		{
+			string newline = "\n";
+			if (i == 0) {newline = "";}
+			txt.AppendFormat("%s%s", newline, supporters[i]);
+		}
+		
+		//console.printf("%s", txt);
+		float sizex = CleanXFac * scalefactor.GetFloat();
+		float sizey = CleanYFac * scalefactor.GetFloat();
+		float offsety = Screen.GetHeight() - (smallfont.GetHeight() * (supporters.Size() + 1) * (sizey));
+		Screen.DrawText(smallfont, Font.CR_WHITE, 4 * sizex, offsety, txt, 
+			DTA_ScaleX, sizex,
+			DTA_ScaleY, sizey,
+			DTA_Alpha, supportalpha
+		);
+		
+		txt = "\cvSwag Supporters: \ca<3 <3 <3";
+		offsety -= bigfont.GetHeight() * sizey;
+		Screen.DrawText(bigfont, Font.CR_WHITE, 4 * sizex, offsety, txt,
+			DTA_ScaleX, sizex * 0.6,
+			DTA_ScaleY, sizey * 0.6,
+			DTA_Alpha, supportalpha
+		);
+	}
+}
