@@ -68,6 +68,10 @@ extend class DIHandler
 			{
 				shoparray.Push(DIShop(e.Thing));
 			}
+			if (e.Thing is "DIShopController")
+			{
+				controllerarray.Push(DIShopController(e.Thing));
+			}
 			if (e.Thing is "DI_FloorActor")
 			{
 				GiveFloorTime(DI_FloorActor(e.Thing));
@@ -245,6 +249,17 @@ extend class DIHandler
 		else if (e.Name == "DIWaveFinished")
 		{
 			wavetimeractor.Destroy();
+		}
+		else if (e.Name == "AddSalePercent")
+		{
+			foreach(mo : shoparray)
+			{
+				if (mo) {mo.LevelSale += e.Args[0];}
+			}
+			foreach(mo : controllerarray)
+			{
+				if (mo) {mo.LevelSale += e.Args[0];}
+			}
 		}
 	}
 }

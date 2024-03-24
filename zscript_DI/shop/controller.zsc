@@ -7,6 +7,7 @@ Class DIShopController : DIShop_Base
 	int user_pricedown_round; //how many rounds until the price can decrease. default is 2.
 	int user_pricedown_base; //when price can decrease, decrease by this amount.
 	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
+	int LevelSale;
 	
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
@@ -120,7 +121,9 @@ Class DIShopController : DIShop_Base
 	{
 		if (dosale)
 		{
+			float minsale = user_salemin + (0.01 * LevelSale);
 			float maxsale = user_salemax + (0.03 * (extrasale + lastsale));
+			if (minsale > maxsale) {minsale = maxsale;}
 			if (maxsale > 0.9) {maxsale = 0.9;}
 			float rtn = 1.0 - frandom(user_salemin, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
 			salenum = rtn;

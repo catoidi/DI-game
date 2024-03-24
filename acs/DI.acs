@@ -204,3 +204,8 @@ SCRIPT "DICheckWaveProgress" (void)
 {
 	SetResultValue(waveinprogress);
 }
+
+SCRIPT "AddSalePercent" (int addnum)
+{
+	ScriptCall("DIHandler", "AddSalePercent", addnum);
+}
