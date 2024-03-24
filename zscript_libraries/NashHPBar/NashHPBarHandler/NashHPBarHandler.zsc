@@ -249,7 +249,7 @@ class NashHPBarHandler : EventHandler
 					
 				// draw target base price
 				txt = String.Format("\cfBase Price: %d", prevShop.GetShopBasePrice());
-				if (prevShop.saleamount > 0) {txt = String.Format("%s \cd[50%% off!]", txt);}
+				if (prevShop.dosale) {txt = String.Format("%s \cd[%d%% off!]", txt, 100 - (prevShop.CheckSaleNum() * 100));}
 				else if (prevShop.GetShopPrice() > prevShop.GetShopBasePrice())
 				{
 					if (prevShop.IsPriceDecreased() == true) {txt = String.Format("%s \ci[Depreciating]", txt);}
