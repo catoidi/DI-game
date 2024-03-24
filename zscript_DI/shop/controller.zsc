@@ -55,7 +55,6 @@ Class DIShopController : DIShop_Base
 				//sale chance increases based on how long since the last sale 
 				//and also how long since the player last purchased from this shop.
 				extrasale = newround - lastpurchased;
-				if (extrasale > 14) {extrasale = 14;}
 				if ((random(1, 30) <= 1 + extrasale + lastsale) && (user_baseprice >= 2)) {dosale = true; lastsale = 0;}
 				else {dosale = false; ++lastsale;}
 				GetSalePercent();
@@ -121,9 +120,9 @@ Class DIShopController : DIShop_Base
 	{
 		if (dosale)
 		{
-			float rtn = 1.0 - frandom(user_salemin, user_salemax); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
-			rtn += 0.03 * (extrasale + lastsale);
-			if (rtn > 0.9) {rtn = 0.9;}
+			float maxsale = user_salemax + (0.03 * (extrasale + lastsale));
+			if (maxsale > 0.9) {maxsale = 0.9;}
+			float rtn = 1.0 - frandom(user_salemin, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
 			salenum = rtn;
 			//console.printf("%.2f", rtn);
 		}
