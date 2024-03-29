@@ -8,6 +8,7 @@ class DIXHairHandler : EventHandler
 	transient ui cvar xhair_toggle;
 	transient ui cvar photomode;
 	transient ui cvar xhair_scale;
+	transient ui cvar scalefactor;
 	transient ui cvar xhair_alpha;
 	transient ui cvar xhair_color;
 	transient ui cvar xhair_precise;
@@ -80,6 +81,7 @@ class DIXHairHandler : EventHandler
 		xhair_toggle = CVar.GetCVar("di_xhair_toggle", players[consoleplayer]);
 		photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
 		xhair_scale = CVar.GetCVar("di_xhair_scale", players[consoleplayer]);
+		scalefactor = CVar.GetCVar("hud_scalefactor", players[consoleplayer]);
 		xhair_alpha = CVar.GetCVar("di_xhair_alpha", players[consoleplayer]);
 		xhair_color = CVar.GetCVar("di_xhair_color", players[consoleplayer]);
 		xhair_precise = CVar.GetCVar("pc_y", players[consoleplayer]);
@@ -97,7 +99,8 @@ class DIXHairHandler : EventHandler
 			
 			//get variables
 			double pfov = diplayer.player.fov;
-			double xscale = xhair_scale.GetFloat();
+			double xscale = xhair_scale.GetFloat() * CleanXFac * scalefactor.GetFloat();
+			double yscale = xhair_scale.GetFloat() * CleanYFac * scalefactor.GetFloat();
 			double fracspread = xspread;
 			double accnum = wep_acc;
 			if (xhair_toggle.GetInt() == 2) {accnum += wep_rec;} //if dynamic crosshair, get weapon recoil too
@@ -115,17 +118,17 @@ class DIXHairHandler : EventHandler
 			
 			if (dot_toggle.GetBool() == true)
 			{
-				Screen.DrawTexture(xhair_dottex, false, cenx, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
+				Screen.DrawTexture(xhair_dottex, false, cenx, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
 			}
 			
-			Screen.DrawTexture(xhair_tex, false, cenx + fracspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //right
-			Screen.DrawTexture(xhair_tex, false, cenx - fracspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //left
-			Screen.DrawTexture(xhair_tex, false, cenx, ceny + fracspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //down
-			Screen.DrawTexture(xhair_tex, false, cenx, ceny - fracspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, xscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //up
+			Screen.DrawTexture(xhair_tex, false, cenx + fracspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //right
+			Screen.DrawTexture(xhair_tex, false, cenx - fracspread, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //left
+			Screen.DrawTexture(xhair_tex, false, cenx, ceny + fracspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //down
+			Screen.DrawTexture(xhair_tex, false, cenx, ceny - fracspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //up
 			
 			if ((diplayer.LastKillTimer > 0) && (fresh_toggle.GetBool() == true))
 			{
-				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + fracspread + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, xscale, DTA_CenterOffset, true);
+				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + fracspread + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, yscale, DTA_CenterOffset, true);
 			}
 		}
 		
