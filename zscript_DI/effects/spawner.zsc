@@ -1,5 +1,39 @@
 //zscript_DI/effects/spawner.zsc
 
+Class DIMapSpot : MapSpot
+{
+	//meant to help quickly identify spawner locations in the map editor.
+	Default
+	{
+		//$Category "DI/Map Spots/"
+		//$Color 5
+		//$Title "Map Spot (Spawner)"
+		//$IgnoreRenderstyle
+	}
+}
+
+Class DIMapSpot_Decor : DIMapSpot
+{
+	//for easily identifying decoration spawns.
+	Default
+	{
+		//$Color 4
+		//$Title "Map Spot (Decor)"
+		//$IgnoreRenderstyle
+	}
+}
+
+Class DIMapSpot_Event : DIMapSpot
+{
+	//for easily identifying random event spawns.
+	Default
+	{
+		//$Color 12
+		//$Title "Map Spot (Random Event)"
+		//$IgnoreRenderstyle
+	}
+}
+
 CLASS DISpawnerSpot : DI_Actor
 {
 	//spawner spots control where the enemy spawners will originate from.
@@ -17,6 +51,9 @@ CLASS DISpawnerSpot : DI_Actor
 		//+NOINTERACTION;
 		+MOVEWITHSECTOR;
 		//+INVISIBLE;
+		//$Category "DI/Spawners"
+		//$Color 5
+		//$Title "Enemy Spawner"
 	}
 	
 	int SpawnDelay;
@@ -55,10 +92,18 @@ Class DISpawnerSpot_Big : DISpawnerSpot
 		Radius 64; //double the radius/height of regular spawners.
 		Height 192;
 		Scale 4.0;
+		//$Title "Enemy Spawner (Large)"
 	}
 }
 
-Class DISpawnerSpot_Flying : DISpawnerSpot {} //flying enemies can spawn here.
+Class DISpawnerSpot_Flying : DISpawnerSpot 
+{
+	//flying enemies can spawn here.
+	Default
+	{
+		//$Title "Enemy Spawner (Flying)"
+	}
+}
 
 CLASS DISpawner : DI_Actor
 {

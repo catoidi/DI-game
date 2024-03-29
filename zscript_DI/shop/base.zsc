@@ -125,6 +125,8 @@ Class DIShop_Base : SwitchableDecoration abstract
 		+USESPECIAL;
 		DIShop_Base.MinSale 0.1;
 		DIShop_Base.MaxSale 0.3;
+		//$Category "DI/Shops/"
+		//$Color 14
 	}
 	
 	States

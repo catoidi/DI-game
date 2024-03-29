@@ -29,4 +29,7 @@ DoomEdNums
 	20026 = FakeWindow
 	20027 = TallerGrass
 	20028 = TallerGrass2
+	20029 = DIMapSpot
+	20030 = DIMapSpot_Decor
+	20031 = DIMapSpot_Event
 }

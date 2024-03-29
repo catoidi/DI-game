@@ -18,6 +18,7 @@ Class DIShopController : DIShop_Base
 		DIShopController.ReducePriceRound 2;
 		DIShopController.ReducePriceBase 5;
 		DIShopController.ReducePriceMult 0.95;
+		//$Title "Script-activator (ZScript)"
 	}
 	
 	override void PostBeginPlay()
@@ -187,5 +188,10 @@ Class DIShopController_ACS : DIShopController //same as above but sends an ACS s
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
+	}
+	
+	Default
+	{
+		//$Title "Script-activator (ACS)"
 	}
 }

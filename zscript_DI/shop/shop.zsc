@@ -42,6 +42,7 @@ Class DIShop : DIShop_Base
 		DIShop.ReducePriceRound 2;
 		DIShop.ReducePriceBase 5;
 		DIShop.ReducePriceMult 0.95;
+		//$Title "Shop (Instant Use)"
 	}
 	
 	override void PostBeginPlay()
@@ -511,6 +512,11 @@ Class DIRentShop : DIShop
 	{
 		console.printf("\cfRented an item for %d coins.", price);
 	}
+	
+	Default
+	{
+		//$Title "Shop (Rental)"
+	}
 
 	States
 	{
@@ -541,6 +547,11 @@ Class DIPermaShop : DIShop
 	{
 		console.printf("\cfPurchased a \czpermanent \cfitem for %d coins.", price);
 	}
+	
+	Default
+	{
+		//$Title "Shop (Permanent)"
+	}
 
 	States
 	{
@@ -557,6 +568,11 @@ Class DIPermaShop : DIShop
 Class DIConsumableShop : DIShop
 {
 	//set "user_itemstock" to -1 in the map editor to give this shop unlimited stock.
+	
+	Default
+	{
+		//$Title "Shop (Consumables)"
+	}
 
 	States
 	{

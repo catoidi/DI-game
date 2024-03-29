@@ -7,6 +7,11 @@ Class DI_Actor : Actor abstract
 	//Called by almost every actor in DI.
 	
 	mixin DI_ActorMixin;
+	
+	Default
+	{
+		//$Category "DI"
+	}
 }
 
 Class DI_FloorActor : DI_Actor abstract

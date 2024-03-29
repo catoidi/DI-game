@@ -17,6 +17,7 @@ Class DIChest : DIPermaShop
 		DIShop.ReducePriceRound 0;
 		DIShop.ReducePriceBase 0;
 		DIShop.ReducePriceMult 1.0;
+		//$Title "Chest Shop (Reusable)"
 	}
 	
 	override void ChooseNewShopItem()
@@ -52,6 +53,11 @@ Class DIChest : DIPermaShop
 Class DIChest_Single : DIChest
 {
 	//can only be opened once, then it's done.
+	
+	Default
+	{
+		//$Title "Chest Shop (Single Use)"
+	}
 	
 	override void RestockShop() {}
 	

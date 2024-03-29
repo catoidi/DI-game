@@ -725,7 +725,15 @@ Class DI_PlayerBase : PlayerPawn abstract
 
 Class DI_PlayerTeleSwap : DI_Actor
 {
-	Default {+INVISIBLE; +NOINTERACTION;}
+	Default 
+	{
+		+INVISIBLE; 
+		+NOINTERACTION;
+		//$Category "DI/Unused"
+		//$Color 5
+		//$Title "Player Position Swap (WIP)"
+		//$Sprite "LOOKB0"
+	}
 	
 	States
 	{

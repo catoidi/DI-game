@@ -15,9 +15,9 @@ CLASS Painting : DI_Actor
 		+WALLSPRITE;
 		+SPRITEANGLE;
 		+USESPECIAL; //dont place this object above/below doors or switches
-		//$Category "Box Party/Decor/House/"
+		//$Category "DI/Decor/Building"
 		//$Title "Painting"
-		//$Color 2
+		//$Color 4
 	}
 	
 	static const float spriterotation[] = {180.0, 180.0, 225.0, 270.0, 315.0, 0.0, 45.0, 90.0, 135.0, 202.5, 247.5, 292.5, 337.5, 22.5, 67.5, 112.5, 157.5};
@@ -109,8 +109,6 @@ Class StaticPainting : Painting
 	{
 		+NOINTERACTION;
 		-USESPECIAL;
-		//$Category "Box Party/Decor/House/"
 		//$Title "Painting (Static)"
-		//$Color 2
 	}
 }

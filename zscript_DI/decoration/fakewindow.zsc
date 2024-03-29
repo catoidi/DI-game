@@ -9,6 +9,9 @@ CLASS FakeWindow : Actor
 		-SOLID;
 		+NOINTERACTION;
 		+WALLSPRITE;
+		//$Category "DI/Decor/Building"
+		//$Color 4
+		//$Title "Fake Window"
 	}
 	
 	States

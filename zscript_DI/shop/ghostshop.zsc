@@ -3,7 +3,7 @@
 //this is not a shop. this is used to show which shops will appear on the next shop upgrade.
 
 class DI_GhostShop : DI_Actor
-{
+{	
 	Default
 	{
 		RenderStyle "Translucent";
@@ -11,6 +11,9 @@ class DI_GhostShop : DI_Actor
 		Height 96;
 		+VISIBILITYPULSE;
 		-SOLID;
+		//$Category "DI/Shops/"
+		//$Title "Ghost Shop (Decor)"
+		//$Color 4
 	}
 	
 	States

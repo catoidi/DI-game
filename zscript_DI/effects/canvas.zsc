@@ -8,6 +8,14 @@ Class DI_WaveCanvas : DI_Actor
 	int w, h;
 	int wavenum;
 	int ticktime;
+	
+	Default
+	{
+		//$Category "DI/Canvas"
+		//$Color 7
+		//$Title "Simple Wave Canvas"
+		//$Sprite "TELED0"
+	}
 
 	override void PostBeginPlay()
 	{
@@ -63,6 +71,14 @@ Class DI_DI01Canvas : DI_Actor
 	int shoplvl;
 	int shopprogress;
 	int ticktime;
+	
+	Default
+	{
+		//$Category "DI/Canvas"
+		//$Color 7
+		//$Title "Level 1 Canvas"
+		//$Sprite "TELED0"
+	}
 
 	override void PostBeginPlay()
 	{

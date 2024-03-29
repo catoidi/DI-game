@@ -7,9 +7,9 @@ CLASS Tree : DI_Actor //20001
 		Radius 20;
 		Height 108;
 		+SOLID;
-		//$Category "Box Party/Decor/Foliage/"
-		//$Title "Tree (Default)"
-		//$Color 2
+		//$Category "DI/Decor/Foliage/"
+		//$Title "Tree"
+		//$Color 4
 	}
 	
 	States
@@ -32,9 +32,9 @@ CLASS DeadTree : Tree
 {
 	Default
 	{
-		//$Category "Box Party/Decor/Foliage/"
+		//$Category "DI/Decor/Foliage/"
 		//$Title "Tree (Dead)"
-		//$Color 2
+		//$Color 4
 	}
 
 	States
@@ -66,9 +66,9 @@ CLASS TropicalTree : Tree
 {
 	Default
 	{
-		//$Category "Box Party/Decor/Foliage/"
+		//$Category "DI/Decor/Foliage/"
 		//$Title "Tree (Tropical)"
-		//$Color 2
+		//$Color 4
 	}
 
 	States
@@ -79,7 +79,7 @@ CLASS TropicalTree : Tree
 	}
 }
 
-CLASS TallGrass : DI_Actor //20005
+CLASS TallGrass : DI_Actor
 {
 	Default
 	{
@@ -87,9 +87,9 @@ CLASS TallGrass : DI_Actor //20005
 		Height 20;
 		-SOLID;
 		+NOGRAVITY;
-		//$Category "Box Party/Decor/Foliage/"
+		//$Category "DI/Decor/Foliage/"
 		//$Title "Tall Grass"
-		//$Color 2
+		//$Color 4
 	}
 	
 	States
@@ -104,9 +104,9 @@ CLASS TallGrass2 : TallGrass
 {
 	Default
 	{
-		//$Category "Box Party/Decor/Foliage/"
+		//$Category "DI/Decor/Foliage/"
 		//$Title "Tall Grass (Dead)"
-		//$Color 2
+		//$Color 4
 	}
 	
 	States
@@ -125,9 +125,9 @@ CLASS TallerGrass : DI_Actor
 		Height 20;
 		-SOLID;
 		+NOGRAVITY;
-		//$Category "Box Party/Decor/Foliage/"
-		//$Title "Tall Grass"
-		//$Color 2
+		//$Category "DI/Decor/Foliage/"
+		//$Title "Taller Grass"
+		//$Color 4
 	}
 	
 	States
@@ -138,7 +138,7 @@ CLASS TallerGrass : DI_Actor
 	}
 }
 
-CLASS TallerGrass2 : DI_Actor //20005
+CLASS TallerGrass2 : DI_Actor
 {
 	Default
 	{
@@ -146,9 +146,9 @@ CLASS TallerGrass2 : DI_Actor //20005
 		Height 20;
 		-SOLID;
 		+NOGRAVITY;
-		//$Category "Box Party/Decor/Foliage/"
-		//$Title "Tall Grass"
-		//$Color 2
+		//$Category "DI/Decor/Foliage/"
+		//$Title "Taller Grass (Flower)"
+		//$Color 4
 	}
 	
 	States
@@ -159,16 +159,16 @@ CLASS TallerGrass2 : DI_Actor //20005
 	}
 }
 
-CLASS Bush : DI_Actor //20002
+CLASS Bush : DI_Actor
 {
 	Default
 	{
 		Radius 20;
 		Height 32;
 		+SOLID;
-		//$Category "Box Party/Decor/Foliage/"
-		//$Title "Bush (Default)"
-		//$Color 2
+		//$Category "DI/Decor/Foliage/"
+		//$Title "Bush"
+		//$Color 4
 	}
 	
 	States
@@ -194,9 +194,9 @@ CLASS TropicalBush : DI_Actor
 		Radius 20;
 		Height 32;
 		+SOLID;
-		//$Category "Box Party/Decor/Foliage/"
+		//$Category "DI/Decor/Foliage/"
 		//$Title "Bush (Tropical)"
-		//$Color 2
+		//$Color 4
 	}
 
 	States
