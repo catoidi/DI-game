@@ -20,13 +20,18 @@ ListMenu "MainMenu"
 	Position 92, 80
 	//PatchItem "M_NGAME",	"n",	"PlayerclassMenu"
 	PatchItem "M_NGAME",	"n",	"DINewGameMenu"
+	Tooltip "Begin a new run of DI.\n\nTIP: You can use arrow keys, mouse, dpad, and more to navigate the menus."
 	PatchItem "M_UNLOCK",	"u",	"DI_UnlockMenu"
+	Tooltip "Configure the shop items you've unlocked, and learn how to unlock the others."
 	PatchItem "M_OPTION",	"o",	"DIOptionsMenu"
+	Tooltip "Tweak the game's settings to your heart's content."
 	//DIPatchItem "di_testcvar", "M_OPTION",	"o",	"OptionsMenu"
-	//PatchItem "M_RDTHIS",   "r",    "ReadThisMenu"
+	PatchItem "M_RDTHIS",   "h",    "ReadThisMenu"
+	Tooltip "Contains some helpful info for newer players."
 	//PatchItem "M_LOADG",	"l",	"LoadGameMenu"
 	//PatchItem "M_SAVEG",	"s",	"SaveGameMenu"
 	PatchItem "M_QUITG",	"q",	"QuitMenu"
+	Tooltip "You'll be back."
 	AnimatedTransition
 }
 
@@ -36,7 +41,7 @@ ListMenu "DIOptionsMenu"
 	TooltipAppearance "", "gold", "TFTTBG"
 	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	StaticTextCentered 48, 12, "$Options", "DarkGrey"
-	Selector "graphics/m_selector.png", -30, -4
+	Selector "graphics/m_selector.png", -30, -10
 	Font "BIGFONT", "White"
 	Position 64, 40
 	TextItem "$Controls", "c", "DIControls"
