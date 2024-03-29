@@ -16,7 +16,7 @@ extend class DIHandler
 		supporters.Push("\clGlace");
 		supporters.Push("\csNuts");
 		supporters.Push("\clMuffins");
-		supporters.Push("\clTheatreHeathen20");
+		supporters.Push("\cvTheatreHeathen20");
 	}
 	
 	virtual void TitlemapTick() 
@@ -48,7 +48,7 @@ extend class DIHandler
 			DTA_Alpha, supportalpha
 		);
 		
-		txt = "\cvSwag Supporters: \ca<3 <3 <3";
+		txt = "\cvcool and awesome supporters: \ca<3 <3 <3";
 		offsety -= bigfont.GetHeight() * sizey;
 		Screen.DrawText(bigfont, Font.CR_WHITE, 4 * sizex, offsety, txt,
 			DTA_ScaleX, sizex * 0.6,
