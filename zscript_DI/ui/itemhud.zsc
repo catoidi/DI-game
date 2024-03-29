@@ -4,7 +4,7 @@ class DIItemHUDHandler : EventHandler
 {
 	Array<String> filedata; //all the lines from DISHOP.
 
-	transient ui cvar itemscale, itemhudtoggle, itemalpha, photomode;
+	transient ui cvar itemscale, scalefactor, itemhudtoggle, itemalpha, photomode;
 	ui DI_PlayerBase diplr;
 	ui Array<String> itemnames;
 	ui Array<String> itemsprites;
@@ -61,6 +61,7 @@ class DIItemHUDHandler : EventHandler
 		if (!diplr) {return;} //no player = no inventory!
 		itemhudtoggle = cvar.GetCVAR("di_itemhud_toggle", players[consoleplayer]);
 		itemscale = cvar.GetCVAR("di_itemhud_scale", players[consoleplayer]);
+		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
 		itemalpha = cvar.GetCVAR("di_itemhud_alpha", players[consoleplayer]);
 		photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
 		if (!itemhudtoggle) {return;}
@@ -112,7 +113,7 @@ class DIItemHUDHandler : EventHandler
 		{
 			if (photomode.GetBool() == true) {return;}
 			if (!itemscale) {return;}
-			let scalenum = itemscale.GetFloat();
+			let scalenum = itemscale.GetFloat() * scalefactor.GetFloat();
 			let alphanum = itemalpha.GetFloat();
 			let realsprite = TexMan.CheckForTexture(String.Format("%s0", validsprites[i])); //gross hack
 			if (realsprite)
