@@ -99,7 +99,6 @@ Class DIShop : DIShop_Base
 					if ((random(1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {dosale = true; lastsale = 0;}
 					else {dosale = false; ++lastsale;}
 					GetSalePercent();
-					//console.printf("%.1f", CheckSaleNum());
 					if (shop_itemstock > 0) {canshop = true;} //if shop is restocked, reenable shopping.
 					curround = newround;
 				}
@@ -444,10 +443,15 @@ Class DIShop : DIShop_Base
 		if (dosale)
 		{
 			float minsale = user_salemin + (0.01 * LevelSale);
-			float maxsale = user_salemax + (0.03 * (extrasale + lastsale));
-			if (minsale > maxsale) {minsale = maxsale;}
+			float maxsale = user_salemax + (0.03 * (extrasale + lastsale)) + (0.01 * LevelSale);
+			int based = shop_baseprice * user_pricemult;
+			if (based <= 0) {based = 1;}
+			float overpricesale = (0.1 * ((currentprice + based) / based)) - 0.1;
+			minsale += overpricesale;
+			maxsale += overpricesale;
 			if (maxsale > 0.9) {maxsale = 0.9;}
-			float rtn = 1.0 - frandom(user_salemin, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
+			if (minsale > maxsale) {minsale = maxsale;}
+			float rtn = 1.0 - frandom(minsale, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
 			salenum = rtn;
 			//console.printf("%.2f", rtn);
 		}
