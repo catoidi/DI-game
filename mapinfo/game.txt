@@ -17,7 +17,7 @@ GameInfo
 	DimAmount = 0.8
 	PlayerClasses = "DI_PlayerFredrick", "DI_PlayerBurger", "DI_PlayerBox", "DI_PlayerHam" //DIGAME.txt MUST match this or the game will EXPLODE AND DIE.
 	StatusbarClass = "DI_HUD"
-	InfoPage = "guide01"
+	InfoPage = "guide01", "guide02"
 	
 	AddEventHandlers = 
 		"DIHandler", //the main DI system, including monsters/spawners/waves/loot/etc.
