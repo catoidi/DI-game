@@ -275,14 +275,14 @@ Class DeathscreenHandler : EventHandler
 		newexp *= 1.0 + (0.01 * ((GetUnlockNum() * 2) + GetScoreBonus()));
 		
 		curexp += newexp;
-		int expmax = 10000 * (1 + curlvl);
+		int expmax = 5000 * (1 + curlvl);
 		int newlvl = 0;
 		while (curexp >= expmax)
 		{
 			curlvl += 1;
 			newlvl += 1;
 			curexp -= expmax;
-			expmax = 10000 * (1 + curlvl);
+			expmax = 5000 * (1 + curlvl);
 		}
 		
 		exp1 = curexp;

@@ -171,7 +171,7 @@ extend class DINewGameMenu
 		swaglevel.Pack(mainFrame);
 		
 		//Add EXP below the level and the bar.
-		string expstring = string.format("\cnExp: \cb%d\cn/\cb%d", di_experience, (di_swaglevel + 1) * 10000);
+		string expstring = string.format("\cnExp: \cb%d\cn/\cb%d", di_experience, (di_swaglevel + 1) * 5000);
 		explabel = boxparty_ZF_Label.Create(
 			// Position.
             (
