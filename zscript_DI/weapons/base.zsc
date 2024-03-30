@@ -106,12 +106,14 @@ Class DI_Weapon : Weapon abstract
 	override void tick(void)
 	{
 		super.tick();
+
 		
 		//weapon speed scaling stuff
 		if (Owner && Owner.player && Owner.player.ReadyWeapon == self)
 			scalers.Tick(self, wpn_speed_current);
 		else if (scalers.first)
 			scalers.Clear();
+			
 		
 		if ((owner) && (owner is "DI_PlayerBase"))
 		{
@@ -253,6 +255,19 @@ Class DI_Weapon : Weapon abstract
 		plr.Speed = plr.default.Speed + plr_speed;
 		if (plr.Speed < 0.1) {plr.Speed = 0.1;}
 		//console.printf("%d", plr.Vel.X + plr.Vel.Y);
+	}
+	
+	clearscope float CheckWeaponSpeed()
+	{
+		//return the current multiplier to weapon speed.
+		//we are not using "wpn_speed_current" here as that is on a 1 tic delay.
+		float speedcheck = wpn_speed;
+		if (wpn_speed_mode == 1) {speedcheck += wpn_speed_fire;}
+		else if (wpn_speed_mode == 2) {speedcheck += wpn_speed_reload;}
+		
+		if (speedcheck == 0.0) {return 1.0;}
+		else if (speedcheck < 0) {return 1.0 + -speedcheck;}
+		else {return 1.0 / (1.0 + speedcheck);}
 	}
 	
 	virtual void RecoilTick()
@@ -427,11 +442,18 @@ Class DI_Weapon : Weapon abstract
 		A_SpawnItemEX(magactor, 4, 0, invoker.owner.height / 2, flags: SXF_NOCHECKPOSITION);
 	}
 	
+	action void DI_StartSound(sound whattoplay, int slot = CHAN_BODY, int flags = CHANF_DEFAULT, double volume = 1.0, double attenuation = ATTN_NORM, double pitch = 0, double startTime = 0)
+	{
+		//same as A_StartSound, but automatically changes pitch to match current weapon speed.
+		pitch *= invoker.CheckWeaponSpeed();
+		A_StartSound(whattoplay, slot, flags, volume, attenuation, pitch, startTime);
+	}
+	
 	States
 	{
 		NoReload:
-			#### # 0 A_StartSound("noammo", starttime: 0.1);
 			#### # 0 WeaponMode(0);
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, starttime: 0.1);
 			#### # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
 			#### #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
 			#### # 4;

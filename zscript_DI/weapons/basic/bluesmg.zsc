@@ -39,7 +39,9 @@ CLASS BlueSMG : DI_Weapon
 		//if (invoker.recnum >= 6) {recamount = 6;}
 		//A_OverlayOffset(PSP_WEAPON, -recamount, recamount, WOF_ADD);
 		//if (invoker.recnum < 6) ++invoker.recnum;
-		A_StartSound("pistpow");
+		float powpitch = 1.05;
+		if (flashnum == 1) {powpitch = 1.0;}
+		DI_StartSound("gunpow4", pitch: powpitch);
 	}
 	
 	States
@@ -75,6 +77,7 @@ CLASS BlueSMG : DI_Weapon
 			Wait;
 		Reload:
 			BSMG A 0 DI_ReloadCheck();
+			#### # 0 DI_StartSound("gunrel1", pitch: 1.0);
 			BSMG AAAAAAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
 			BSMG A 6;
 			BSMG AA 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
@@ -91,7 +94,9 @@ CLASS BlueSMG : DI_Weapon
 			BSMG E 1;
 			BSMG EEEEEEEEEEE 1 A_OverlayOffset(-2, 6, 12, WOF_ADD);
 			#### # 0 DI_EjectMagazine("BlueSMGMagazine");
-			TNT1 A 16;
+			TNT1 A 12;
+			#### # 0 DI_StartSound("gunrel2", pitch: 0.8);
+			TNT1 A 4;
 			BSMG FFFFFFFF 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
 			Stop;
 		Flash:

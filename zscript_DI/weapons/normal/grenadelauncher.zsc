@@ -93,8 +93,8 @@ CLASS GrenadeLauncher : DI_Weapon
 			GLAN AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, 2, WOF_ADD);
 			Goto Ready;
 		NoReload:
-			#### # 0 A_StartSound("noammo", starttime: 0.1);
 			#### # 0 WeaponMode(0);
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, starttime: 0.1);
 			GLAN # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
 			GLAN #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
 			GLAN # 4;

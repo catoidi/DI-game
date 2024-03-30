@@ -54,7 +54,7 @@ Class DoubleShotgun : GreenShotgun
 				A_Overlay(2, "Fire_Barrel");
 				A_SetPitch(pitch - 1.6);
 				DI_BasicBullet(invoker.wpn_damage, false);
-				A_StartSound("pistpow");
+				DI_StartSound("lushot3");
 				A_TakeInventory("DoubleShotgunPump", 2);
 			}
 			PUSG B 8;
@@ -80,7 +80,7 @@ Class DoubleShotgun : GreenShotgun
 				A_OverlayRotate(2, 6, WOF_ADD);
 			}
 			//pump
-			#### # 0 A_StartSound("Weapons/PartyShotty/SHOTLOAD", CHAN_WEAPON);
+			#### # 0 DI_StartSound("lushot2", CHAN_WEAPON, pitch: 0.85);
 			PUSG B 1 A_OverlayOffset(PSP_WEAPON, 0, -3, WOF_ADD);
 			PUSG BBBBBB 1 A_OverlayOffset(PSP_WEAPON, -0.5, 0.5, WOF_ADD);
 			PUSG DD 1 DI_BulletCasing();
@@ -120,7 +120,9 @@ Class DoubleShotgun : GreenShotgun
 		Reload_Shell:
 			TNT1 A 0 A_OverlayOffset(3, 6, 36, WOF_ADD);
 			PUSG GGGGGG 1 A_OverlayOffset(3, -2, -6, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.75);
 			PUSG GGGG 1 A_OverlayOffset(3, 1.5, 0, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 1.0);
 			PUSG H 4;
 			Stop;
 		ReloadEnd:
@@ -128,8 +130,8 @@ Class DoubleShotgun : GreenShotgun
 			PUSG AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, -2, WOF_ADD);
 			Goto Ready;
 		NoReload:
-			#### # 0 A_StartSound("noammo", starttime: 0.1);
 			#### # 0 WeaponMode(0);
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, starttime: 0.1);
 			PUSG A 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
 			PUSG AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
 			PUSG A 4;
