@@ -128,7 +128,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				6 * barscale
 			);
 			
-			int exp2 = (di_swaglevel + 1) * 10000;
+			int exp2 = (di_swaglevel + 1) * 5000;
 			float remainder = ((exp2 - di_experience) / (1.0 * exp2)) * (160.0 * barscale);
 				
 			if (remainder > 0)
