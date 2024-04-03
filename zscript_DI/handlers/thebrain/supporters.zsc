@@ -13,10 +13,18 @@ extend class DIHandler
 		//list of all people who have supported me after the previous version of DI.
 		//if the supporter list gets to more than 5 at once, i'll redo this to support text scrolling.
 		supporters.Clear();
-		supporters.Push("\clGlace");
-		supporters.Push("\csNuts");
-		supporters.Push("\clMuffins");
-		supporters.Push("\cvTheatreHeathen20");
+		int suppos = 0;
+		
+		suppos = random(0, supporters.size());
+		supporters.Insert(suppos, "\clGlace");
+		suppos = random(0, supporters.size());
+		supporters.Insert(suppos, "\clMuffins");
+		suppos = random(0, supporters.size());
+		supporters.Insert(suppos, "\clmr.casual");
+		suppos = random(0, supporters.size());
+		supporters.Insert(suppos, "\csNuts");
+		suppos = random(0, supporters.size());
+		supporters.Insert(suppos, "\cvTheatreHeathen20");
 	}
 	
 	virtual void TitlemapTick() 
