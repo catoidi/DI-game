@@ -20,7 +20,7 @@ extend class DIHandler
 		suppos = random(0, supporters.size());
 		supporters.Insert(suppos, "\clMuffins");
 		suppos = random(0, supporters.size());
-		supporters.Insert(suppos, "\clmr.casual");
+		supporters.Insert(suppos, "\cfmr.casual");
 		suppos = random(0, supporters.size());
 		supporters.Insert(suppos, "\csNuts");
 		suppos = random(0, supporters.size());
