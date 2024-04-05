@@ -46,6 +46,7 @@ version "4.11"
 #include "zscript_DI/decoration/tree.zsc"
 #include "zscript_DI/decoration/foliage.zsc"
 #include "zscript_DI/decoration/fakewindow.zsc"
+#include "zscript_DI/decoration/smoker.zsc"
 
 //effects
 #include "zscript_DI/effects/blood.zsc"
