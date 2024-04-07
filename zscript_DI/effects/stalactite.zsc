@@ -2,10 +2,104 @@
 
 Class DI_Stalactite : DI_Actor
 {
+	Default
+	{
+		Height 48;
+		Radius 16;
+		Health 1;
+		BloodType "DI_Stalactite_Blood";
+		+SHOOTABLE;
+		+SOLID;
+		+NOBLOODDECALS;
+	}
 	
+	override void Tick()
+	{
+		Super.Tick();
+		if (health > 0)
+		{
+			SetOrigin((Pos.X, Pos.Y, CeilingZ - Height), true);
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			TRAP D -1;
+		Death:
+			TNT1 A 1
+			{
+				bool yea;
+				actor proj;
+				[yea, proj] = A_SpawnItemEX("DI_Stalactite_Projectile", flags: SXF_NOCHECKPOSITION);
+				if (proj && invoker.target) {proj.target = invoker.target;}
+				A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_None, SPF_ROLL, 35, 32, zoff: 40, startalphaf: 0.5, sizestep: 0.5, startroll: random(0, 359));
+			}
+			Stop;
+	}
 }
 
 Class DI_Stalactite_Projectile : DI_Actor
 {
+	Default
+	{
+		Height 48;
+		Radius 16;
+		Speed 0;
+		DamageFunction (250);
+		Projectile;
+		-NOGRAVITY;
+		+BLOODSPLATTER;
+	}
 	
+	override void tick()
+	{
+		super.tick();
+		if (Vel.Z < 0)
+		{
+			A_SetScale(scale.x, scale.y += (-0.001 * Vel.Z));
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			TRAP D -1;
+			Loop;
+		Death:
+			TNT1 A 1
+			{
+				for (int i = 0; i < 16; ++i)
+				{
+					A_SpawnParticleEX("White", TexMan.CheckForTexture("TRAPE0"), STYLE_None, SPF_ROLL, 25, 15, 0, random(8, 8), random(-8, 8), 24 + random(-24, 24), random(-2, 2), random(-2, 2), random(-2, 2), 0, 0, -0.33, 1, -1, 0, random(0, 359));
+				}
+				A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_None, SPF_ROLL, 35, 32, startalphaf: 0.5, sizestep: 0.5, startroll: random(0, 359));
+				A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_None, SPF_ROLL, 35, 32, zoff: 20, startalphaf: 0.5, sizestep: 0.5, startroll: random(0, 359));
+			}
+			Stop;
+	}
+}
+
+Class DI_Stalactite_Blood : Blood
+{
+	Default
+	{
+		+INVISIBLE;
+		+NOINTERACTION;
+	}
+	
+	States
+	{
+		Spawn:
+			TRAP EEE 0;
+			TNT1 A 1
+			{
+				A_SpawnItemEX("DI_BulletPuff", flags: SXF_NOCHECKPOSITION);
+				for (int i = 0; i < random(2, 4); ++i)
+				{
+					A_SpawnParticleEX("White", TexMan.CheckForTexture("TRAPE0"), STYLE_None, SPF_ROLL, 25, 15, 0, random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), 0, 0, -0.33, 1, -1, 0, random(0, 359));
+				}
+			}
+			Stop;
+	}
 }
