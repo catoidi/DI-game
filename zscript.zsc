@@ -62,6 +62,7 @@ version "4.11"
 #include "zscript_DI/effects/casings.zsc"
 #include "zscript_DI/effects/splashes.zsc"
 #include "zscript_DI/effects/walltrap.zsc"
+#include "zscript_DI/effects/stalactite.zsc"
 
 //player
 #include "zscript_DI/player/base.zsc"

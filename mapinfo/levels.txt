@@ -45,7 +45,7 @@ Map "di01" "Your first death"
 
 Map "di02" "The afterparty"
 {
-	Sky1 = "textures/sky2.png"
+	Sky1 = "textures/boxsky1.png"
 }
 
 Map "bonus01" "My first death"

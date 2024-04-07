@@ -1,0 +1,11 @@
+//zscript_DI/effects/stalactite.zsc
+
+Class DI_Stalactite : DI_Actor
+{
+	
+}
+
+Class DI_Stalactite_Projectile : DI_Actor
+{
+	
+}
