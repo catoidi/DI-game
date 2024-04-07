@@ -81,6 +81,10 @@ extend class DIHandler
 				if (wavetimeractor) {ThrowAbortException("%s", "WAVE ERROR: Attmepted to start the same wave multiple times!");}
 				else {wavetimeractor = DI_WaveSpawnTimer(e.Thing);}
 			}
+			if ((e.Thing is "PlayerPawn") || (e.Thing is "DI_Stalactite"))
+			{
+				e.Thing.A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+			}
 		}
 	}
 	
