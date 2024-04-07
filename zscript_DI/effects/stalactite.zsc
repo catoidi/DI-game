@@ -13,6 +13,12 @@ Class DI_Stalactite : DI_Actor
 		+NOBLOODDECALS;
 	}
 	
+	override void BeginPlay() 
+	{
+		Super.BeginPlay();
+		SetOrigin((Pos.X, Pos.Y, CeilingZ - Height), false);
+	}
+	
 	override void Tick()
 	{
 		Super.Tick();
