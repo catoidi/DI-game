@@ -86,6 +86,8 @@ Class Fred_Slash5 : Fred_Slash4 {Default {+SPRITEFLIP;}} //for fred5.
 Class Fred2 : Fred
 {
 	//fiendish fred. moves faster, does more damage, gets knockbacked more. very fiendish.
+	
+	mixin DI_FiendishMixin;
 
 	Default
 	{
@@ -209,6 +211,8 @@ Class Fred4 : Fred
 
 Class Fred5 : Fred4
 {	
+	mixin DI_FiendishMixin;
+
 	Default
 	{
 		Mass 300;

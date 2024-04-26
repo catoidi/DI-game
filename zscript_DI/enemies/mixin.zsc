@@ -64,3 +64,30 @@ mixin class DI_BoxBloodMixin
 		A_SpawnParticleEX("White", TexMan.CheckForTexture(boxspr), 0, SPF_ROLL, 24, boxsize, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 3), 0, 0, -0.33, 1, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
 	}
 }
+
+mixin class DI_FiendishMixin
+{
+	bool dofienddodge;
+
+	//allows fiendish enemies to dodge.
+	override void tick()
+	{
+		super.tick();
+		if (level.isfrozen() == false)
+		{
+			if (dofienddodge)
+			{
+				angle = random(0, 359);
+				A_Recoil(10);
+				ThrustThingZ(0, 10, 0, 1);
+				dofienddodge = false;
+			}
+		}
+	}
+	
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) 
+	{
+		if ((source is "PlayerPawn") && (damage > 0)) {dofienddodge = true;}
+		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
+}
