@@ -11,7 +11,6 @@ class DI_HUD : BaseStatusBar
 	//stuff
 	bool HasAmmo1;
 	bool HasAmmo2;
-	const ArmorMax = 100;
 	
 	//score
 	double ScoreFadeTime;
@@ -217,6 +216,7 @@ class DI_HUD : BaseStatusBar
 		if (GetArmorAmount() > 0) //show armor when not empty
 		{
 			BasicArmor curarmor = BasicArmor(CPlayer.mo.FindInventory('BasicArmor'));
+			let ArmorMax = curarmor.ActualSaveAmount;
 		
 			DrawBar("graphics/boxhud/HUDBARH.png", "graphics/boxhud/HUDBARG.png", BoxArmorInterpolator.GetValue(), ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 			if (BoxArmorInterpolator.GetValue() > ArmorMax)
