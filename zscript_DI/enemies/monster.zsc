@@ -25,6 +25,8 @@ Class DI_Monster : DI_Actor abstract
 	
 	name GibType;
 	Property GibType: GibType;
+	bool StunSquish;
+	Property StunSquish: StunSquish;
 
 	//Called by all of DI's enemies.
 	Default
@@ -45,6 +47,7 @@ Class DI_Monster : DI_Actor abstract
 		DI_Monster.DIDrop "DI_Coin";
 		DI_Monster.DISpeedMult 1.0;
 		DI_Monster.GibType "DI_GibExplosion";
+		DI_Monster.StunSquish true;
 		+THRUSPECIES; //monsters of the same type can walk through each other.
 		+FLOORCLIP;
 		+JUMPDOWN;
@@ -86,11 +89,11 @@ Class DI_Monster : DI_Actor abstract
 			if (owie) {owie = false;}
 			else if (stuntic > 0) {stuntic = 0;}
 			
-			if (squishtic > 0)
+			if ((squishtic > 0) && (StunSquish))
 			{
 				if (squishtic > 50) {squishtic = 50;}
-				Scale.X = 1.0 + (0.005 * squishtic);
-				Scale.Y = 1.0 - (0.01 * squishtic);
+				Scale.X = Default.Scale.X * (1.0 + (0.005 * squishtic));
+				Scale.Y = Default.Scale.Y * (1.0 - (0.01 * squishtic));
 				--squishtic;
 			}
 		
