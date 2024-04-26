@@ -8,6 +8,7 @@ Class Ron : DI_Monster
 		Health 50;
 		Radius 16;
 		Height 60;
+		Mass 160;
 		//Species "Ron";
 		BloodColor "Blue";
 		DamageFactor "Poison", 1.2;
@@ -53,7 +54,7 @@ Class Ron2 : Ron
 {
 	Default
 	{
-		Mass 35;
+		Mass 80;
 		Speed 10;
 		Health 150;
 		Scale 1.25;

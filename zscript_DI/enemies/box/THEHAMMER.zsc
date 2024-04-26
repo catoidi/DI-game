@@ -6,7 +6,7 @@ class THEHAMMER : DI_Monster
 		Health 200;
 		Radius 32;
 		Height 48;
-		Mass 2000;
+		Mass 400;
 		MeleeRange 72;
 		MeleeThreshold 200;
 		DamageFactor "Enemy", 0.0;
@@ -93,11 +93,6 @@ class THEHAMMER : DI_Monster
 			HAMM B 0 A_Recoil(-20);
 			HAMM B 0 ThrustThingZ(0, 15, 0, 1);
 			HAMM B 16;
-			Goto See;
-		Pain:
-			#### # 0 A_ResetScale();
-			HAMM E 0 A_Pain;
-			HAMM E 10;
 			Goto See;
 		Death:
 			#### # 0 A_DITargetPlayer();

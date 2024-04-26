@@ -8,9 +8,11 @@ Class Pepper : DI_Monster
         Radius 32;
         Height 64;
         Health 100;
-        Mass 600;
-		DamageFactor "Fire", 0.5;
-		DamageFactor "FakeFire", 0.5;
+        Mass 250;
+		DamageFactor "Ice", 1.5;
+		DamageFactor "FakeIce", 1.5;
+		DamageFactor "Fire", 0.75;
+		DamageFactor "FakeFire", 0.75;
         BloodType "DI_PepperBlood";
 		DI_Monster.GibType "DI_PepperExplosion";
 		DI_Monster.DIDrop "DI_Money";

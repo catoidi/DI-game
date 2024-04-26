@@ -89,7 +89,7 @@ Class Fred2 : Fred
 
 	Default
 	{
-		Mass 5;
+		Mass 150;
 		Scale 1.25;
 		Health 75;
 		Speed 12;
@@ -211,7 +211,7 @@ Class Fred5 : Fred4
 {	
 	Default
 	{
-		Mass 500;
+		Mass 300;
 		Scale 1.25;
 		Health 375;
 		Speed 15;
