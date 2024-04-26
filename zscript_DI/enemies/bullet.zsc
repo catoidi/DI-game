@@ -46,7 +46,7 @@ Class DI_Bullet : DI_Actor abstract
 	
 	action void DIBulletTrail()
 	{
-		A_SpawnParticleEX("White", TexMan.CheckForTexture(invoker.bulletrail), 0, SPF_ROLL | SPF_RELPOS, 6, 20.0 * invoker.scale.X, invoker.angle, -12, 0, 0, 0, 0, 0, 0, 0, 0, invoker.alpha / 2, 0, -3.34, invoker.roll, invoker.bulletspin);
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(invoker.bulletrail), 0, SPF_ROLL | SPF_RELPOS, 6, 20.0 * invoker.scale.X, invoker.angle, -12, 0, 0, 0, 0, 0, 0, 0, 0, invoker.alpha / 2, 0, -3.34, invoker.roll + 180, invoker.bulletspin);
 	}
 	
 	States

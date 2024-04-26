@@ -1,4 +1,4 @@
-version "4.11"
+version "4.12"
 
 //Check the README.md for info about reusing the code in "zscript_DI".
 
@@ -169,6 +169,7 @@ version "4.11"
 #include "zscript_DI/enemies/basic/ron.zsc"
 #include "zscript_DI/enemies/box/fruitpuncher.zsc"
 #include "zscript_DI/enemies/box/THEHAMMER.zsc"
+#include "zscript_DI/enemies/box/pepper.zsc"
 #include "zscript_DI/enemies/special/debtcollector.zsc"
 
 //shop
