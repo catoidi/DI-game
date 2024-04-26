@@ -11,7 +11,7 @@ Class Pepper : DI_Monster
         Mass 600;
 		DamageFactor "Fire", 0.5;
 		DamageFactor "FakeFire", 0.5;
-        BloodType "PepperBlood";
+        BloodType "DI_PepperBlood";
 		DI_Monster.GibType "DI_PepperExplosion";
 		DI_Monster.DIDrop "DI_Money";
 		Species "Pepper";
@@ -39,20 +39,34 @@ Class Pepper : DI_Monster
 			Goto See;
         Missile:
 			PEPR C 0 A_FaceTarget;
-			PEPR C 0 A_StartSound("enemies/pepload1");
+			PEPR C 0 A_StartSound("pepload1");
             PEPR CCCC 4 Slow A_DIScale(-0.0125, 0.025);
 			PEPR D 0 A_FaceTarget;
-			PEPR D 0 A_StartSound("enemies/pepload2");
+			PEPR D 0 A_StartSound("pepload2");
             PEPR DDDD 4 Slow A_DIScale(0.0125, -0.025);
             PEPR D 0 A_FaceTarget;
-			PEPR E 0 BRIGHT A_StartSound("enemies/peppow");
+			PEPR E 0 BRIGHT A_StartSound("peppow");
             PEPR E 6 BRIGHT A_SpawnProjectile("PepperBullet", 16, 0, 0);
             PEPR D 6 A_FaceTarget;
-			PEPR E 0 BRIGHT A_StartSound("enemies/peppow");
+			PEPR E 0 BRIGHT A_StartSound("peppow");
             PEPR E 6 BRIGHT A_SpawnProjectile("PepperBullet", 16, 0, 0);
             PEPR D 6;
 			PEPR D 0 A_Jump(128, "Chill");
             Goto See;
+		XDeath:
+			#### # 0 A_ResetScale();
+			PEPR G 1 A_FaceTarget;
+			PEPR G 1 A_Recoil(3);
+			PEPR G 4 ThrustThingZ(0, 15, 0, 1);
+			#### # 0 A_DITargetPlayer();
+			#### # 0 A_DIDie();
+			#### ### 0 A_DIDieBlood();
+			#### # 0 A_DIGibExplode();
+			#### # 0 A_DISpawnBloodCoins();
+			PEPR H 10;
+			#### # 0 A_RemoveLight("deathlight");
+			PEPR I 175;
+			PEPR I 0 A_Jump(256, "DeathLoop");
 	}
 }
 
@@ -80,5 +94,107 @@ Class PepperBullet : DI_Bullet
 			#### # 0 A_RemoveLight("fancylight");
 			#### # 1 A_FadeOut(0.4);
 			Loop;
+	}
+}
+
+CLASS DI_PepperBlood : DI_Actor
+{
+	mixin DI_BoxBloodMixin;
+
+	Default
+	{
+		+NOINTERACTION;
+	}
+	
+	override void postbeginplay(void)
+	{
+		super.postbeginplay();
+		DI_BoxGib("PEPRN0", 64);
+		DI_BoxGib("PEPRN0", 64);
+		DI_BoxGib("PEPRO0", 64);
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 5 NoDelay A_ProjectileSmoke();
+			Stop;
+	}
+}
+
+Class DI_PepperExplosion : DI_GibExplosion
+{	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		gibamount = 4;
+	}
+
+	override name GetGib(int gibnum) 
+	{
+		switch(gibnum)
+		{
+			case 1: return "DI_PepperGib1"; break;
+			case 2: return "DI_PepperGib2"; break;
+			case 3: return "DI_PepperGib3"; break;
+			case 4: return "DI_PepperGib4"; break;
+		}
+		return "";
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 10 NoDelay StartGibbing();
+			Stop;
+	}
+}
+
+
+Class DI_PepperGib1 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			PEPR J 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_PepperGib2 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			PEPR K 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_PepperGib3 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			PEPR L 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
+CLASS DI_PepperGib4 : DI_Gib
+{
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			PEPR M 15;
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
 	}
 }
