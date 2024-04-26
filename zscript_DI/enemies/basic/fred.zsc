@@ -182,7 +182,7 @@ Class Fred4 : Fred
 	{
 		Speed 4;
 		Mass 10000;
-		Health 210;
+		Health 180;
 		Tag "Robot Fred";
 		DI_Monster.DIDrop "DI_Money";
 	}
@@ -217,7 +217,7 @@ Class Fred5 : Fred4
 	{
 		Mass 300;
 		Scale 1.25;
-		Health 375;
+		Health 280;
 		Speed 15;
 		Radius 21;
 		Height 49;
