@@ -8,6 +8,7 @@ Class DI_Monster : DI_Actor abstract
 	bool killedbyplayer;
 	int painhp; //health value since a_dipain was last called.
 	int stuntic; //how long the enemy is stunned by taking damage.
+	int squishtic; //controls sprite squish when enemy is damaged.
 	bool owie;
 	double icenum; //how much ice slowdown to apply.
 	int firenum; //how much the enemy is currently on fire.
@@ -78,73 +79,85 @@ Class DI_Monster : DI_Actor abstract
 	
 	virtual void StatusTick()
 	{
-		if (owie) {owie = false;}
-		else if (stuntic > 0) {stuntic = 0;}
-	
 		++ticker;
-		if ((ticker >= 20) && (health > 0))
+	
+		if (health > 0)
 		{
-			if (icenum > 0) {A_DIIced(2, 0.15);}
-			UpdateIceNum(-0.01);
+			if (owie) {owie = false;}
+			else if (stuntic > 0) {stuntic = 0;}
 			
-			if ((firenum == 0) && (poisonnum == 0)) {A_DIStatusLight(0);}
-			
-			if (firenum > 0)
+			if (squishtic > 0)
 			{
-				int firedmg = 3 + (firenum / 2);
-				if (firedmg > firenum) {firedmg = firenum;}
-				if (poisonnum > 0) {firedmg *= 2;}
+				if (squishtic > 50) {squishtic = 50;}
+				Scale.X = 1.0 + (0.005 * squishtic);
+				Scale.Y = 1.0 - (0.01 * squishtic);
+				--squishtic;
+			}
+		
+			if (ticker >= 20)
+			{
+				if (icenum > 0) {A_DIIced(2, 0.15);}
+				UpdateIceNum(-0.01);
 				
-				A_DIBurned(2, 0.5);
-				A_DIStatusLight(2);
+				if ((firenum == 0) && (poisonnum == 0)) {A_DIStatusLight(0);}
 				
-				if (self.health <= firedmg) 
+				if (firenum > 0)
 				{
-					if (plrtarget && plrwpn) {ConfirmPlayerWeapon(plrtarget, plrwpn);}
-					A_Die("Fire");
+					int firedmg = 3 + (firenum / 2);
+					if (firedmg > firenum) {firedmg = firenum;}
+					if (poisonnum > 0) {firedmg *= 2;}
+					
+					A_DIBurned(2, 0.5);
+					A_DIStatusLight(2);
+					
+					if (self.health <= firedmg) 
+					{
+						if (plrtarget && plrwpn) {ConfirmPlayerWeapon(plrtarget, plrwpn);}
+						A_Die("Fire");
+					}
+					else {self.health -= firedmg; A_Pain();}
+					firenum -= firedmg;
+					if (firenum < 0) {firenum = 0;}
 				}
-				else {self.health -= firedmg; A_Pain();}
-				firenum -= firedmg;
-				if (firenum < 0) {firenum = 0;}
-			}
-			
-			++poisonticker;
-			if ((poisonnum > 0) && (poisonticker > 2))
-			{
-				int poisondmg = poisonnum / 5;
-				if (poisondmg < 1) {poisondmg = 1;}
-				if (firenum > 0) {poisondmg *= 2;}
 				
-				A_DIPoisoned(2, 0.5);
-				if (firenum <= 0) {A_DIStatusLight(3);}
-				
-				if (self.health <= poisondmg) 
+				++poisonticker;
+				if ((poisonnum > 0) && (poisonticker > 2))
 				{
-					if (plrtarget && plrwpn) {ConfirmPlayerWeapon(plrtarget, plrwpn);}
-					A_Die("Poison");
+					int poisondmg = poisonnum / 5;
+					if (poisondmg < 1) {poisondmg = 1;}
+					if (firenum > 0) {poisondmg *= 2;}
+					
+					A_DIPoisoned(2, 0.5);
+					if (firenum <= 0) {A_DIStatusLight(3);}
+					
+					if (self.health <= poisondmg) 
+					{
+						if (plrtarget && plrwpn) {ConfirmPlayerWeapon(plrtarget, plrwpn);}
+						A_Die("Poison");
+					}
+					else {self.health -= poisondmg; A_Pain();}
+					poisonnum -= poisondmg;
+					if (poisonnum < 0) {poisonnum = 0;}
+					
+					poisonticker = 0;
 				}
-				else {self.health -= poisondmg; A_Pain();}
-				poisonnum -= poisondmg;
-				if (poisonnum < 0) {poisonnum = 0;}
 				
-				poisonticker = 0;
+				if (hearttimer > 0) {--hearttimer;}
+				else {hearted = false;}
+				if (hearted == true) 
+				{
+					DoCharmEffect();
+				}
+				else if (friendlylight == true) 
+				{
+					bFRIGHTENED = false;
+					DamageMultiply += 0.66;
+					friendlylight = false;
+					A_RemoveLight("friendlylight");
+				}
+				
+				ticker = 0;
 			}
-			
-			if (hearttimer > 0) {--hearttimer;}
-			else {hearted = false;}
-			if (hearted == true) 
-			{
-				DoCharmEffect();
-			}
-			else if (friendlylight == true) 
-			{
-				bFRIGHTENED = false;
-				DamageMultiply += 0.66;
-				friendlylight = false;
-				A_RemoveLight("friendlylight");
-			}
-			
-			ticker = 0;
 		}
 	}
 	
@@ -304,6 +317,7 @@ Class DI_Monster : DI_Actor abstract
 			tics *= hploss;
 			tics += invoker.stuntic / 10;
 			if (tics < 5) {tics = 5;}
+			invoker.squishtic = tics;
 			invoker.owie = true;
 		}
 		invoker.painhp = invoker.health;
