@@ -139,3 +139,8 @@ Class SafeSplash : SafeBoom
 			#### # 0 A_Jump(256, "Expander");
 	}
 }
+
+Class SafeSplashSmall : SafeBoomSmall
+{
+
+}
