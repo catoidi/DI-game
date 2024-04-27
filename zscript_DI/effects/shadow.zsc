@@ -33,7 +33,7 @@ CLASS DIShadow : Actor
 			); 
 			SetOrigin(sPos, true);
 			Angle = master.Angle;
-			Alpha = master.Alpha * 0.2;
+			Alpha = master.Alpha * 0.5;
 			
 			double Scaler = 1.0 * (master.Radius / 16.0);
 			scale.X = Scaler;
