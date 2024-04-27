@@ -45,6 +45,8 @@ OptionMenu "DIGraphics"
 	Tooltip "Controls how long blood and bullet casings will stay on the ground before despawning.\n\nCan potentially have a large impact on performance.\n\nChanging this setting only affects future blood/casings."
 	Option "Projectile Lights", "di_fancylight", onoff
 	Tooltip "Enables dynamic lights for enemy projectiles.\n\nCan make spotting enemy attacks easier, but can also reduce performance."
+	Option "Box Shadows", "di_enemyshadow", onoff
+	Tooltip "When enabled, replaces every enemy's default sprite shadows with a 3d square shadow, similar to the one below the player. Can help determine enemy hitbox size and the direction they're facing."
 }
 
 OptionValue "bloodtic"

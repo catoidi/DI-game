@@ -17,6 +17,7 @@ Class DI_Stalactite : DI_Actor
 	{
 		Super.BeginPlay();
 		SetOrigin((Pos.X, Pos.Y, CeilingZ - Height), false);
+		A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 	}
 	
 	override void Tick()

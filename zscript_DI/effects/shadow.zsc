@@ -35,7 +35,7 @@ CLASS DIShadow : Actor
 			Angle = master.Angle;
 			Alpha = master.Alpha * 0.2;
 			
-			double Scaler = 1.0 * (16.0 / master.Radius);
+			double Scaler = 1.0 * (master.Radius / 16.0);
 			scale.X = Scaler;
 			scale.Y = Scaler;
 		}

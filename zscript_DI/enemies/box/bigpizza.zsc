@@ -32,6 +32,12 @@ Class Pizzaulter : DI_Monster
 		//$Color 4
 	}
 	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+	}
+	
 	action void A_PizzaAttack (void)
 	{
 		int rnum = roll;

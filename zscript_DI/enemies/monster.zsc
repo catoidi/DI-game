@@ -63,6 +63,11 @@ Class DI_Monster : DI_Actor abstract
 	{
 		Super.PostBeginPlay();
 		A_SpawnItemEX("DIMarker", flags: SXF_NOCHECKPOSITION | SXF_SETTARGET | SXF_TRANSFERSPRITEFRAME | SXF_ISTARGET);
+		if (di_enemyshadow && bCASTSPRITESHADOW)
+		{
+			bCASTSPRITESHADOW = false;
+			A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+		}
 		
 		painhp = health;
 		speed = default.speed * speedmult;
