@@ -5,6 +5,9 @@ mixin class DI_ActorMixin
 	bool di_notweapon;
 	property IgnoreWeapon: di_notweapon; //used for throwable consumables. tells certain functions that this actor did not originate from a weapon.
 	
+	bool di_dontscale;
+	property DontScale: di_dontscale; //prevents A_DIScale and similar functions from activating, meant for rotating sprites, which may look incorrect when scaled.
+	
 	action void A_DIScale (double ScaleAmountX, double ScaleAmountY, bool IsMultiply = false, bool DoSize = false)
 	{
 	
@@ -30,6 +33,35 @@ mixin class DI_ActorMixin
 			}
 		}
 	}
+	
+	/*
+	action void A_DIRotateScale (double ScaleAmountX, double ScaleAmountY, bool DoSize = false)
+	{
+		//allows you to set the scale of a rotating sprite.
+		//also: i didn't get the math right on this so it doesn't work yet.
+		//but im leaving the broken code here as-is in case i ever want to come back to this.
+		
+		double roll1 = cos(roll);
+		if (roll1 < 0) {roll1 *= -1;}
+		
+		double roll2 = sin(roll);
+		if (roll2 < 0) {roll2 *= -1;}
+		
+	
+		if (invoker)
+		{
+			invoker.Scale.X = invoker.default.Scale.X + (ScaleAmountX * roll1) - (ScaleAmountY * roll2);
+			invoker.Scale.Y = invoker.default.Scale.Y + (ScaleAmountY * roll1) + (ScaleAmountX * roll2);
+			
+			if (DoSize)
+			{
+				double r = invoker.Scale.X * invoker.default.Radius;
+				double h = invoker.Scale.Y * invoker.default.Height;
+				invoker.A_SetSize(r, h);
+			}
+		}
+	}
+	*/
 	
 	action void A_ResetScale (void)
 	{

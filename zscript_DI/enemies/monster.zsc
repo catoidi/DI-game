@@ -89,7 +89,7 @@ Class DI_Monster : DI_Actor abstract
 			if (owie) {owie = false;}
 			else if (stuntic > 0) {stuntic = 0;}
 			
-			if ((squishtic > 0) && (StunSquish))
+			if ((squishtic > 0) && (StunSquish) && (!di_dontscale))
 			{
 				if (squishtic > 50) {squishtic = 50;}
 				Scale.X = Default.Scale.X * (1.0 + (0.005 * squishtic));

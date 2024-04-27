@@ -14,6 +14,7 @@ Class Pizzaulter : DI_Monster
 		DamageFactor "FakePoison", 1.25;
 		DI_Monster.GibType "DI_PizzaExplosion";
 		DI_Monster.DIDrop "DI_Coin";
+		DI_Actor.DontScale true; //rotating sprites shouldn't be scaled
 		BloodType "PizzaBlood";
 		Species "Pizza";
 		Tag "Pizzaulter";
@@ -49,15 +50,15 @@ Class Pizzaulter : DI_Monster
 		See:
 			#### # 0 A_RemoveLight("hatered");
 			PIZZ A 0 A_SetRoll(roll + 8);
-			PIZZ A 3 Fast A_Chase;
+			PIZZ A 2 A_Chase;
 			Loop;
 		Chill:
 			PIZZ A 0 A_SetRoll(roll + 2);
-			PIZZ A 3 Fast A_Chase(null, null);
+			PIZZ A 2 A_Chase(null, null);
 			PIZZ A 0 A_Jump(32, "See");
 			Loop;
 		Missile:
-			PIZZ G 10 Slow A_FaceTarget;
+			PIZZ G 10 A_FaceTarget;
 			#### # 0 A_AttachLightDef("hatered", "GLOWRED");
 			PIZZ GGGGGG 1 BRIGHT A_PizzaAttack();
 			#### # 0 A_RemoveLight("hatered");
