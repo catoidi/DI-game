@@ -193,8 +193,11 @@ Class DI_Monster : DI_Actor abstract
 		if (hearttimer > 0) {++hearttimer;}
 		
 		//launch enemy vertically upon taking damage
-		float thrustnum = 1 + (((damage * 25) / default.health) / (0.01 * mass));
-		ThrustThingZ(0, thrustnum, 0, 1);
+		if (bNOGRAVITY == false)
+		{
+			float thrustnum = 1 + (((damage * 25) / default.health) / (0.01 * mass));
+			ThrustThingZ(0, thrustnum, 0, 1);
+		}
 		
 		//calculate stun time
 		stuntic += ApplyDamageFactor(damagetype, damage);
