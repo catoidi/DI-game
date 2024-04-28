@@ -24,6 +24,7 @@ Class DI_FloorActor : DI_Actor abstract
 Class DI_Drop : DI_Actor
 {
 	string coindrop;
+	int coinnum;
 	DI_Monster coindropper;
 
 	//does nothing. gets replaced via eventhandlers.
@@ -39,6 +40,7 @@ Class DI_Drop : DI_Actor
 		{
 			coindropper = DI_Monster(master);
 			coindrop = coindropper.coindrop;
+			coinnum = coindropper.coinnum;
 			di_notweapon = coindropper.di_notweapon;
 		}
 	}

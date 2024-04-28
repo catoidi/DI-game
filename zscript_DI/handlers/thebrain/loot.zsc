@@ -6,7 +6,8 @@ extend class DIHandler
 		int combo;
 		DI_PlayerBase plr;
 		
-		if (e.Thing.target is "DI_PlayerBase")
+		if (dropper.coinnum > -1) {combo = dropper.coinnum;}
+		else if (e.Thing.target is "DI_PlayerBase")
 		{
 			plr = DI_PlayerBase(dropper.target);
 			if (dropper.di_notweapon == true) {combo = plr.combonum;}

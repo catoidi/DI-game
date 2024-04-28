@@ -28,25 +28,6 @@ class THEHAMMER : DI_Monster
 		//$Color 4
 	}
 	
-	action bool BoxHammerCheck(void)
-	{
-		//used to check if there is room to dash before dashing.
-	
-		//this is probably really inefficient.
-		
-		double radnum = self.radius;
-		
-		if 
-		(
-			(CheckBlock(0, AAPTR_DEFAULT, radnum, 0, 0, 0) == true) || 
-			(CheckBlock(0, AAPTR_DEFAULT, (radnum * 2.0), 0, 0, 0) == true)
-		)
-		{
-			return true;
-		}
-		else {return false;}
-	}
-	
 	States
 	{
 		Spawn:

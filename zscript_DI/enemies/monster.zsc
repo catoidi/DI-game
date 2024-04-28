@@ -2,6 +2,8 @@ Class DI_Monster : DI_Actor abstract
 {
 	String coindrop;
 	property DIDrop: coindrop;
+	int coinnum;
+	property DIDropNum: coinnum; //control how many coins the enemy drops on death. -1 uses combo meter, and is the default.
 	PlayerPawn plrtarget;
 	DI_Weapon plrwpn; //used for tracking fresh bonuses for status effect deaths.
 	
@@ -45,6 +47,7 @@ Class DI_Monster : DI_Actor abstract
 		DeathSound "dipain";
 		Species "Enemy";
 		DI_Monster.DIDrop "DI_Coin";
+		DI_Monster.DIDropNum -1;
 		DI_Monster.DISpeedMult 1.0;
 		DI_Monster.GibType "DI_GibExplosion";
 		DI_Monster.StunSquish true;
@@ -392,6 +395,25 @@ Class DI_Monster : DI_Actor abstract
 		{
 			A_SpawnItemEX(invoker.GibType, 0, 0, invoker.height / 0.75, flags: SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION);
 		}
+	}
+	
+	action bool BoxHammerCheck(void)
+	{
+		//used to check if there is room to dash before dashing.
+	
+		//this is probably really inefficient.
+		
+		double radnum = self.radius;
+		
+		if 
+		(
+			(CheckBlock(0, AAPTR_DEFAULT, radnum, 0, 0, 0) == true) || 
+			(CheckBlock(0, AAPTR_DEFAULT, (radnum * 2.0), 0, 0, 0) == true)
+		)
+		{
+			return true;
+		}
+		else {return false;}
 	}
 	
 	States
