@@ -251,22 +251,61 @@ Level DI02;
 {
 	Wave 1:
 	{
-		Cap 3;
+		Cap 6;
 		Rate 1;
-		Time 1;
-		Spawn FruitPuncher, 1;
+		Time 35;
+		Spawn FruitPuncher, 7;
+		Wait 1;
+		Spawn Pepper, 1;
+		Wait 5;
+		Spawn Pepper, 1;
+		Wait 3;
+		Spawn RedOnion, 1;
 	}
 	Wave 2:
 	{
 		Cap 3;
-		Rate 1;
+		Rate 3;
 		Time 1;
-		Spawn Ron, 1;
+		Spawn THEHAMMER, 3;
+		Wait 2;
+		Cap 5;
+		Rate 1;
+		Time 35;
+		Spawn FruitPuncher, 10;
+		Spawn Pepper, 3;
+		Spawn RedOnion, 3;
+		Wait 8;
+		Cap 7;
+		Spawn OnionTurret, 1;
+		Spawn THEHAMMER, 1;
+		Spawn Pepper, 1;
+		
+	}
+	Wave 3:
+	{
+		Cap 25;
+		Rate 1;
+		Time 15;
+		Spawn Pizzaulter, 5;
+		Spawn PizzaSlicer, 10;
+		Wait 10;
+		Spawn Pizzaulter, 5;
+		Spawn PizzaSlicer, 10;
+		Wait 10;
+		Spawn Pizzaulter, 5;
+		Spawn PizzaSlicer, 10;
+		Wait 10;
+		Spawn Pizzaulter, 5;
+		Spawn PizzaSlicer, 10;
+		Wait 10;
+		Spawn Pizzaulter, 5;
+		Spawn PizzaSlicer, 10;
 	}
 	
 	Endless Restart;
 	{
-		Spawn Fred, 1;
+		Spawn THEHAMMER, 4;
 		MultSpeed 0.1;
 		SetSpeed 1.5;
 		MultPrice 1;
