@@ -339,6 +339,8 @@ extend class DIHandler
 				string spawn_string = wavedata[i].Mid(5);
 				array<string> spawn_array;
 				spawn_string.Split(spawn_array, ",");
+				
+				if (spawn_array.size() < 2) {ThrowAbortException("\crDIWAVE ERROR: \clInvalid Spawn Command '\ck%s\cl' at Line %d.", spawn_string, i);}
 			
 				int spawn_array_int = spawn_array[1].ToInt(10);
 				spawn_array_int *= endless_spawnmult;
