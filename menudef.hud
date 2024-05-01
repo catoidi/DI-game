@@ -14,8 +14,6 @@ OptionMenu "DIHudOptions"
 	Tooltip "Controls how much the HUD will 'shake' upon you taking damage.\n\nAlso influences the minimum threshold of damage needed for shake to occur."
 	Option "Show Fresh Timer", "di_showfreshtimer", OnOff
 	Tooltip "Adds a number timer beside the 'Fresh' meter.\n\nCan help you understand the fresh bonus cooldown a bit more."
-	Option "Show Depleted Items", "di_depletedperma", OnOff
-	Tooltip "When enabled, permanent consumable items will stay in your inventory bar, even when you currently have none."
 	StaticText ""
 	Option "Photo Mode", "di_photomode", OnOff
 	Tooltip "Hides all HUD elements.  Does not get rid of popup messages.\n\nThis option is reset back to off upon closing the game."
@@ -24,33 +22,66 @@ OptionMenu "DIHudOptions"
 	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
 	Tooltip "Prevents pickup messages from appearing at the top of your screen."
 	StaticText ""
-	StaticText "Passive Hotbar Options", "Purple"
-	Option "Enabled?", "di_itemhud_toggle", OnOff
+	StaticText "Submenus", "Purple"
+	SubMenu "Passive Hotbar Options", "DIHUDOptions_Hotbar", 0, 1
+	Tooltip "Change the item HUD shown at the top right of your screen, containing your current passive items and powerups."
+	SubMenu "Crosshair Options", "DIHUDOptions_Crosshair", 0, 1
+	Tooltip "Change the appearance and the behavior of your crosshair."
+	SubMenu "Damage Number Options", "DIHUDOptions_DamNums", 0, 1
+	Tooltip "Change the behavior of the damage numbers that appear above enemies."
+}
+
+OptionMenu "DIHUDOptions_Hotbar"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "HUD Options (Hotbar)"
+	Tooltip ""
+	//StaticText "Passive Hotbar Options", "Purple"
+	Option "Enabled?", "di_itemhud_toggle", "passivevalues"
 	Tooltip "Shows you your Passive items at the top right of the screen.\n\nPro tip: It also shows the item quantity and whether or not it's 'permanent'."
 	Slider "Scale", "di_itemhud_scale", 0.25, 3.0, 0.05, 2, "di_itemhud_toggle"
 	Tooltip "Controls the size of the Item HUD."
 	Slider "Alpha", "di_itemhud_alpha", 0.05, 1.0, 0.05, 2, "di_itemhud_toggle"
 	Tooltip "Controls the opacity of the Item HUD."
-	StaticText ""
-	StaticText "Crosshair Options", "Purple"
+}
+
+OptionMenu "DIHUDOptions_Crosshair"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "HUD Options (Crosshair)"
+	Tooltip ""
+	//StaticText "Crosshair Options", "Purple"
 	Option "Enabled?", "di_xhair_toggle", "xhairvalues"
 	Tooltip "Setting to 'Dynamic' will have crosshair dynamically match the weapon's accuracy."
+	Option "Add Dot", "di_xhair_dot", onoff
+	Tooltip "Adds a dot in the middle of the crosshair."
+	Option "Precise Mode", "di_xhair_precise", onoff
+	Tooltip "When enabled, the crosshair will dynamically move up/down to match where your bullets will actually land.\n\nDisabled by default."
 	Slider "Scale", "di_xhair_scale", 0.25, 3.0, 0.25, 2, "di_xhair_toggle"
 	Tooltip "Controls the size of the crosshair."
 	Slider "Alpha", "di_xhair_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_toggle"
 	Tooltip "Controls the opacity of the crosshair."
-	Option "Precise Mode", "di_xhair_precise", onoff
-	Tooltip "When enabled, the crosshair will dynamically move up/down to match where your bullets will actually land.\n\nDisabled by default."
-	Option "Add Dot", "di_xhair_dot", onoff
-	Tooltip "Adds a dot in the middle of the crosshair."
+	StaticText ""
 	Option "Add Fresh Meter", "di_xhair_fresh_toggle", onoff
 	Tooltip "Adds a 2nd Fresh Weapon Bonus meter below the crosshair.\n\nFresh Weapon Bonus is kinda an important mechanic to the game, and this can help make tracking it easier."
 	Slider "Fresh Scale", "di_xhair_fresh_scale", 0.05, 3.0, 0.05, 1, "di_xhair_fresh_toggle"
 	Tooltip "Controls the length of the fresh meter.\n\nAlso takes your crosshair scaling into account."
 	Slider "Fresh Alpha", "di_xhair_fresh_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_fresh_toggle"
 	Tooltip "Controls the alpha of the fresh meter.\n\nAlso takes your crosshair alpha into account."
-	StaticText ""
-	StaticText "Damage Numbers Options", "Purple"
+}
+
+OptionMenu "DIHUDOptions_DamNums"
+{
+	class "DITF_TooltipOptionMenu"
+	TooltipAppearance "", "gold", "TFTTBG"
+	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
+	Title "HUD Options (Damage Numbers)"
+	Tooltip ""
+	//StaticText "Damage Numbers Options", "Purple"
 	Option		"Enabled?"       , "dam_enabled"  , "DamEnabled"
 	Tooltip "Shows damage numbers above enemies heads (and yours) when they take damage."
 	Option      "Shotgun Spray"     , "dam_spray"    , "YesNo", "dam_enabled"
@@ -64,4 +95,11 @@ OptionValue "xhairvalues"
 	0, "Off"
 	1, "On"
 	2, "Dynamic"
+}
+
+OptionValue "passivevalues"
+{
+	0, "Off"
+	1, "On"
+	2, "Powerups Only"
 }

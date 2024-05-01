@@ -8,7 +8,7 @@ GameInfo
 	MenuFontColor_Title = "White"
 	MenuFontColor_Label = "Default"
 	MenuFontColor_Value = "Gray"
-	MenuFontColor_Action = "Gray"
+	MenuFontColor_Action = "Gold"
 	MenuFontColor_Header = "White"
 	MenuFontColor_Highlight = "White"
 	MenuFontColor_Selection = "Gray"

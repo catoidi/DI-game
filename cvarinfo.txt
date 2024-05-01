@@ -104,7 +104,7 @@ user bool di_xhair_precise = false; //toggles the precise crosshair mode.
 user bool di_xhair_dot = false; //toggles the dot in the middle.
 
 //DI item hud
-user bool di_itemhud_toggle = true; //enables the item hud.
+user int di_itemhud_toggle = 1; //enables the item hud.
 user float di_itemhud_scale = 0.75; //controls the size of the passive items shown at the top left of the screen.
 user float di_itemhud_alpha = 0.75; //opacity of the item hud.
 
