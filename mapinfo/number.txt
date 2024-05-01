@@ -32,4 +32,6 @@ DoomEdNums
 	20029 = DIMapSpot
 	20030 = DIMapSpot_Decor
 	20031 = DIMapSpot_Event
+	20032 = DISpawnerSpot_Turret
+	20033 = DISpawnerSpot_Flying
 }

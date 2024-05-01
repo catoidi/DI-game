@@ -260,7 +260,7 @@ Level DI02;
 		Wait 5;
 		Spawn Pepper, 1;
 		Wait 3;
-		Spawn RedOnion, 1;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
 	}
 	Wave 2:
 	{
@@ -274,10 +274,10 @@ Level DI02;
 		Time 35;
 		Spawn FruitPuncher, 10;
 		Spawn Pepper, 3;
-		Spawn RedOnion, 3;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
 		Wait 8;
 		Cap 7;
-		Spawn OnionTurret, 1;
+		Spawn OnionTurret, 1, DISpawnerSpot_Turret;
 		Spawn THEHAMMER, 1;
 		Spawn Pepper, 1;
 		

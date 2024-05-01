@@ -79,6 +79,7 @@ extend class DIHandler
 			
 				//Move to the spot, then activate the spot.
 				spwnr.SetOrigin(chosenspot.Pos, false); //move the spawner to the pointer's position.
+				spwnr.Spotter = chosenspot; //give pointer of current spot to spawner.
 				chosenspot.SpawnDelay = 100 + spotdelay; //how long this spot will be unavailable for. minimum is just under 3 seconds.
 				chosenspot.Die(spwnr, spwnr, 0, "Spawner"); //prevents other spawners from choosing this current spot.
 			
