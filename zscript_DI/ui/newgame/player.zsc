@@ -7,7 +7,7 @@ extend class DINewGameMenu
 		//this will a list of valid items, and create a button for each of them on the left side of the menu.
 		//TODO: add support for scrolling the list up and down.
 		
-		background.SetImage("graphics/NEWGAMEBACK3.png");
+		background.SetImage("graphics/NEWGAMEBACK2.png");
 	
         int labelCount = 0; // We need this to calculate the position of the labels.
         for (int i = 0; i < playerpool.Size(); ++i)
@@ -38,10 +38,10 @@ extend class DINewGameMenu
 				// Position
 				(
 					// Horizontal position.
-                    120,
+                    148,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
-                    102 + (12 * labelCount)
+                    122 + (12 * labelCount)
 				),
 				// Size
 				boxSize,
@@ -65,10 +65,10 @@ extend class DINewGameMenu
                 // Position.
                 (
                     // Horizontal position.
-                    126,
+                    154,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
-                    105 + (12 * labelCount)
+                    125 + (12 * labelCount)
                 ),
                 // Size.
                 (
@@ -107,10 +107,10 @@ extend class DINewGameMenu
 				// Position
 				(
 					// Horizontal position.
-                    120,
+                    148,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
-                    102 + (12 * labelCount)
+                    122 + (12 * labelCount)
 				),
 				// Size
 				(144, 12),

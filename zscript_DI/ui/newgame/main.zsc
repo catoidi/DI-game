@@ -58,7 +58,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		let plr = players[consoleplayer];
 		tutcvar = cvar.FindCVAR("di_menu_asktutorial");
 		
-		background = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/NEWGAMEBACK.png", imagescale: (2, 2));
+		background = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/NEWGAMEBACK1.png", imagescale: (2, 2));
 		background.Pack(mainFrame);
 		
 		plrinfo = boxparty_ZF_Image.Create((336, 116), (216, 208), "", imagescale: (2, 2));
