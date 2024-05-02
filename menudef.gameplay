@@ -3,8 +3,6 @@
 OptionMenu "DIGameplay"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "Gameplay Options"
 	StaticText ""
 	StaticText "Aim Assist", "Purple"

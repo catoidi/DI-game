@@ -3,8 +3,6 @@
 OptionMenu "DIControls"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "$CNTRLMNU_TITLE"
 	
 	Submenu "$OPTMNU_MOUSE",			"MouseOptionsSimple"
@@ -24,8 +22,6 @@ OptionMenu "DIControls"
 OptionMenu "BoxActionControlsMenu"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "$CNTRLMNU_ACTION_TITLE"
 	ScrollTop 2
 	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
@@ -70,8 +66,6 @@ OptionMenu "BoxActionControlsMenu"
 OptionMenu "BoxWeaponsControlMenu"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "$CNTRLMNU_WEAPONS_TITLE"
 	ScrollTop 2
 	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
@@ -104,8 +98,6 @@ OptionMenu "BoxWeaponsControlMenu"
 OptionMenu "BoxOtherControlsMenu"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "$CNTRLMNU_OTHER_TITLE"
 	ScrollTop 2
 	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"

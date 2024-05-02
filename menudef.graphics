@@ -4,8 +4,6 @@ OptionMenu "DIGraphics"
 {
 	//combination of Display, Hardware, and Post Processing options.
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "Graphics Options"
 
 	Submenu "$DSPLYMNU_GLOPT", 			"DIHardware"
@@ -60,8 +58,6 @@ OptionValue "bloodtic"
 OptionMenu "DIVideo"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "Video Options"
 	
 	Option "$VIDMNU_PREFERBACKEND",		"vid_preferbackend", "PreferBackend"
@@ -95,8 +91,6 @@ OptionMenu "DIVideo"
 OptionMenu "DIHardware"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "$GLMNU_TITLE"
 	StaticText "$GLMNU_POSTPROCESS", "Purple"
 	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"

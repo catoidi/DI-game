@@ -11,8 +11,6 @@ ListMenu "MainMenu"
 {
 	//Class "DIListMenu"
 	Class "DITF_TooltipListMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Size "Clean"
 	Font "BigUpper", "Gray"
 	StaticPatchCentered 160, -4, "DILOGO"
@@ -38,8 +36,6 @@ ListMenu "MainMenu"
 ListMenu "DIOptionsMenu"
 {
 	Class "DITF_TooltipListMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	StaticTextCentered 48, 12, "$Options", "DarkGrey"
 	Selector "graphics/m_selector.png", -30, -10
 	Font "BIGFONT", "White"

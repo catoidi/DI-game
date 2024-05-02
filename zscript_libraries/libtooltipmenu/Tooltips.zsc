@@ -97,13 +97,15 @@ mixin class DITF_TooltipMenu {
   // - white text using newsmallfont
   DITF_Tooltip GetDefaults() {
     let tt = DITF_Tooltip(new("DITF_Tooltip"));
-    tt.x = tt.y = 0.0;
+    tt.x = 0.0;
+	tt.y = 1.0;
     tt.w = 0.3;
-    tt.xpad = 1.0;
-    tt.ypad = 0.5;
-    tt.scale = 1.0;
-    tt.font = newsmallfont;
-    tt.colour = Font.CR_WHITE;
+    tt.xpad = 0.25;
+    tt.ypad = 0.25;
+    tt.scale = 1.5;
+    tt.font = smallfont;
+    tt.colour = Font.CR_GOLD;
+	tt.texture = TexMan.CheckForTexture("TFTTBG");
     return tt;
   }
 

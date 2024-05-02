@@ -3,8 +3,6 @@
 OptionMenu "DIHudOptions"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "HUD Options"
 	Tooltip ""
 	StaticText "Main HUD Options", "Purple"
@@ -34,8 +32,6 @@ OptionMenu "DIHudOptions"
 OptionMenu "DIHUDOptions_Hotbar"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "HUD Options (Hotbar)"
 	Tooltip ""
 	//StaticText "Passive Hotbar Options", "Purple"
@@ -50,8 +46,6 @@ OptionMenu "DIHUDOptions_Hotbar"
 OptionMenu "DIHUDOptions_Crosshair"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "HUD Options (Crosshair)"
 	Tooltip ""
 	//StaticText "Crosshair Options", "Purple"
@@ -77,8 +71,6 @@ OptionMenu "DIHUDOptions_Crosshair"
 OptionMenu "DIHUDOptions_DamNums"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "HUD Options (Damage Numbers)"
 	Tooltip ""
 	//StaticText "Damage Numbers Options", "Purple"
