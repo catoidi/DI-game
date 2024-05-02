@@ -273,7 +273,7 @@ class NashHPBarHandler : EventHandler
 				if (prevShop.user_hideitem == true) {txt = "\caWho knows what riches this holds?";}
 				Screen.DrawText(fnt, normalTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
-					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (19 * CleanYFac),
+					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (15 * CleanYFac),
 					txt,
 					DTA_CleanNoMove, true,
 					DTA_KeepRatio, true,
