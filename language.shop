@@ -14,7 +14,7 @@ SHOPTYPE_DIUPGRADESHOPS = "[Instant Use]";
 //Starting Weapons
 SHOPITEM_STARPISTOL = "Star Pistol";
 SHOPDESC_STARPISTOL = "Increasing your coin drops\nalso increases weapon's DMG.";
-SHOPDESC2_STARPISTOL = "\cbBase DMG is 11, increases by 2 for every coin enemies can drop. While freshness is ready, +4 DMG.";
+SHOPDESC2_STARPISTOL = "\cbBase DMG is 11, increases by 2 for every coin enemies can drop. Has a fresh bonus of +2.\n\nAlmost anything that increases enemy coin drops will increase this weapon's Base DMG.";
 SHOPTYPE_STARPISTOL = "\cv[Starting Weapon]";
 SHOPITEM_GLOWSTICK = "Glowstick";
 SHOPDESC_GLOWSTICK = "Melee Weapon. Gains extra\nammo on fresh weapon bonus.\nKills grant health pickups.";
