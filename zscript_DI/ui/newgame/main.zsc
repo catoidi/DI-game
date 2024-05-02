@@ -7,6 +7,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	//also also: against all odds, and some may call this an affront to god, but this menu has full keyboard/controller support!
 	//there's parts of this code i like a lot. other parts are full of sin. you've been warned.
 
+	mixin DI_UIMixin;
+
 	DINewGameHandler handler;
 	
 	cvar tutcvar, cheatcvar;
@@ -107,6 +109,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	override void Drawer()
 	{
+		DrawStars();
+		
 		Super.Drawer();
 		
 		if (pagenum == 2)

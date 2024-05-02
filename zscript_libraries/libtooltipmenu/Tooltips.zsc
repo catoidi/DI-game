@@ -147,6 +147,7 @@ mixin class DITF_TooltipMenu {
   }
 
   override void Drawer() {
+    DrawStars();
     super.Drawer();
     let tt = FindTooltipFor(mDesc.mSelectedItem);
     if (tt) tt.Draw();
