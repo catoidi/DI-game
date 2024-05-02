@@ -248,9 +248,9 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		string currentcat;
 		switch(currenttab)
 		{
-			case 0: currentcat = "\ca* Weapons"; break;
-			case 1: currentcat = "\cd* Passives"; break;
-			case 2: currentcat = "\cv* Consumables"; break;
+			case 0: currentcat = "\ca> Weapons"; break;
+			case 1: currentcat = "\cd> Passives\cc/\cvPowerups"; break;
+			case 2: currentcat = "\cv> Consumables"; break;
 		}
 		
 		if (categorytxt) {categorytxt.Unpack(); categorytxt.Destroy();}
@@ -276,7 +276,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
             // Whether to automatically resize the element based on the text width.
             autoSize: false,
 			// The size of the font.
-			textScale: 1.0,
+			textScale: 1.5,
             // The text's colour.
             textColor: Font.CR_WHITE
         );
