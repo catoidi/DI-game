@@ -8,7 +8,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 	
 	DICatalogueHandler handler;
 	
-	Font smallFont, newSmallFont;
+	Font SmallFont;
 	boxparty_ZF_Image background, tutorialimage;
 	Array<boxparty_ZF_BoxImage> itemboximages, tabboximages;
 	Array<boxparty_ZF_Label> itemlabels;
@@ -25,7 +25,6 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		super.init(parent);
 		setbaseresolution((640, 400));
 		smallFont = Font.GetFont("SmallFont");
-		newSmallFont = Font.GetFont("NewSmallFont");
 		
         handler = new('DICatalogueHandler');
         handler.link = self;
@@ -266,12 +265,12 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
                 // Calculate the horizontal size of the text.
                 smallfont.StringWidth (currentcat) * 1.5,
                 // Get the font's height.
-                newSmallFont.GetHeight() * 1.0
+                SmallFont.GetHeight() * 1.5
             ),
             // The label's text.
             text: currentcat,
             // The font to use.
-            fnt: newSmallFont,
+            fnt: SmallFont,
             // Whether to automatically wrap the text or not.
             wrap: false,
             // Whether to automatically resize the element based on the text width.
@@ -483,7 +482,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         (
             (startx - 180, 180),
             (480, 48),
-            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 1.5, textColor: Font.CR_GOLD
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 2.0, textColor: Font.CR_GOLD
         );
         itemtitle.Pack (mainFrame);
 		
@@ -494,7 +493,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         (
             (startx - 180, 220),
             (360, 48),
-            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
         );
         itemdesc.Pack (mainFrame);
 		
@@ -506,7 +505,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         (
             (startx - 180, 284),
             (360, 76),
-            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
         );
         itemdesc2.Pack (mainFrame);
 		
@@ -520,7 +519,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         (
             (startx - 180, 360),
             (360, 48),
-            text: curtxt, fnt: newSmallFont, wrap: true, autoSize: false, textScale: 0.75, textColor: Font.CR_WHITE
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
         );
         itemtags.Pack (mainFrame);
 	}
