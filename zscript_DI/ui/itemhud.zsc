@@ -5,6 +5,7 @@ class DIItemHUDHandler : EventHandler
 	Array<String> filedata; //all the lines from DISHOP.
 
 	transient ui cvar itemscale, scalefactor, itemhudtoggle, itemalpha, photomode;
+	ui font countfont;
 	ui DI_PlayerBase diplr;
 	ui Array<String> itemnames;
 	ui Array<String> itemsprites;
@@ -12,11 +13,14 @@ class DIItemHUDHandler : EventHandler
 	ui Array<String> validsprites;
 	ui Array<Int> validcount;
 	ui Array<Int> validperm;
+	ui Array<Bool> ispowerup;
 	ui bool heartfade;
 	ui int heartfade_int;
 	
 	override void WorldLoaded(WorldEvent e)
 	{	
+		EventHandler.SendInterfaceEvent(consoleplayer, "diitemhudfont");
+	
 		int ThisLump = Wads.FindLump("DISHOP", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DISHOP", ThisLump + 1, Wads.ANYNAMESPACE);
 		
@@ -53,6 +57,10 @@ class DIItemHUDHandler : EventHandler
 				itemsprites.Push(currentline[2]);
 			}
 		}
+		else if (e.Name == "diitemhudfont")
+		{
+			countfont = font.getfont('smallfont');
+		}
 	}
 	
 	override void UITick()
@@ -71,7 +79,8 @@ class DIItemHUDHandler : EventHandler
 		validsprites.Clear();
 		validcount.Clear();
 		validperm.Clear();
-		if (itemhudtoggle.GetBool() == false) {return;}
+		ispowerup.Clear();
+		if (itemhudtoggle.GetInt() < 1) {return;}
 		for (int i = 0; i < itemnames.Size(); i++)
 		{
 			inventory curitem = diplr.FindInventory(itemnames[i], false); //search player's inventory.
@@ -91,6 +100,8 @@ class DIItemHUDHandler : EventHandler
 					}
 					if (hasperma == true) {validperm.Push(1);}
 					else {validperm.Push(0);}
+					if (curitem is "DIPowerup") {ispowerup.Push(true);}
+					else {ispowerup.Push(false);}
 				}
 			}
 		}
@@ -109,27 +120,59 @@ class DIItemHUDHandler : EventHandler
 	
 	override void RenderOverlay(RenderEvent e)
 	{
-		for (int i = 0; i < validitems.Size(); i++)
+		//keep track of previous passives/powerups for sorting
+		int passivecount;
+		int powerupcount;
+		
+		for (int i = 0; i < validitems.Size(); i++) //iterate through all recorded items
 		{
+			//sanity checks
 			if (photomode.GetBool() == true) {return;}
 			if (!itemscale) {return;}
+			
+			//initial powerup checks
+			bool dopowerup = ispowerup[i];
+			if (itemhudtoggle.getint() == 2) //only powerups mode
+			{
+				if (dopowerup) {dopowerup = false;} //not drawing passives, so don't do powerup offsets
+				else {continue;} //skip non-powerup items
+			}
+			
+			//get item hud scale/alpha cvars
 			let scalenum = itemscale.GetFloat() * scalefactor.GetFloat();
 			let alphanum = itemalpha.GetFloat();
+			
+			//find the sprite graphic for listed item
 			let realsprite = TexMan.CheckForTexture(String.Format("%s0", validsprites[i])); //gross hack
-			if (realsprite)
+			if (realsprite) //dont run code if item sprite not found
 			{
+				//calculate sizing for single item.
 				let limitX = Screen.GetWidth() / 3;
 				let singleX = (24 * CleanXFac * scalenum);
 				int Xmax = limitX / singleX;
-				int itemrows = i / Xmax;
-				let startx = Screen.GetWidth() - (singleX * ((i % Xmax) + 0.5));
-				let starty = (24 * (1 + itemrows)) * CleanYFac * scalenum;
+				//find item's position in itemhud grid.
+				int xnum = passivecount;
+				int itemrows = xnum / Xmax; //max number items per row is determined by how many sprites can fit in 1/3 of the screen. there is no limit to the amount of rows, for now.
+				float powerspace;
+				if (dopowerup) //separate powerups from passives
+				{
+					powerspace = 0.4; //add some whitespace for better clarity
+					xnum = powerupcount;
+					itemrows += 1 + (xnum / Xmax);
+					++powerupcount;
+				}
+				else {++passivecount;}
+				//calculate x/y coordinates
+				let startx = Screen.GetWidth() - (singleX * ((xnum % Xmax) + 0.5));
+				let starty = (25 * (1 + itemrows + powerspace)) * CleanYFac * scalenum;
+				//draw item sprite
 				Screen.DrawTexture(realsprite, false, startx, starty,
 					DTA_ScaleX, scalenum * CleanXFac,
 					DTA_ScaleY, scalenum * CleanYFac,
-					DTA_Alpha, alphanum,
+					DTA_Alpha, alphanum * 0.8,
 					DTA_KeepRatio, true
 				);
+				//permanent item check
 				if (validperm[i] == 1)
 				{
 					Screen.DrawTexture(TexMan.CheckForTexture("PUFFH0"), false,
@@ -141,15 +184,16 @@ class DIItemHUDHandler : EventHandler
 						DTA_KeepRatio, true
 					);
 				}
+				//item counter
 				if (validcount[i] > 1)
 				{
 					int itemcount = validcount[i];
-					startx += 4 * CleanXFac * scalenum;
-					starty -= 8 * CleanYFac * scalenum;
-					if (itemcount >= 10) {startx -= 8 * CleanXFac * scalenum;}
-					if (itemcount >= 100) {startx -= 8 * CleanXFac * scalenum;}
-					if (itemcount > 999) {itemcount = 999;}
-					Screen.DrawText(smallfont, Font.CR_GOLD, startx, starty, String.Format("%d", validcount[i]),
+					if (itemcount > 9999) {itemcount = 9999;}
+					string countstring = string.format("%d", validcount[i]);
+					startx += 12 * CleanXFac * scalenum;
+					starty -= 2 * CleanYFac * scalenum;
+					startx -= countfont.StringWidth(countstring, false) * CleanXFac * scalenum; //make sure to take font size into account when calculating offset
+					Screen.DrawText(countfont, Font.CR_GOLD, startx, starty, countstring,
 						DTA_ScaleX, scalenum * CleanXFac,
 						DTA_ScaleY, scalenum * CleanYFac,
 						DTA_Alpha, alphanum,
