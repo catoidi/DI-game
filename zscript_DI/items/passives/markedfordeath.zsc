@@ -51,10 +51,11 @@ Class DI_DeathMark_Enemy : Inventory
 	}
 }
 
-Class DI_DeathMark_Puff : DI_BloodPuff_GibBig
+Class DI_DeathMark_Puff : DI_BloodPuff_Gib
 {
 	Default
 	{
+		Scale 1.0;
 		Renderstyle "Translucent";
 		//Alpha 0.25;
 	}

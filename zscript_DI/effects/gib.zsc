@@ -77,8 +77,15 @@ Class DI_GibBloody : DI_Gib
 {
 	int randomblood;
 	int bloodtimer;
+	string trailactor;
 	
-	Default {+USEBOUNCESTATE;}
+	Property TrailActor: trailactor;
+	
+	Default 
+	{
+		DI_GibBloody.TrailActor "DI_BloodPuff_Gib";
+		+USEBOUNCESTATE;
+	}
 	
 	override void postbeginplay()
 	{
@@ -94,34 +101,39 @@ Class DI_GibBloody : DI_Gib
 		++bloodtimer;
 		if (bloodtimer >= randomblood)
 		{
-			A_SpawnItemEX("DI_BloodPuff_Gib", flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERALPHA);
+			DoGibTrail();
+			//A_SpawnItemEX("DI_BloodPuff_Gib", flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERALPHA);
 			bloodtimer = 0;
 		}
 	}
 	
-	virtual name TrailSprite()
+	virtual void DoGibTrail(float trailsize = 1.0)
 	{
-		string trailer = "BLUDA0";
-		switch(random(0, 2))
+		//has to be an actor as we cant transfer translations to particles.
+		bool spawned;
+		actor item;
+		[spawned, item] = A_SpawnItemEX(trailactor, flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERALPHA);
+		if (item) 
 		{
-			case 1: trailer = "BLUDB0"; break;
-			case 2: trailer = "BLUDC0"; break;
+			item.Scale.X *= trailsize;
+			item.Scale.Y *= trailsize;
 		}
-		return trailer;
+	}
+	
+	virtual void GibEnd()
+	{
+		Alpha = default.Alpha;
+		bFLATSPRITE = true;
+		DoGibTrail(2.0);
 	}
 	
 	States
 	{
 		Bounce:
-			#### # 0 A_SpawnItemEX("DI_BloodPuff_GibBig", flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERALPHA);
+			#### # 0 DoGibTrail(2.0); //A_SpawnItemEX("DI_BloodPuff_GibBig", flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERALPHA);
 			#### # 0 A_Jump(256, "Looper");
 		Death:
-			#### # 0 
-			{
-				invoker.Alpha = invoker.default.Alpha;
-				bFLATSPRITE = true;
-				A_SpawnItemEX("DI_BloodPuff_GibBig", flags: SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERALPHA);
-			}
+			#### # 0 GibEnd();
 			#### # 1050 A_SetTics(floortic);
 			#### # 1 A_FadeOut(0.05);
 			Wait;
@@ -181,13 +193,15 @@ Class DI_GibExplosion : DI_Actor
 		return "DI_GibBloody";
 	}
 	
-	action void StartGibbing()
+	action void StartGibbing(bool translated = true)
 	{
+		int spawnflag = SXF_NOCHECKPOSITION;
+		if (translated) {spawnflag += SXF_TRANSFERTRANSLATION | SXF_TRANSFERRENDERSTYLE;}
 		A_SetRoll(random(0, 359));
 		for (int i = 0; i < invoker.gibamount; ++i)
 		{
 			let gibvel = invoker.boomsize * 9;
-			A_SpawnItemEX(invoker.GetGib(i), 0, 0, 0, frandom(-gibvel, gibvel), frandom(-gibvel, gibvel), frandom(gibvel / 2, gibvel * 2), random(0, 359), SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERRENDERSTYLE, 0, invoker.tid);
+			A_SpawnItemEX(invoker.GetGib(i), 0, 0, 0, frandom(-gibvel, gibvel), frandom(-gibvel, gibvel), frandom(gibvel / 2, gibvel * 2), random(0, 359), spawnflag, 0, invoker.tid);
 		}
 		A_StartSound("wilhelm");
 	}

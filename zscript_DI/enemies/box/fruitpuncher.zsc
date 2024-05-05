@@ -75,6 +75,16 @@ CLASS DI_FruitBlood : DI_Blood
 	}
 }
 
+Class DI_FruitBlood_Gib : DI_BloodPuff_Gib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			BLDR A 1 DoGibPuff(3);
+	}
+}
+
 Class DI_FruitExplosion : DI_GibExplosion
 {
 	override void postbeginplay()
@@ -106,6 +116,8 @@ Class DI_FruitExplosion : DI_GibExplosion
 
 Class DI_FruitGib : DI_GibBloody
 {
+	Default {DI_GibBloody.TrailActor "DI_FruitBlood_Gib";}
+
 	States
 	{
 		Roller:

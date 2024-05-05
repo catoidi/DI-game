@@ -175,6 +175,7 @@ version "4.12"
 #include "zscript_DI/enemies/box/redonion.zsc"
 #include "zscript_DI/enemies/box/bigpizza.zsc"
 #include "zscript_DI/enemies/box/smallpizza.zsc"
+#include "zscript_DI/enemies/box/lemon.zsc"
 #include "zscript_DI/enemies/special/debtcollector.zsc"
 
 //shop

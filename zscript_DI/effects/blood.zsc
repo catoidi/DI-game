@@ -128,24 +128,23 @@ CLASS DI_BloodPuff_Gib : DI_BloodPuff
 {
 	Default
 	{
-		Scale 0.25;
+		Scale 0.5;
+	}
+	
+	action state DoGibPuff(int randomframe = 2)
+	{
+		if (randomframe > 0) {frame += random(0, randomframe);}
+		A_SetRoll(random(0, 359));
+		return ResolveState("Puffing");
 	}
 	
 	States
 	{
 		Spawn:
 			TNT1 A 1;
-			BLUD A 1
-			{
-				frame = random(0, 2);
-				A_SetRoll(random(0, 359));
-			}
+			BLUD A 1 DoGibPuff();
+		Puffing:
 			#### # 1 {A_DIScale(1.02, 1.02, true); A_FadeOut(0.1);}
 			Wait;
 	}
-}
-
-CLASS DI_BloodPuff_GibBig : DI_BloodPuff_Gib
-{
-	Default {Scale 1.0;}
 }
