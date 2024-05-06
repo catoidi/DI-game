@@ -42,7 +42,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	Array<String> wavekeep; //any items you've purchased that should not be wiped every wave.
 	Array<String> renteditems; //a list of all items you've rented this round.
 	
-	Array<String> knownpassives; //NOT A LIST OF ITEMS CURRENTLY IN YOUR INVENTORY. this shows every passive you've every interacted with.
+	Array<String> knownpassives; //NOT A LIST OF ITEMS CURRENTLY IN YOUR INVENTORY. this shows every passive you've ever interacted with.
 	int boxammonum;
 	
 	int lastscore; //the score you had last round.
@@ -489,6 +489,13 @@ Class DI_PlayerBase : PlayerPawn abstract
 	action void DIWave_Start(void)
 	{
 		invoker.lastscore = invoker.score; //track how many points you start the wave with.
+		
+		//let all passives do enter wave functions.
+		for (int i = 0; i < invoker.knownpassives.Size(); ++i)
+		{
+			DIPassiveInventory pass = DIPassiveInventory(invoker.FindInventory(invoker.knownpassives[i]));
+			if (pass) {pass.EnterWave();}
+		}
 	}
 	
 	action void DIWave_End(void)
@@ -513,6 +520,13 @@ Class DI_PlayerBase : PlayerPawn abstract
 			
 			console.printf("\cx%d borrowed health has been returned.", invoker.CountInv("DI_Degen") - curdegen); //return 10% of borrowed health to players with no debts.
 			invoker.A_SetInventory("DI_Degen", curdegen);
+		}
+		
+		//let all passives run enter shop functions before items get cleared.
+		for (int i = 0; i < invoker.knownpassives.Size(); ++i)
+		{
+			DIPassiveInventory pass = DIPassiveInventory(invoker.FindInventory(invoker.knownpassives[i]));
+			if (pass) {pass.EnterShop();}
 		}
 	
 		Array<String> keeparray;
