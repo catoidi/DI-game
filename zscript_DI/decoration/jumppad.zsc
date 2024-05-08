@@ -1,0 +1,55 @@
+//zscript_DI/decoration/jumppad.zsc
+
+CLASS DIParticle : Actor
+{
+	string particlecolor;
+	
+	Property ParticleColor: particlecolor;
+
+	Default
+	{
+		Radius 32;
+		Height 4;
+		DIParticle.ParticleColor "FFFFFF";
+		-SOLID;
+		+MOVEWITHSECTOR;
+		+NOINTERACTION;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 4 BRIGHT
+			{
+				if ((random(0, 1) == 1) && (CheckRange(1024) == false))
+				{
+					A_SpawnParticle(invoker.particlecolor, SPF_ROLL, 25, 8, 0, frandom(-invoker.radius, invoker.radius), frandom(-invoker.radius, invoker.radius), 0, frandom(-1, 1), frandom(-1, 1), frandom(2, 6));
+				}
+			}
+			Loop;
+	}
+}
+
+CLASS JumpPadParticle : DIParticle
+{
+	Default 
+	{
+		diparticle.particlecolor "2e9b14";
+		//$Category "DI/Decor/Particles/"
+		//$Title "Jump Pad Particles"
+		//$Sprite "SMOKA0"
+		//$Color 2
+	}
+}
+
+CLASS LavaParticle : DIParticle
+{
+	Default 
+	{
+		diparticle.particlecolor "f2c800";
+		//$Category "DI/Decor/Particles/"
+		//$Title "Lava Particles"
+		//$Sprite "SMOKA0"
+		//$Color 2
+	}
+}

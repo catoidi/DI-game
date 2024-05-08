@@ -1,1 +1,44 @@
 //zscript_DI/decoration/smoker.zsc
+
+CLASS Smoker : Actor
+{
+	Default
+	{
+		Radius 16;
+		Height 4;
+		-SOLID;
+		+MOVEWITHSECTOR;
+		+NOINTERACTION;
+		//$Category "DI/Decor/Particles/"
+		//$Title "Smoker"
+		//$Sprite "SMOKA0"
+		//$Color 2
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 4 BRIGHT
+			{
+				if ((random(0, 5) == 5) && (CheckRange(1024) == false))
+				{
+					A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), 0, SPF_ROLL, 25, 20.4, 0, frandom(-8, 8), frandom(-8, 8), frandom(0, 4), frandom(-1, 1), frandom(-1, 1), frandom(2, 6), 0, 0, 0, 0.25, 0.01, 1, random(0, 359), 6 - (12 * (random(0, 1))));
+				}
+			}
+			Loop;
+	}
+}
+
+CLASS LavaSmoker : RandomSpawner
+{
+	Default
+	{
+		Radius 32;
+		DropItem "Smoker", 256, 1;
+		DropItem "LavaParticle", 256, 3;
+		//$Category "DI/Decor/Particles/"
+		//$Title "Lava Particles"
+		//$Sprite "SMOKA0"
+		//$Color 2
+	}
+}

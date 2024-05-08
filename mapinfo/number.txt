@@ -34,4 +34,7 @@ DoomEdNums
 	20031 = DIMapSpot_Event
 	20032 = DISpawnerSpot_Turret
 	20033 = DISpawnerSpot_Flying
+	20034 = Smoker
+	20035 = JumpPadParticle
+	20036 = LavaSmoker
 }
