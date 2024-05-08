@@ -2,11 +2,19 @@
 
 CLASS Painting : DI_Actor
 {
+	int user_renderdistance;
+	//$UserDefaultValue 1500
+	//this isn't for performance reasons, this is a workaround for flatsprite positions getting more and more incorrect the farther they are away from the camera.
+	//if placed on a thin wall, i recommend lower values. otherwise, just increase the value if you notice any pop-ins.
+	
+	Property RenderDistance: user_renderdistance;
+
 	Default
 	{
 		Height 64;
 		Radius 16;
 		Activation THINGSPEC_Switch;
+		Painting.RenderDistance 1500;
 		-SOLID;
 		//+NOINTERACTION; //disabling this will potentially cause performance loss, but is necessary to be able to interact with the paintings.
 		+NOLIFTDROP;
@@ -65,7 +73,7 @@ CLASS Painting : DI_Actor
 		Looper:
 			#### # 5
 			{
-				if (CheckRange(1500.0)) {A_FadeTo(0.0, 0.35, FTF_CLAMP);}
+				if (CheckRange(invoker.user_renderdistance)) {A_FadeTo(0.0, 0.35, FTF_CLAMP);}
 				else {A_FadeTo(1.0, 0.35, FTF_CLAMP);}
 			}
 			Loop;
