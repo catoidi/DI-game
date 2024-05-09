@@ -334,13 +334,8 @@ class DI_HUD : BaseStatusBar
 		
 		//score
 		//DrawImage("graphics/boxhud/SCOREBAR.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-74, -36));
-		if (1 == 1)
-		{
-			//dont show score until you've killed your first enemy.
-			showscore = true;
-		}
 		
-		if (showscore == true)
+		if (1 == 1)
 		{
 			int curcombo = GetAmount("DI_TokenComboTimer");
 			int combo2x = diplayer.ComboThreshold(2);
@@ -401,7 +396,9 @@ class DI_HUD : BaseStatusBar
 			let scorecolor = Font.CR_WHITE;
 			if (BoxScoreInterpolator.GetValue() < 0) {scorecolor = Font.CR_RED;}
 			
-			DrawString(SmallFont, FormatNumber(BoxScoreInterpolator.GetValue()), GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-44, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, scorecolor);
+			string cashmoney = string.format("$%d", BoxScoreInterpolator.GetValue());
+			
+			DrawString(SmallFont, cashmoney, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-44, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, scorecolor);
 			DrawImage(comboicon, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-32, -52), DI_ITEM_OFFSETS);
 			
 			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
