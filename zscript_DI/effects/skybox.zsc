@@ -1,0 +1,47 @@
+Class DIViewpoint : SkyViewpoint
+{
+	//custom skybox viewpoint actor.
+	//by default, spawns a Tracker actor and matches it's location 24/7.
+	//an integer for user_trackerid must be assigned for this to work. if none is defined, tracker functionality will be disabled.
+	//this allows the tracker to have a separate TID than the camera, to avoid interference with the predefined TID-related methods involving skybox viewpoints.
+	//by default, the camera will "snap" to the new positions, to make teleports instantaneous.
+	//use the "smoothmovement" bool to allow interpolation.
+	//keep in mind that the tracker cannot be tracked until the first tick.
+	
+	int user_trackerid;
+	bool user_smoothmovement;
+	actor tracker;
+	
+	Default
+	{
+		//$Category "DI/Cameras"
+		//$Title "DI Skybox Viewpoint"
+	}
+	
+	override void beginplay()
+	{
+		super.beginplay();
+		if (user_trackerid != 0)
+		{
+			bool spawned;
+			[spawned, tracker] = A_SpawnItemEX("DIViewpoint_Tracker", flags: SXF_NOCHECKPOSITION);
+			if (tracker) {tracker.ChangeTID(user_trackerid);}
+		}
+	}
+	
+	override void tick()
+	{
+		super.tick();
+		if (tracker) {SetOrigin(tracker.pos, user_smoothmovement);}
+	}
+}
+
+Class DIViewpoint_Tracker : Actor
+{
+	//custom tracker object.
+	//does nothing on it's own.
+	//gets auto spawned and assigned a TID by the DIViewpoint.
+	//you can change which TID is assigned via editing the DIViewpoint in the Map Editor.
+
+	Default {+NOINTERACTION;}
+}

@@ -37,4 +37,5 @@ DoomEdNums
 	20034 = Smoker
 	20035 = JumpPadParticle
 	20036 = LavaSmoker
+	20037 = DIViewpoint
 }

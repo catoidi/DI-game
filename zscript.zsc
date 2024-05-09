@@ -66,6 +66,7 @@ version "4.12"
 #include "zscript_DI/effects/walltrap.zsc"
 #include "zscript_DI/effects/stalactite.zsc"
 #include "zscript_DI/effects/shadow.zsc"
+#include "zscript_DI/effects/skybox.zsc"
 
 //player
 #include "zscript_DI/player/base.zsc"
