@@ -59,9 +59,36 @@ mixin class DI_MonsterRobotMixin
 
 mixin class DI_BoxBloodMixin
 {
+	static const string alphabet[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "]"}; //all characters you can use sprite frames for, excluding \.
+
 	action void DI_BoxGib(string boxspr, double boxsize = 4.0)
 	{
-		A_SpawnParticleEX("White", TexMan.CheckForTexture(boxspr), 0, SPF_ROLL, 24, boxsize, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 3), 0, 0, -0.33, 1, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
+		if (random(0, 4) > 0)
+		{
+			A_SpawnParticleEX("White", TexMan.CheckForTexture(boxspr), 0, SPF_ROLL, 24, boxsize, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 3), 0, 0, -0.33, 1, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
+		}
+		else
+		{
+			bool spawned;
+			actor gib;
+			[spawned, gib] = A_SpawnItemEX("DI_RealBoxGib", random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 3), random(0, 359), SXF_NOCHECKPOSITION);
+			
+			if (gib)
+			{
+				int doframe = -1;
+				let realgib = DI_RealBoxGib(gib);
+				realgib.boxsprite = boxspr;
+				let realframe = boxspr.Mid(4, 1);
+				for (int i = 0; i < invoker.alphabet.size(); ++i)
+				{
+					if (realframe ~== invoker.alphabet[i])
+					{
+						realgib.boxframe = i;
+						i = invoker.alphabet.size();
+					}
+				}
+			}
+		}
 	}
 }
 

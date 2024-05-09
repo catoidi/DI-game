@@ -140,6 +140,28 @@ Class DI_GibBloody : DI_Gib
 	}
 }
 
+Class DI_RealBoxGib : DI_Gib
+{
+	//the sprite and frame are assigned by the spawner of the gib.
+	//see the "BoxGib" function in the Box Party Enemy mixin for more details.
+	
+	string boxsprite;
+	int boxframe;
+	
+	States
+	{
+		Roller:
+			#### # 0 GibStart();
+			TNT1 A 15
+			{
+				sprite = GetSpriteIndex(invoker.boxsprite);
+				frame = invoker.boxframe;
+			}
+			#### # 0 A_Jump(256, "Looper");
+			Stop;
+	}
+}
+
 Class DI_GibExplosion : DI_Actor
 {
 	Default
