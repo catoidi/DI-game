@@ -30,6 +30,18 @@ CLASS DIParticle : Actor
 	}
 }
 
+Class TeleportParticle : DIParticle
+{
+	Default
+	{
+		DIParticle.ParticleColor "8ffef8";
+		//$Category "DI/Decor/Particles/"
+		//$Title "Teleporter Particles"
+		//$Sprite "SMOKA0"
+		//$Color 2
+	}
+}
+
 CLASS JumpPadParticle : DIParticle
 {
 	Default 

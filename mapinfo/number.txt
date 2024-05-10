@@ -38,4 +38,8 @@ DoomEdNums
 	20035 = JumpPadParticle
 	20036 = LavaSmoker
 	20037 = DIViewpoint
+	20038 = Lantern
+	20039 = HangingLantern
+	20040 = TallLantern
+	20041 = TeleportParticle
 }
