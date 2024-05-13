@@ -1,0 +1,30 @@
+//zscript_DI/items/quest.zsc
+
+Class DI_QuestItem : Inventory abstract
+{
+	//base actor for all quests.
+	
+	DI_PlayerBase plr; //pointer to player actor.
+	bool ismainquest; //only 1 "main" quest can be acquired at once. when enabled, this quest will appear in the Side Quest UI.
+	
+	override void attachtoowner(actor other)
+	{
+		if (other is "DI_PlayerBase") {plr = DI_PlayerBase(other);}
+		super.attachtoowner(other);
+	}
+	
+	virtual string QuestName() {return ":)";} //name of the quest to display in the Side Quest UI.
+	virtual string QuestDescription() {return ":)";} //a small 3 line description of what you're supposed to do to complete the quest.
+	virtual string QuestProgress() {return ":)";} //something to tell how much progress the player has made in the quest.
+	
+	virtual void QuestCompleted()
+	{
+		plr.ACS_ScriptCall("DI_QuestComplete", 0, 0, 0, 0);
+		plr.TakeInventory(self.GetClassName(), 999999);
+	}
+	
+	virtual void QuestFailed()
+	{
+		plr.TakeInventory(self.GetClassName(), 999999);
+	}
+}

@@ -66,6 +66,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	bool iamfrozen;
 	
+	bool inwave;
+	
 	override void PostBeginPlay(void)
 	{
 		Super.PostBeginPlay();
@@ -133,7 +135,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 							if (self.Health < 1) {self.A_Die();}
 							if (bNOBLOOD == false) {A_DISpawnPlayerBlood();}
 						}
+						inwave = true;
 					}
+					else {inwave = false;}
 					self.degentimer = 0;
 				}
 				else {++self.degentimer;}
