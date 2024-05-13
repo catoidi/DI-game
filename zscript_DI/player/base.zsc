@@ -486,6 +486,12 @@ Class DI_PlayerBase : PlayerPawn abstract
 		return returnnum;
 	}
 	
+	clearscope virtual bool HasQuest()
+	{
+		//placeholder
+		return false;
+	}
+	
 	action void DIWave_Start(void)
 	{
 		invoker.lastscore = invoker.score; //track how many points you start the wave with.

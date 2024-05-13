@@ -1,0 +1,42 @@
+//zscript_DI/shop/questgiver.zsc
+
+Class DI_QuestGiver : Actor
+{
+	Default
+	{
+		Height 56;
+		Radius 16;
+		+SOLID;
+	}
+	
+	string quest;
+	
+	override bool Used(Actor user)
+	{
+		let plr = DI_PlayerBase(user);
+		if (plr)
+		{
+			if (plr.HasQuest()) {CantQuest(plr);}
+			else {GiveQuest(plr);}
+			return true;
+		}
+		else {return false;}
+	}
+	
+	virtual void CantQuest(DI_PlayerBase plr)
+	{
+	
+	}
+	
+	virtual void GiveQuest(DI_PlayerBase plr)
+	{
+		
+	}
+	
+	States
+	{
+		Spawn:
+			PBOX AB 20;
+			Loop;
+	}
+}

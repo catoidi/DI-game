@@ -188,6 +188,7 @@ version "4.12"
 #include "zscript_DI/shop/display.zsc" //item sprites and prices displayed over the shops
 #include "zscript_DI/shop/ghostshop.zsc" //does nothing. used to represent where the next shops will spawn.
 #include "zscript_DI/shop/chest.zsc" //can provide 1 random perma item per round. price never goes down.
+#include "zscript_DI/shop/questgiver.zsc" //gives the player quests.
 
 //secret (shh don't tell anyone ok???)
 #include "zscript_DI/secret/cats.zsc"
