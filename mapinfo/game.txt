@@ -24,6 +24,7 @@ GameInfo
 		"DIEventHandler", //random event handler.
 		"DIXHairHandler", //crosshair.
 		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
+		"DIQuestHUDHandler", //Displays side quests on the middle left of your screen.
 		"DeathscreenHandler", //The end screen that appears upon your inevitable death.
 		"DIUnlockHandler", //For controlling unlocks and stuff.
 		"PaintHandler", //controls the paintings.

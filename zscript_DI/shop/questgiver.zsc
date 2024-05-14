@@ -9,14 +9,19 @@ Class DI_QuestGiver : Actor
 		+SOLID;
 	}
 	
-	string quest;
+	name quest;
 	
 	override bool Used(Actor user)
 	{
 		let plr = DI_PlayerBase(user);
 		if (plr)
 		{
-			if (plr.HasQuest()) {CantQuest(plr);}
+			inventory plrquest = plr.FindInventory("DI_MainQuest", true);
+			if (plrquest) 
+			{
+				if (quest == plrquest.GetClassName()) {CancelQuest(plr);}
+				else {CantQuest(plr);}
+			}
 			else {GiveQuest(plr);}
 			return true;
 		}
@@ -25,12 +30,19 @@ Class DI_QuestGiver : Actor
 	
 	virtual void CantQuest(DI_PlayerBase plr)
 	{
-	
+		console.printf("%s", "sorry, looks like you're already doing a quest for someone else.");
 	}
 	
 	virtual void GiveQuest(DI_PlayerBase plr)
 	{
-		
+		console.printf("Side Quest Activated: %s", quest);
+		plr.GiveInventory(quest, 1);
+	}
+	
+	virtual void CancelQuest(DI_PlayerBase plr)
+	{
+		console.printf("%s", "you have cancelled your current quest.");
+		plr.TakeInventory(quest, 999999);
 	}
 	
 	States

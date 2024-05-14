@@ -4,27 +4,49 @@ Class DI_QuestItem : Inventory abstract
 {
 	//base actor for all quests.
 	
-	DI_PlayerBase plr; //pointer to player actor.
-	bool ismainquest; //only 1 "main" quest can be acquired at once. when enabled, this quest will appear in the Side Quest UI.
+	DI_PlayerBase plr;
+	bool ismainquest;
 	
 	override void attachtoowner(actor other)
 	{
-		if (other is "DI_PlayerBase") {plr = DI_PlayerBase(other);}
 		super.attachtoowner(other);
+		if (other is "DI_PlayerBase") {plr = DI_PlayerBase(other);}
+		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
 	}
 	
-	virtual string QuestName() {return ":)";} //name of the quest to display in the Side Quest UI.
-	virtual string QuestDescription() {return ":)";} //a small 3 line description of what you're supposed to do to complete the quest.
-	virtual string QuestProgress() {return ":)";} //something to tell how much progress the player has made in the quest.
+	//some tips for making quests:
+	//1. an easy way to check wave status is by checking for "plr.inwave".
+	//2. levels that use quests will create their own "DI_QuestComplete" and "DI_QuestFailed" scripts.
+	//3. the Side Quest UI is only used if the quest is set to be the "main" quest.
+	//4. only 1 Main Quest will be active at once.
+	//5. no "doeffect" or related functions are pre-assigned, as some quests may not use it.
 	
-	virtual void QuestCompleted()
+	//these functions are needed for all types of quests.
+	virtual void QuestCompleted() //must be called upon successful completion of this quest.
 	{
-		plr.ACS_ScriptCall("DI_QuestComplete", 0, 0, 0, 0);
+		plr.ACS_ScriptCall("DI_QuestComplete", ismainquest, 0, 0, 0);
 		plr.TakeInventory(self.GetClassName(), 999999);
 	}
-	
-	virtual void QuestFailed()
+	virtual void QuestFailed() //must be called if for whatever reason the player is to fail the quest.
 	{
+		plr.ACS_ScriptCall("DI_QuestFailed", ismainquest, 0, 0, 0);
 		plr.TakeInventory(self.GetClassName(), 999999);
+	}
+}
+
+Class DI_MainQuest : DI_QuestItem abstract
+{
+	abstract string QuestName(); //name of the quest to display in the Side Quest UI.
+	abstract string QuestDescription(); //a small 3 line description of what you're supposed to do to complete the quest.
+	abstract string QuestProgress(); //something to tell how much progress the player has made in the quest.
+	
+	override void attachtoowner(actor other)
+	{
+		super.attachtoowner(other);
+		if (plr) 
+		{
+			if (plr.FindInventory("DI_MainQuest", true)) {plr.TakeInventory(self.GetClassName(), 999999);}
+			else {ismainquest = true;}
+		}
 	}
 }

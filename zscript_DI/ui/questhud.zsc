@@ -1,0 +1,18 @@
+//zscript_DI/ui/questhud.zsc
+
+Class DIQuestHUDHandler : EventHandler
+{
+	ui DI_PlayerBase plr;
+	ui DI_MainQuest quest;
+	
+	override void UITick()
+	{
+		plr = DI_PlayerBase(players[consoleplayer].mo);
+		if (plr) {quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));}
+	}
+	
+	override void RenderUnderlay(RenderEvent e)
+	{
+		
+	}
+}
