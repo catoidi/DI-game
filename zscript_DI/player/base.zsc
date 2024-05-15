@@ -106,7 +106,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				ResetAutoOffset();
 				oldweapon = player.ReadyWeapon;
 			}
-			weaponnum = 0;
+			//weaponnum = 0;
 			
 			JustKilled = false;
 			

@@ -92,15 +92,21 @@ Class DI_Weapon : Weapon abstract
 		+WEAPON.ALT_AMMO_OPTIONAL;
 	}
 	
-	override void postbeginplay(void)
+	override void attachtoowner(actor other)
 	{
-		super.postbeginplay();
-		if ((owner) && (owner is "DI_PlayerBase"))
+		super.attachtoowner(other);
+		if (other is "DI_PlayerBase")
 		{
 			plr = DI_PlayerBase(owner);
+			++plr.weaponnum;
 			if (ammo1) {wpn_ammo1restore = plr.CountInv(ammo1.GetClassName());}
 			if (ammo2) {wpn_ammo2restore = plr.CountInv(ammo2.GetClassName());}
 		}
+	}
+	
+	override void detachfromowner()
+	{
+		if (plr) {--plr.weaponnum;}
 	}
 	
 	override void tick(void)
@@ -129,7 +135,6 @@ Class DI_Weapon : Weapon abstract
 				//AutoOffset(); //handled through the player actor now, since it doesn't appear to work when called from the gun itself ???????????????????????????????????????
 			}
 			else {ResetRecoil();}
-			plr.weaponnum += 1;
 		}
 	}
 	
