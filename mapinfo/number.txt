@@ -42,4 +42,5 @@ DoomEdNums
 	20039 = HangingLantern
 	20040 = TallLantern
 	20041 = TeleportParticle
+	20042 = DI_QuestGiver
 }

@@ -39,7 +39,7 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 	}
 	
 	override string QuestName() {return "Consistently Fresh";}
-	override string QuestDescription() {return "Complete the wave while not going more than 10 seconds without a fresh bonus.";}
+	override string QuestDescription() {return string.format("$diquest_%s", self.getclassname());}
 	override string QuestProgress()
 	{
 		double clock = timer / 35.0;

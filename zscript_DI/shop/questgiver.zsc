@@ -1,6 +1,6 @@
 //zscript_DI/shop/questgiver.zsc
 
-Class DI_QuestGiver : Actor
+Class DI_QuestGiver : DI_Actor
 {
 	Default
 	{
@@ -9,40 +9,115 @@ Class DI_QuestGiver : Actor
 		+SOLID;
 	}
 	
-	name quest;
+	bool cangivequest;
+	int checkcount;
+	int curround;
+	int unsquish;
+	string objective;
+	string debuff;
+	DIQuestHUDHandler handler;
+	
+	override void tick(void)
+	{
+		super.tick();
+		
+		if (cangivequest) 
+		{
+			A_FadeTo(1.0, 1.0);
+			A_AttachLight("shoplight", DynamicLight.PointLight, "White", 20, 20, DYNAMICLIGHT.LF_DONTLIGHTSELF, (0, 0, 32));
+			bBRIGHT = true;
+		}
+		else 
+		{
+			A_FadeTo(0.5, 1.0);
+			A_RemoveLight("shoplight");
+			bBRIGHT = false;
+		}
+		
+		++checkcount;
+		if (checkcount >= 35)
+		{
+			int newround = ACS_NamedExecuteWithResult("DICheckWave", 0, 0, 0, 0);
+			
+			if (newround != curround)
+			{
+				if (!handler) {ThrowAbortException("%s", "Side Quest NPC Error: Can't find Side Quest Event Handler!");}
+				handler.ChooseQuest(self);
+				cangivequest = true;
+				curround = newround;
+			}
+			checkcount = 0;
+		}
+		
+		if (unsquish > 0)
+		{
+			A_DIScale(-0.025, 0.025);
+			--unsquish;
+		}
+	}
 	
 	override bool Used(Actor user)
 	{
+		bool returnvalue;
 		let plr = DI_PlayerBase(user);
 		if (plr)
 		{
-			inventory plrquest = plr.FindInventory("DI_MainQuest", true);
-			if (plrquest) 
-			{
-				if (quest == plrquest.GetClassName()) {CancelQuest(plr);}
-				else {CantQuest(plr);}
-			}
-			else {GiveQuest(plr);}
-			return true;
+			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+			if (plrquest) {CancelQuest(plr, plrquest);}
+			else if (cangivequest) {GiveQuest(plr);}
+			else {CantQuest(plr);}
+			returnvalue = true;
 		}
-		else {return false;}
+		else {returnvalue = false;}
+		
+		DoSquish();
+		
+		return returnvalue;
+	}
+	
+	virtual void DoSquish() 
+	{
+		A_ResetScale();
+		A_DIScale(0.25, -0.25);
+		unsquish = 10;
 	}
 	
 	virtual void CantQuest(DI_PlayerBase plr)
 	{
-		console.printf("%s", "sorry, looks like you're already doing a quest for someone else.");
+		console.printf("%s", "sorry, i dont have anymore quests right now.");
 	}
 	
 	virtual void GiveQuest(DI_PlayerBase plr)
 	{
-		console.printf("Side Quest Activated: %s", quest);
-		plr.GiveInventory(quest, 1);
+		console.printf("Side Quest Activated: %s", objective);
+		bool spawned;
+		actor newactor;
+		[spawned, newactor] = plr.A_SpawnItemEX("DI_MainQuest", zofs: 16, flags: SXF_NOCHECKPOSITION);
+		if (newactor is "DI_MainQuest")
+		{
+			let newquest = DI_MainQuest(newactor);
+			newquest.objective_name = objective;
+			newquest.debuff_name = debuff;
+		}
+		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
+		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+		cangivequest = false;
 	}
 	
-	virtual void CancelQuest(DI_PlayerBase plr)
+	virtual void CancelQuest(DI_PlayerBase plr, DI_MainQuest plrquest)
 	{
 		console.printf("%s", "you have cancelled your current quest.");
-		plr.TakeInventory(quest, 999999);
+		string curobjective = plrquest.objective_name;
+		string curdebuff = plrquest.debuff_name;
+		plr.TakeInventory(plrquest.GetClassName(), 1);
+		plr.TakeInventory(curobjective, 1);
+		plr.TakeInventory(curdebuff, 1);
+		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+	}
+	
+	virtual void RerollQuest()
+	{
+		
 	}
 	
 	States
@@ -50,5 +125,9 @@ Class DI_QuestGiver : Actor
 		Spawn:
 			PBOX AB 20;
 			Loop;
+		Reroll:
+			#### # 1 RerollQuest();
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
 	}
 }

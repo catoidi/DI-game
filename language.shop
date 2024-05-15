@@ -3,6 +3,9 @@
 
 //hint: SHOPDESC text shouldn't be longer than 3 lines.
 
+//quest objectives
+DIQUEST_DI_QUESTOBJECTIVE_FRESH = "Complete the wave while not going more\nthan 10 seconds without a fresh bonus.";
+
 //These are not real items.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";
 SHOPDESC_DIREROLLSHOPS = "Shops restock and pick new items.\n\caThis won't reduce shop prices.";
@@ -11,19 +14,19 @@ SHOPITEM_DIUPGRADESHOPS = "\ctShop Upgrade";
 SHOPDESC_DIUPGRADESHOPS = "Adds new shop items to purchase.";
 SHOPTYPE_DIUPGRADESHOPS = "[Instant Use]";
 SHOPITEM_DI_QUESTDEBUFF_SLOW = "\cgCurse of Slow Movement Speed";
-SHOPDESC_DI_QUESTDEBUFF_SLOW = "\caPlayer movement speed is reduced by 25%.";
+SHOPDESC_DI_QUESTDEBUFF_SLOW = "Player movement speed is reduced by 25%.";
 SHOPDESC2_DI_QUESTDEBUFF_SLOW = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_SLOW = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_DEFENSELESS = "\cgCurse of Defenselessness";
-SHOPDESC_DI_QUESTDEBUFF_DEFENSELESS = "\caYou take double damage from nearby enemies.";
+SHOPDESC_DI_QUESTDEBUFF_DEFENSELESS = "You take double damage from nearby enemies.";
 SHOPDESC2_DI_QUESTDEBUFF_DEFENSELESS = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_DEFENSELESS = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_TORNPOCKETS = "\cgCurse of Torn Pockets";
-SHOPDESC_DI_QUESTDEBUFF_TORNPOCKETS = "\caYou lose money upon taking damage. Cannot put you into debt.";
+SHOPDESC_DI_QUESTDEBUFF_TORNPOCKETS = "You lose money upon taking damage.\nCannot put you into debt.";
 SHOPDESC2_DI_QUESTDEBUFF_TORNPOCKETS = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_TORNPOCKETS = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_ENCUMBERED = "\cgCurse of Encumberance";
-SHOPDESC_DI_QUESTDEBUFF_ENCUMBERED = "\caReduce all weapon speed by 15% for each weapon you own.";
+SHOPDESC_DI_QUESTDEBUFF_ENCUMBERED = "Reduce all weapon speed by 15%\nfor each weapon you own.";
 SHOPDESC2_DI_QUESTDEBUFF_ENCUMBERED = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_ENCUMBERED = "\cg[Cursed Item]";
 

@@ -41,14 +41,21 @@ Class DIQuestHUDHandler : EventHandler
 	
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing is "DI_MainQuest")
+		if (e.Thing is "DI_QuestGiver")
 		{
-			if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
-			//assign a random debuff and objective to new main quests.
-			let curquest = DI_MainQuest(e.Thing);
-			curquest.debuff_name = debuffs[random(0, debuffs.Size() - 1)];
-			curquest.objective_name = objectives[random(0, objectives.Size() - 1)];
+			let curquest = DI_QuestGiver(e.Thing);
+			curquest.handler = self;
 		}
+	}
+	
+	virtual void ChooseQuest(DI_QuestGiver curquest)
+	{
+		//activated by quest givers.
+		//assign a random debuff and objective to quest givers.
+		if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
+		curquest.debuff = debuffs[random(0, debuffs.Size() - 1)];
+		curquest.objective = objectives[random(0, objectives.Size() - 1)];
+		curquest.handler = self;
 	}
 
 	//UI ELEMENTS

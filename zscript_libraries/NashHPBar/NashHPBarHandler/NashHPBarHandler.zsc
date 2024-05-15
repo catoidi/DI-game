@@ -321,6 +321,76 @@ class NashHPBarHandler : EventHandler
 					DTA_KeepRatio, true,
 					DTA_Alpha, healthBarAlpha);
 			}
+			else if (prevAimTarget is "DI_QuestGiver")
+			{
+				String txt;
+				DI_QuestGiver prevQuest = DI_QuestGiver(prevAimTarget);
+				
+				// get font colours
+				int normalTxtColor = plugin.GetNormalTextColor();
+				int nameTxtColor = normalTxtColor;
+				
+				// draw background for target text
+				let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+				if (brdTex.IsValid())
+				{
+					Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+					Screen.DrawTexture(brdTex, false,
+						(Screen.GetWidth() / 2) - ((brdTexSize.X / 2) * CleanXFac),
+						((baseYPos - 24.0) * CleanYFac),
+						DTA_CleanNoMove, true,
+						DTA_KeepRatio, true,
+						DTA_Alpha, healthBarAlpha);
+				}
+
+				// get quest info
+				bool questavailable = true;
+				inventory curquest = pmo.FindInventory("DI_MainQuest", true);
+				if ((curquest) || (prevQuest.cangivequest == false)) {questavailable = false;}
+				if (questavailable) {txt = "\cvSide Quest Available!";}
+				Screen.DrawText(fnt, nameTxtColor,
+					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+					(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (1 * CleanYFac),
+					txt,
+					DTA_CleanNoMove, true,
+					DTA_KeepRatio, true,
+					DTA_Alpha, healthBarAlpha);
+				
+				// draw quest objective
+				txt = "";
+				if (questavailable)
+				{
+					txt = string.format("$diquest_%s", prevQuest.objective);
+					txt = stringtable.localize(txt);
+					txt = string.format("\cf> Objective:\n\cb%s", txt);
+				}
+				else if (curquest) {txt = "\cfInteract with this NPC\nto cancel your current quest.";}
+				else {txt = "\caSorry, I don't have any\nquests available right now.";}
+				Screen.DrawText(fnt, normalTxtColor,
+					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+					(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (13 * CleanYFac),
+					txt,
+					DTA_CleanNoMove, true,
+					DTA_KeepRatio, true,
+					DTA_Alpha, healthBarAlpha);
+				
+				// draw quest debuff
+				txt = "";
+				if (questavailable)
+				{
+					txt = string.format("$shopdesc_%s", prevQuest.debuff);
+					txt = stringtable.localize(txt);
+					txt = string.format("\ca> Debuff:\n\cb%s", txt);
+					
+					Screen.DrawText(fnt, normalTxtColor,
+						(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+						(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (45 * CleanYFac),
+						txt,
+						DTA_CleanNoMove, true,
+						DTA_KeepRatio, true,
+						DTA_Alpha, healthBarAlpha);
+				}
+			}
 			else
 			{
 				// draw HP bar background and border
