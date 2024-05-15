@@ -6,6 +6,7 @@ Class DI_QuestItem : Inventory abstract
 	
 	DI_PlayerBase plr;
 	bool ismainquest;
+	property MainQuest : ismainquest;
 	
 	override void attachtoowner(actor other)
 	{
@@ -42,6 +43,12 @@ Class DI_MainQuest : DI_QuestItem
 	DI_QuestObjective objective;
 	string debuff_name, objective_name;
 	bool questinit;
+	
+	Default
+	{
+		Inventory.Icon "BOOKA0";
+		DI_QuestItem.MainQuest true;
+	}
 	
 	override void doeffect()
 	{
@@ -84,6 +91,13 @@ Class DI_MainQuest : DI_QuestItem
 		console.printf("%s", "quest failed :(");
 		plr.TakeInventory(objective.GetClassName(), 1);
 		Super.QuestFailed();
+	}
+	
+	States
+	{
+		Spawn:
+			BOOK A -1;
+			Stop;
 	}
 }
 
