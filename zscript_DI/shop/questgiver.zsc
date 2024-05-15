@@ -84,11 +84,13 @@ Class DI_QuestGiver : DI_Actor
 	
 	virtual void CantQuest(DI_PlayerBase plr)
 	{
+		A_StartSound("player/noway");
 		console.printf("%s", "sorry, i dont have anymore quests right now.");
 	}
 	
 	virtual void GiveQuest(DI_PlayerBase plr)
 	{
+		A_StartSound("switches/normbutn");
 		console.printf("Side Quest Activated: %s", objective);
 		bool spawned;
 		actor newactor;
@@ -106,6 +108,7 @@ Class DI_QuestGiver : DI_Actor
 	
 	virtual void CancelQuest(DI_PlayerBase plr, DI_MainQuest plrquest)
 	{
+		A_StartSound("switches/normbutn");
 		console.printf("%s", "you have cancelled your current quest.");
 		string curobjective = plrquest.objective_name;
 		string curdebuff = plrquest.debuff_name;
@@ -117,7 +120,8 @@ Class DI_QuestGiver : DI_Actor
 	
 	virtual void RerollQuest()
 	{
-		
+		DoSquish();
+		handler.ChooseQuest(self);
 	}
 	
 	States
