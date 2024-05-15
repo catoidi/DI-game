@@ -1,0 +1,36 @@
+//zscript_DI/items/objectives/fresh.zsc
+
+Class DI_QuestObjective_Fresh : DI_QuestObjective
+{
+	bool queststarted; //checks when the player first enters the next wave.
+	int timer;
+	Property StartTimer : timer;
+	Default {DI_QuestObjective_Fresh.StartTimer 350;} //10 seconds.
+
+	override void doeffect()
+	{
+		super.doeffect();
+		if ((plr) && (plr.inwave) && (level.Total_Monsters > level.Killed_Monsters))
+		{
+			queststarted = true;
+			if (timer > 0) 
+			{
+				--timer;
+				if (plr.JustKilled == true) {timer = default.timer;}
+			}
+			else {ObjectiveFailed();}
+		}
+		else if ((queststarted) && (!plr.inwave)) 
+		{
+			ObjectiveComplete();
+		}
+	}
+	
+	override string QuestName() {return "Consistently Fresh";}
+	override string QuestDescription() {return "Complete the wave while not going more than 10 seconds without a fresh bonus.";}
+	override string QuestProgress()
+	{
+		double clock = timer / 35.0;
+		return string.format("Time Left: %.2fs", clock);
+	}
+}

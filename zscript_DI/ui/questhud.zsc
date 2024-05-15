@@ -2,6 +2,56 @@
 
 Class DIQuestHUDHandler : EventHandler
 {
+	//PLAY ELEMENTS
+	Array<String> debuffs;
+	Array<String> objectives;
+	array<string> filedata;
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		int ThisLump = Wads.FindLump("DIQUEST", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIQUEST", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIQUEST", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i].Split(currentline, " ");
+			if (currentline.Size() != 3) {ThrowAbortException("DIQUEST Error: Tried to add a debuff/objective with less/more than 3 arguments.\nLine: '%s'\nArguments: %d", filedata[i], currentline.Size());}
+			
+			bool correctlevel = false;
+			if (currentline[0] == "*") {correctlevel = true;}
+			else if (currentline[0] ~== level.MapName) {correctlevel = true;}
+			
+			if (currentline[1] ~== "Debuff") {debuffs.push(currentline[2]);}
+			else if (currentline[1] ~== "Objective") {objectives.push(currentline[2]);}
+			else {ThrowAbortException("DIQUEST Error: Expected a debuff or objective, got '%s' instead.\nLine: '%s'", currentline[i], filedata[i]);}
+		}
+	}
+	
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing is "DI_MainQuest")
+		{
+			if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
+			//assign a random debuff and objective to new main quests.
+			let curquest = DI_MainQuest(e.Thing);
+			curquest.debuff_name = debuffs[random(0, debuffs.Size() - 1)];
+			curquest.objective_name = objectives[random(0, objectives.Size() - 1)];
+		}
+	}
+
+	//UI ELEMENTS
 	ui DI_PlayerBase plr;
 	ui DI_MainQuest quest;
 	

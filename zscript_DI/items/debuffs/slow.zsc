@@ -1,0 +1,6 @@
+//zscript_DI/items/debuffs/slow.zsc
+
+Class DI_QuestDebuff_Slow : DI_QuestDebuff
+{
+	override double GivePlayerSpeed() {return -0.25;}
+}

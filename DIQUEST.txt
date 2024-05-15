@@ -1,0 +1,6 @@
+>>Command Structure:
+>>Arg 1: Which map to spawn the debuff/objective in. "*" will spawn in every map.
+>>Arg 2: Specify either "Debuff" or "Objective" here.
+>>Arg 3: Class name of your chosen debuff or objective.
+* Debuff DI_QuestDebuff_Slow;
+* Objective DI_QuestObjective_Fresh;

@@ -36,7 +36,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	string LastWeaponKill;
 	string CurrentWeaponKill;
 	int LastKillTimer, LastKillTimer_Max;
-	bool JustKilled;
+	bool JustKilled; //returns true when the player activates a fresh weapon kill.
 	Array<String> freshlist; //every weapon that's activated a fresh weapon bonus.
 	Array<String> wavewipe; //a list of items to wipe every wave.
 	Array<String> wavekeep; //any items you've purchased that should not be wiped every wave.

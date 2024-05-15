@@ -34,19 +34,102 @@ Class DI_QuestItem : Inventory abstract
 	}
 }
 
-Class DI_MainQuest : DI_QuestItem abstract
+Class DI_MainQuest : DI_QuestItem
 {
-	abstract string QuestName(); //name of the quest to display in the Side Quest UI.
-	abstract string QuestDescription(); //a small 3 line description of what you're supposed to do to complete the quest.
-	abstract string QuestProgress(); //something to tell how much progress the player has made in the quest.
+	//MUST BE SPAWNED IN THE WORLD, CANNOT BE DIRECTLY ADDED TO THE PLAYER'S INVENTORY!!!!!!!!!!!!
+
+	DI_QuestDebuff debuff;
+	DI_QuestObjective objective;
+	string debuff_name, objective_name;
+	bool questinit;
+	
+	override void doeffect()
+	{
+		if ((plr) && (!questinit))
+		{
+			GiveDebuff(plr);
+			GiveObjective(plr);
+			questinit = true;
+		}
+		super.doeffect();
+	}
+	
+	virtual void GiveDebuff(DI_PlayerBase plr)
+	{
+		//give debuff item and assign pointers
+		plr.GiveInventory(debuff_name, 1);
+		debuff = DI_QuestDebuff(plr.FindInventory(debuff_name));
+		if (!debuff) {ThrowAbortException("\caSide Quest Error: Tried to give '%s', an invalid debuff, to the player!", debuff_name);}
+	}
+	
+	virtual void GiveObjective(DI_PlayerBase plr)
+	{
+		//give objective item and assign pointers
+		plr.GiveInventory(objective_name, 1);
+		objective = DI_QuestObjective(plr.FindInventory(objective_name));
+		if (!objective) {ThrowAbortException("\caSide Quest Error: Tried to give '%s', an invalid objective, to the player!", objective_name);}
+		objective.quest = self;
+	}
+	
+	override void QuestCompleted()
+	{
+		console.printf("%s", "QUEST COMPELTED!!!!");
+		plr.TakeInventory(debuff.GetClassName(), 1);
+		plr.TakeInventory(objective.GetClassName(), 1);
+		Super.QuestCompleted();
+	}
+	
+	override void QuestFailed()
+	{
+		console.printf("%s", "quest failed :(");
+		plr.TakeInventory(objective.GetClassName(), 1);
+		Super.QuestFailed();
+	}
+}
+
+Class DI_QuestDebuff : DIPassiveInventory abstract
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+}
+
+Class DI_QuestObjective : Inventory abstract
+{
+	DI_MainQuest quest; //assigned by main quest object. throws error if this were to fail for some reason.
+	DI_PlayerBase plr; //just a little timesaver for making new objectives.
+	
+	clearscope abstract string QuestName(); //name of the quest to display in the Side Quest UI.
+	clearscope abstract string QuestDescription(); //a small 3 line description of what you're supposed to do to complete the quest.
+	clearscope abstract string QuestProgress(); //something to tell how much progress the player has made in the quest.
+	
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
 	
 	override void attachtoowner(actor other)
 	{
 		super.attachtoowner(other);
-		if (plr) 
-		{
-			if (plr.FindInventory("DI_MainQuest", true)) {plr.TakeInventory(self.GetClassName(), 999999);}
-			else {ismainquest = true;}
-		}
+		if (other is "DI_PlayerBase") {plr = DI_PlayerBase(other);}
+		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
+	}
+	
+	//placeholder
+	override void doeffect()
+	{
+		super.doeffect();
+		console.printf("\n\n\ccSIDE QUEST:\n%s\n%s\n%s", QuestName(), QuestDescription(), QuestProgress());
+	}
+	
+	virtual void ObjectiveComplete()
+	{
+		if (quest) {quest.QuestCompleted();}
+	}
+	
+	virtual void ObjectiveFailed()
+	{
+		if (quest) {quest.QuestFailed();}
 	}
 }
