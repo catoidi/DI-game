@@ -1,0 +1,21 @@
+//zscript_DI/items/debuffs/tornpockets.zsc
+
+Class DI_QuestDebuff_TornPockets : DI_QuestDebuff
+{
+	default {tag "\cgCurse (Torn Pockets)";}
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((damage > 0) && (source != owner) && (passive == true))
+		{
+			int moneyloss = damage * owner.countinv(self.getclassname());
+			if (moneyloss > owner.score) {moneyloss = owner.score;}
+			if (moneyloss > 0)
+			{
+				console.printf("\cayour pockets feel $%d lighter...", moneyloss);
+				owner.score -= moneyloss;
+			}
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+}

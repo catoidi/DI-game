@@ -3,4 +3,5 @@
 >>Arg 2: Specify either "Debuff" or "Objective" here.
 >>Arg 3: Class name of your chosen debuff or objective.
 * Debuff DI_QuestDebuff_Slow;
+* Debuff DI_QuestDebuff_Defenseless;
 * Objective DI_QuestObjective_Fresh;

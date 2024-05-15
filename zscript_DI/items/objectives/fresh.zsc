@@ -3,6 +3,7 @@
 Class DI_QuestObjective_Fresh : DI_QuestObjective
 {
 	bool queststarted; //checks when the player first enters the next wave.
+	bool chillout; //pause the timer while no monsters are alive.
 	int timer;
 	Property StartTimer : timer;
 	Default {DI_QuestObjective_Fresh.StartTimer 350;} //10 seconds.
@@ -10,20 +11,31 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 	override void doeffect()
 	{
 		super.doeffect();
-		if ((plr) && (plr.inwave) && (level.Total_Monsters > level.Killed_Monsters))
+		ObjectiveTick();
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if ((plr) && (plr.inwave))
 		{
 			queststarted = true;
-			if (timer > 0) 
+			if (!chillout)
 			{
-				--timer;
-				if (plr.JustKilled == true) {timer = default.timer;}
+				if (timer > 0) 
+				{
+					--timer;
+					if (plr.JustKilled == true) {timer = default.timer;}
+				}
+				else {ObjectiveFailed();}
 			}
-			else {ObjectiveFailed();}
 		}
 		else if ((queststarted) && (!plr.inwave)) 
 		{
 			ObjectiveComplete();
 		}
+		
+		if (level.Total_Monsters > level.Killed_Monsters) {chillout = false;}
+		else {chillout = true;}
 	}
 	
 	override string QuestName() {return "Consistently Fresh";}

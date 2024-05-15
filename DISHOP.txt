@@ -139,3 +139,6 @@ FakeShopItem DI_Toast POW1Q 1;
 FakeShopItem DI_Toast_Powerup POW1U 1;
 FakeShopItem DI_LeadSwitch_Powerup POW1R 1;
 FakeShopItem DI_Consumer_Powerup POW1S 1;
+FakeShopItem DI_QuestDebuff_Slow BOOKB 1;
+FakeShopItem DI_QuestDebuff_Defenseless BOOKB 1;
+FakeShopItem DI_QuestDebuff_TornPockets BOOKB 1;

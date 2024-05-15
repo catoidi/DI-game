@@ -105,7 +105,9 @@ Class DI_QuestDebuff : DIPassiveInventory abstract
 {
 	Default
 	{
-		DIPassiveInventory.DIHidden true;
+		Inventory.Icon "BOOKB0";
+		Inventory.MaxAmount 999999;
+		//DIPassiveInventory.DIHidden true;
 	}
 }
 

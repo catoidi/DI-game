@@ -1,0 +1,17 @@
+//zscript_DI/items/debuffs/defenseless.zsc
+
+Class DI_QuestDebuff_Defenseless : DI_QuestDebuff
+{
+	default {tag "\cgCurse (Defenseless)";}
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == true) && (owner) && (source))
+		{
+			int dmgmod = 1 + owner.CountInv(self.GetClassName());
+			int dmgdist = owner.Distance3D(source) - owner.radius - source.radius;
+			if (dmgdist < 64) {newdamage = damage * dmgmod;}
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+}

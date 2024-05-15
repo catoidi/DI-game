@@ -2,5 +2,13 @@
 
 Class DI_QuestDebuff_Slow : DI_QuestDebuff
 {
-	override double GivePlayerSpeed() {return -0.25;}
+	default 
+	{
+		Tag "\cgCurse (Slow Movement)";
+	}
+	override double GivePlayerSpeed() 
+	{
+		if (!plr) {return 0.0;}
+		else {return -0.25 * plr.countinv(self.getclassname());}
+	}
 }
