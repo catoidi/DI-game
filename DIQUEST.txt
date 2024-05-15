@@ -4,4 +4,6 @@
 >>Arg 3: Class name of your chosen debuff or objective.
 * Debuff DI_QuestDebuff_Slow;
 * Debuff DI_QuestDebuff_Defenseless;
+* Debuff DI_QuestDebuff_TornPockets;
+* Debuff DI_QuestDebuff_Encumbered;
 * Objective DI_QuestObjective_Fresh;

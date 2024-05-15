@@ -1,0 +1,12 @@
+//zscript_DI/items/debuffs/encumbered.zsc
+
+Class DI_QuestDebuff_Encumbered : DI_QuestDebuff
+{
+	default {tag "\cgCurse (Encumbered)";}
+
+	override double GiveWeaponSpeed()
+	{
+		if (plr) {return 0.15 * plr.weaponnum * plr.countinv(self.getclassname());}
+		else {return 0.0;}
+	}
+}

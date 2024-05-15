@@ -93,6 +93,7 @@ version "4.12"
 #include "zscript_DI/items/debuffs/slow.zsc"
 #include "zscript_DI/items/debuffs/defenseless.zsc"
 #include "zscript_DI/items/debuffs/tornpockets.zsc"
+#include "zscript_DI/items/debuffs/encumbered.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
 //passive items

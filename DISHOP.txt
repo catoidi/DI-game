@@ -142,3 +142,4 @@ FakeShopItem DI_Consumer_Powerup POW1S 1;
 FakeShopItem DI_QuestDebuff_Slow BOOKB 1;
 FakeShopItem DI_QuestDebuff_Defenseless BOOKB 1;
 FakeShopItem DI_QuestDebuff_TornPockets BOOKB 1;
+FakeShopItem DI_QuestDebuff_Encumbered BOOKB 1;
