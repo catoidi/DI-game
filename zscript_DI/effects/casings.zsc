@@ -80,9 +80,11 @@ Class DI_Casing1 : DI_FloorActor
 		Death.Sky:
 		Death:
 			#### # 0 {bFLATSPRITE = true;}
-			#### # 1050 A_SetTics(floortic);
-			#### # 1 A_FadeOut(0.05);
+			#### # -1 ReadyToClean();
 			Wait;
+		Looper:
+			#### # 1 A_FadeOut(0.05);
+			Loop;
 	}
 }
 

@@ -1,0 +1,57 @@
+//zscript_DI/handlers/janitor.zsc
+
+Class DIJanitor : EventHandler
+{
+	//handles cleaning up blood, gibs, and bullet casings off the ground.
+	array <DI_FloorActor> gib, gib2;
+
+	override void WorldThingSpawned(worldEvent e)
+	{
+		if (e.thing is "DI_FloorActor")
+		{
+			gib.Push(DI_FloorActor(e.thing));
+		}
+	}
+
+	override void WorldTick()
+	{
+		// While the array size is too large,
+		// keep destroying the oldest entry:
+		while (gib.Size() > di_floordecals)
+		{
+			if (gib[0])
+			{
+				//make the gibs cleanup after themselves, once they're done animating, and after a smooth fadeout animation as well.
+				gib[0].FloorCleanUp();
+				gib2.Push(gib[0]);
+				gib.Delete(0);
+			}
+		}
+		
+		while (gib2.Size() > 100)
+		{
+			if (gib2[0])
+			{
+				//if gibs are being stubborn and don't want to despawn, this is here as a backup.
+				gib2[0].Destroy();
+			}
+		}
+	}
+
+	override void WorldThingDestroyed(worldEvent e)
+	{
+		// Remove the thing from the array once
+		// it's destroyed:
+		int id = gib.Find(DI_FloorActor(e.thing));
+		if (id != gib.Size())
+		{
+			gib.Delete(id);
+		}
+		id = -1;
+		id = gib2.Find(DI_FloorActor(e.thing));
+		if (id != gib2.Size())
+		{
+			gib2.Delete(id);
+		}
+	}
+}

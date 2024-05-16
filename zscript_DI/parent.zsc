@@ -14,11 +14,33 @@ Class DI_Actor : Actor abstract
 	}
 }
 
-Class DI_FloorActor : DI_Actor abstract
+Class DI_FloorActor : DI_Actor abstract 
 {
-	//use this for things like blood and bullet casings.
-	//the floortic int is controlled by an eventhandler.
-	int floortic;
+	private bool janitor_actordone;
+	private bool janitor_cleanup;
+	
+	action state ReadyToClean()
+	{
+		//Called by floor actor once animation is completed.
+		invoker.janitor_actordone = true;
+		if (invoker.janitor_cleanup) {return ResolveState("Looper");}
+		else {return ResolveState(null);}
+	}
+
+	action state FloorCleanUp() 
+	{
+		//Called by EventHandler once too many gibs are alive at once.
+		invoker.janitor_cleanup = true; 
+		if (invoker.janitor_actordone) {return ResolveState("Looper");}
+		else {return ResolveState(null);}
+	}
+	
+	States
+	{
+		Looper:
+			#### # 1 A_FadeOut(0.05);
+			Loop;
+	}
 }
 
 Class DI_Drop : DI_Actor

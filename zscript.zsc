@@ -13,11 +13,11 @@ version "4.12"
 #include "zscript_DI/handlers/thebrain/spawner.zsc"
 #include "zscript_DI/handlers/thebrain/loot.zsc"
 #include "zscript_DI/handlers/thebrain/monsters.zsc"
-#include "zscript_DI/handlers/thebrain/floor.zsc"
 #include "zscript_DI/handlers/thebrain/supporters.zsc"
 #include "zscript_DI/handlers/randomevent.zsc"
 #include "zscript_DI/handlers/unlocker.zsc"
 #include "zscript_DI/handlers/painter.zsc"
+#include "zscript_DI/handlers/janitor.zsc"
 
 //ZForms (uses MIT License)
 #include "zscript_libraries/ZForms/Include.zsc"

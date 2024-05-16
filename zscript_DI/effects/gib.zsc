@@ -67,9 +67,11 @@ Class DI_Gib : DI_FloorActor
 		Death.Sky:
 		Death:
 			#### # 0 {bFLATSPRITE = true; invoker.Alpha = invoker.default.Alpha;}
-			#### # 1050 A_SetTics(floortic);
-			#### # 1 A_FadeOut(0.05);
+			#### # -1 ReadyToClean();
 			Wait;
+		Looper:
+			#### # 1 A_FadeOut(0.05);
+			Loop;
 	}
 }
 
@@ -134,9 +136,7 @@ Class DI_GibBloody : DI_Gib
 			#### # 0 A_Jump(256, "Looper");
 		Death:
 			#### # 0 GibEnd();
-			#### # 1050 A_SetTics(floortic);
-			#### # 1 A_FadeOut(0.05);
-			Wait;
+			#### # -1 ReadyToClean();
 	}
 }
 

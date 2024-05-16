@@ -1,7 +1,8 @@
 //DI
 server bool di_fancylight = true; //enemy projectiles emit light, disable to save performance.
 server bool di_enemyshadow = false; //3d enemy shadows.
-server int di_floortic = 1050; //controls how long blood/casings are left on the ground. default is 30 seconds.
+//server int di_floortic = 1050; //controls how long blood/casings are left on the ground. default is 30 seconds.
+server int di_floordecals = 2000; //controls the max amount of blood/casings allowed to exist at once.
 server bool di_testcvar = true; //test cvar pls ignore
 server bool di_autosave = false; //game will save at the end of every wave (not recommended)
 

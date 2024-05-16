@@ -28,6 +28,7 @@ GameInfo
 		"DeathscreenHandler", //The end screen that appears upon your inevitable death.
 		"DIUnlockHandler", //For controlling unlocks and stuff.
 		"PaintHandler", //controls the paintings.
+		"DIJanitor", //cleans up blood, gibs, and bullets.
 		"NashHPBarHandler", //HP bar + Shop UI combo.
 		"DamNumEventHandler", //Damage Numbers.
 		"AimAssistHandler", //controls everything Aim Assist related.

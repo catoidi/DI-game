@@ -92,8 +92,8 @@ CLASS DI_BloodFlat : DI_FloorActor
 		Spawn:
 			TNT1 A 0 A_SetRoll(random(0, 359)); //inherits sprite/frame from parent.
 			#### #################### 1 A_DIScale(1.03, 1.03, true);
-			#### # 1050 A_SetTics(floortic);
-			Goto Looper;
+			#### # -1 ReadyToClean();
+			Stop;
 		Looper:
 			#### # 1 A_FadeOut(0.05);
 			Loop;

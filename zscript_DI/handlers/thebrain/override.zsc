@@ -16,8 +16,6 @@ extend class DIHandler
 		//GetWaveData(e);
 		//ParseWaveData(e);
 		
-		GetFloorTime();
-		
 		GetSupporters(); //make list of supporters to show on title screen.
 	}
 
@@ -71,10 +69,6 @@ extend class DIHandler
 			if (e.Thing is "DIShopController")
 			{
 				controllerarray.Push(DIShopController(e.Thing));
-			}
-			if (e.Thing is "DI_FloorActor")
-			{
-				GiveFloorTime(DI_FloorActor(e.Thing));
 			}
 			if (e.Thing is "DI_WaveSpawnTimer")
 			{
@@ -143,13 +137,6 @@ extend class DIHandler
 	override void WorldTick()
 	{
 		ammogivetick = false;
-		
-		++floortimer;
-		if (floortimer > 210)
-		{
-			GetFloorTime();
-			floortimer = 0;
-		}
 		
 		if (Level.MapName ~== "titlemap") {TitlemapTick();}
 	}
