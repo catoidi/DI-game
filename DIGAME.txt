@@ -28,3 +28,5 @@ Add, Player, DI_PlayerHam, di_unlock_plr_hammer;
 Add, Level, di01;
 >>Box Party Level.
 Add, Level, di02, di_unlock_lvl_di02;
+>>Castle Level.
+Add, Level, di03, di_unlock_lvl_di03;

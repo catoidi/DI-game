@@ -16,8 +16,9 @@ DI_OPENCATALOGUE = "Open Catalogue";
 
 //NewGameMenu
 DIMENU_SELECT_DI00 = "Tutorial";
-DIMENU_SELECT_DI01 = "ur 1st death";
-DIMENU_SELECT_DI02 = "the afterparty";
+DIMENU_SELECT_DI01 = "\cfLVL 1: \cbur 1st death";
+DIMENU_SELECT_DI02 = "\cfLVL 2: \cbthe afterparty";
+DIMENU_SELECT_DI03 = "\cfLVL 3: \cbcastlephobia";
 DIMENU_SELECT_DI_PLAYERFREDRICK = "Fredrick";
 DIMENU_SELECT_DI_PLAYERBOX = "Box Partyer";
 DIMENU_SELECT_DI_PLAYERBURGER = "Burger";
@@ -27,6 +28,7 @@ DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
 DIMENU_LOCKED_DI_PLAYERHAM = "\cfThis unlock will be available in v0.9.";
 //DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by getting 10 enemies killed by THE HAMMER.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
+DIMENU_LOCKED_LEVEL_DI03 = "\ccthis level will be added in a future update.";
 
 //Unlocks (i could've maybe done this in a better way....)
 DIPOPUP_dihat_unlock_07 = "Fred Hat";
