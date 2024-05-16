@@ -38,7 +38,7 @@ Class DI_QuestObjective_Overconsumption : DI_QuestObjective
 		else {chillout = true;}
 	}
 	
-	virtual void ItemUsed() {timer += default.timer;} //activated by DIHandler.
+	virtual void ItemUsed() {timer = default.timer;} //activated by DIHandler.
 
 	override string QuestName() {return "Overconsumption";}
 	override string QuestProgress()
