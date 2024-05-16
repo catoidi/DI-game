@@ -1,0 +1,38 @@
+//zscript_DI/items/objectives/blooddrive.zsc
+
+Class DI_QuestObjective_BloodDrive : DI_QuestObjective
+{
+	int minhp;
+	bool queststarted;
+	
+	override void doeffect()
+	{
+		super.doeffect();
+		ObjectiveTick();
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if ((plr) && (plr.inwave) && (!queststarted))
+		{
+			let curhp = plr.health;
+			if (curhp > plr.DIMaxHealth()) {curhp = plr.DIMaxHealth();}
+			minhp = curhp - 25;
+			if (minhp < 0) {minhp = 0;}
+			queststarted = true;
+		}
+		else if (queststarted)
+		{
+			if (plr.inwave) {if (plr.health <= minhp) {ObjectiveFailed();}}
+			else {ObjectiveComplete();}
+		}
+	}
+
+	override string QuestName() {return "Blood Drive";}
+	override string QuestDescription() {return string.format("$diquest_%s", self.getclassname());}
+	override string QuestProgress()
+	{
+		if (queststarted) {return string.format("Health Remaining: \ca%d/25", plr.health - minhp);}
+		else {return "N/A";}
+	}
+}

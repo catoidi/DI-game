@@ -1,0 +1,39 @@
+//zscript_DI/items/objectives/sleightofhand.zsc
+
+Class DI_QuestObjective_SleightOfHand : DI_QuestObjective
+{
+	//the player must ensure each kill is done using a different weapon for the entire wave to complete this.
+	//getting multiple kills with the same weapon in a single frame will not fail the objective.
+	weapon curweapon, prevweapon;
+	bool queststarted;
+	
+	override void doeffect()
+	{
+		super.doeffect();
+		ObjectiveTick();
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if (plr)
+		{
+			if (plr.inwave) {queststarted = true;}
+			else if (queststarted) {ObjectiveComplete();}
+			
+			if (plr.killtic > 0)
+			{
+				curweapon = plr.player.readyweapon;
+				if (curweapon == prevweapon) {ObjectiveFailed();}
+				else {prevweapon = curweapon;}
+			}
+		}
+	}
+
+	override string QuestName() {return "Sleight Of Hand";}
+	override string QuestDescription() {return string.format("$diquest_%s", self.getclassname());}
+	override string QuestProgress()
+	{
+		if (prevweapon) {return string.format("Prev. Weapon: \cf%s", prevweapon.gettag());}
+		else {return "N/A";}
+	}
+}

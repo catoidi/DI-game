@@ -132,6 +132,12 @@ Class DI_QuestObjective : Inventory abstract
 		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
 	}
 	
+	override void ownerdied()
+	{
+		ObjectiveFailed();
+		super.ownerdied();
+	}
+	
 	virtual void ObjectiveComplete()
 	{
 		if (quest) {quest.QuestCompleted();}

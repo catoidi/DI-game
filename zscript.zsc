@@ -96,6 +96,8 @@ version "4.12"
 #include "zscript_DI/items/debuffs/encumbered.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
+#include "zscript_DI/items/objectives/blooddrive.zsc"
+#include "zscript_DI/items/objectives/sleightofhand.zsc"
 //passive items
 #include "zscript_DI/items/passives/fakestatups.zsc"
 #include "zscript_DI/items/passives/statups.zsc"

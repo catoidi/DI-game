@@ -5,6 +5,8 @@
 
 //quest objectives
 DIQUEST_DI_QUESTOBJECTIVE_FRESH = "Complete the wave while not going more\nthan 10 seconds without a fresh bonus.";
+DIQUEST_DI_QUESTOBJECTIVE_BLOODDRIVE = "Complete the wave while not losing\nmore than 25 points of health.";
+DIQUEST_DI_QUESTOBJECTIVE_SLEIGHTOFHAND = "Every weapon kill this wave must be\ndone with a different weapon than the last.";
 
 //These are not real items.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

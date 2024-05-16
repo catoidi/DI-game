@@ -33,6 +33,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	int prevhp;
 	int degentimer;
 	int cointimer;
+	int killtic; //list of confirmed weapon kills this tic.
 	string LastWeaponKill;
 	string CurrentWeaponKill;
 	int LastKillTimer, LastKillTimer_Max;
@@ -143,6 +144,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 				else {++self.degentimer;}
 			}
 		}
+		
+		if (killtic > 0) {killtic = 0;}
 	}
 	
 	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)
@@ -234,6 +237,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			
 			if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
 			if (notweapon == true) {freshnum = 0;}
+			else {++killtic;}
 			
 			freshcharge += curwpn.wpn_freshcharge;
 			
