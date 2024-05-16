@@ -132,13 +132,6 @@ Class DI_QuestObjective : Inventory abstract
 		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
 	}
 	
-	//placeholder
-	override void doeffect()
-	{
-		super.doeffect();
-		console.printf("\n\n\ccSIDE QUEST:\n%s\n%s\n%s", QuestName(), QuestDescription(), QuestProgress());
-	}
-	
 	virtual void ObjectiveComplete()
 	{
 		if (quest) {quest.QuestCompleted();}

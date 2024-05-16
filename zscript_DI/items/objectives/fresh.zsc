@@ -19,12 +19,12 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 		if ((plr) && (plr.inwave))
 		{
 			queststarted = true;
+			if (plr.JustKilled == true) {timer = default.timer;}
 			if (!chillout)
 			{
 				if (timer > 0) 
 				{
 					--timer;
-					if (plr.JustKilled == true) {timer = default.timer;}
 				}
 				else {ObjectiveFailed();}
 			}
@@ -34,7 +34,7 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 			ObjectiveComplete();
 		}
 		
-		if (level.Total_Monsters > level.Killed_Monsters) {chillout = false;}
+		if ((level.Total_Monsters > level.Killed_Monsters) && (plr.health > 0)) {chillout = false;}
 		else {chillout = true;}
 	}
 	

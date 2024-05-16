@@ -61,15 +61,43 @@ Class DIQuestHUDHandler : EventHandler
 	//UI ELEMENTS
 	ui DI_PlayerBase plr;
 	ui DI_MainQuest quest;
+	ui string curquest, curdesc, curprogress;
+	ui bool doquest;
+	ui float questalpha, scalenum;
+	transient ui cvar scalefactor;
 	
 	override void UITick()
 	{
+		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
+		scalenum = scalefactor.getfloat();
 		plr = DI_PlayerBase(players[consoleplayer].mo);
-		if (plr) {quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));}
+		if (plr) 
+		{
+			quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+			if ((quest) && (quest.objective))
+			{
+				curquest = stringtable.localize(quest.objective.QuestName());
+				curdesc = stringtable.localize(quest.objective.QuestDescription());
+				curprogress = stringtable.localize(quest.objective.QuestProgress());
+				doquest = true;
+			}
+			else {doquest = false;}
+		}
+		
+		if (doquest) {questalpha = 1.0;}
+		else if (questalpha > 0.0) {questalpha -= 0.02;}
 	}
 	
 	override void RenderUnderlay(RenderEvent e)
 	{
-		
+		let startx = 0;
+		let starty = Screen.GetHeight() / 2;
+		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curprogress);
+		Screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, startx, starty, txt,
+			DTA_ScaleX, scalenum * CleanXFac,
+			DTA_ScaleY, scalenum * CleanYFac,
+			DTA_Alpha, questalpha,
+			DTA_KeepRatio, true
+		);
 	}
 }
