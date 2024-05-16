@@ -4,6 +4,7 @@ Class DIJanitor : EventHandler
 {
 	//handles cleaning up blood, gibs, and bullet casings off the ground.
 	array <DI_FloorActor> gib, gib2;
+	bool forcedelete;
 
 	override void WorldThingSpawned(worldEvent e)
 	{
@@ -28,13 +29,12 @@ Class DIJanitor : EventHandler
 			}
 		}
 		
-		while (gib2.Size() > 100)
+		if (gib2.Size() > 100) {forcedelete = true;}
+		
+		if (forcedelete) 
 		{
-			if (gib2[0])
-			{
-				//if gibs are being stubborn and don't want to despawn, this is here as a backup.
-				gib2[0].Destroy();
-			}
+			while (gib2.Size() > 0) {gib2[0].Destroy();}
+			forcedelete = false;
 		}
 	}
 
@@ -47,11 +47,10 @@ Class DIJanitor : EventHandler
 		{
 			gib.Delete(id);
 		}
-		id = -1;
-		id = gib2.Find(DI_FloorActor(e.thing));
-		if (id != gib2.Size())
+		int id2 = gib2.Find(DI_FloorActor(e.thing));
+		if (id2 != gib2.Size())
 		{
-			gib2.Delete(id);
+			gib2.Delete(id2);
 		}
 	}
 }

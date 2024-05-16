@@ -26,7 +26,7 @@ Class DI_Gib : DI_FloorActor
 	{
 		super.tick();
 		
-		if (!InStateSequence(CurState, ResolveState("Death")))
+		if ((!InStateSequence(CurState, ResolveState("Death"))) && (Level.IsFrozen() == false))
 		{
 			AliveTick();
 		}
