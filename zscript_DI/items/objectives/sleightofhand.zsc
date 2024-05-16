@@ -30,7 +30,6 @@ Class DI_QuestObjective_SleightOfHand : DI_QuestObjective
 	}
 
 	override string QuestName() {return "Sleight Of Hand";}
-	override string QuestDescription() {return string.format("$diquest_%s", self.getclassname());}
 	override string QuestProgress()
 	{
 		if (prevweapon) {return string.format("Prev. Weapon: \cf%s", prevweapon.gettag());}

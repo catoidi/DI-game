@@ -29,7 +29,6 @@ Class DI_QuestObjective_BloodDrive : DI_QuestObjective
 	}
 
 	override string QuestName() {return "Blood Drive";}
-	override string QuestDescription() {return string.format("$diquest_%s", self.getclassname());}
 	override string QuestProgress()
 	{
 		if (queststarted) {return string.format("Health Remaining: \ca%d/25", plr.health - minhp);}

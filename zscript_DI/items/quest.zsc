@@ -117,7 +117,10 @@ Class DI_QuestObjective : Inventory abstract
 	DI_PlayerBase plr; //just a little timesaver for making new objectives.
 	
 	clearscope abstract string QuestName(); //name of the quest to display in the Side Quest UI.
-	clearscope abstract string QuestDescription(); //a small 3 line description of what you're supposed to do to complete the quest.
+	clearscope virtual string QuestDescription() //a small 2 line description of what you're supposed to do to complete the quest.
+	{
+		return string.format("$diquest_%s", self.getclassname());
+	}
 	clearscope abstract string QuestProgress(); //something to tell how much progress the player has made in the quest.
 	
 	Default
