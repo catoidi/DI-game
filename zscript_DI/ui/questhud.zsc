@@ -93,6 +93,14 @@ Class DIQuestHUDHandler : EventHandler
 		let startx = 0;
 		let starty = Screen.GetHeight() / 2;
 		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curprogress);
+		
+		textureid back = texman.checkfortexture("graphics/hpbar/shopbar.png");
+		screen.drawtexture(back, false, startx - (16 * CleanXFac), starty - (16 * CleanYFac),
+			DTA_ScaleX, scalenum * CleanXFac * 0.75,
+			DTA_ScaleY, scalenum * CleanYFac,
+			DTA_Alpha, questalpha
+		);
+		
 		Screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, startx, starty, txt,
 			DTA_ScaleX, scalenum * CleanXFac,
 			DTA_ScaleY, scalenum * CleanYFac,
