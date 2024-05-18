@@ -255,14 +255,37 @@ Level DI02;
 		Rate 1;
 		Time 35;
 		Spawn FruitPuncher, 7;
-		Wait 1;
-		Spawn Pepper, 1;
-		Wait 5;
-		Spawn Pepper, 1;
-		Wait 3;
-		Spawn RedOnion, 1, DISpawnerSpot_Turret;
+		Wait 4;
+		Spawn Pepper, 2;
 	}
 	Wave 2:
+	{
+		Cap 7;
+		Rate 2;
+		Time 35;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 1;
+		Spawn FruitPuncher, 2;
+		Wait 1;
+		Spawn FruitPuncher, 1;
+		Spawn Pepper, 1;
+		Wait 1;
+		Spawn FruitPuncher, 2;
+		Wait 1;
+		Spawn Pepper, 2;
+		Wait 1;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 1;
+		Spawn FruitPuncher, 2;
+		Wait 1;
+		Spawn FruitPuncher, 1;
+		Spawn Pepper, 1;
+		Wait 1;
+		Spawn FruitPuncher, 2;
+		Wait 1;
+		Spawn Pepper, 4;
+	}
+	Wave 3:
 	{
 		Cap 3;
 		Rate 3;
@@ -282,7 +305,7 @@ Level DI02;
 		Spawn Pepper, 1;
 		
 	}
-	Wave 3:
+	Wave 4:
 	{
 		Cap 25;
 		Rate 1;
