@@ -247,6 +247,7 @@ extend class DIHandler
 		}
 		else if (e.Name == "AddSalePercent")
 		{
+			console.printf("\cdFuture sales on items are now improved by %d%%!", e.Args[0]);
 			foreach(mo : shoparray)
 			{
 				if (mo) {mo.LevelSale += e.Args[0];}

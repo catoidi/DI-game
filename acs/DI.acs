@@ -207,5 +207,5 @@ SCRIPT "DICheckWaveProgress" (void)
 
 SCRIPT "AddSalePercent" (int addnum)
 {
-	ScriptCall("DIHandler", "AddSalePercent", addnum);
+	ScriptCall("EventHandler", "SendNetworkEvent", "AddSalePercent", addnum);
 }
