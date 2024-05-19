@@ -19,6 +19,10 @@ Class DeathscreenHandler : EventHandler
 	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
 	ui bool getgamedata;
 	
+	//for new game fade out
+	ui uint newgametimer;
+	ui bool newgamed;
+	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
 		if (e.Name == "newwave_ui")
@@ -29,6 +33,9 @@ Class DeathscreenHandler : EventHandler
 
 	override void UITick()
 	{
+		if (!newgamed && (Level.MapName != 'TITLEMAP')) {newgametimer = 13; newgamed = true;}
+		if (newgametimer > 0) {--newgametimer;}
+		
 		if (!getgamedata) 
 		{
 			GetDIGAMEData();
@@ -561,6 +568,19 @@ Class DeathscreenHandler : EventHandler
 		else if (!IsDead)
 		{
 			scoredone = false;
+			
+			if (newgametimer > 0)
+			{
+				let startx = Screen.GetWidth() / 3;
+				let startx2 = startx * 2;
+				let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
+				Screen.DrawTexture(blackscreen, false,
+					0, 0,
+					DTA_DestWidth, Screen.GetWidth(),
+					DTA_DestHeight, Screen.GetHeight(),
+					DTA_Alpha, 0.1 * newgametimer
+				);
+			}
 		}
 	}
 }
