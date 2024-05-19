@@ -18,9 +18,9 @@ Class DIViewpoint : SkyViewpoint
 		//$Title "DI Skybox Viewpoint"
 	}
 	
-	override void beginplay()
+	override void postbeginplay()
 	{
-		super.beginplay();
+		super.postbeginplay();
 		if (user_trackerid != 0)
 		{
 			bool spawned;
@@ -33,6 +33,7 @@ Class DIViewpoint : SkyViewpoint
 	{
 		super.tick();
 		if (tracker) {SetOrigin(tracker.pos, user_smoothmovement);}
+		else {ThrowAbortException("%s", "Unable to track position for Skybox Viewpoint! (Did you forget to assign a TID to the tracker?)");}
 	}
 }
 
