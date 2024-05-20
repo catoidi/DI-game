@@ -116,13 +116,40 @@ Class DIShop_Base : SwitchableDecoration abstract
 		}
 	}
 	
+	override bool Used(Actor user)
+	{
+		if (user is "DI_PlayerBase")
+		{
+			bool distancecheck = false;
+			
+			target = user;
+			A_FaceTarget();
+			FLineTraceData ptr;
+			
+			if (LineTrace(angle, 100, pitch, TRF_THRUSPECIES, 0, data: ptr) == true)
+			{
+				if (ptr.HitActor == target) {distancecheck = true;}
+			}
+		
+			if (distancecheck)
+			{
+				target = user;
+				PurchaseShopItem();
+				SetStateLabel("Squish");
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	Default
 	{
 		Radius 20;
 		Height 96;
-		Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
+		Species "DIShop";
+		//Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
 		+SOLID;
-		+USESPECIAL;
+		//+USESPECIAL;
 		DIShop_Base.MinSale 0.1;
 		DIShop_Base.MaxSale 0.3;
 		//$Category "DI/Shops/"

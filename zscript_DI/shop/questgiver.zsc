@@ -6,6 +6,7 @@ Class DI_QuestGiver : DI_Actor
 	{
 		Height 56;
 		Radius 16;
+		Species "DIShop";
 		+SOLID;
 	}
 	
@@ -58,9 +59,20 @@ Class DI_QuestGiver : DI_Actor
 	
 	override bool Used(Actor user)
 	{
+		bool distancecheck = false;
+			
+		target = user;
+		A_FaceTarget();
+		FLineTraceData ptr;
+			
+		if (LineTrace(angle, 100, pitch, TRF_THRUSPECIES, 0, data: ptr) == true)
+		{
+			if (ptr.HitActor == target) {distancecheck = true;}
+		}
+	
 		bool returnvalue;
 		let plr = DI_PlayerBase(user);
-		if (plr)
+		if (plr && distancecheck)
 		{
 			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
 			if (plrquest) {CancelQuest(plr, plrquest);}

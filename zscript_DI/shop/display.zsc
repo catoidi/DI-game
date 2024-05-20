@@ -36,6 +36,7 @@ Class DIShop_Display : DI_Actor abstract
 	Default
 	{
 		RenderStyle "Translucent";
+		Species "DIShop";
 		+NOINTERACTION;
 		-SOLID;
 	}
