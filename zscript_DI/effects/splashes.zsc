@@ -121,8 +121,8 @@ CLASS WaterfallButt : Actor //20039
 		-BLOCKEDBYSOLIDACTORS;
 		+NOGRAVITY;
 		+RANDOMIZE;
-		//$Category "Box Party/Effects/"
-		//$Title "Waterfall Butt"
+		//$Category "DI/Decor/"
+		//$Title "Waterfall"
 		//$Sprite "SPLAB0"
 		//$Color 2
 	}

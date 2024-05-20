@@ -46,4 +46,5 @@ DoomEdNums
 	20043 = Buildings
 	20044 = Mountains
 	20045 = Coral
+	20046 = WaterfallButt
 }
