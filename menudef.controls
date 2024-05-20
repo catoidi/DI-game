@@ -47,8 +47,6 @@ OptionMenu "BoxActionControlsMenu"
 
 	StaticText ""
 	Control    "$CNTRLMNU_JUMP"             , "+jump"
-	Control    "$CNTRLMNU_CROUCH"           , "+crouch"
-	Control    "$CNTRLMNU_TOGGLECROUCH"     , "crouch"
 	Tooltip "Allows you to navigate the environment."
 
 	StaticText ""
