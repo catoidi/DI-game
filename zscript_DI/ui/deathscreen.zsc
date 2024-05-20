@@ -32,10 +32,7 @@ Class DeathscreenHandler : EventHandler
 	}
 
 	override void UITick()
-	{
-		if (!newgamed && (Level.MapName != 'TITLEMAP')) {newgametimer = 13; newgamed = true;}
-		if (newgametimer > 0) {--newgametimer;}
-		
+	{	
 		if (!getgamedata) 
 		{
 			GetDIGAMEData();
@@ -46,6 +43,9 @@ Class DeathscreenHandler : EventHandler
 		if (!plr) {return;}
 		if (plr.Health <= 0) {IsDead = true;}
 		else {IsDead = false;}
+		
+		if (!newgamed && (Level.MapName != 'TITLEMAP')) {newgametimer = 13; newgamed = true;}
+		if ((newgametimer > 0) && (plr.IsFrozen() == false)) {--newgametimer;}
 		
 		if (IsDead == true)
 		{

@@ -43,4 +43,7 @@ DoomEdNums
 	20040 = TallLantern
 	20041 = TeleportParticle
 	20042 = DI_QuestGiver
+	20043 = Buildings
+	20044 = Mountains
+	20045 = Coral
 }

@@ -117,3 +117,25 @@ Class DI_WaveSpawnTimer : Actor
 }
 
 Class DI_ClearPlayerItems : DI_WaveStarter {}
+
+Class DI_Decor : DI_Actor
+{
+	Default {+NOINTERACTION;}
+	
+	//These decoration objects will only run 1 tick by default, for performance reasons.
+	bool ticked;
+	virtual bool dotick() {if (!ticked) {ticked = true; return true;} else {return false;}}
+	Override void tick() {if (dotick()) {super.tick();}}
+
+	action void A_DIDecor (bool Flipping = true, double MinScale = 0.75, double MaxScale = 1.0, double MaxFade = 0.0)
+	{
+		//reduces the amount of copy/paste code for decoration items by performing 3 basic functions in one.
+		if (invoker)
+		{
+			int RandomFlip = random(0, 1);
+			if ((Flipping == true) && (RandomFlip == 1)) {bSPRITEFLIP = true;}
+			A_DIScale(frandom(MinScale, MaxScale), true);
+			if (MaxFade != 0) {A_FadeOut(frandom(0, MaxFade));}
+		}
+	}
+}
