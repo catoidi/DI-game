@@ -29,6 +29,8 @@ Class DI_Monster : DI_Actor abstract
 	Property GibType: GibType;
 	bool StunSquish;
 	Property StunSquish: StunSquish;
+	bool CanSwim;
+	Property CanSwim: CanSwim;
 
 	//Called by all of DI's enemies.
 	Default
@@ -46,11 +48,13 @@ Class DI_Monster : DI_Actor abstract
 		PainSound "dipain2";
 		DeathSound "dipain";
 		Species "Enemy";
+		MaxDropOffHeight 32;
 		DI_Monster.DIDrop "DI_Coin";
 		DI_Monster.DIDropNum -1;
 		DI_Monster.DISpeedMult 1.0;
 		DI_Monster.GibType "DI_GibExplosion";
 		DI_Monster.StunSquish true;
+		DI_Monster.CanSwim true;
 		+THRUSPECIES; //monsters of the same type can walk through each other.
 		+FLOORCLIP;
 		+JUMPDOWN;
@@ -70,6 +74,11 @@ Class DI_Monster : DI_Actor abstract
 		{
 			bCASTSPRITESHADOW = false;
 			A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+		}
+		if ((bFLOAT == true) || (bNOGRAVITY == true))
+		{
+			//disable swimming if cvar is on or actor can already fly upon spawning
+			CanSwim = false;
 		}
 		
 		painhp = health;
@@ -103,6 +112,19 @@ Class DI_Monster : DI_Actor abstract
 				Scale.X = Default.Scale.X * (1.0 + (0.005 * squishtic));
 				Scale.Y = Default.Scale.Y * (1.0 - (0.01 * squishtic));
 				--squishtic;
+			}
+			if (CanSwim == true) //modders can modify this behavior either by overriding their own Tick() function or by toggling the box_noswim cvar.
+			{
+				if (waterlevel >= 1) //make the monster fly whilst underwater
+				{
+					bFLOAT = true;
+					bNOGRAVITY = true;
+				}
+				else
+				{
+					bFLOAT = false;
+					bNOGRAVITY = false;
+				}
 			}
 		
 			if (ticker >= 20)

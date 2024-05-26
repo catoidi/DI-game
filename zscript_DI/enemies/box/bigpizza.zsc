@@ -14,6 +14,7 @@ Class Pizzaulter : DI_Monster
 		DamageFactor "FakePoison", 1.25;
 		DI_Monster.GibType "DI_PizzaExplosion";
 		DI_Monster.DIDrop "DI_Coin";
+		DI_Monster.CanSwim false;
 		DI_Actor.DontScale true; //rotating sprites shouldn't be scaled
 		BloodType "PizzaBlood";
 		Species "Pizza";
