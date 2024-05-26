@@ -156,15 +156,8 @@ Class DISpawner : DI_Actor
 	DISpawnerSpot Spotter;
 	DISpawner_FX FX;
 	
-	override void PostBeginPlay()
-	{
-		//console.printf("%s", "spawner spawned");
-		Super.PostBeginPlay();
-	}
-	
 	virtual void ActivateSpawner()
 	{
-		console.printf("%s", "activating spawner");
 		if (Spotter)
 		{
 			bool hasspawned;
@@ -172,7 +165,6 @@ Class DISpawner : DI_Actor
 			[hasspawned, creature] = A_SpawnItemEX(Spotter.SpawnFX, flags: SXF_NOCHECKPOSITION);
 			if (creature is "DISpawner_FX")
 			{
-				console.printf("%s", "vfx spawned");
 				FX = DISpawner_FX(creature);
 				FX.Spawner = self;
 			}
@@ -183,7 +175,6 @@ Class DISpawner : DI_Actor
 	
 	virtual void TimeToSpawn()
 	{
-		console.printf("%s", "enemy spawned");
 		bool hasspawned;
 		actor creature;
 		[hasspawned, creature] = A_SpawnItemEX(SpawnChoice, flags: SXF_NOCHECKPOSITION);
@@ -199,7 +190,6 @@ Class DISpawner : DI_Actor
 	
 	virtual void SpawnerToggle(bool finished = false)
 	{
-		console.printf("%s", "spawner toggled");
 		ACS_NamedExecuteAlways("SpawnerToggle", 0, finished, 0, 0);
 	}
 	
@@ -207,7 +197,6 @@ Class DISpawner : DI_Actor
 	{
 		if (!FX) 
 		{
-			console.printf("%s", "im dead lol");
 			SetStateLabel("Death");
 		}
 	}
