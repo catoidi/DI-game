@@ -4,6 +4,12 @@ class DI_Boss : DI_Monster abstract
 {
 	DI_QuestObjective_Kill sidequest; //if boss is created for a side quest, this is assigned by the event handler.
 	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "DI_Monster") {return false;}
+		else {return Super.CanCollideWith(other, passive);}
+	}
+	
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
 	{
 		if (sidequest) {sidequest.BossIsDead();}
