@@ -62,6 +62,10 @@ extend class DIHandler
 			{
 				DIMonsterHandler(e);
 			}
+			if (e.Thing is "DI_Boss")
+			{
+				DIBossHandler(e);
+			}
 			if (e.Thing is "DIShop")
 			{
 				shoparray.Push(DIShop(e.Thing));
@@ -148,7 +152,7 @@ extend class DIHandler
 	
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "DIRerollShops")
+		if (e.Name == "DIRerollShops") //called by the Dice Block consumable or by Reroll Machines.
 		{
 			foreach(shopmo : shoparray)
 			{
@@ -158,15 +162,11 @@ extend class DIHandler
 				}
 			}
 		}
-		else if (e.Name == "dieventtest")
-		{
-			console.printf("%s", "SWAG EVENT ACTIVATED!!!!!!!!!!");
-		}
 		else if (e.Name == "diaddenemycount") //allows other scripts to add to the handler's estimated enemy count.
 		{
 			enemycount += e.Args[0];
 		}
-		else if (e.Name.Left(16) == "diplayeritemused")
+		else if (e.Name.Left(16) == "diplayeritemused") //called automagically by all consumable items on successful use.
 		{
 			let itemplr = players[e.Player].mo;
 			if (itemplr)
@@ -184,12 +184,12 @@ extend class DIHandler
 				if (objective) {objective.ItemUsed();}
 			}
 		}
-		else if (e.Name == "wave_debug")
+		else if (e.Name == "wave_debug") //used to display some debug info about the current wave.
 		{
 			console.printf("waitnum: %d\ncurrentspawners: %d\nspawnqueue: %d\nalive monsters: %d\nenemycount: %d", waitnum, currentspawners, spawnqueue.Size(), Level.Total_Monsters - Level.Killed_Monsters, enemycount);
 			//if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1) && (enemycount <= 0))
 		}
-		else if (e.Name.Left(14) == "autoblacklist ")
+		else if (e.Name.Left(14) == "autoblacklist ") //adds a specific item to the blacklist. used by the unlock menu. just type the name of the item after the space.
 		{
 			name newblacklist = e.Name.Mid(14);
 			foreach(mo : shoparray)
@@ -197,7 +197,7 @@ extend class DIHandler
 				if (mo) {mo.AddBlacklist(newblacklist);}
 			}
 		}
-		else if (e.Name.Left(13) == "addwaveenemy ")
+		else if (e.Name.Left(13) == "addwaveenemy ") //this is how you add new enemies to the wave. NOTE: will always put the enemy in the current batch. TODO: add a way to check how many batches are in this wave.
 		{
 			array<string> newenemy;
 			e.Name.Split(newenemy, " ");
@@ -214,7 +214,7 @@ extend class DIHandler
 			}
 			else {ThrowAbortException("\cqInvalid Add Wave Enemy Command: '%s'", e.Name);}
 		}
-		else if (e.Name.Left(13) == "addpermaitem ")
+		else if (e.Name.Left(13) == "addpermaitem ") //cheat command to test permanent items.
 		{
 			if (players[e.Player].mo && (sv_cheats == true))
 			{
@@ -230,7 +230,7 @@ extend class DIHandler
 			}
 			else {console.printf("%s", "You cannot use this command while cheats are disabled.");}
 		}
-		else if (e.Name.Left(15) == "checkpermaitem ")
+		else if (e.Name.Left(15) == "checkpermaitem ") //check if the player owns a specific permanent item.
 		{
 			if (players[e.Player].mo && (sv_cheats == true))
 			{
@@ -241,11 +241,11 @@ extend class DIHandler
 				console.printf("You have %d of these.", num);
 			}
 		}
-		else if (e.Name == "DIWaveFinished")
+		else if (e.Name == "DIWaveFinished") //this is ran automatically once the wave is considered "finished".
 		{
 			wavetimeractor.Destroy();
 		}
-		else if (e.Name == "AddSalePercent")
+		else if (e.Name == "AddSalePercent") //adds the provided number in the first argument to all future shop sales.
 		{
 			console.printf("\cdFuture sales on items are now improved by %d%%!", e.Args[0]);
 			foreach(mo : shoparray)

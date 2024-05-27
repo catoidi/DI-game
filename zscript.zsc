@@ -100,6 +100,7 @@ version "4.12"
 #include "zscript_DI/items/objectives/blooddrive.zsc"
 #include "zscript_DI/items/objectives/sleightofhand.zsc"
 #include "zscript_DI/items/objectives/overconsumption.zsc"
+#include "zscript_DI/items/objectives/kill_bigmelon.zsc"
 //passive items
 #include "zscript_DI/items/passives/fakestatups.zsc"
 #include "zscript_DI/items/passives/statups.zsc"
@@ -179,6 +180,7 @@ version "4.12"
 
 //enemies
 #include "zscript_DI/enemies/monster.zsc"
+#include "zscript_DI/enemies/boss.zsc"
 #include "zscript_DI/enemies/bullet.zsc"
 #include "zscript_DI/enemies/mixin.zsc"
 #include "zscript_DI/enemies/randomspawner.zsc"
@@ -193,6 +195,7 @@ version "4.12"
 #include "zscript_DI/enemies/box/smallpizza.zsc"
 #include "zscript_DI/enemies/box/lemon.zsc"
 #include "zscript_DI/enemies/special/debtcollector.zsc"
+#include "zscript_DI/enemeis/special/bigmelon.zsc"
 
 //shop
 #include "zscript_DI/shop/base.zsc" //base actor all shop-type actors inherit from

@@ -111,4 +111,11 @@ extend class DIHandler
 		}
 		if (farnum > 0) {mon.A_GiveInventory("DI_Farsight_Enemy", farnum);}
 	}
+	
+	virtual void DIBossHandler(WorldEvent e)
+	{
+		//this script is called after the default monster handler.
+		//as of this writing, bosses are currently used for side quests.
+		//with that in mind, this will help the quests keep track of which boss they spawned.
+	}
 }

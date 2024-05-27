@@ -1,0 +1,6 @@
+//zscript_DI/enemies/boss.zsc
+
+class DI_Boss : DI_Monster abstract
+{
+
+}
