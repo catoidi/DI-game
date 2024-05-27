@@ -117,5 +117,27 @@ extend class DIHandler
 		//this script is called after the default monster handler.
 		//as of this writing, bosses are currently used for side quests.
 		//with that in mind, this will help the quests keep track of which boss they spawned.
+		
+		let curboss = DI_Boss(e.Thing);
+		
+		for (int i = 0; i < players.Size(); ++i)
+		{
+			if (playeringame[i])
+			{
+				let bossplr = DI_PlayerBase(players[i].mo);
+				if (bossplr)
+				{
+					let sidequest = DI_QuestObjective_Kill(bossplr.FindInventory("DI_QuestObjective_Kill", true));
+					if (sidequest)
+					{
+						if (!sidequest.boss) 
+						{
+							sidequest.boss = curboss;
+							curboss.sidequest = sidequest;
+						}
+					}
+				}
+			}
+		}
 	}
 }

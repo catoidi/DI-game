@@ -111,6 +111,17 @@ Class DISpawnerSpot_Flying : DISpawnerSpot
 	}
 }
 
+Class DISpawnerSpot_Boss : DISpawnerSpot
+{
+	Default
+	{
+		Radius 128;
+		Height 320;
+		Scale 8.0;
+		//$Title "Enemy Spawner (BOSS)"
+	}
+}
+
 Class DISpawnerSpot_Turret : DISpawnerSpot
 {
 	//spawner waits until both timer is finished and spawned enemy is dead before reactivating.

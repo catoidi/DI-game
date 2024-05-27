@@ -2,5 +2,22 @@
 
 Class DI_BigMelon : DI_Boss
 {
-
+	Default
+	{
+		Health 3200;
+		Speed 10;
+		Radius 96;
+		Height 120;
+		Mass 20000;
+	}
+	
+	States
+	{
+		Spawn:
+			BMEL A 10;
+			Loop;
+		Pain:
+			BMEL B 10;
+			Goto Spawn;
+	}
 }
