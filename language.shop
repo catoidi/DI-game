@@ -78,20 +78,20 @@ SHOPDESC_STUNCROSSBOW = "Shoots 1 weak projectile that can\ncontinuously stun en
 SHOPDESC2_STUNCROSSBOW = "\cbThe arrow itself will do 20 shock DMG, then continuously do 1 shock DMG for a little bit.";
 SHOPTYPE_STUNCROSSBOW = "\cb[Weapon]";
 SHOPITEM_LASERPOINTER = "Laser Pointer";
-SHOPDESC_LASERPOINTER = "very shocking.\n\cxmakes enemies drop Party Ammo.";
-SHOPDESC2_LASERPOINTER = "\cbThis is a \ctBox Party \cbitem. Each Box Party item increases the chance of Party Ammo spawning.";
+SHOPDESC_LASERPOINTER = "very shocking.\n\cxget fresh bonuses for more ammo.";
+SHOPDESC2_LASERPOINTER = "\cbThis is a \ctBox Party \cbitem. The secondary fires a very powerful AOE attack, at the cost of 5 ammo. You must get a Fresh Weapon Bonus to replenish ammo. Only ammo for 1 weapon can spawn per fresh bonus.";
 SHOPTYPE_LASERPOINTER = "\cb[Weapon] \ca[Limited Ammo]";
 SHOPITEM_PARTYSHOTTY = "Party Shotgun";
-SHOPDESC_PARTYSHOTTY = "a powerful shotgun.\n\cxmakes enemies drop Party Ammo.";
-SHOPDESC2_PARTYSHOTTY = "\cbThis is a \ctBox Party \cbitem. Each Box Party item increases the chance of Party Ammo spawning.";
+SHOPDESC_PARTYSHOTTY = "a powerful shotgun.\n\cxget fresh bonuses for more ammo.";
+SHOPDESC2_PARTYSHOTTY = "\cbThis is a \ctBox Party \cbitem. You must get a Fresh Weapon Bonus to replenish ammo. Only ammo for 1 weapon can spawn per fresh bonus.";
 SHOPTYPE_PARTYSHOTTY = "\cb[Weapon] \ca[Limited Ammo]";
 SHOPITEM_PARTYSHOTTY2 = "Super Party Shotgun";
 SHOPDESC_PARTYSHOTTY2 = "lots of damage, uses lots of ammo.\n\cxmakes enemies drop Party Ammo.";
 SHOPDESC2_PARTYSHOTTY2 = "\cbThis is a \ctBox Party \cbitem. This item is based off a scrapped concept for upgrading weapons in Box party. Each Box Party item increases the chance of Party Ammo spawning.";
 SHOPTYPE_PARTYSHOTTY2 = "\cb[Weapon] \ca[Limited Ammo]";
 SHOPITEM_POPCORNGUN = "Popcorn Gun";
-SHOPDESC_POPCORNGUN = "shoots popcorn.\nand popcorn kernels.\n\cxmakes enemies drop Party Ammo.";
-SHOPDESC2_POPCORNGUN = "\cbThis is a \ctBox Party \cbitem. Shooting the primary will give ammo for the secondary. The secondary needs 12 kernels to fire. Each Box Party item increases the chance of Party Ammo spawning.";
+SHOPDESC_POPCORNGUN = "shoots popcorn.\nand popcorn kernels.\n\cxget fresh bonuses for more ammo.";
+SHOPDESC2_POPCORNGUN = "\cbThis is a \ctBox Party \cbitem. Shooting the primary will give ammo for the secondary. The secondary needs 12 kernels to fire. You must get a Fresh Weapon Bonus to replenish ammo. Only ammo for 1 weapon can spawn per fresh bonus.";
 SHOPTYPE_POPCORNGUN = "\cb[Weapon] \ca[Limited Ammo]";
 
 //Armor
