@@ -57,11 +57,7 @@ extend class DIHandler
 	
 	virtual void BoxDrops(WorldEvent e, DI_PlayerBase plr, bool notweapon = false)
 	{
-		int boxchance = plr.boxammonum;
-		int boxammomin = plr.GetAmmoCapacity("BoxAmmo") / 4;
-		if (plr.CountInv("BoxAmmo") > boxammomin) {boxchance *= 0;} //no chance of getting box ammo when you have more than 1/4th of the ammo.
-	
-		if ((plr.boxammonum > 0) && (random(1, 24) <= boxchance))
+		if ((plr.boxammonum > 0) && (plr.CanFreshKill() == true))
 		{
 			e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 		}

@@ -32,12 +32,6 @@ class DI_PlayerBox : DI_PlayerBase
 		BuyPermaItem("GlowstickAmmo");
 	}
 	
-	override void BoxAmmoChecker(void)
-	{
-		Super.BoxAmmoChecker();
-		if (boxammonum > 0) {++boxammonum;} //1 extra chance for box ammo if playing as box partyer.
-	}
-	
 	override string ScoreUnlock()
 	{
 		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_glowstick";}

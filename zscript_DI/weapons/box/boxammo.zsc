@@ -1,6 +1,6 @@
 //zscript_DI/weapons/boxammo.zsc
 
-CLASS BoxAmmo : Ammo //20008
+CLASS BoxAmmo : Inventory //20008
 {
 	mixin DI_ActorMixin;
 	
@@ -10,14 +10,35 @@ CLASS BoxAmmo : Ammo //20008
 	{
 		Radius 20;
 		Height 24;
-		Inventory.PickupMessage "+12 Party Ammo";
-		Inventory.Amount 12;
-		Inventory.MaxAmount 48;
-		Inventory.Icon "SHUTY0";
 		+BRIGHT;
 		+FLOATBOB;
 		+CASTSPRITESHADOW;
-		+COUNTITEM;
+		+INVENTORY.QUIET;
+	}
+	
+	override void attachtoowner(actor other)
+	{
+		//placeholder.
+		//i plan on replacing this with a new "fresh ammo" mechanic embedded in all DI_Weapon's in the future.
+	
+		super.attachtoowner(other);
+		if (other is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(other);
+			array<string> boxweapons;
+			if (plr.FindInventory("LaserPointer")) {boxweapons.push("LaserPointer_Ammo");}
+			if (plr.FindInventory("PartyShotty")) {boxweapons.push("PartyShotty_Ammo");}
+			if (plr.FindInventory("PopcornGun")) {boxweapons.push("PopcornGun_Ammo");}
+			
+			if (boxweapons.size() > 0)
+			{
+				int choice = random(0, boxweapons.size() - 1);
+				plr.A_SpawnItemEX(boxweapons[choice], flags: SXF_NOCHECKPOSITION);
+				plr.Thrust(0.01);
+			}
+		}
+		
+		other.TakeInventory(self.getclassname(), 1);
 	}
 	
 	States

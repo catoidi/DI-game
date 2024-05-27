@@ -15,8 +15,8 @@ di_unlock_item_coinmagnet DI_CoinMagnet 2 di_coinbags 1;
 di_unlock_item_wealthjar DI_WealthJar 2  1;
 di_unlock_item_glowstick Glowstick 1  2;
 di_unlock_item_sledgehammer Sledgehammer 1  2;
-di_unlock_item_partyshotty PartyShotty 1  2;
-di_unlock_item_popcorngun PopcornGun 1  2;
+di_unlock_item_partyshotty PartyShotty 1 di_sidequests 2;
+di_unlock_item_popcorngun PopcornGun 1 di_sidequests 2;
 >>Will be removing this item in a future update.
 >>di_unlock_item_partyshotty2 PartyShotty2 1  2;
 di_unlock_item_melon DI_Melon 3 di_meloncount 2;

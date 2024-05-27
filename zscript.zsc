@@ -175,8 +175,7 @@ version "4.12"
 #include "zscript_DI/weapons/box/laserpointer.zsc"
 #include "zscript_DI/weapons/box/partyshotty.zsc"
 #include "zscript_DI/weapons/box/popcorngun.zsc"
-#include "zscript_DI/weapons/box/partyshotty2.zsc" //not actually used in box party
-//#include "zscript_DI/weapons/box/sledgehammer.zsc" //not actually used in box party
+//#include "zscript_DI/weapons/box/partyshotty2.zsc" //not actually used in box party
 
 //enemies
 #include "zscript_DI/enemies/monster.zsc"
