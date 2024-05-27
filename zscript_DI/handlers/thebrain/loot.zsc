@@ -6,11 +6,19 @@ extend class DIHandler
 		int combo;
 		DI_PlayerBase plr;
 		
-		if (dropper.coinnum > -1) {combo = dropper.coinnum;}
-		else if (e.Thing.target is "DI_PlayerBase")
+		if (e.Thing.target is "DI_PlayerBase")
 		{
 			plr = DI_PlayerBase(dropper.target);
-			if (dropper.di_notweapon == true) {combo = plr.combonum;}
+			if (dropper.coinnum > -1) 
+			{
+				combo = dropper.coinnum;
+				if ((dropper.di_notweapon == false) && (plr.CanFreshKill()))
+				{
+					let diwep = DI_Weapon(plr.player.ReadyWeapon);
+					combo += diwep.wpn_freshbonus;
+				}
+			}
+			else if (dropper.di_notweapon == true) {combo = plr.combonum;}
 			else {combo = plr.CountInv("DI_TokenCombo");}
 		}
 		else {combo = 1;}
@@ -22,10 +30,7 @@ extend class DIHandler
 		
 		if ((plr) && (dropper.di_notweapon == false))
 		{
-			if (plr.CanFreshKill())
-			{
-				plr.IsFreshKill();
-			}
+			if (plr.CanFreshKill()) {plr.IsFreshKill();}
 		}
 	}
 	
