@@ -1,1 +1,61 @@
 //zscript_DI/items/objectives/kill_bigmelon.zsc
+
+Class DI_QuestObjective_Kill : DI_QuestObjective abstract
+{
+	//This quest technically does not have it's own fail condition, besides the default player getting killed.
+	//So if the player somehow completes a wave without killing a boss, which shouldn't be possible, nothing happens.
+
+	bool queststarted; //checks when the player first enters the next wave.
+	
+	DI_Boss boss; //assigned by the main event handler.
+	
+	string bossclass;
+	Property BossClass : bossclass; 
+	
+	override void attachtoowner(actor other)
+	{
+		super.attachtoowner(other);
+		if (plr) {plr.ACS_ScriptCall("AddBossSpawn");}
+	}
+	
+	override void ObjectiveCancelled()
+	{
+		if (plr) {plr.ACS_ScriptCall("RemoveBossSpawn");}
+	}
+
+	override void doeffect()
+	{
+		super.doeffect();
+		if ((plr) && (plr.inwave) && (!queststarted)) {SpawnBoss();}
+	}
+	
+	virtual void SpawnBoss()
+	{
+		string event = string.format("addwaveenemy %s 1 DISpawnerSpot_Boss", bossclass);
+		EventHandler.SendNetworkEvent(event);
+		plr.ACS_ScriptCall("BossIsSpawning");
+		queststarted = true;
+	}
+	
+	virtual void BossIsDead()
+	{
+		//called by the assigned boss actor upon it's demise.
+		plr.ACS_ScriptCall("BossIsDead");
+		ObjectiveComplete();
+	}
+}
+
+Class DI_QuestObjective_Kill_BigMelon : DI_QuestObjective_Kill
+{
+	Default
+	{
+		DI_QuestObjective_Kill.BossClass "DI_BigMelon";
+	}
+
+	override string QuestName() {return "Bossfight (Big Melon)";}
+	override string QuestProgress()
+	{
+		if (!boss) {return string.format("%s", "The boss hasn't spawned yet!");}
+		return string.format("%s", "The melon must die!");
+	}
+}

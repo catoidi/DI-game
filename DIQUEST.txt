@@ -10,3 +10,4 @@
 * Objective DI_QuestObjective_BloodDrive;
 * Objective DI_QuestObjective_SleightOfHand;
 * Objective DI_QuestObjective_Overconsumption;
+DI02 Objective DI_QuestObjective_Kill_BigMelon;

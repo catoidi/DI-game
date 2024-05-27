@@ -8,6 +8,7 @@ DIQUEST_DI_QUESTOBJECTIVE_FRESH = "Complete the wave while not going more\nthan 
 DIQUEST_DI_QUESTOBJECTIVE_BLOODDRIVE = "Complete the wave while not losing\nmore than 25 points of health.";
 DIQUEST_DI_QUESTOBJECTIVE_SLEIGHTOFHAND = "Every weapon kill this wave must be\ndone with a different weapon than the last.";
 DIQUEST_DI_QUESTOBJECTIVE_OVERCONSUMPTION = "You have 30 seconds. Using consumables\nadds more time. Don't run out.";
+DIQUEST_DI_QUESTOBJECTIVE_KILL_BIGMELON = "You must defeat a new boss in this wave.";
 
 //These are not real items.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

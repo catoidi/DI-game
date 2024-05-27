@@ -195,7 +195,7 @@ version "4.12"
 #include "zscript_DI/enemies/box/smallpizza.zsc"
 #include "zscript_DI/enemies/box/lemon.zsc"
 #include "zscript_DI/enemies/special/debtcollector.zsc"
-#include "zscript_DI/enemeis/special/bigmelon.zsc"
+#include "zscript_DI/enemies/special/bigmelon.zsc"
 
 //shop
 #include "zscript_DI/shop/base.zsc" //base actor all shop-type actors inherit from

@@ -115,6 +115,7 @@ Class DI_QuestObjective : Inventory abstract
 {
 	DI_MainQuest quest; //assigned by main quest object. throws error if this were to fail for some reason.
 	DI_PlayerBase plr; //just a little timesaver for making new objectives.
+	bool failed; //used when item is detached to see if it was caused by objective failure or not.
 	
 	clearscope abstract string QuestName(); //name of the quest to display in the Side Quest UI.
 	clearscope virtual string QuestDescription() //a small 2 line description of what you're supposed to do to complete the quest.
@@ -135,6 +136,11 @@ Class DI_QuestObjective : Inventory abstract
 		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
 	}
 	
+	override void detachfromowner()
+	{
+		if (!failed) {ObjectiveCancelled();}
+	}
+	
 	override void ownerdied()
 	{
 		ObjectiveFailed();
@@ -148,6 +154,12 @@ Class DI_QuestObjective : Inventory abstract
 	
 	virtual void ObjectiveFailed()
 	{
+		failed = true;
 		if (quest) {quest.QuestFailed();}
+	}
+	
+	virtual void ObjectiveCancelled()
+	{
+		//just in case you don't want your objective to leave any loose ends behind.
 	}
 }

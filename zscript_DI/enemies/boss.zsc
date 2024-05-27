@@ -2,5 +2,19 @@
 
 class DI_Boss : DI_Monster abstract
 {
-
+	DI_QuestObjective_Kill sidequest; //if boss is created for a side quest, this is assigned by the event handler.
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		if (sidequest) {sidequest.boss = self;}
+	}
+	
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		if (sidequest) {sidequest.BossIsDead();}
+	
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
 }

@@ -1,1 +1,6 @@
 //zscript_DI/enemies/special/bigmelon.zsc
+
+Class DI_BigMelon : DI_Boss
+{
+
+}
