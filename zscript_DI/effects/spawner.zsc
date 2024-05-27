@@ -272,20 +272,20 @@ CLASS DISpawner_FXBoss : DISpawner_FX
 		Spawn:
 			PLAT B 0 NoDelay {invoker.Spawner.SpawnerToggle();}
 			#### # 0 A_StartSound("plateA", pitch: 0.5);
-			PLAT B 0 BRIGHT A_SpawnItemEX("DISpawner_Spark", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-2, 2), frandom(-2, 2), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			PLAT B 0 BRIGHT A_SpawnItemEX("DISpawner_SparkBig", frandom(-16, 16), frandom(-16, 16), frandom(0, 16), frandom(-4, 4), frandom(-4, 4), frandom(0, 8), 0, SXF_NOCHECKPOSITION);
 			PLAT BBBBBBBBBBBBBBBBBBBBBBBB 1 BRIGHT A_SetRoll(roll + 2);
-			PLAT B 0 BRIGHT A_SpawnItemEX("DISpawner_Spark", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-2, 2), frandom(-2, 2), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			PLAT B 0 BRIGHT A_SpawnItemEX("DISpawner_SparkBig", frandom(-16, 16), frandom(-16, 16), frandom(0, 16), frandom(-4, 4), frandom(-4, 4), frandom(0, 8), 0, SXF_NOCHECKPOSITION);
 			PLAT BBBBBBBBBBBBBBBBBBBBBBBB 1 BRIGHT A_SetRoll(roll + 2);
-			PLAT C 0 BRIGHT A_SpawnItemEX("DISpawner_Spark", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-2, 2), frandom(-2, 2), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			PLAT C 0 BRIGHT A_SpawnItemEX("DISpawner_SparkBig", frandom(-16, 16), frandom(-16, 16), frandom(0, 16), frandom(-4, 4), frandom(-4, 4), frandom(0, 8), 0, SXF_NOCHECKPOSITION);
 			PLAT CCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_SetRoll(roll + 4);
-			PLAT C 0 BRIGHT A_SpawnItemEX("DISpawner_Spark", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-2, 2), frandom(-2, 2), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			PLAT C 0 BRIGHT A_SpawnItemEX("DISpawner_SparkBig", frandom(-16, 16), frandom(-16, 16), frandom(0, 16), frandom(-4, 4), frandom(-4, 4), frandom(0, 8), 0, SXF_NOCHECKPOSITION);
 			PLAT CCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_SetRoll(roll + 4);
-			PLAT DD 0 BRIGHT A_SpawnItemEX("DISpawner_Spark", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-2, 2), frandom(-2, 2), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			PLAT DD 0 BRIGHT A_SpawnItemEX("DISpawner_SparkBig", frandom(-16, 16), frandom(-16, 16), frandom(0, 16), frandom(-4, 4), frandom(-4, 4), frandom(0, 8), 0, SXF_NOCHECKPOSITION);
 			PLAT DDDDDDDDDDDDDDDDDDDDDDDD 1 BRIGHT A_SetRoll(roll + 8);
-			PLAT DD 0 BRIGHT A_SpawnItemEX("DISpawner_Spark", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-2, 2), frandom(-2, 2), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+			PLAT DD 0 BRIGHT A_SpawnItemEX("DISpawner_SparkBig", frandom(-16, 16), frandom(-16, 16), frandom(0, 16), frandom(-4, 4), frandom(-4, 4), frandom(0, 8), 0, SXF_NOCHECKPOSITION);
 			PLAT DDDDDDDDDDDDDDDDDDDDDDDD 1 BRIGHT A_SetRoll(roll + 8);
 			PLAT E 0 {DoSpawn();}
-			PLAT E 0 A_SpawnItemEX("DISpawner_Ring", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			PLAT E 0 A_SpawnItemEX("DISpawner_RingBig", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			TNT1 A 60;
 			Stop;
 		Death:
@@ -310,6 +310,8 @@ CLASS DISpawner_Spark : BoxTeleportSpark
 			Goto Looper;
 	}
 }
+
+CLASS DISpawner_SparkBig : DISpawner_Spark {Default {Scale 2.0;}}
 
 CLASS DISpawner_Ring : DI_Actor
 {
@@ -341,6 +343,8 @@ CLASS DISpawner_Ring : DI_Actor
 			Loop;
 	}
 }
+
+CLASS DISpawner_RingBig : DISpawner_Ring {Default {Scale 2.0;}}
 
 //leftover code from box party
 
