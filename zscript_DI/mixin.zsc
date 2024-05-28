@@ -2,6 +2,8 @@
 
 mixin class DI_ActorMixin
 {
+	bool nocoins;
+	property NoDrops: nocoins;
 	bool di_notweapon;
 	property IgnoreWeapon: di_notweapon; //used for throwable consumables. tells certain functions that this actor did not originate from a weapon.
 	
@@ -229,7 +231,10 @@ mixin class DI_ActorMixin
 	
 	action void A_DIDrops(void)
 	{
-		A_SpawnItemEx("DI_Drop", flags: SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION | SXF_SETMASTER);
+		if (invoker.nocoins == false)
+		{
+			A_SpawnItemEx("DI_Drop", flags: SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION | SXF_SETMASTER);
+		}
 	}
 	
 	action void A_DIDieBlood(void)

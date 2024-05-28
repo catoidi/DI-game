@@ -207,30 +207,33 @@ Class DI_Monster : DI_Actor abstract
 			}
 		}
 		
-		if (damagetype == 'Ice' || damagetype == 'FakeIce')
+		if (damage > 0)
 		{
-			//deal double damage if enemy is shocked then frozen
-			if (isshocked) {damage *= 2;}
-			if (hearted) {damage *= 1.25;}
+			if (damagetype == 'Ice' || damagetype == 'FakeIce')
+			{
+				//deal double damage if enemy is shocked then frozen
+				if (isshocked) {damage *= 2;}
+				if (hearted) {damage *= 1.25;}
+			}
+			else if (damagetype == 'Lightning' || damagetype == 'FakeLightning')
+			{
+				//deal double damage if enemy is frozen then shocked
+				if (icenum > 0) {damage *= 2;}
+				if (hearted) {damage *= 1.25;}
+			}
+			
+			if (hearttimer > 0) {++hearttimer;}
+			
+			//launch enemy vertically upon taking damage
+			if (bNOGRAVITY == false)
+			{
+				float thrustnum = 1 + (((damage * 25) / default.health) / (0.01 * mass));
+				ThrustThingZ(0, thrustnum, 0, 1);
+			}
+			
+			//calculate stun time
+			stuntic += ApplyDamageFactor(damagetype, damage);
 		}
-		else if (damagetype == 'Lightning' || damagetype == 'FakeLightning')
-		{
-			//deal double damage if enemy is frozen then shocked
-			if (icenum > 0) {damage *= 2;}
-			if (hearted) {damage *= 1.25;}
-		}
-		
-		if (hearttimer > 0) {++hearttimer;}
-		
-		//launch enemy vertically upon taking damage
-		if (bNOGRAVITY == false)
-		{
-			float thrustnum = 1 + (((damage * 25) / default.health) / (0.01 * mass));
-			ThrustThingZ(0, thrustnum, 0, 1);
-		}
-		
-		//calculate stun time
-		stuntic += ApplyDamageFactor(damagetype, damage);
 	
 		return Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
 	}
@@ -397,17 +400,23 @@ Class DI_Monster : DI_Actor abstract
 	
 	action void A_DISpawnIceCoin()
 	{
-		A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+		if (invoker.nocoins == false)
+		{
+			A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+		}
 	}
 	
 	action void A_DISpawnBloodCoins()
 	{
-		for (int i = 0; i < 2; ++i)
+		if (invoker.nocoins == false)
 		{
-			bool fakebool;
-			actor bcoin;
-			[fakebool, bcoin] = A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
-			if (bcoin) {bcoin.A_SetTranslation("DamRed");}
+			for (int i = 0; i < 2; ++i)
+			{
+				bool fakebool;
+				actor bcoin;
+				[fakebool, bcoin] = A_SpawnItemEx(invoker.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+				if (bcoin) {bcoin.A_SetTranslation("DamRed");}
+			}
 		}
 	}
 	
