@@ -6,6 +6,8 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 	
 	//plus, this is a great way for a player to look back and remember every item they currently have equipped.
 	
+	mixin DI_UIMixin;
+	
 	DICatalogueHandler handler;
 	
 	Font SmallFont;
@@ -47,6 +49,12 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 	override void Ticker ()
     {
         if (players[consoleplayer].mo == NULL) {return;}	
+	}
+	
+	override void Drawer()
+	{
+		DrawStars();
+		Super.Drawer();
 	}
 	
 	virtual void CreateItemList()

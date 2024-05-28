@@ -2,6 +2,8 @@
 
 class DI_UnlockMenu : boxparty_ZF_GenericMenu
 {
+	mixin DI_UIMixin;
+
 	DI_UnlockMenuHandler handler;
 	
 	cvar tutcvar, //check to see if player has done tutorial yet.
@@ -77,6 +79,12 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		CreateResetButton();
 		CreateTabButtons();
 		UpdateUnlockLabel();
+	}
+	
+	override void Drawer()
+	{
+		DrawStars();
+		Super.Drawer();
 	}
 	
 	virtual void UpdateInfoLabel(string infotext)
