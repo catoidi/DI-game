@@ -303,7 +303,6 @@ Level DI02;
 		Spawn OnionTurret, 1, DISpawnerSpot_Turret;
 		Spawn THEHAMMER, 1;
 		Spawn Pepper, 1;
-		
 	}
 	Wave 4:
 	{
@@ -325,7 +324,6 @@ Level DI02;
 		Spawn Pizzaulter, 5;
 		Spawn PizzaSlicer, 10;
 	}
-	
 	Endless Restart;
 	{
 		Spawn THEHAMMER, 4;
