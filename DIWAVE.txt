@@ -251,14 +251,39 @@ Level DI02;
 {
 	Wave 1:
 	{
+		Cap 3;
+		Rate 3;
+		Time 1;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Wait 1;
 		Cap 6;
-		Rate 1;
-		Time 35;
-		Spawn FruitPuncher, 7;
-		Wait 4;
-		Spawn Pepper, 2;
+		Time 70;
+		Spawn FruitPuncher, 5;
 	}
 	Wave 2:
+	{
+		Cap 8;
+		Rate 5;
+		Time 1;
+		Spawn FruitPuncher, 5;
+		Wait 4;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
+		Spawn FruitPuncher, 4;
+		Wait 4;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Spawn FruitPuncher, 3;
+		Wait 4;
+		Spawn FruitPuncher, 2;
+		Spawn Lemon, 3;
+	}
+	Wave 3:
+	{
+		Cap 10;
+		Rate 1;
+		Time 35;
+		Spawn Lemon, 25;
+	}
+	Wave 4:
 	{
 		Cap 7;
 		Rate 2;
@@ -285,44 +310,27 @@ Level DI02;
 		Wait 1;
 		Spawn Pepper, 4;
 	}
-	Wave 3:
+	Wave 5:
 	{
-		Cap 3;
-		Rate 3;
-		Time 1;
-		Spawn THEHAMMER, 3;
-		Wait 2;
-		Cap 5;
+		Cap 1;
 		Rate 1;
 		Time 35;
-		Spawn FruitPuncher, 10;
-		Spawn Pepper, 3;
-		Spawn RedOnion, 3, DISpawnerSpot_Turret;
-		Wait 8;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		Wait 1;
+		Cap 5;
+		Time 20;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Spawn FruitPuncher, 5;
+		Wait 5;
 		Cap 7;
-		Spawn OnionTurret, 1, DISpawnerSpot_Turret;
-		Spawn THEHAMMER, 1;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Spawn FruitPuncher, 4;
 		Spawn Pepper, 1;
-	}
-	Wave 4:
-	{
-		Cap 25;
-		Rate 1;
-		Time 15;
-		Spawn Pizzaulter, 5;
-		Spawn PizzaSlicer, 10;
-		Wait 10;
-		Spawn Pizzaulter, 5;
-		Spawn PizzaSlicer, 10;
-		Wait 10;
-		Spawn Pizzaulter, 5;
-		Spawn PizzaSlicer, 10;
-		Wait 10;
-		Spawn Pizzaulter, 5;
-		Spawn PizzaSlicer, 10;
-		Wait 10;
-		Spawn Pizzaulter, 5;
-		Spawn PizzaSlicer, 10;
+		Wait 7;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+		Spawn Pepper, 3;
 	}
 	Endless Restart;
 	{
