@@ -123,10 +123,10 @@ Class DIShop_Base : SwitchableDecoration abstract
 			bool distancecheck = false;
 			
 			target = user;
-			A_FaceTarget();
+			A_FaceTarget(max_pitch: 180, flags: FAF_MIDDLE);
 			FLineTraceData ptr;
 			
-			if (LineTrace(angle, 100, pitch, TRF_THRUSPECIES, 0, data: ptr) == true)
+			if (LineTrace(angle, 100, pitch, TRF_THRUSPECIES, height / 2, data: ptr) == true)
 			{
 				if (ptr.HitActor == target) {distancecheck = true;}
 			}
