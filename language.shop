@@ -18,7 +18,7 @@ SHOPITEM_DIUPGRADESHOPS = "\ctShop Upgrade";
 SHOPDESC_DIUPGRADESHOPS = "Adds new shop items to purchase.";
 SHOPTYPE_DIUPGRADESHOPS = "[Instant Use]";
 SHOPITEM_DI_QUESTDEBUFF_SLOW = "\cgCurse of Slow Movement Speed";
-SHOPDESC_DI_QUESTDEBUFF_SLOW = "Player movement speed is reduced by 25%.";
+SHOPDESC_DI_QUESTDEBUFF_SLOW = "Player movement speed is reduced by 20%.";
 SHOPDESC2_DI_QUESTDEBUFF_SLOW = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_SLOW = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_DEFENSELESS = "\cgCurse of Defenselessness";
@@ -30,7 +30,7 @@ SHOPDESC_DI_QUESTDEBUFF_TORNPOCKETS = "You lose money upon taking damage.\nCanno
 SHOPDESC2_DI_QUESTDEBUFF_TORNPOCKETS = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_TORNPOCKETS = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_ENCUMBERED = "\cgCurse of Encumberance";
-SHOPDESC_DI_QUESTDEBUFF_ENCUMBERED = "Reduce all weapon speed by 15%\nfor each weapon you own.";
+SHOPDESC_DI_QUESTDEBUFF_ENCUMBERED = "Reduce all weapon speed by 10%\nfor each weapon you own.";
 SHOPDESC2_DI_QUESTDEBUFF_ENCUMBERED = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_ENCUMBERED = "\cg[Cursed Item]";
 
