@@ -3,6 +3,7 @@
 Class DI_QuestObjective_BloodDrive : DI_QuestObjective
 {
 	int minhp;
+	int expectedhp;
 	bool queststarted;
 	
 	override void doeffect()
@@ -19,11 +20,21 @@ Class DI_QuestObjective_BloodDrive : DI_QuestObjective
 			if (curhp > plr.DIMaxHealth()) {curhp = plr.DIMaxHealth();}
 			minhp = curhp - 25;
 			if (minhp < 0) {minhp = 0;}
+			expectedhp = curhp;
 			queststarted = true;
 		}
 		else if (queststarted)
 		{
-			if (plr.inwave) {if (plr.health <= minhp) {ObjectiveFailed();}}
+			if (plr.inwave) 
+			{
+				if (expectedhp <= minhp) {ObjectiveFailed();}
+				else if (plr.health >= expectedhp) //healing does not increase counter
+				{
+					minhp += plr.health - expectedhp;
+				}
+				
+				expectedhp = plr.health;
+			}
 			else {ObjectiveComplete();}
 		}
 	}
