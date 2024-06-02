@@ -3,10 +3,19 @@
 Class DI_QuestDebuff_TornPockets : DI_QuestDebuff
 {
 	default {tag "\cgCurse (Torn Pockets)";}
+	
+	int cooldown;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (cooldown > 0) {--cooldown;}
+	}
 
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
-		if ((damage > 0) && (source != owner) && (passive == true))
+		if ((damage > 0) && (source != owner) && (passive == true) && (cooldown == 0))
 		{
 			int moneyloss = damage * owner.countinv(self.getclassname());
 			if (moneyloss > owner.score) {moneyloss = owner.score;}
@@ -14,6 +23,7 @@ Class DI_QuestDebuff_TornPockets : DI_QuestDebuff
 			{
 				console.printf("\cayour pockets feel $%d lighter...", moneyloss);
 				owner.score -= moneyloss;
+				cooldown += moneyloss;
 			}
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
