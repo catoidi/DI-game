@@ -25,6 +25,7 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 				if (timer > 0) 
 				{
 					--timer;
+					if ((timer <= 175) && (timer % 35 == 0)) {plr.A_StartSound("piebomb", volume: 0.15, pitch: 0.75);}
 				}
 				else {ObjectiveFailed();}
 			}
