@@ -80,7 +80,7 @@ Class PepperoniBullet : DI_Bullet
 	{
 		Radius 3;
 		Height 6;
-		Speed 10;
+		Speed 8;
 		DamageFunction (3);
 		DI_Bullet.Trail "PIZZC0";
 		DI_Bullet.TrailSize 6.0;

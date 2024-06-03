@@ -3,7 +3,7 @@ class THEHAMMER : DI_Monster
 	Default
 	{
 		Speed 12;
-		Health 200;
+		Health 180;
 		Radius 32;
 		Height 48;
 		Mass 400;

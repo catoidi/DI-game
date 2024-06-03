@@ -5,7 +5,7 @@ Class OnionTurret : DI_Monster
 	Default
 	{
 		Speed 0;
-		Health 180;
+		Health 144;
 		Radius 30;
 		Height 56;
 		Mass 0x7FFFFFFF; //immovable object
