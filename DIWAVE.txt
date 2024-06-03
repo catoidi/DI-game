@@ -285,58 +285,50 @@ Level DI02;
 	}
 	Wave 4:
 	{
+		Cap 6;
+		Rate 1;
+		Time 20;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		Wait 1;
+		Spawn FruitPuncher, 6;
+		Wait 1;
 		Cap 7;
-		Rate 2;
-		Time 35;
-		Spawn RedOnion, 2, DISpawnerSpot_Turret;
-		Wait 1;
-		Spawn FruitPuncher, 2;
-		Wait 1;
-		Spawn FruitPuncher, 1;
-		Spawn Pepper, 1;
-		Wait 1;
-		Spawn FruitPuncher, 2;
-		Wait 1;
-		Spawn Pepper, 2;
-		Wait 1;
-		Spawn RedOnion, 2, DISpawnerSpot_Turret;
-		Wait 1;
-		Spawn FruitPuncher, 2;
-		Wait 1;
-		Spawn FruitPuncher, 1;
-		Spawn Pepper, 1;
-		Wait 1;
-		Spawn FruitPuncher, 2;
-		Wait 1;
-		Spawn Pepper, 4;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Wait 3;
+		Cap 8;
+		Spawn FruitPuncher, 6;
+		Spawn Lemon, 2;
+		Wait 6;
+		Cap 12;
+		Spawn FruitPuncher, 9;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
 	}
 	Wave 5:
 	{
-		Cap 1;
-		Rate 1;
-		Time 35;
-		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
-		Wait 1;
 		Cap 5;
+		Rate 5;
 		Time 20;
-		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
-		Spawn RedOnion, 2, DISpawnerSpot_Turret;
 		Spawn FruitPuncher, 5;
 		Wait 5;
-		Cap 7;
-		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
-		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Spawn Lemon, 2;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Wait 5;
 		Spawn FruitPuncher, 4;
-		Spawn Pepper, 1;
-		Wait 7;
-		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
-		Spawn Pepper, 3;
-	}
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		Wait 5;
+		Spawn Lemon, 5;
+		Wait 5;
+		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
+		
 	Endless Restart;
 	{
 		Spawn THEHAMMER, 4;
-		MultSpeed 0.1;
-		SetSpeed 1.5;
+		MultCap 1;
+		MultRate 1;
+		MultSpawn 1;
+		MultHealth 1;
+		MultDamage 1;
+		MultSpeed 0.2;
 		MultPrice 1;
 	}
 }
