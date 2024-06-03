@@ -4,7 +4,7 @@ Class Pepper : DI_Monster
 {
 	Default
     {
-        Speed 10;
+        Speed 8;
         Radius 32;
         Height 64;
         Health 100;
@@ -16,7 +16,6 @@ Class Pepper : DI_Monster
         BloodType "DI_PepperBlood";
 		DI_Monster.GibType "DI_PepperExplosion";
 		DI_Monster.DIDrop "DI_Money";
-		Species "Pepper";
         Tag "Jalapeño";
 		Obituary "$BOX_DIE_PEPPER";
         +NOBLOODDECALS;

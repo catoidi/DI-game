@@ -95,6 +95,19 @@ CLASS SafeBoomSmall : SafeBoom
 	}
 }
 
+CLASS SafeBoomSmall_Lite : SafeBoomSmall
+{
+	//no particles.
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			BOOM B 0 BRIGHT A_StartSound("boxboom2", 0, CHANF_OVERLAP, 0.5);
+			BOOM B 0 BRIGHT A_AttachLightDef("Boomer", "BIGBOOM");
+			Goto Expander;
+	}
+}
+
 CLASS BoomText : SafeBoom
 {
 	Default

@@ -18,7 +18,6 @@ Class OnionTurret : DI_Monster
 		DI_Monster.DIDrop "DI_Money";
 		MinMissileChance 1;
 		MeleeThreshold 0;
-		Species "Onion";
 		Tag "Henry";
 		Obituary "$BOX_DIE_ONION";
 		-PUSHABLE;

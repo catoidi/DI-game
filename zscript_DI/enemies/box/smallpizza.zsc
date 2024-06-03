@@ -4,7 +4,7 @@ Class PizzaSlicer : Pizzaulter
 {
 	Default
 	{
-		Speed 6;
+		Speed 4;
 		Health 10;
 		Radius 12;
 		Height 20;

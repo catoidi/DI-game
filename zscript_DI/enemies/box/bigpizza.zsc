@@ -4,7 +4,7 @@ Class Pizzaulter : DI_Monster
 {
 	Default
 	{
-		Speed 8;
+		Speed 6;
 		Health 80;
 		Radius 24;
 		Height 40;
@@ -17,7 +17,6 @@ Class Pizzaulter : DI_Monster
 		DI_Monster.CanSwim false;
 		DI_Actor.DontScale true; //rotating sprites shouldn't be scaled
 		BloodType "PizzaBlood";
-		Species "Pizza";
 		Tag "Pizzaulter";
 		Obituary "$BOX_DIE_PIZZA_BIG";
 		+FLOAT;
