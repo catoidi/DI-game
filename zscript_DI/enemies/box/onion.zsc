@@ -20,6 +20,7 @@ Class OnionTurret : DI_Monster
 		MeleeThreshold 0;
 		Tag "Henry";
 		Obituary "$BOX_DIE_ONION";
+		+BRIGHT;
 		-PUSHABLE;
 		+MOVEWITHSECTOR;
 		+NOINFIGHTING;
@@ -28,6 +29,20 @@ Class OnionTurret : DI_Monster
 		//$Category "Box Party/Enemies/"
 		//$Title "Onion (Big)"
 		//$Color 4
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		A_AttachLight("onionlight", DynamicLight.PointLight, "White", radius, radius, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, height / 2));
+	}
+	
+	override void StatusTick()
+	{
+		Super.StatusTick();
+		
+		if (health <= 0) {A_RemoveLight("onionlight");}
 	}
 	
 	action void A_OnionAttack (int Angled, int Offseted)
