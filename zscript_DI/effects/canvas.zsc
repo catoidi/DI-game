@@ -138,6 +138,7 @@ Class DI_DI02Canvas : DI_Actor
 	int w, h;
 	int wavenum;
 	int shoplvl;
+	int shopprogress;
 	int ticktime;
 	
 	Default
@@ -170,9 +171,25 @@ Class DI_DI02Canvas : DI_Actor
 			string curwave2 = string.format("* %s%d *", "Shop Level: ", shoplvl);
 			int xtwo = (w - bigFont.StringWidth(curwave2)) / 2;
 			int ytwo = (h - bigFont.GetHeight()) / 2;
+			
+			string arena = "";
+			switch(shopprogress)
+			{
+				case 0: arena = "House"; break;
+				case 1: arena = "Volcano"; break;
+				case 2: arena = "Underwater"; break;
+				case 3: arena = "Elevator"; break;
+				case 4: arena = "Jump Room"; break;
+				case 5: arena = "Boss Arena"; break;
+			}
+			
+			string curwave3 = string.format("%s%s", "Arena: ", arena);
+			int xthree = (w - bigFont.StringWidth(curwave3)) / 2;
+			int ythree = h - (bigFont.GetHeight() * 2.5);
 
 			cv.DrawText(bigFont, Font.CR_RED, x, y, curwave, DTA_ScaleX, 1.5, DTA_ScaleY, 1.5);
 			cv.DrawText(bigFont, Font.CR_GOLD, xtwo, ytwo, curwave2);
+			cv.DrawText(bigFont, Font.CR_CYAN, xthree, ythree, curwave3);
 		}
 	}
 	
@@ -184,6 +201,7 @@ Class DI_DI02Canvas : DI_Actor
 		{
 			wavenum = ACS_ScriptCall("DICheckWave");
 			shoplvl = ACS_ScriptCall("GetShopLvl");
+			shopprogress = ACS_ScriptCall("GetCurrentSection");
 			DoWaveCheck();
 			ticktime = 0;
 		}
