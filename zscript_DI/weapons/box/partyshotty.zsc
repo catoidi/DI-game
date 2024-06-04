@@ -4,9 +4,9 @@ Class PartyShotty_Ammo : Ammo
 {
 	Default
 	{
-		Inventory.PickupMessage "\cd+4 Party Ammo";
-		Inventory.Amount 4;
-		Inventory.MaxAmount 16;
+		Inventory.PickupMessage "\cd+2 Party Ammo";
+		Inventory.Amount 2;
+		Inventory.MaxAmount 8;
 	}
 }
 

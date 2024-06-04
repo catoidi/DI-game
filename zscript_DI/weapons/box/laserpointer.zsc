@@ -6,9 +6,9 @@ Class LaserPointer_Ammo : Ammo
 {
 	Default
 	{
-		Inventory.PickupMessage "\cd+5 Laser Pointer Ammo";
-		Inventory.Amount 5;
-		Inventory.MaxAmount 20;
+		Inventory.PickupMessage "\cd+3 Laser Pointer Ammo";
+		Inventory.Amount 3;
+		Inventory.MaxAmount 12;
 	}
 }
 
@@ -27,7 +27,7 @@ CLASS LaserPointer : DI_Weapon //20020
 		Weapon.SlotPriority 1;
 		Weapon.Kickback 0;
 		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 10;
+		Weapon.AmmoGive 12;
 		Weapon.AmmoType "LaserPointer_Ammo";
 		Inventory.PickupMessage "Acquired the Laser Pointer. (Recover ammo by getting Fresh Bonuses.)";
 		Inventory.Icon "LAZRE0";
@@ -67,7 +67,7 @@ CLASS LaserPointer : DI_Weapon //20020
 			LAZR H 0 A_AlertMonsters();
 			LAZR H 0 A_StartSound("weapons/laser/lasrpew2");
 			LAZR H 0 BRIGHT DI_FireProjectile("LaserPointerBullet2", -32768, -32768, -32768, -4, 4, FPF_AIMATANGLE, isRecoil: false);
-			LAZR H 0 BRIGHT A_TakeInventory("LaserPointer_Ammo", 5);
+			LAZR H 0 BRIGHT A_TakeInventory("LaserPointer_Ammo", 4);
 			LAZR H 1 BRIGHT A_WeaponOffset(-6, 60, WOF_INTERPOLATE);
 			LAZR HHH 1 BRIGHT A_WeaponOffset(-3, 4, WOF_ADD | WOF_INTERPOLATE);
 			LAZR A 6;

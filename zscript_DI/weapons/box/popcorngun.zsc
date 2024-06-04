@@ -4,9 +4,9 @@ Class PopcornGun_Ammo : Ammo
 {
 	Default
 	{
-		Inventory.PickupMessage "\cd+12 Popcorn Ammo";
-		Inventory.Amount 12;
-		Inventory.MaxAmount 48;
+		Inventory.PickupMessage "\cd+6 Popcorn Ammo";
+		Inventory.Amount 6;
+		Inventory.MaxAmount 24;
 	}
 }
 
