@@ -180,6 +180,8 @@ Class DIShopController : DIShop_Base
 
 Class DIShopController_ACS : DIShopController //same as above but sends an ACS script instead.
 {
+	bool user_playeractivates;
+
 	override void DoPurchase(int buyprice)
 	{
 		frame += 1;
@@ -187,7 +189,9 @@ Class DIShopController_ACS : DIShopController //same as above but sends an ACS s
 		plr.score -= buyprice;
 		currentprice += user_baseprice * CheckSaleNum();
 		lastpurchased = curround;
-		ACS_NamedExecuteAlways(user_eventname, 0, user_event1, user_event2, user_event3);
+		actor scriptor = self;
+		if (user_playeractivates) {scriptor = plr;}
+		scriptor.ACS_NamedExecuteAlways(user_eventname, 0, user_event1, user_event2, user_event3);
 		//plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
 		//plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
