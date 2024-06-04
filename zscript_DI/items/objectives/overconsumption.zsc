@@ -6,7 +6,7 @@ Class DI_QuestObjective_Overconsumption : DI_QuestObjective
 	bool chillout; //pause the timer while no monsters are alive.
 	int timer;
 	Property StartTimer : timer;
-	Default {DI_QuestObjective_Overconsumption.StartTimer 1050;} //30 seconds.
+	Default {DI_QuestObjective_Overconsumption.StartTimer 875;} //25 seconds.
 
 	override void doeffect()
 	{
