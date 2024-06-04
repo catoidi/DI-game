@@ -47,4 +47,5 @@ DoomEdNums
 	20044 = Mountains
 	20045 = Coral
 	20046 = WaterfallButt
+	20047 = DI_DI02Canvas
 }

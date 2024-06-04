@@ -126,3 +126,66 @@ Class DI_DI01Canvas : DI_Actor
 		}
 	}
 }
+
+Class DI_DI02Canvas : DI_Actor
+{
+	//this one is designed specifically for DI01.
+	//this will display both the wave and the shop level progress.
+	
+	//displays the current wave as a texture.
+	TextureID tid;
+	Canvas cv;
+	int w, h;
+	int wavenum;
+	int shoplvl;
+	int ticktime;
+	
+	Default
+	{
+		//$Category "DI/Canvas"
+		//$Color 7
+		//$Title "Level 2 Canvas"
+		//$Sprite "TELED0"
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		tid = TexMan.CheckForTexture("LVL2SHOP");
+
+		cv = TexMan.GetCanvas("LVL2SHOP");
+
+		[w, h] = TexMan.GetSize(tid);
+	}
+	
+	virtual void DoWaveCheck()
+	{
+		if (cv)
+		{
+			cv.Clear(0, 0, w, h, 0);
+			
+			string curwave = string.format("%s%d", "Next Wave: ", wavenum);
+			int x = (w - (bigFont.StringWidth(curwave) * 1.5)) / 2;
+			int y = (bigFont.GetHeight() * 1.5) - 8;
+			string curwave2 = string.format("* %s%d *", "Shop Level: ", shoplvl);
+			int xtwo = (w - bigFont.StringWidth(curwave2)) / 2;
+			int ytwo = (h - bigFont.GetHeight()) / 2;
+
+			cv.DrawText(bigFont, Font.CR_RED, x, y, curwave, DTA_ScaleX, 1.5, DTA_ScaleY, 1.5);
+			cv.DrawText(bigFont, Font.CR_GOLD, xtwo, ytwo, curwave2);
+		}
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		++ticktime;
+		if (ticktime >= 35)
+		{
+			wavenum = ACS_ScriptCall("DICheckWave");
+			shoplvl = ACS_ScriptCall("GetShopLvl");
+			DoWaveCheck();
+			ticktime = 0;
+		}
+	}
+}
