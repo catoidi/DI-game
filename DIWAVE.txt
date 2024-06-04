@@ -319,16 +319,40 @@ Level DI02;
 		Spawn Lemon, 5;
 		Wait 5;
 		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
-		
+	}
+	Wave 6:
+	{
+		Cap 3;
+		Rate 1;
+		Time 35;
+		Spawn Pepper, 3;
+		Wait 3;
+		Cap 12;
+		Spawn FruitPuncher, 20;
+		Spawn Pepper, 3;
+		Spawn THEHAMMER, 3, DISpawnerSpot_Big;
+	}
+	Wave 7:
+	{
+		Cap 15;
+		Rate 1;
+		Time 70;
+		Spawn PizzaSlicer, 25, DISpawnerSpot_Flying;
+		Spawn PizzaSlicer, 25;
+		Wait 15;
+		Time 50;
+		Wait 15;
+		Time 30;
+	}
 	Endless Restart;
 	{
 		Spawn THEHAMMER, 4;
 		MultCap 1;
 		MultRate 1;
 		MultSpawn 1;
-		MultHealth 1;
-		MultDamage 1;
-		MultSpeed 0.2;
+		MultHealth 0.25;
+		MultDamage 0.25;
+		MultSpeed 0.1;
 		MultPrice 1;
 	}
 }
