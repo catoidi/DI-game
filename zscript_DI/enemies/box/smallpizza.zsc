@@ -6,8 +6,8 @@ Class PizzaSlicer : Pizzaulter
 	{
 		Speed 4;
 		Health 10;
-		Radius 12;
-		Height 20;
+		Radius 16;
+		Height 32;
 		Mass 60;
 		DamageFactor "Melee", 1.5;
 		DamageFactor "Poison", 1.25;
