@@ -51,14 +51,14 @@ extend class DIHandler
 	{	
 		DI_Monster mon = DI_Monster(e.Thing);
 		
-		if (endless_healthmult != 1)
+		if (endless_healthmult != 1.0)
 		{
 			int starthp = mon.Health * endless_healthmult;
 			if (starthp < 1) {starthp = 1;}
 			mon.Health = starthp;
 			mon.StartHealth = starthp  / G_SkillPropertyFloat(SKILLP_MonsterHealth);
 		}
-		if (endless_damagemult != 1)
+		if (endless_damagemult != 1.0)
 		{
 			double startdmg = mon.DamageMultiply * endless_damagemult;
 			mon.DamageMultiply = startdmg;

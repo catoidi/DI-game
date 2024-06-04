@@ -174,14 +174,14 @@ extend class DIHandler
 				else if (endlessdata[i].Left(10) == "MultHealth")
 				{
 					string health_string = endlessdata[i].Mid(10);
-					int health_int = health_string.ToInt(10);
+					double health_int = health_string.ToDouble();
 					endless_healthmult += health_int;
 					continue;
 				}
 				else if (endlessdata[i].Left(10) == "MultDamage")
 				{
 					string damage_string = endlessdata[i].Mid(10);
-					int damage_int = damage_string.ToInt(10);
+					double damage_int = damage_string.ToDouble();
 					endless_damagemult += damage_int;
 					continue;
 				}
