@@ -93,6 +93,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 		
 		if (self.health > 0)
 		{
+			inwave = CallACS("DICheckWaveProgress");
+		
 			ComboFreezer();
 			ScaleSquish();
 			ComboCounter();
@@ -128,17 +130,12 @@ Class DI_PlayerBase : PlayerPawn abstract
 				if (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen")) * 2) {degenmax /= 7;}
 				if (self.degentimer > degenmax)
 				{
-					if (CallACS("DICheckWaveProgress") == true)
+					if ((inwave) && (self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen"))) && (self.CountInv("DI_Regen") == 0))
 					{
-						if ((self.Health > (self.GetMaxHealth(true) - self.CountInv("DI_Degen"))) && (self.CountInv("DI_Regen") == 0))
-						{
-							A_SetHealth(self.Health - 1);
-							if (self.Health < 1) {self.A_Die();}
-							if (bNOBLOOD == false) {A_DISpawnPlayerBlood();}
-						}
-						inwave = true;
+						A_SetHealth(self.Health - 1);
+						if (self.Health < 1) {self.A_Die();}
+						if (bNOBLOOD == false) {A_DISpawnPlayerBlood();}
 					}
-					else {inwave = false;}
 					self.degentimer = 0;
 				}
 				else {++self.degentimer;}
