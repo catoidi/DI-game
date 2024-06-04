@@ -4,7 +4,7 @@
 //hint: SHOPDESC text shouldn't be longer than 3 lines.
 
 //Quest Objectives.
-DIQUEST_DI_QUESTOBJECTIVE_FRESH = "You have 8 seconds. Getting Fresh Weapon\nBonuses adds more time. Don't run out.";
+DIQUEST_DI_QUESTOBJECTIVE_FRESH = "You have 7 seconds. Getting Fresh Weapon\nBonuses adds more time. Don't run out.";
 DIQUEST_DI_QUESTOBJECTIVE_BLOODDRIVE = "Complete the wave while not losing\nmore than 40 points of health.";
 DIQUEST_DI_QUESTOBJECTIVE_SLEIGHTOFHAND = "Every weapon kill this wave must be\ndone with a different weapon than the last.";
 DIQUEST_DI_QUESTOBJECTIVE_OVERCONSUMPTION = "Complete the wave while using\na consumable every 25 seconds.";

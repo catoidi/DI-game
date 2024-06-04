@@ -6,7 +6,7 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 	bool chillout; //pause the timer while no monsters are alive.
 	int timer;
 	Property StartTimer : timer;
-	Default {DI_QuestObjective_Fresh.StartTimer 280;} //8 seconds.
+	Default {DI_QuestObjective_Fresh.StartTimer 245;} //7 seconds.
 
 	override void doeffect()
 	{
@@ -19,7 +19,13 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 		if ((plr) && (plr.inwave))
 		{
 			queststarted = true;
-			if (plr.JustKilled == true) {timer += default.timer;}
+			if (plr.JustKilled == true) 
+			{
+				float overtime = 1.0;
+				if ((default.timer > 0) && (timer > default.timer)) {overtime = timer / default.timer;}
+				
+				timer += default.timer / overtime; //reduce time given if player is doing too well
+			}
 			if (!chillout)
 			{
 				if (timer > 0) 
