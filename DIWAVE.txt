@@ -407,6 +407,37 @@ Level DI02;
 		Wait 10;
 		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
 	}
+	Wave 11:
+	{
+		Cap 100;
+		Rate 1;
+		Time 20;
+		Spawn FruitPuncher, 100;
+	}
+	Wave 12:
+	{
+		Cap 25;
+		Rate 5;
+		Time 15;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+		Spawn Pepper, 3;
+		Spawn RedOnion, 5, DISpawnerSpot_Turret;
+		Wait 3;
+		Spawn PizzaSlicer, 25, DISpawnerSpot_Flying;
+		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
+		Wait 18;
+		Spawn FruitPuncher, 10;
+		Spawn Lemon, 10;
+		Wait 15;
+		Spawn THEHAMMER, 10, DISpawnerSpot_Big;
+		Spawn Pepper, 10;
+		Spawn FruitPuncher, 20;
+		Spawn Lemon, 10;
+		Spawn Pizzaulter, 10, DISpawnerSpot_Flying;
+		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
+		Wait 40;
+		Spawn PizzaSlicer, 25, DISpawnerSpot_Flying;
+	}
 	Endless Restart;
 	{
 		Spawn THEHAMMER, 4;
