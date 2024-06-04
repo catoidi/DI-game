@@ -54,9 +54,14 @@ Class DI_MainQuest : DI_QuestItem
 	{
 		if ((plr) && (!questinit))
 		{
-			GiveDebuff(plr);
-			GiveObjective(plr);
-			questinit = true;
+			//prevent quest from activating if there's no objective or debuff!
+			if ((debuff_name == "") || (objective_name == "")) {plr.TakeInventory(self.GetClassName(), 999999);}
+			else
+			{
+				GiveDebuff(plr);
+				GiveObjective(plr);
+				questinit = true;
+			}
 		}
 		super.doeffect();
 	}
