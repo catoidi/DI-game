@@ -5,7 +5,7 @@ CLASS StunCrossbow : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 3;
-		DI_Weapon.BaseDamage 1; //direct hit from projectile will do an extra 18 damage.
+		DI_Weapon.BaseDamage 30; //direct hit from projectile will do an extra 25 damage.
 		DI_Weapon.Recoil 3.0;
 		DI_Weapon.RecoilRecover 2.0;
 		Weapon.Kickback 0;
@@ -121,13 +121,13 @@ CLASS StunCrossbowBullet : DI_Actor
 		else if (damagetype == "Poison") {A_AttachLightDef("stunner", "POISONER2");}
 		
 		
-		throwdam = 20;
-		basedam = 1;
+		throwdam = 30;
+		basedam = 5;
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "StunCrossbow"))
 		{
 			StunCrossbow tarwpn = StunCrossbow(target.player.ReadyWeapon);
-			throwdam = tarwpn.wpn_damage + 19;
-			basedam = tarwpn.wpn_damage;
+			throwdam = tarwpn.wpn_damage;
+			basedam = tarwpn.wpn_damage / 6;
 			throwdam *= tarwpn.damagemult;
 			basedam *= tarwpn.damagemult;
 			if (throwdam < 1) {throwdam = 1;}
