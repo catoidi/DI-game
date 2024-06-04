@@ -176,9 +176,9 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 
             // Get the weapon's name.
             let weaponName = item.GetTag ();
-			if (weaponName.CodePointCount() > 16)
+			if (weaponName.CodePointCount() > 32)
 			{
-				weaponName = String.Format("%s...", weaponName.Left(15));
+				weaponName = String.Format("%s...", weaponName.Left(31));
 			}
 			
             // Add a label.
