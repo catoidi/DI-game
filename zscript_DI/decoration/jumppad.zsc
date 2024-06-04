@@ -27,6 +27,9 @@ CLASS DIParticle : Actor
 				}
 			}
 			Loop;
+		ChillOut:
+			TNT1 A 35;
+			Wait;
 	}
 }
 

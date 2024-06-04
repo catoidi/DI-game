@@ -26,6 +26,9 @@ CLASS Smoker : Actor
 				}
 			}
 			Loop;
+		ChillOut:
+			TNT1 A 35;
+			Wait;
 	}
 }
 
