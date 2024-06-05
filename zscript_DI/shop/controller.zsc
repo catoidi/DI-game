@@ -9,6 +9,8 @@ Class DIShopController : DIShop_Base
 	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
 	int LevelSale;
 	
+	bool user_playeractivates;
+	
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
 	Property ReducePriceMult : user_pricedown_mult;
@@ -66,6 +68,17 @@ Class DIShopController : DIShop_Base
 			}
 		}
 	}
+	
+	//allow custom shop controllers to define their own shop conditions.
+	virtual bool CanPurchase(PlayerPawn plr)
+	{
+		return true;
+	}
+	
+	virtual string CantPurchase()
+	{
+		return "\cryou cannot purchase this item.";
+	}
 
 	override void PurchaseShopItem(void)
 	{
@@ -79,7 +92,7 @@ Class DIShopController : DIShop_Base
 			int buyprice = GetShopPrice();
 			plr = PlayerPawn(target);
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
-			if ((canafford == true) && (canshop == true) && (CanDoDebt(plr) == true))
+			if ((canafford == true) && (canshop == true) && (CanDoDebt(plr) == true) && (CanPurchase(plr) == true))
 			{
 				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
@@ -91,6 +104,7 @@ Class DIShopController : DIShop_Base
 				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this.";}
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this while in debt.";}
 				else if (CanDoDebt(plr) == false) {failmsg = "\cryou don't have enough HP to buy this.";}
+				else if (CanPurchase(plr) == false) {failmsg = CantPurchase();}
 				else {failmsg = "\cra mysterious force prevents you from buying this.";}
 				
 				console.printf("%s", failmsg);
@@ -180,8 +194,6 @@ Class DIShopController : DIShop_Base
 
 Class DIShopController_ACS : DIShopController //same as above but sends an ACS script instead.
 {
-	bool user_playeractivates;
-
 	override void DoPurchase(int buyprice)
 	{
 		frame += 1;
@@ -202,5 +214,36 @@ Class DIShopController_ACS : DIShopController //same as above but sends an ACS s
 	Default
 	{
 		//$Title "Script-activator (ACS)"
+	}
+}
+
+Class DIShopController_Debuff : DIShopController
+{
+	Default
+	{
+		//$Title "Script-activator (Debuff)"
+	}
+	
+	override bool CanPurchase(PlayerPawn plr)
+	{
+		let diplr = DI_PlayerBase(plr);
+		if (!diplr) {return false;}
+		string questdebuff = "";
+		array<string> alldebuffs;
+		DI_MainQuest quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+		if (quest && quest.debuff) {questdebuff = quest.debuff_name;}
+		for (int j = 0; j < diplr.knownpassives.Size(); ++j)
+		{
+			DI_QuestDebuff debuff = DI_QuestDebuff(plr.FindInventory(diplr.knownpassives[j], true));
+			if (debuff && (debuff.GetClassName() != questdebuff)) {alldebuffs.push(debuff.GetClassName());}
+			else if (plr.CountInv(debuff.GetClassName()) > 1) {alldebuffs.push(debuff.GetClassName());}
+		}
+		if (alldebuffs.Size() > 0) {return true;}
+		else {return false;}
+	}
+	
+	override string CantPurchase()
+	{
+		return "\cryou do not have any debuffs to remove.";
 	}
 }

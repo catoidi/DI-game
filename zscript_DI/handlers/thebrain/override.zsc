@@ -257,5 +257,31 @@ extend class DIHandler
 				if (mo) {mo.LevelSale += e.Args[0];}
 			}
 		}
+		else if (e.Name == "RemoveDebuff")
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				if (players[i].mo is "DI_PlayerBase")
+				{
+					let plr = DI_PlayerBase(players[i].mo);
+					string questdebuff = "";
+					array<string> alldebuffs;
+					DI_MainQuest quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+					if (quest && quest.debuff) {questdebuff = quest.debuff_name;}
+					for (int j = 0; j < plr.knownpassives.Size(); ++j)
+					{
+						DI_QuestDebuff debuff = DI_QuestDebuff(plr.FindInventory(plr.knownpassives[j], true));
+						if (debuff && (debuff.GetClassName() != questdebuff)) {alldebuffs.push(debuff.GetClassName());}
+						else if (plr.CountInv(debuff.GetClassName()) > 1) {alldebuffs.push(debuff.GetClassName());}
+					}
+					if (alldebuffs.Size() > 0)
+					{
+						int rng = random(0, alldebuffs.Size() - 1);
+						plr.TakeInventory(alldebuffs[rng], 1);
+						plr.ACS_NamedExecuteAlways("DebuffRemoved");
+					}
+				}
+			}
+		}
 	}
 }

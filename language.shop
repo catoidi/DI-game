@@ -37,6 +37,9 @@ SHOPTYPE_DIUPGRADESHOPS = "[Instant Use]";
 SHOPITEM_HAZARDREMOVAL = "\ctHazard Removal Tool";
 SHOPDESC_HAZARDREMOVAL = "Disables all stage hazards on this wave.\n\caDoes not disable random events.";
 SHOPTYPE_HAZARDREMOVAL = "[Instant Use]";
+SHOPITEM_REMOVEDEBUFF = "\ctDebuff Removal Tool";
+SHOPDESC_REMOVEDEBUFF = "Removes a random permanent debuff.\n\caCannot remove current quest debuff.";
+SHOPTYPE_REMOVEDEBUFF = "[Instant Use]";
 
 //Starting Weapons
 SHOPITEM_STARPISTOL = "Star Pistol";
