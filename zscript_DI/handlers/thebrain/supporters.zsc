@@ -56,8 +56,8 @@ extend class DIHandler
 			DTA_Alpha, supportalpha
 		);
 		
-		txt = "\cvcool and awesome supporters: \ca<3 <3 <3";
-		offsety -= bigfont.GetHeight() * sizey;
+		txt = "\ca<3 \cbMarch/April/May '24 Supporters: \ca<3\n----------------------------------";
+		offsety -= bigfont.GetHeight() * 2 * sizey;
 		Screen.DrawText(bigfont, Font.CR_WHITE, 4 * sizex, offsety, txt,
 			DTA_ScaleX, sizex * 0.6,
 			DTA_ScaleY, sizey * 0.6,
