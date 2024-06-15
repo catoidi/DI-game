@@ -95,8 +95,8 @@ server cheat bool di_unlock_item_bowtie = false; //swag 7.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
-user float di_xhair_scale = 2.0; //the size of the di crosshair.
-user float di_xhair_alpha = 1.0; //guess what this does.
+user float di_xhair_scale = 1.0; //the size of the di crosshair.
+user float di_xhair_alpha = 0.75; //guess what this does.
 user color di_xhair_color = "FF FF FF"; //the default color of the crosshair.
 user bool di_xhair_fresh_toggle = true; //fresh meter below crosshair.
 user float di_xhair_fresh_scale = 1.0; //how long the meter can grow.
