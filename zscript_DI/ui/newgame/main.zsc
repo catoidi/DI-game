@@ -13,6 +13,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	cvar tutcvar, cheatcvar;
 	
+	cvar curlvl_cvar, curplr_cvar, curskl_cvar;
+	
 	bool pageupdate, justkeyed;
 	
 	int pagenum, pagenum_tick, keypos, curkey;
@@ -45,6 +47,10 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		smallFont = Font.GetFont("SmallFont");
 		
 		cheatcvar = cvar.getcvar("di_unlock_cheat");
+		
+		curlvl_cvar = cvar.findcvar("di_menu_current_lvl");
+		curplr_cvar = cvar.findcvar("di_menu_current_plr");
+		curskl_cvar = cvar.findcvar("di_menu_current_skl");
 		
         handler = new('DINewGameHandler');
         handler.link = self;
@@ -413,7 +419,16 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		
 		int newkey = keypos;
 		
-		if (newkey < 0) {newkey = 0;}
+		if (newkey < 0)
+		{
+			switch(pagenum)
+			{
+				default: newkey = 0; break;
+				case 0: newkey = curplr_cvar.getint(); break;
+				case 1: newkey = curlvl_cvar.getint(); break;
+				case 2: newkey = curskl_cvar.getint(); break;
+			}
+		}
 		
 		//console.printf("pagenum: %d, newkey: %d, justkeyed: %d", pagenum, newkey, justkeyed);
 	

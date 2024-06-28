@@ -6,6 +6,8 @@ Class DINewGameHandler : boxparty_ZF_Handler
 	
 	cvar tutorialcheck;
 	
+	cvar curlvl_cvar, curplr_cvar, curskl_cvar;
+	
 	int currentclass, currentlvl, currentskill;
 	
 	bool stayonpage; //prevents handler from advancing to the next page.
@@ -25,6 +27,10 @@ Class DINewGameHandler : boxparty_ZF_Handler
 	override void buttonClickCommand (boxparty_ZF_Button caller, Name command)
     {
 		link.MenuSound("menu/activate");
+		
+		curlvl_cvar = cvar.findcvar("di_menu_current_lvl");
+		curplr_cvar = cvar.findcvar("di_menu_current_plr");
+		curskl_cvar = cvar.findcvar("di_menu_current_skl");
 	
 		string cmd = command;
 		cmd = cmd.MakeLower();
@@ -74,6 +80,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			link.UpdateTopLabel(String.Format("\cnselected: %s", plrclass), scoreline); 
 			if (currentclass == plrnum) {link.pagenum = 1;}
 			currentclass = plrnum;
+			curplr_cvar.setint(plrnum);
 			link.SetKeyPos(plrnum);
 			//link.UpdateKeySelect();
 		}
@@ -96,6 +103,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			link.levelname = link.levelpool[lvlnum];
 			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass), string.format("\cbBest Player Score: %d", link.GetHighScore(link.playername, link.levelpool[lvlnum]))); 
 			//console.printf("%s", lvlclass);
+			curlvl_cvar.setint(lvlnum);
 			if (currentlvl == lvlnum) {link.pagenum = 2;}
 			else {link.SetKeyPos(lvlnum);}
 			currentlvl = lvlnum;
@@ -112,6 +120,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			string sklclass = link.skllabels[sklnum].GetText();
 			link.UpdateTopLabel(String.Format("\cnselected: %s", sklclass)); 
 			//console.printf("%s", lvlclass);
+			curskl_cvar.setint(sklnum);
 			if (currentskill == sklnum) 
 			{
 				if (currentskill == 1) {currentskill = 2;}
@@ -128,6 +137,10 @@ Class DINewGameHandler : boxparty_ZF_Handler
 	{
 		link.MenuSound("menu/choose");
 		if (link.keyboardselect) {link.keyboardselect.SetAlpha(1.0);}
+		
+		curlvl_cvar = cvar.findcvar("di_menu_current_lvl");
+		curplr_cvar = cvar.findcvar("di_menu_current_plr");
+		curskl_cvar = cvar.findcvar("di_menu_current_skl");
 		
 		switch(link.pagenum)
 		{
@@ -157,7 +170,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 				}
 				break;
 			case 0: //player select menu
-				if (link.keypos == -1) {link.keypos = 0;}
+				if (link.keypos == -1) {link.keypos = curplr_cvar.getint();}
 				switch(keytype)
 				{
 					case dimenu_key_up:
@@ -182,7 +195,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 				}
 				break;
 			case 1: //level select menu
-				if (link.keypos == -1) {link.keypos = 0;}
+				if (link.keypos == -1) {link.keypos = curlvl_cvar.getint();}
 				switch(keytype)
 				{
 					case dimenu_key_up:
@@ -207,7 +220,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 				}
 				break;
 			case 2: //skill select menu
-				if (link.keypos == -1) {link.keypos = 0;}
+				if (link.keypos == -1) {link.keypos = curskl_cvar.getint();}
 				switch(keytype)
 				{
 					case dimenu_key_up:

@@ -10,6 +10,10 @@ server bool di_autosave = false; //game will save at the end of every wave (not 
 user bool di_menu_dosave = false; //enable save/load options on main menu.
 user bool di_menu_gzdoom = false; //options button jumps straight to gzdoom options instead of DI options.
 user bool di_menu_asktutorial = false; //check if the player has been asked about the tutorial yet.
+user noarchive int di_menu_current_plr = 0; //currently selected player. remembers the selection even after closing/reopening the menu.
+user noarchive int di_menu_current_lvl = 0; //same as above, but for level.
+user noarchive int di_menu_current_skl = 0; //same as above, but for skill.
+user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (not implemented yet.)
 
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
