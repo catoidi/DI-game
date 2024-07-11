@@ -225,16 +225,21 @@ Class DI_Weapon : Weapon abstract
 		int returnvalue = 0;
 		if (!doammo2) {returnvalue = Ammo1.Default.MaxAmount;}
 		else {returnvalue = Ammo2.Default.MaxAmount;}
-		for (int i = 0; i < plr.knownpassives.Size(); ++i)
+		
+		if (wpn_dontgiveammo1 && wpn_dontgiveammo2) {return returnvalue;}
+		else
 		{
-			DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
-			if (curinv)
+			for (int i = 0; i < plr.knownpassives.Size(); ++i)
 			{
-				if (!doammo2) {returnvalue += curinv.GiveMaxAmmo1();}
-				else {returnvalue += curinv.GiveMaxAmmo2();}
+				DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+				if (curinv)
+				{
+					if (!doammo2 && !wpn_dontgiveammo1) {returnvalue += curinv.GiveMaxAmmo1();}
+					else if (!wpn_dontgiveammo2) {returnvalue += curinv.GiveMaxAmmo2();}
+				}
 			}
+			return returnvalue;
 		}
-		return returnvalue;
 	}
 	
 	action void WeaponMode(int mode)
