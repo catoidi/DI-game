@@ -163,7 +163,12 @@ class DI_HUD : BaseStatusBar
 		if (state == HUD_Fullscreen) //render HUD in fullscreen mode
 		{
 			BeginHUD();
-			if (photomode.GetBool() == false) {DrawBoxHUD(TicFrac);}
+			if (photomode.GetBool() == false) 
+			{
+				DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+				if (!diplayer) {return;}
+				DrawBoxHUD(diplayer, TicFrac);
+			}
 		}
 	}
 	
@@ -172,13 +177,44 @@ class DI_HUD : BaseStatusBar
 		Super.DrawAutomapHUD(TicFrac);
 		
 		BeginHUD(0.5);
-		if (photomode.GetBool() == false) {DrawBoxHUD(TicFrac);}
+		if (photomode.GetBool() == false) 
+		{
+			DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+			if (!diplayer) {return;}
+			DrawBoxHUD(diplayer, TicFrac);
+			DrawWeaponStats(diplayer, TicFrac);
+		}
 	}
 	
-	void DrawBoxHUD(double TicFrac)
+	void DrawWeaponStats(DI_PlayerBase diplayer, double TicFrac)
 	{
-		DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+		DI_Weapon diwpn = DI_Weapon(CPlayer.readyweapon);
+		if (!diwpn) {return;}
+		int maxstats = 3;
+		for (int i = 0; i < maxstats; ++i)
+		{
+			string icon = "";
+			switch(i)
+			{
+				default: icon = string.format("%d", i); break; //placeholder, replace with real icon graphics later.
+				case 0: icon = "DMG"; break;
+				case 1: icon = "ACC"; break;
+				case 2: icon = "SPD"; break;
+			}
+			string value = "";
+			switch(i)
+			{
+				case 0: value = string.format("%d (x%d)", diwpn.wpn_damage * diwpn.damagemult, diwpn.wpn_projectiles); break;
+				case 1: value = string.format("%.2f (+%.2f)", diwpn.wpn_accuracy + diwpn.current_recoil, diwpn.wpn_recoil); break;
+				case 2: value = string.format("%.2f", diwpn.CheckWeaponSpeed()); break;
+			}
+			vector2 StatOffset = (16, -16 + (-8 * (maxstats - i)));
+			DrawString(SmallFont, string.format("%s: %s", icon, value), GlobalOffset + StatOffset, DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, Font.CR_WHITE, scale: (0.8, 0.8));
+		}
+	}
 	
+	void DrawBoxHUD(DI_PlayerBase diplayer, double TicFrac)
+	{
 		int regenamount = GetAmount("DI_Regen") + CPlayer.health;
 		
 		if (GetAmount("DI_Regen") > 0)
