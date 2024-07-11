@@ -124,6 +124,7 @@ version "4.12"
 #include "zscript_DI/items/passives/coinmagnet.zsc"
 #include "zscript_DI/items/passives/farsight.zsc"
 #include "zscript_DI/items/passives/toaster.zsc"
+#include "zscript_DI/items/passives/depletedmag.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"

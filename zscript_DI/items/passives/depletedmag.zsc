@@ -1,0 +1,39 @@
+//zscript_DI/items/passives/depletedmag.zsc
+
+Class DI_DepletedMag : DIPassiveInventory
+{
+	//increases firerate the closer the magazine is to empty.
+	//gives up to 1% firerate per ammo used, maximum of 20%, based on ammo type's max amount.
+	
+	Default
+	{
+		Tag "Depleted Magazine";
+		Inventory.Icon "POWRT0";
+		Inventory.PickupMessage "Depleted Magazine acquired! (Increases firerate the closer the magazine is to empty.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	override double GiveFirerate() 
+	{
+		if (!plr || !wpn) {return 0.0;}
+		if (!wpn.ammotype1 && !wpn.ammotype2) {return 0.0;}
+		int ammocount = 0;
+		if (wpn.ammotype1)
+		{
+			float divider = 1.0;
+			if (wpn.ammo1.maxamount > 20) {divider = 0.05 * wpn.ammo1.maxamount;}
+			ammocount = (wpn.ammo1.maxamount - plr.countinv(wpn.ammotype1.getclassname())) / divider;
+			if (ammocount > 20) {ammocount = 20;}
+		}
+		if (wpn.ammotype2)
+		{
+			int divider = 1;
+			if (wpn.ammo2.maxamount > 20) {divider = wpn.ammo2.maxamount / 20;}
+			int ammocount2 = (wpn.ammo2.maxamount - plr.countinv(wpn.ammotype2.getclassname())) / divider;
+			if (ammocount2 > 20) {ammocount2 = 20;}
+			if (ammocount2 < ammocount) {ammocount = ammocount2;} //prioritize whichever ammo type has the least amount consumed, to prevent cheesing.
+		}
+		
+		return -0.01 * ammocount * plr.countinv(self.getclassname());
+	}
+}
