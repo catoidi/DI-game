@@ -316,6 +316,10 @@ SHOPITEM_DI_TOASTER = "Toaster";
 SHOPDESC_DI_TOASTER = "Enemies have a chance to drop\ntoast consumables on death.\nGives weapon speed + regen on use.";
 SHOPDESC2_DI_TOASTER = "\cbChance for toast drop is 25% per toaster stack. Toast provides 1 regen and a 20% weapon speed buff for 3 seconds on use. All currently held toasts are consumed upon use.";
 SHOPTYPE_DI_TOASTER = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_DEPLETEDMAG = "Depleted Magazine";
+SHOPDESC_DI_DEPLETEDMAG = "Increases firerate the closer\nyou are to running out of ammo.";
+SHOPDESC2_DI_DEPLETEDMAG = "\cbFirerate is increased up to 1% per ammo consumed. Max of +20% firerate per stack. Prioritizes which ammo your weapon has the most of. Has diminishing returns when max ammo is higher than 20.";
+SHOPTYPE_DI_DEPLETEDMAG = "\cd[Passive] \cl[Max: 5]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

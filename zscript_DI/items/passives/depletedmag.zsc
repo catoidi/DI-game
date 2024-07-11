@@ -8,7 +8,7 @@ Class DI_DepletedMag : DIPassiveInventory
 	Default
 	{
 		Tag "Depleted Magazine";
-		Inventory.Icon "POWRT0";
+		Inventory.Icon "POW1W0";
 		Inventory.PickupMessage "Depleted Magazine acquired! (Increases firerate the closer the magazine is to empty.)";
 		Inventory.MaxAmount 5;
 	}
@@ -20,20 +20,29 @@ Class DI_DepletedMag : DIPassiveInventory
 		int ammocount = 0;
 		if (wpn.ammotype1)
 		{
+			int maxammo1 = wpn.GetMaxAmmo(); //expensive function!
 			float divider = 1.0;
-			if (wpn.ammo1.maxamount > 20) {divider = 0.05 * wpn.ammo1.maxamount;}
-			ammocount = (wpn.ammo1.maxamount - plr.countinv(wpn.ammotype1.getclassname())) / divider;
+			if (maxammo1 > 20) {divider = 0.05 * maxammo1;}
+			ammocount = (maxammo1 - plr.countinv(wpn.ammotype1.getclassname())) / divider;
 			if (ammocount > 20) {ammocount = 20;}
 		}
 		if (wpn.ammotype2)
 		{
-			int divider = 1;
-			if (wpn.ammo2.maxamount > 20) {divider = wpn.ammo2.maxamount / 20;}
-			int ammocount2 = (wpn.ammo2.maxamount - plr.countinv(wpn.ammotype2.getclassname())) / divider;
+			int maxammo2 = wpn.GetMaxAmmo(true); //expensive function!
+			float divider = 1.0;
+			if (maxammo2 > 20) {divider = 0.05 * maxammo2;}
+			int ammocount2 = (maxammo2 - plr.countinv(wpn.ammotype2.getclassname())) / divider;
 			if (ammocount2 > 20) {ammocount2 = 20;}
 			if (ammocount2 < ammocount) {ammocount = ammocount2;} //prioritize whichever ammo type has the least amount consumed, to prevent cheesing.
 		}
 		
 		return -0.01 * ammocount * plr.countinv(self.getclassname());
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 W -1;
+			Stop;
 	}
 }

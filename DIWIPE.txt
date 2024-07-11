@@ -53,3 +53,4 @@ StarPistol;
 Glowstick;
 CheeseGun;
 DI_Toaster;
+DI_DepletedMag;

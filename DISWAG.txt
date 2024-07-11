@@ -7,3 +7,4 @@
 7 di_unlock_item_bowtie;
 >>This one is found within "di-bonus.pk3".
 >>8 di_unlock_item_fingergun;
+9 di_unlock_item_depletedmag;
