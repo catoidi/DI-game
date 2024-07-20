@@ -117,9 +117,16 @@ class NashHPBarPlugin : Inventory
 		Actor at = NULL;
 		double vh = (cam is "PlayerPawn" && cam.player) ? cam.player.viewheight : cam.CameraHeight;
 		FLineTraceData t;
-		int flags = TRF_SOLIDACTORS;
+		int flags = TRF_ALLACTORS;
 		cam.LineTrace(cam.Angle, 0x7FFFFFFF, cam.Pitch, flags, vh, data: t);
 		at = t.HitActor;
+		if (t.HitActor is "DIFakeShop") {}
+		else
+		{
+			flags = TRF_SOLIDACTORS;
+			cam.LineTrace(cam.Angle, 0x7FFFFFFF, cam.Pitch, flags, vh, data: t);
+			at = t.HitActor;
+		}
 		targetDistance = t.Distance;
 
 		if (at != currentAimTarget) 
@@ -143,7 +150,7 @@ class NashHPBarPlugin : Inventory
 		}
 
 		let at = GetAimTarget(Owner.player.camera);
-		bool isLiveTarget = (at && at.bIsMonster) || (at && at.bFriendly) || at is "PlayerPawn" || (at is "DIShop_Base" && targetDistance <= 128) || (at is "DI_QuestGiver" && targetDistance <= 128);
+		bool isLiveTarget = (at && at.bIsMonster) || (at && at.bFriendly) || at is "PlayerPawn" || (at is "DIShop_Base" && targetDistance <= 128) || (at is "DI_QuestGiver" && targetDistance <= 128) || (at is "DIFakeShop" && targetDistance <= 128);
 		if (isLiveTarget || at == NULL)
 		{
 			currentAimTarget = at;

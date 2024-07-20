@@ -1,0 +1,13 @@
+//zscript_DI/shop/fakeshop.zsc
+
+Class DIFakeShop : DI_Actor
+{
+	string user_shoptext; //the text that gets displayed in the Shop UI. accepts LANGUAGE lumps.
+
+	Default
+	{
+		Radius 20;
+		Height 96;
+		-SOLID;
+	}
+}
