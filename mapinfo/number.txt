@@ -49,4 +49,5 @@ DoomEdNums
 	20046 = WaterfallButt
 	20047 = DI_DI02Canvas
 	20048 = DIShopController_Debuff
+	20049 = DIFakeShop
 }
