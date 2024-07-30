@@ -1,6 +1,6 @@
-//zscript_DI/handlers/deathscreen.zsc
+//zscript_DI/handlers/swag.zsc
 
-Class DeathscreenHandler : EventHandler
+Class SwagHandler : EventHandler
 {
 	ui DI_PlayerBase plr;
 	ui bool IsDead;
