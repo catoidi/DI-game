@@ -13,7 +13,7 @@ Class SwagHandler : EventHandler
 	ui bool scoredone;
 	ui int prevscore;
 	ui int finalscore; //prevent extra score from being calculated after death.
-	ui float exp1, exp2, exp3, lvl1, lvl2, lvlover, lvlmax;
+	ui float exp1, exp2, exp3, lvl1, lvl2, lvlover, lvlmax, lvlguess;
 	
 	//from newgamemenu
 	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
@@ -25,7 +25,63 @@ Class SwagHandler : EventHandler
 
 	override void OnRegister()
 	{
+		array<string> swagdata;
+		array<string> lockeditems, unlockeditems;
+	
+		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(swagdata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISWAG", ThisLump + 1, 1);
+		}
 
+		//calculate max swag level and predict player's current swag level
+		cvar maxswag = cvar.findcvar("di_swaglevel_max");
+		int maxswag_int = maxswag.getint();
+		cvar swagguess = cvar.findcvar("di_swaglevel_predicted");
+		int swagguess_int = swagguess.getint();
+		foreach(swag : swagdata)
+		{
+			if (swag.Left(2) == ">>") {continue;}
+			string realline = swag.Left(swag.IndexOf(";"));
+			array<string> curline;
+			realline.split(curline, " ");
+			if (curline.size() != 2) {ThrowAbortException("DISWAG Error: Expected 2 arguments, found %d in '%s'.", curline.size(), swag);}
+
+			cvar swagcvar = cvar.findcvar(curline[1]); //get the actual item cvar
+			if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected: '%s'.", curline[1]);} //check if cvar exists
+			else 
+			{
+				++maxswag_int; //calculate max swag level.
+				if (swagcvar.GetBool()) {++swagguess_int;} //calculate predicted player level.
+			}
+		}
+		maxswag.setint(maxswag_int);
+		swagguess.setint(swagguess_int);
+
+		cvar curswag = cvar.findcvar("di_swaglevel");
+		int curswag_int = curswag.getint();
+		cvar overswag = cvar.findcvar("di_swaglevel_over");
+		int overswag_int = overswag.getint();
+		if (curswag_int < swagguess_int) //current swag level does not match predicted level, adjust current level to match prediction.
+		{
+			int swagdiff = swagguess_int - curswag_int;
+			curswag_int += swagdiff; //add prediction to current level.
+			overswag_int -= swagdiff; //remove prediction from overlevels.
+			if (overswag_int < 0) {overswag_int = 0;}
+		}
+		else if (curswag_int > swagguess_int)
+		{
+			//inverse of above, basically.
+			int swagdiff = curswag_int - swagguess_int;
+			curswag_int -= swagdiff;
+			overswag_int += swagdiff;
+		}
+		curswag.setint(curswag_int);
+		overswag.setint(overswag_int);
 	}
 	
 	override void InterfaceProcess(ConsoleEvent e)
@@ -378,7 +434,7 @@ Class SwagHandler : EventHandler
 					UpdateHighScore(finalscore, iseasy);
 				}
 				UpdateSwag(finalscore);
-				eventhandler.sendnetworkevent("swagcheck");
+				eventhandler.sendnetworkevent("swagcheck", lvl2);
 				scoredone = true;
 			}
 			

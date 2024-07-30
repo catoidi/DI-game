@@ -300,7 +300,7 @@ Class DIUnlockHandler : EventHandler
 			reroller.SetInt(newreroll);
 		}
 		else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
-		else if (e.Name == "swagcheck") {DoSwagCheck();}
+		else if (e.Name == "swagcheck") {DoSwagCheck(e.Args[0]);}
 		else if (e.Name == "doheartpickup")
 		{
 			let heart = cvar.getcvar("di_heartcount");
@@ -601,9 +601,10 @@ Class DIUnlockHandler : EventHandler
 		}
 	}
 	
-	virtual void DoSwagCheck()
+	virtual void DoSwagCheck(int newlevels)
 	{
 		array<string> swagdata;
+		array<string> lockeditems, unlockeditems;
 	
 		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
@@ -625,12 +626,24 @@ Class DIUnlockHandler : EventHandler
 			int swagneed = curline[0].ToInt(10);
 			if (swagneed <= di_swaglevel)
 			{
-				cvar swagcvar = cvar.findcvar(curline[1]);
-				if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected in '%s'.", swag);}
-				else if (!swagcvar.GetBool()) 
+				lockeditems.push(curline[1]);
+			}
+		}
+
+		if (lockeditems.size() > 0)
+		{
+			for (int i = 0; i < newlevels; ++i) //unlock 1 item per level increase. overlevels will double the item amount.
+			{
+				int itemnum = random(0, lockeditems.size()); //choose random eligible item cvar
+				string newitem = lockeditems[itemnum]; //make a copy of item name outside of array
+				lockeditems.delete(itemnum); //remove chosen item from array
+
+				cvar swagcvar = cvar.findcvar(newitem); //get the actual item cvar
+				if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected: '%s'.", newitem);} //check if cvar exists
+				else if (!swagcvar.GetBool()) //check if cvar is currently false.
 				{
-					string cmd = string.format("diunlock_%s", curline[1]);
-					SendInterfaceEvent(consoleplayer, cmd);
+					string cmd = string.format("diunlock_%s", newitem);
+					SendInterfaceEvent(consoleplayer, cmd); //unlock item for current consoleplayer.
 				}
 			}
 		}
