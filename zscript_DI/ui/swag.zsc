@@ -68,6 +68,7 @@ Class SwagHandler : EventHandler
 		int overswag_int = overswag.getint();
 		if (curswag_int < swagguess_int) //current swag level does not match predicted level, adjust current level to match prediction.
 		{
+			console.printf("\cgWARNING: Swag Level was lower than expected. (Current: %d, Expected: %d)\n\cgIncreasing current level to match prediction.", curswag_int, swagguess_int);
 			int swagdiff = swagguess_int - curswag_int;
 			curswag_int += swagdiff; //add prediction to current level.
 			overswag_int -= swagdiff; //remove prediction from overlevels.
@@ -75,6 +76,7 @@ Class SwagHandler : EventHandler
 		}
 		else if (curswag_int > swagguess_int)
 		{
+			console.printf("\cgWARNING: Swag Level was higher than expected. (Current: %d, Expected: %d)\n\cgTransferring extra levels to overlevels to match prediction.", curswag_int, swagguess_int);
 			//inverse of above, basically.
 			int swagdiff = curswag_int - swagguess_int;
 			curswag_int -= swagdiff;
