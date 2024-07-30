@@ -13,7 +13,7 @@ Class DeathscreenHandler : EventHandler
 	ui bool scoredone;
 	ui int prevscore;
 	ui int finalscore; //prevent extra score from being calculated after death.
-	ui float exp1, exp2, exp3, lvl1, lvl2;
+	ui float exp1, exp2, exp3, lvl1, lvl2, lvlover, lvlmax;
 	
 	//from newgamemenu
 	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
@@ -22,6 +22,11 @@ Class DeathscreenHandler : EventHandler
 	//for new game fade out
 	ui uint newgametimer;
 	ui bool newgamed;
+
+	override void OnRegister()
+	{
+
+	}
 	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
@@ -271,8 +276,10 @@ Class DeathscreenHandler : EventHandler
 		if (!plr) {return;}
 		cvar swaglevel = cvar.findcvar("di_swaglevel");
 		cvar experience = cvar.findcvar("di_experience");
+		cvar overlevel = cvar.findcvar("di_swaglevel_over");
 		int curexp = experience.getint();
 		int curlvl = swaglevel.getint();
+		int overlvl = overlevel.getint();
 		
 		int newexp = newscore;
 		int bonusexp = (newscore - prevscore) * 2; //give +200% exp for high score.
@@ -286,10 +293,16 @@ Class DeathscreenHandler : EventHandler
 		int newlvl = 0;
 		while (curexp >= expmax)
 		{
-			curlvl += 1;
-			newlvl += 1;
+			++newlvl;
+			if (overlvl > 0) 
+			{
+				//if overlevel detected, do 2 level increases to compensate.
+				++newlvl;
+				--overlvl;
+			}
+			curlvl += newlvl;
 			curexp -= expmax;
-			expmax = 5000 * (1 + curlvl);
+			expmax = 5000 * (1 + curlvl + overlvl);
 		}
 		
 		exp1 = curexp;
@@ -297,12 +310,14 @@ Class DeathscreenHandler : EventHandler
 		exp3 = newexp;
 		lvl1 = curlvl;
 		lvl2 = newlvl;
+		lvlover = overlvl;
 		//console.printf("\cnExp: %d/%d \cf(+%d)", curexp, expmax, newexp);
 		//console.printf("\ctSwag Lvl: %d", curlvl);
 		//if (newlvl == 1) {console.printf("\cfYou gained %d swag level this game.", newlvl);}
 		//else if (newlvl > 1) {console.printf("\cfYou gained %d swag levels this game.", newlvl);}
 		swaglevel.setint(curlvl);
 		experience.setint(curexp);
+		overlevel.setint(overlvl);
 	}
 	
 	virtual clearscope int GetUnlockNum()
