@@ -139,6 +139,10 @@ extend class DINewGameMenu
 		
 		// Add Swag XP elements to this part of the menu.
 		string swagstring = string.format("%s \cb%d/%d", "\ctSwag Level:", di_swaglevel, maxswag);
+        if (di_swaglevel_over > 0)
+        {
+            swagstring.appendformat(" \cd(+%d)", di_swaglevel_over);
+        }
 		swaglevel = boxparty_ZF_Label.Create(
 			// Position.
             (
@@ -171,7 +175,7 @@ extend class DINewGameMenu
 		swaglevel.Pack(mainFrame);
 		
 		//Add EXP below the level and the bar.
-		string expstring = string.format("\cnExp: \cb%d\cn/\cb%d", di_experience, (di_swaglevel + 1) * 5000);
+		string expstring = string.format("\cnExp: \cb%d\cn/\cb%d", di_experience, (di_swaglevel + di_swaglevel_over + 1) * 5000);
 		explabel = boxparty_ZF_Label.Create(
 			// Position.
             (
@@ -300,8 +304,7 @@ extend class DINewGameMenu
 			array<string> currentswag;	
 			swaglist[i].Split(currentswag, " ");
 			if (currentswag.Size() != 2) {continue;}
-			int swagnum = currentswag[0].ToInt(10);
-			if (swagnum > bigswag) {bigswag = swagnum;}
+			++bigswag;
 		}
 		return bigswag;
 	}

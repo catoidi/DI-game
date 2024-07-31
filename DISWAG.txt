@@ -1,10 +1,10 @@
 1 di_unlock_item_bombbundle;
-2 di_unlock_item_doubleshotgun;
-3 di_unlock_item_dmgmult;
-4 di_unlock_item_grenadelauncher;
-5 di_unlock_item_gunslinger;
-6 di_unlock_item_laserpointer;
-7 di_unlock_item_bowtie;
+1 di_unlock_item_doubleshotgun;
+2 di_unlock_item_dmgmult;
+2 di_unlock_item_grenadelauncher;
+3 di_unlock_item_gunslinger;
+3 di_unlock_item_laserpointer;
+4 di_unlock_item_bowtie;
 >>This one is found within "di-bonus.pk3".
->>8 di_unlock_item_fingergun;
-9 di_unlock_item_depletedmag;
+>>4 di_unlock_item_fingergun;
+5 di_unlock_item_depletedmag;

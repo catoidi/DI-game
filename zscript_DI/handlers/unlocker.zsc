@@ -516,9 +516,11 @@ Class DIUnlockHandler : EventHandler
 		ParseDIUNLOCK(unlocklines);
 		ParseDIGAME(unlockcvars);
 		
+		//todo: add ability to add non-standard cvars to reset list.
 		unlockcvars.push("di_highscore");
 		unlockcvars.push("di_experience");
 		unlockcvars.push("di_swaglevel");
+		unlockcvars.push("di_swaglevel_over");
 		
 		//get the cvars from the parsed lines.
 		for (int i = 0; i < UnlockLines.Size(); i++)
@@ -626,27 +628,32 @@ Class DIUnlockHandler : EventHandler
 			int swagneed = curline[0].ToInt(10);
 			if (swagneed <= di_swaglevel)
 			{
-				lockeditems.push(curline[1]);
-			}
-		}
-
-		if (lockeditems.size() > 0)
-		{
-			for (int i = 0; i < newlevels; ++i) //unlock 1 item per level increase. overlevels will double the item amount.
-			{
-				int itemnum = random(0, lockeditems.size()); //choose random eligible item cvar
-				string newitem = lockeditems[itemnum]; //make a copy of item name outside of array
-				lockeditems.delete(itemnum); //remove chosen item from array
-
-				cvar swagcvar = cvar.findcvar(newitem); //get the actual item cvar
-				if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected: '%s'.", newitem);} //check if cvar exists
-				else if (!swagcvar.GetBool()) //check if cvar is currently false.
+				cvar lockcvar = cvar.findcvar(curline[1]);
+				if (lockcvar && (!lockcvar.getbool())) 
 				{
-					string cmd = string.format("diunlock_%s", newitem);
-					SendInterfaceEvent(consoleplayer, cmd); //unlock item for current consoleplayer.
+					console.printf("locked item: %s", curline[1]);
+					lockeditems.push(curline[1]);
 				}
 			}
 		}
+
+			for (int i = 0; i < newlevels; ++i) //unlock 1 item per level increase. overlevels will double the item amount.
+			{
+				if (lockeditems.size() > 0)
+				{
+					int itemnum = random(0, lockeditems.size() - 1); //choose random eligible item cvar
+					string newitem = lockeditems[itemnum]; //make a copy of item name outside of array
+					lockeditems.delete(itemnum); //remove chosen item from array
+
+					cvar swagcvar = cvar.findcvar(newitem); //get the actual item cvar
+					if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected: '%s'.", newitem);} //check if cvar exists
+					else if (!swagcvar.GetBool()) //check if cvar is currently false.
+					{
+						string cmd = string.format("diunlock_%s", newitem);
+						SendInterfaceEvent(consoleplayer, cmd); //unlock item for current consoleplayer.
+					}
+				}
+			}
 	}
 	
 	clearscope virtual int UnlockCounter()

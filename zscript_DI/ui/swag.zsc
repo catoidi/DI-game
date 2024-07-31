@@ -2,6 +2,8 @@
 
 Class SwagHandler : EventHandler
 {
+	mixin DI_UIMixin;
+	
 	ui DI_PlayerBase plr;
 	ui bool IsDead;
 	ui float DeathFade;
@@ -40,9 +42,9 @@ Class SwagHandler : EventHandler
 
 		//calculate max swag level and predict player's current swag level
 		cvar maxswag = cvar.findcvar("di_swaglevel_max");
-		int maxswag_int = maxswag.getint();
+		int maxswag_int = 0;
 		cvar swagguess = cvar.findcvar("di_swaglevel_predicted");
-		int swagguess_int = swagguess.getint();
+		int swagguess_int = 0;
 		foreach(swag : swagdata)
 		{
 			if (swag.Left(2) == ">>") {continue;}
@@ -347,7 +349,7 @@ Class SwagHandler : EventHandler
 		newexp *= 1.0 + (0.01 * ((GetUnlockNum() * 2) + GetScoreBonus()));
 		
 		curexp += newexp;
-		int expmax = 5000 * (1 + curlvl);
+		int expmax = 5000 * (1 + curlvl + overlvl);
 		int newlvl = 0;
 		while (curexp >= expmax)
 		{
@@ -424,6 +426,7 @@ Class SwagHandler : EventHandler
 				DTA_DestHeight, Screen.GetHeight(),
 				DTA_Alpha, DeathFade
 			);
+			DrawStars(staralpha: 0.05 * DeathFade);
 			
 			if (!scoredone)
 			{
@@ -559,7 +562,11 @@ Class SwagHandler : EventHandler
 			}
 			if (DeathTimer > 215)
 			{
-				string died = string.format("%s \cb%d", "\ctSwag Level:", lvl1);
+				string died = string.format("%s \cb%d/%d", "\ctSwag Level:", lvl1, di_swaglevel_max);
+				if (lvlover > 0)
+				{
+					died.appendformat(" \cd(+%d)", lvlover);
+				}
 				int starty = (Screen.GetHeight() * 2) / 3;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
 					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
