@@ -51,7 +51,7 @@ Health DI_Pizza HEALB 4 192;
 Health DI_JuiceBox HEALD 6 192;
 Health DI_HeartBomb GRENF 5 64 di_unlock_item_heartbomb;
 >>Consumables...
-Consumable DI_ThrowBomb_Bundle GRENG 5;
+Consumable DI_ThrowBomb_Bundle GRENG 5 256 di_unlock_item_bombbundle;
 Consumable DI_Pizza HEALB 6 64;
 Consumable DITurret TURRC 10;
 Consumable DI_Dice DICEA 4 256 di_unlock_item_dice;
@@ -63,7 +63,7 @@ Consumable DI_Brick BRIKA 10;
 Consumable DI_9LeafClover LEAFA 36 256 di_unlock_item_9leafclover;
 Consumable DI_FastForward POW1O 10;
 >>Permanent Consumables...
-PermaConsumable DI_ThrowBomb_Bundle GRENG 5;
+PermaConsumable DI_ThrowBomb_Bundle GRENG 5 256 di_unlock_item_bombbundle;
 PermaConsumable DI_Pizza HEALB 6 256;
 PermaConsumable DITurret TURRC 10;
 PermaConsumable DI_Dice DICEA 4 256 di_unlock_item_dice;
