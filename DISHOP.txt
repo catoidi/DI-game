@@ -89,7 +89,7 @@ PermaConsumable DI_FastForward POW1O 10;
 DamagePassive DI_BaseDamageGiver POWRA 14;
 DamagePassive DI_PainStar POWRJ 28 192 di_unlock_item_painstar;
 DamagePassive DI_Gunslinger POWRK 35 256 di_unlock_item_gunslinger;
-DamagePassive DI_DamageMultGiver POWRR 7 256 di_unlock_item_dmgmult;
+DamagePassive DI_BigBullets POWRR 7 256 di_unlock_item_dmgmult;
 >>DamagePassive DI_PainRhombus POWRS 35 128;
 >>DamagePassive DI_GunHoarder POWRU 28 128;
 DamagePassive DI_Shoe POWRY 7 256 di_unlock_item_shoe;
