@@ -79,7 +79,7 @@ DIPOPUP_di_unlock_item_popcorngun = "Popcorn Gun";
 DIPOPUP_di_unlock_item_sledgehammer = "Sledgehammer";
 DIPOPUP_di_unlock_item_heartbomb = "Heart Bomb";
 DIPOPUP_di_unlock_item_bowtie = "Bow Tie";
-DIPOPUP_di_unlock_item_dmgmult = "DMG Mult Up";
+DIPOPUP_di_unlock_item_bigbullet = "Big Bullets";
 DIPOPUP_di_unlock_item_gunslinger = "Gunslinger";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbto unlock this weapon.";
