@@ -73,6 +73,7 @@ class DIPassiveInventory : Inventory
 	virtual int GiveMaxAmmo1() {return 0;} //Controls the max primary ammo. Can't go below the minimum ammo requirement for ammo type.
 	virtual int GiveMaxAmmo2() {return 0;} //Same as above, but for secondary ammo.
 	virtual double GivePlayerSpeed() {return 0.0;} //Adds movement speed to the player. Has a lower cap of 0.1.
+	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
 	
 	//Functions activated by scripts or events. Returns true if item is activated.
 	virtual bool EnterWave() {return false;} //called once a new wave is started.

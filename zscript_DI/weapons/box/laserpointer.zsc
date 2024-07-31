@@ -87,10 +87,8 @@ CLASS LaserPointer : DI_Weapon //20020
 	}
 }
 
-CLASS LaserPointerBullet : DI_Actor
+CLASS LaserPointerBullet : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	//the projectile that can shock enemies
 	Default
 	{
@@ -113,8 +111,6 @@ CLASS LaserPointerBullet : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		throwdam = 24;
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "LaserPointer"))

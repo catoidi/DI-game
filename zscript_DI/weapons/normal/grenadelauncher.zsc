@@ -107,10 +107,8 @@ CLASS GrenadeLauncher : DI_Weapon
 
 CLASS GrenadeLauncherReload : GreenShotgunReload {}
 
-CLASS GrenadeLauncherBullet : DI_Actor
+CLASS GrenadeLauncherBullet : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -130,8 +128,6 @@ CLASS GrenadeLauncherBullet : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		if (damagetype == "Lightning") {A_AttachLightDef("stunner", "SHOCKER2");}
 		else if (damagetype == "Ice") {A_AttachLightDef("stunner", "FREEZER2");}

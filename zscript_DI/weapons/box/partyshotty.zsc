@@ -129,10 +129,8 @@ CLASS PartyShotty : DI_Weapon //20009
 	}
 }
 
-CLASS PartyShottyBullet : DI_Actor
+CLASS PartyShottyBullet : DI_Projectile
 {	
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -155,8 +153,6 @@ CLASS PartyShottyBullet : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		throwdam = 15;
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "PartyShotty"))

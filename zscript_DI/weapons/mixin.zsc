@@ -1,5 +1,25 @@
 mixin class DI_ProjectileMixin
 {
+	virtual void UpdateSize()
+	{
+		DI_PlayerBase mixplr;
+		if (target is "DI_PlayerBase") {mixplr = DI_PlayerBase(target);}
+		if (mixplr) 
+		{
+			DI_Weapon diwpn = DI_Weapon(mixplr.player.readyweapon);
+			if (diwpn && diwpn.wpn_bulletsize != 1.0)
+			{
+				double newrad = radius * diwpn.wpn_bulletsize;
+				if (newrad < 1.0) {newrad = 1.0;}
+				double newhigh = height * diwpn.wpn_bulletsize;
+				if (newhigh < 1.0) {newhigh = 1.0;}
+
+				A_DIScale(diwpn.wpn_bulletsize, diwpn.wpn_bulletsize);
+				A_SetSize(newrad, newhigh, true);
+			}
+		}
+	}
+
 	virtual void CheckStatusChange()
 	{
 		DI_PlayerBase mixplr;

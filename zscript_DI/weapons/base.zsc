@@ -12,6 +12,7 @@ Class DI_Weapon : Weapon abstract
 	int wpn_recoil_offset_y; //same as above, but for the y axis instead. defaults to 1, to make the recoil push the weapon downwards.
 	bool wpn_autooffset; //enables/disables the autooffset feature, where the weapon sprite will match the recoil amount.
 	int wpn_projectiles; //how many bullets/projectiles are spawned per shot.
+	double wpn_bulletsize; //projectile size.
 	bool wpn_dontgiveammo1; //tells items to NOT give this weapon it's first ammo type.
 	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
 	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
@@ -47,6 +48,7 @@ Class DI_Weapon : Weapon abstract
 	property RecoilOffset_Y: wpn_recoil_offset_y;
 	property AutoOffset: wpn_autooffset;
 	property Projectiles: wpn_projectiles;
+	property BulletSize: wpn_bulletsize;
 	property PlayerSpeed: plr_speed;
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
@@ -81,6 +83,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.RecoilOffset_Y 1;
 		DI_Weapon.AutoOffset true;
 		DI_Weapon.Projectiles 1;
+		DI_Weapon.BulletSize 1.0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.RestoreAmmo1 0; //a value of 0 will mean the ammo restore amount will be set automatically.
@@ -186,6 +189,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_recoil = Default.wpn_recoil;
 		wpn_recoil_recover = Default.wpn_recoil_recover;
 		wpn_projectiles = Default.wpn_projectiles;
+		wpn_bulletsize = Default.wpn_bulletsize;
 		if (Ammo1) {Ammo1.MaxAmount = Ammo1.Default.MaxAmount;}
 		if (Ammo2) {Ammo2.MaxAmount = Ammo2.Default.MaxAmount;}
 		wpn_speed = Default.wpn_speed;
@@ -206,6 +210,8 @@ Class DI_Weapon : Weapon abstract
 				wpn_recoil += curinv.GiveRecoil();
 				wpn_recoil_recover += curinv.GiveRecoilRecover();
 				wpn_projectiles += curinv.GiveProjectiles();
+				wpn_bulletsize += curinv.GiveBulletSize();
+				if (wpn_bulletsize < 0.1) {wpn_bulletsize = 0.1;}
 				if ((Ammo1) && (wpn_dontgiveammo1 == false)) {Ammo1.MaxAmount += curinv.GiveMaxAmmo1();}
 				if ((Ammo2) && (wpn_dontgiveammo2 == false)) {Ammo2.MaxAmount += curinv.GiveMaxAmmo2();}
 				wpn_speed += curinv.GiveWeaponSpeed();

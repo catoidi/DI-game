@@ -136,10 +136,8 @@ CLASS PopcornGun : DI_Weapon //200
 	}
 }
 
-CLASS PopcornBullet : DI_Actor
+CLASS PopcornBullet : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	//pew epw ewppewp
 	Default
 	{
@@ -174,8 +172,6 @@ CLASS PopcornBullet : DI_Actor
 	{
 		Super.PostBeginPlay();
 		
-		if (isbombed == false) {CheckStatusChange();}
-		
 		throwdam = 18;
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "PopcornGun"))
 		{
@@ -183,6 +179,11 @@ CLASS PopcornBullet : DI_Actor
 			throwdam = tarwpn.wpn_damage;
 			throwdam *= tarwpn.damagemult;
 		}
+	}
+
+	override void CheckStatusChange()
+	{
+		if (!isbombed) {Super.CheckStatusChange();}
 	}
 	
 	action void FakePopcornCrumb()
@@ -219,10 +220,8 @@ CLASS PopcornBullet : DI_Actor
 	}
 }
 
-CLASS PopcornBomb : DI_Actor
+CLASS PopcornBomb : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		DamageFunction throwdam;
@@ -250,8 +249,6 @@ CLASS PopcornBomb : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		throwdam = 72;
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "PopcornGun"))

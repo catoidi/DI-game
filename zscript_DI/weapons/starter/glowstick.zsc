@@ -220,13 +220,11 @@ Class GlowstickHealthDrop : Health
 	}
 }
 
-CLASS GlowstickThrow : DI_Actor
+CLASS GlowstickThrow : DI_Projectile
 {
 	//the thing that you throw with your secondary fire.
 	//can be used to glow and to kill.
 	//each glowstick will be one of the six random colors, and eventually run out to help performance.
-	
-	mixin DI_ProjectileMixin;
 	
 	int throwdam;
 	string throwstring;
@@ -254,8 +252,6 @@ CLASS GlowstickThrow : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		throwdam = 90;
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "Glowstick"))

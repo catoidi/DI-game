@@ -89,10 +89,8 @@ CLASS StunCrossbow : DI_Weapon
 	}
 }
 
-CLASS StunCrossbowBullet : DI_Actor
+CLASS StunCrossbowBullet : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -112,8 +110,6 @@ CLASS StunCrossbowBullet : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		A_AttachLightDef("stunner", "SHOCKER2");
 		if (damagetype == "Ice") {A_AttachLightDef("stunner", "FREEZER2");}

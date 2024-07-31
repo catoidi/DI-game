@@ -37,10 +37,8 @@ Class DI_Shoe : DIPassiveInventory
 	}
 }
 
-Class DI_Shoe_Throw : DI_Actor
+Class DI_Shoe_Throw : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -63,8 +61,6 @@ Class DI_Shoe_Throw : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		throwdam = 20;
 		if (target is "PlayerPawn")

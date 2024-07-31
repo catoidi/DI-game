@@ -165,3 +165,16 @@ Class DI_PoisonPuff : DI_IcePuff
 	}
 }
 Class DI_PoisonPuff_NoWPN : DI_PoisonPuff {Default {DI_Actor.IgnoreWeapon true;}}
+
+Class DI_Projectile : DI_Actor
+{
+	mixin DI_ProjectileMixin;
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		CheckStatusChange();
+		UpdateSize();
+	}
+}

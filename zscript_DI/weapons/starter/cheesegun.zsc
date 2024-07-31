@@ -122,10 +122,8 @@ Class CheeseGun : DI_Weapon
 	}
 }
 
-CLASS CheeseGunBullet : DI_Actor
+CLASS CheeseGunBullet : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -158,8 +156,6 @@ CLASS CheeseGunBullet : DI_Actor
 			}
 			pitch = target.pitch;
 		}
-		
-		CheckStatusChange();
 	}
 	
 	States

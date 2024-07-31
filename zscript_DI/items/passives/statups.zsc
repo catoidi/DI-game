@@ -18,16 +18,16 @@ Class DI_BigBullets : DIPassiveInventory
 		return 0.15 * plr.countinv(GetClassName());
 	}
 
-	override double GiveAccuracy()
+	override double GiveBulletSize()
 	{
 		if (!plr) {return 0.0;}
-		return 1 * plr.countinv(GetClassName());
+		return 0.3 * plr.countinv(GetClassName());
 	}
 
 	override double GiveRecoil()
 	{
 		if (!plr) {return 0.0;}
-		return 1 * plr.countinv(GetClassName());
+		return 2 * plr.countinv(GetClassName());
 	}
 	
 	States
