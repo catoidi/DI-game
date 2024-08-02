@@ -19,7 +19,7 @@ DI_BonusArmor;
 DI_ComboDamage;
 DI_BulletSplitter;
 DI_TooManyBullets;
-DI_AmmoGiver;
+DI_LongMagazine;
 DI_PainStar;
 DI_Gunslinger;
 DI_FreshBonusCharger;

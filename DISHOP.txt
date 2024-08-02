@@ -95,7 +95,7 @@ DamagePassive DI_BigBullets POWRR 7 256 di_unlock_item_bigbullet;
 DamagePassive DI_Shoe POWRY 7 256 di_unlock_item_shoe;
 DamagePassive DI_BulletSplitter POWRG 49 256 di_unlock_item_bulletsplitter;
 DamagePassive DI_TooManyBullets POWRH 49 256 di_unlock_item_toomanybullets;
-DamagePassive DI_AmmoGiver POWRI 21;
+DamagePassive DI_LongMagazine POWRI 21;
 DamagePassive DI_Firestarter POW1F 14 256 di_unlock_item_fred2;
 DamagePassive DI_Farsight POW1M 14 256 di_unlock_item_fred4;
 DamagePassive DI_ComboDamage POWRF 56 128 di_unlock_item_combobase;
