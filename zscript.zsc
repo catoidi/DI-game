@@ -95,6 +95,7 @@ version "4.12"
 #include "zscript_DI/items/debuffs/defenseless.zsc"
 #include "zscript_DI/items/debuffs/tornpockets.zsc"
 #include "zscript_DI/items/debuffs/encumbered.zsc"
+#include "zscript_DI/items/debuffs/motionblur.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
 #include "zscript_DI/items/objectives/blooddrive.zsc"

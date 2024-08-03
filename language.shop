@@ -27,6 +27,10 @@ SHOPITEM_DI_QUESTDEBUFF_ENCUMBERED = "\cgCurse of Encumberance";
 SHOPDESC_DI_QUESTDEBUFF_ENCUMBERED = "Reduce all weapon speed by 10%\nfor each weapon you own.";
 SHOPDESC2_DI_QUESTDEBUFF_ENCUMBERED = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_ENCUMBERED = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_MOTIONBLUR = "\cgCurse of Motion Blur";
+SHOPDESC_DI_QUESTDEBUFF_MOTIONBLUR = "Gives you motion-based inaccuracy.";
+SHOPDESC2_DI_QUESTDEBUFF_MOTIONBLUR = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_MOTIONBLUR = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";
