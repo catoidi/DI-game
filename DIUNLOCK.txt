@@ -40,7 +40,7 @@ di_unlock_item_consumer DI_Consumer 2  50000;
 di_unlock_item_dice DI_Dice 3 di_rerollshop 50000;
 di_unlock_item_bulletsplitter DI_BulletSplitter 2  999999;
 di_unlock_item_toomanybullets DI_TooManyBullets 2  999999;
-di_unlock_item_combobase DI_ComboDamage 2  999999;
+di_unlock_item_starfruit DI_Starfruit 2  999999;
 di_unlock_item_combomult DI_ComboDamageMult 2  999999;
 >>Swag Level Unlocks
 di_unlock_item_bombbundle DI_ThrowBomb_Bundle 3 di_swaglevel 1000001;

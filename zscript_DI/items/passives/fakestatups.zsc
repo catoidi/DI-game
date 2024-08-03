@@ -33,29 +33,24 @@ Class DI_KnifeBullets : DIPassiveInventory
 	}
 }
 
-Class DI_ComboDamage : DIPassiveInventory
+Class DI_Starfruit : DIPassiveInventory
 {
 	Default
 	{
-		Tag "Combo DMG +";
+		Tag "Starfruit";
 		Inventory.Icon "POWRF0";
-		Inventory.PickupMessage "Combo Damage Acquired! (+1 DMG to You/Enemies per Combo)";
-		Inventory.MaxAmount 3;
+		Inventory.PickupMessage "Starfruit Acquired! (Combo-based chance to gain +50% DMG.)";
+		Inventory.MaxAmount 5;
 	}
 	
-	override int GiveBaseDamage()
+	override double GiveDamageMult()
 	{
 		if (!plr) {return 0;}
-		return (plr.countinv(GetClassName()) * (plr.combonum - 1));
-	}
-	
-	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
-	{
-		if (passive == true)
+		if (random(plr.combonum, 20) == 20)
 		{
-			newdamage = damage + plr.CountInv(GetClassName());
+			return 0.5 * plr.CountInv(GetClassName());
 		}
-		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+		else {return 0;}
 	}
 	
 	States
