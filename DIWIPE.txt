@@ -11,7 +11,7 @@ BoxAmmo;
 PopcornGunAmmo2;
 GrenadeLauncher;
 DoubleShotgun;
-DI_BaseDamageGiver;
+DI_KnifeBullets;
 DI_ExtraCoinGiver;
 DI_FreshBonusGiver;
 DI_BloodyHeart;

@@ -86,7 +86,7 @@ PermaConsumable DI_FastForward POW1O 10;
 [PermaPassive] StatusPassive;
 [PermaPassive] OnlyPermaPassive;
 >>Damage Passives...
-DamagePassive DI_BaseDamageGiver POWRA 14;
+DamagePassive DI_KnifeBullets POWRA 14;
 DamagePassive DI_PainStar POWRJ 28 192 di_unlock_item_painstar;
 DamagePassive DI_Gunslinger POWRK 35 256 di_unlock_item_gunslinger;
 DamagePassive DI_BigBullets POWRR 7 256 di_unlock_item_bigbullet;

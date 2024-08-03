@@ -3,13 +3,13 @@
 //the code for these items isn't here, but within the player actor itself.
 //for compatibility purposes, this is the WRONG way to create new items.
 
-Class DI_BaseDamageGiver : DIPassiveInventory
+Class DI_KnifeBullets : DIPassiveInventory
 {
 	Default
 	{
-		Tag "Base DMG +";
+		Tag "Knife Bullets";
 		Inventory.Icon "POWRA0";
-		Inventory.PickupMessage "Base Damage Increased! (+1 DMG)";
+		Inventory.PickupMessage "Knife Bullets Acquired! (+2 Base DMG, -15% Firerate)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -17,6 +17,12 @@ Class DI_BaseDamageGiver : DIPassiveInventory
 	{
 		if (!plr) {return 0;}
 		return plr.countinv(GetClassName());
+	}
+
+	override double GiveFirerate()
+	{
+		if (!plr) {return 0;}
+		return plr.countinv(GetClassName()) * 0.15;
 	}
 	
 	States

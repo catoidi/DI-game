@@ -174,10 +174,10 @@ SHOPDESC2_DI_FASTFORWARD = "\cb+50% weapon speed, +25% movement speed for 30 sec
 SHOPTYPE_DI_FASTFORWARD = "\ct[Consumable] \cl[Max: 3]";
 
 //Passives
-SHOPITEM_DI_BASEDAMAGEGIVER = "Damage Up";
-SHOPDESC_DI_BASEDAMAGEGIVER = "increases base dmg by 1.";
-SHOPDESC2_DI_BASEDAMAGEGIVER = "\cbThis item's effectiveness varies greatly depending on each weapon.";
-SHOPTYPE_DI_BASEDAMAGEGIVER = "\cd[Passive] \cl[Max: 25]";
+SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";
+SHOPDESC_DI_KNIFEBULLETS = "Increases Base DMG by 2.\nReduces Firerate by 15%.";
+SHOPDESC2_DI_KNIFEBULLETS = "\cbThis item is extremely effective on weapons that have very low damage by default.";
+SHOPTYPE_DI_KNIFEBULLETS = "\cd[Passive] \cl[Max: 25]";
 SHOPITEM_DI_EXTRACOINGIVER = "Inflation";
 SHOPDESC_DI_EXTRACOINGIVER = "increases coin drops by 1,\nunless you're in debt.";
 SHOPDESC2_DI_EXTRACOINGIVER = "\cbMake sure you actually 'grab' the extra coins that spawn, or this item is pointless.";
