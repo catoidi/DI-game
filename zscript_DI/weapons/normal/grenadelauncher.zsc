@@ -137,10 +137,8 @@ CLASS GrenadeLauncherBullet : DI_Projectile
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "GrenadeLauncher"))
 		{
 			GrenadeLauncher tarwpn = GrenadeLauncher(target.player.ReadyWeapon);
-			basedam = tarwpn.wpn_damage;
-			basedam *= tarwpn.damagemult;
+			basedam = tarwpn.CheckDamage();
 			impactdam = basedam / 10;
-			if (basedam < 1) {basedam = 1;}
 			if (impactdam < 1) {impactdam = 1;}
 			pitch = target.pitch;
 		}

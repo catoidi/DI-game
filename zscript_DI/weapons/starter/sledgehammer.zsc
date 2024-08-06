@@ -52,7 +52,7 @@ class Sledgehammer : DI_Weapon
 	{
 		int swingrange = 60;
 		if (invoker.plr) {swingrange += invoker.plr.radius;}
-		DI_BasicMelee(invoker.wpn_damage * 2, CPF_PULLIN, "ProjectileSmoke", swingrange, MeleeSound: "slam");
+		DI_BasicMelee(invoker.CheckDamage(2.0), CPF_PULLIN, "ProjectileSmoke", swingrange, MeleeSound: "slam");
 	}
 	
 	States

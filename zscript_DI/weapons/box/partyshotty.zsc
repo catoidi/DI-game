@@ -138,29 +138,10 @@ CLASS PartyShottyBullet : DI_Projectile
 		Radius 4;
 		Height 8;
 		Speed 24;
-		DamageFunction throwdam;
 		DamageType "PartyShot";
 		Projectile;
-		-NOGRAVITY;
-		+BLOODSPLATTER;
-		//+INTERPOLATEANGLES;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
-		+FORCEXYBILLBOARD;
-	}
-	
-	int throwdam;
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		
-		throwdam = 15;
-		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "PartyShotty"))
-		{
-			PartyShotty tarwpn = PartyShotty(target.player.ReadyWeapon);
-			throwdam = tarwpn.wpn_damage;
-			throwdam *= tarwpn.damagemult;
-		}
 	}
 	
 	action void FakeShottyCrumb()

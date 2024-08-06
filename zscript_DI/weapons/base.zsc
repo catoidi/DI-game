@@ -3,7 +3,8 @@ Class DI_Weapon : Weapon abstract
 	int wpn_extracoin; //how many extra coins this weapon will spawn each kill. certain upgrades may use this.
 	int wpn_freshbonus; //how many extra coins are spawned for the fresh weapon bonus.
 	int wpn_freshcharge; //give a greater cooldown reduction for fresh bonus.
-	int wpn_damage; //projectiles use their own damage calculation, so they need to be able to read this value.
+	int wpn_damage; //the base damage of the weapon. by default, this gets multiplied by damagemult.
+	double damagemult; //the damage multiplier. this is usually only used by passive items.
 	double wpn_accuracy; //the base accuracy of the weapon. lower numbers are more accurate.
 	double wpn_recoil; //how much recoil is added to the accuracy per shot. can be negative.
 	double wpn_recoil_recover; //how fast the recoil recovers. smaller weapons should recover faster.
@@ -31,7 +32,6 @@ Class DI_Weapon : Weapon abstract
 	int wpn_ammo1hud, wpn_ammo2hud; 
 	//how the ammo bar will be rendered on the HUD. 0 is default (unlimited ammo). 1 is used for limited ammo weapons. 2 is used for recharging weapons. 3 is used for heat ammo, 4 is used for box ammo.
 	
-	double damagemult;
 	
 	private PSpriteSpeedScalerSet scalers;
 	
@@ -247,6 +247,23 @@ Class DI_Weapon : Weapon abstract
 			return returnvalue;
 		}
 	}
+
+	clearscope virtual int CheckDamage(float basescale = 1.0, float multscale = 1.0)
+	{
+		//weapons can directly modify damage calculation via overriding this function.
+		int returnvalue = CheckBaseDamage(basescale) * CheckDamageMult(multscale);
+		if (returnvalue < 1) {returnvalue = 1;}
+		return returnvalue;
+	}
+	clearscope virtual int CheckBaseDamage(float basescale = 1.0)
+	{
+		//easy modification of base damage value, without use of Tick loops.
+		return wpn_damage * basescale;
+	}
+	clearscope virtual double CheckDamageMult(float multscale = 1.0)
+	{
+		return damagemult * multscale;
+	}
 	
 	action void WeaponMode(int mode)
 	{
@@ -348,14 +365,21 @@ Class DI_Weapon : Weapon abstract
 		}
 		return ResolveState(null);
 	}
+
+	action void DI_Shoot(int dmgnum = -1, bool useammo = true, bool isRecoil = true)
+	{
+		DI_FireProjectile("DI_Tracer");
+	}
 	
 	action void DI_BasicBullet(int dmgnum = 0, bool useammo = true, string defpuff = "DI_BulletPuff", bool isRecoil = true)
 	{
+		//DEPRECATED.
+		//Using projectiles instead of hitscans allows for more potential interactions with Passive Items.
+		//I recommend using DI_Shoot() for basic bullet tracers or DI_FireProjectile() for custom projectiles instead.
+
 		WeaponMode(1);
 	
-		if (dmgnum == 0) {dmgnum = invoker.wpn_damage;}
-		dmgnum *= invoker.damagemult;
-		if (dmgnum < 1) {dmgnum = 1;}
+		if (dmgnum == 0) {dmgnum = invoker.CheckDamage();}
 		let bflag = FBF_NORANDOM | FBF_NORANDOMPUFFZ | FBF_USEAMMO;
 		if (useammo == false) {bflag = FBF_NORANDOM | FBF_NORANDOMPUFFZ;}
 		
@@ -384,6 +408,7 @@ Class DI_Weapon : Weapon abstract
 	{
 		WeaponMode(1);
 	
+		if (damage == 0) {damage = invoker.CheckDamage();}
 		if (range == 0) {range = DEFMELEERANGE;}
 	
 		if (invoker.plr) 
@@ -393,9 +418,6 @@ Class DI_Weapon : Weapon abstract
 			else if (newstat == "Fire") {defpuff = "DI_FirePuff";}
 			else if (newstat == "Lightning") {defpuff = "DI_LightningPuff";}
 			else if (newstat == "Poison") {defpuff = "DI_PoisonPuff";}
-			
-			
-			damage *= invoker.damagemult;
 		}
 		
 		A_CustomPunch(damage, true, flags, defpuff, range, lifesteal, lifestealmax, armorbonustype, meleesound, misssound);
@@ -409,12 +431,13 @@ Class DI_Weapon : Weapon abstract
 	
 	action void DI_FireProjectile(class<Actor> missiletype, int projectiles = -32768, double angle = -32768, int ammouse = -32768, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0, double pitch = -32768, bool isRecoil = true)
 	{
+		//this function implies that you have already done your own ammo check beforehand.
+		//it also implies that invoker.bAltFire is set correctly.
+
 		WeaponMode(1);
 	
 		if (projectiles == -32768) {projectiles = invoker.wpn_projectiles;}
 		if (ammouse == -32768) {ammouse = invoker.AmmoUse1;}
-		
-		bool useammo = true;
 		
 		for (int i = 0; i < projectiles; ++i)
 		{
@@ -423,9 +446,10 @@ Class DI_Weapon : Weapon abstract
 			if (angle == -32768) {randomangle = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
 			if (pitch == -32768) {randompitch = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
 		
-			A_FireProjectile(missiletype, randomangle, useammo, spawnofs_xy, spawnheight, flags, randompitch);
-			useammo = false;
+			A_FireProjectile(missiletype, randomangle, false, spawnofs_xy, spawnheight, flags, randompitch);
 		}
+
+		if (ammouse > 0) {invoker.DepleteAmmo(invoker.bAltFire, false);}
 		
 		if (isRecoil) 
 		{

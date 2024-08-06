@@ -170,11 +170,33 @@ Class DI_Projectile : DI_Actor
 {
 	mixin DI_ProjectileMixin;
 
+	Default
+	{
+		DamageFunction GetWeaponDamage();
+		Projectile;
+		-NOGRAVITY;
+		+BLOODSPLATTER;
+		+FORCEXYBILLBOARD;
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 
 		CheckStatusChange();
 		UpdateSize();
+	}
+}
+
+Class DI_Tracer : DI_Projectile
+{
+	//the projectile fired from DI_Shoot().
+	Default
+	{
+		Mass 0;
+		Gravity 0.1;
+		Radius 1;
+		Height 2;
+		Speed 30;
 	}
 }

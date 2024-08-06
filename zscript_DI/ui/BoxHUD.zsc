@@ -204,7 +204,7 @@ class DI_HUD : BaseStatusBar
 			string value = "";
 			switch(i)
 			{
-				case 0: value = string.format("%d (x%d)", diwpn.wpn_damage * diwpn.damagemult, diwpn.wpn_projectiles); break;
+				case 0: value = string.format("%d (x%d)", diwpn.CheckDamage(), diwpn.wpn_projectiles); break;
 				case 1: value = string.format("%.2f (+%.2f)", diwpn.wpn_accuracy + diwpn.current_recoil, diwpn.wpn_recoil); break;
 				case 2: value = string.format("%.2f", diwpn.CheckWeaponSpeed()); break;
 			}

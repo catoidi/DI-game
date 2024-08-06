@@ -46,27 +46,15 @@ Class DI_Shoe_Throw : DI_Projectile
 		Radius 4;
 		Height 8;
 		Speed 16;
-		DamageFunction throwdam;
-		Projectile;
-		-NOGRAVITY;
-		+BLOODSPLATTER;
-		//+INTERPOLATEANGLES;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
-		+FORCEXYBILLBOARD;
 		+INTERPOLATEANGLES;
 	}
-	
-	int throwdam;
-	override void PostBeginPlay()
+
+	override int GetWeaponDamage()
 	{
-		Super.PostBeginPlay();
-		
-		throwdam = 20;
-		if (target is "PlayerPawn")
-		{
-			throwdam += target.CountInv("DI_Shoe") * 5; //increase dmg for every shoe you have.
-		}
+		if (plr) {return 20 + (plr.CountInv("DI_Shoe") * 5);}
+		else return 25;
 	}
 	
 	action void ShoeParticle()

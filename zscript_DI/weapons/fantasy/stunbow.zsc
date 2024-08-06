@@ -98,14 +98,10 @@ CLASS StunCrossbowBullet : DI_Projectile
 		Radius 3;
 		Height 6;
 		Speed 20;
-		DamageFunction throwdam;
 		DamageType "Lightning";
-		Projectile;
-		+BLOODSPLATTER;
 		+FLATSPRITE;
 	}
 	
-	int throwdam;
 	int basedam;
 	override void PostBeginPlay()
 	{
@@ -117,16 +113,10 @@ CLASS StunCrossbowBullet : DI_Projectile
 		else if (damagetype == "Poison") {A_AttachLightDef("stunner", "POISONER2");}
 		
 		
-		throwdam = 30;
 		basedam = 5;
-		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "StunCrossbow"))
+		if (wpn)
 		{
-			StunCrossbow tarwpn = StunCrossbow(target.player.ReadyWeapon);
-			throwdam = tarwpn.wpn_damage;
-			basedam = tarwpn.wpn_damage / 6;
-			throwdam *= tarwpn.damagemult;
-			basedam *= tarwpn.damagemult;
-			if (throwdam < 1) {throwdam = 1;}
+			basedam = wpn.CheckDamage(1.0 / 6.0);
 			if (basedam < 1) {basedam = 1;}
 			pitch = target.pitch;
 		}

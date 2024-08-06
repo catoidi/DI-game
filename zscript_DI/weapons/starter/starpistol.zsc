@@ -23,15 +23,12 @@ CLASS StarPistol : DI_Weapon
 		//$Title "Star Pistol"
 		//$Color 9
 	}
-	
-	int damnum;
-	
-	override void tick(void)
+
+	override int CheckBaseDamage(float basescale)
 	{
-		super.tick();
-		
-		damnum = wpn_damage;
-		if (owner) {damnum += owner.CountInv("DI_TokenCombo") * 2;}
+		//base damage is increased by 2 per combo mult.
+		if (owner) {return (wpn_damage + (2 * owner.CountInv("DI_TokenCombo"))) * basescale;}
+		else return Super.CheckBaseDamage(basescale);
 	}
 	
 	States
@@ -51,7 +48,7 @@ CLASS StarPistol : DI_Weapon
 			PIST B 2 BRIGHT 
 			{
 				A_Overlay(-2, "Flash");
-				DI_BasicBullet(invoker.damnum);
+				DI_BasicBullet();
 				float powpitch = 0.01 * (105 - (CountInv("DI_TokenCombo") * 5));
 				DI_StartSound("gunpow3", pitch: powpitch);
 			}

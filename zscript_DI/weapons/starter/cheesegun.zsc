@@ -147,8 +147,7 @@ CLASS CheeseGunBullet : DI_Projectile
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "CheeseGun"))
 		{
 			CheeseGun tarwpn = CheeseGun(target.player.ReadyWeapon);
-			damnum = tarwpn.wpn_damage;
-			damnum *= tarwpn.damagemult;
+			damnum = tarwpn.CheckDamage();
 			if (tarwpn.cheeseglow > 0.7) 
 			{
 				damagetype = "Fire"; 

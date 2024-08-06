@@ -104,7 +104,7 @@ CLASS Glowstick : DI_Weapon //20010
 			GLOW BBB 1 BRIGHT A_WeaponOffset(30, 20, WOF_ADD | WOF_INTERPOLATE);
 			GLOW N 1 BRIGHT {
 				A_WeaponOffset(60, 40, WOF_INTERPOLATE);
-				DI_BasicMelee(invoker.wpn_damage, CPF_PULLIN, "ProjectileSmoke", MeleeSound: "weapons/glowstick/glowbonk");
+				DI_BasicMelee(0, CPF_PULLIN, "ProjectileSmoke", MeleeSound: "weapons/glowstick/glowbonk");
 			}
 			GLOW BBBBB 1 BRIGHT A_WeaponOffset(30, 20, WOF_ADD | WOF_INTERPOLATE);
 			GLOW C 3 BRIGHT A_WeaponOffset(5, 40, WOF_INTERPOLATE);
@@ -226,12 +226,10 @@ CLASS GlowstickThrow : DI_Projectile
 	//can be used to glow and to kill.
 	//each glowstick will be one of the six random colors, and eventually run out to help performance.
 	
-	int throwdam;
 	string throwstring;
 	
 	Default
 	{
-		DamageFunction throwdam;
 		DamageType "Melee";
 		ProjectileKickback 1000;
 		Speed 25;
@@ -240,26 +238,19 @@ CLASS GlowstickThrow : DI_Projectile
 		Gravity 0.3;
 		Mass 1;
 		
-		Projectile;
-		-NOGRAVITY;
 		+INTERPOLATEANGLES;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
-		+FORCEXYBILLBOARD;
-		+BLOODSPLATTER;
+	}
+
+	override int GetWeaponDamage()
+	{
+		return Super.GetWeaponDamage() * 3;
 	}
 	
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		throwdam = 90;
-		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "Glowstick"))
-		{
-			Glowstick tarwpn = Glowstick(target.player.ReadyWeapon);
-			throwdam = tarwpn.wpn_damage * 3;
-			throwdam *= tarwpn.damagemult;
-		}
 		
 		throwstring = "ProjectileSmokeBig";
 		if (damagetype == "Fire") {throwstring = "DI_FirePuff";}

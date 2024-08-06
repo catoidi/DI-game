@@ -403,7 +403,7 @@ Class DIUnlockHandler : EventHandler
 			let wpn = DI_Weapon(diplr.player.readyweapon);
 			if (wpn)
 			{
-				if (wpn.damagemult >= 2.0) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combomult");}
+				if (wpn.CheckDamageMult() >= 2.0) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combomult");}
 			}
 		}
 	}

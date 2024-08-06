@@ -97,28 +97,10 @@ CLASS LaserPointerBullet : DI_Projectile
 		Radius 3;
 		Height 6;
 		Speed 20;
-		DamageFunction throwdam;
 		DamageType "Lightning";
-		Projectile;
-		+BLOODSPLATTER;
 		+INTERPOLATEANGLES;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
-		+FORCEXYBILLBOARD;
-	}
-	
-	int throwdam;
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		
-		throwdam = 24;
-		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "LaserPointer"))
-		{
-			LaserPointer tarwpn = LaserPointer(target.player.ReadyWeapon);
-			throwdam = tarwpn.wpn_damage;
-			throwdam *= tarwpn.damagemult;
-		}
 	}
 	
 	States
@@ -159,11 +141,9 @@ CLASS LaserPointerBullet2 : LaserPointerBullet
 		Speed 40;
 	}
 	
-	override void PostBeginPlay()
+	override int GetWeaponDamage()
 	{
-		Super.PostBeginPlay();
-		
-		throwdam *= 4;
+		return Super.GetWeaponDamage() * 4;
 	}
 	
 	States
@@ -186,7 +166,7 @@ CLASS LaserPointerBullet2 : LaserPointerBullet
 				A_FadeOut(0.1);
 				if (invoker.damagetype != "Lightning") {DIProjectileTrail(3.0);}
 			}
-			LAZR # 1 BRIGHT A_Explode(throwdam * 2, 40);
+			LAZR # 1 BRIGHT A_Explode(damage * 2, 40);
 			LAZR # 0 BRIGHT A_QuakeEX(1, 1, 1, 35, 0, 60);
 			LAZR ############ 0 BRIGHT A_SpawnParticleEX("White", TexMan.CheckForTexture("LAZRJ0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELATIVE, 20, 12.0, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 1), 0, 0, 0, 1.0, -1, 0, random(0, 359));
 			LAZR ######## 1 BRIGHT
