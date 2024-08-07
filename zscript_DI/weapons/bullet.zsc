@@ -195,8 +195,30 @@ Class DI_Tracer : DI_Projectile
 	{
 		Mass 0;
 		Gravity 0.1;
-		Radius 1;
-		Height 2;
-		Speed 30;
+		Radius 2;
+		Height 4;
+		Speed 40;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1 A_SpawnParticle("Yellow", SPF_FULLBRIGHT, 4, 5 * invoker.wpn.wpn_bulletsize);
+			Loop;
+		Crash:
+		Death.Sky:
+		Death:
+			TNT1 A 1 
+			{
+				A_SpawnItemEX("DI_BulletPuff", flags: SXF_NOCHECKPOSITION);
+				A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);
+			}
+			Stop;
+		XDeath:
+			TNT1 A 1 
+			{
+				A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);
+			}
+			Stop;
 	}
 }

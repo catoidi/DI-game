@@ -368,7 +368,9 @@ Class DI_Weapon : Weapon abstract
 
 	action void DI_Shoot(int dmgnum = -1, bool useammo = true, bool isRecoil = true)
 	{
-		DI_FireProjectile("DI_Tracer");
+		int doammo = -32768;
+		if (!useammo) {doammo = 0;}
+		DI_FireProjectile("DI_Tracer", ammouse: useammo);
 	}
 	
 	action void DI_BasicBullet(int dmgnum = 0, bool useammo = true, string defpuff = "DI_BulletPuff", bool isRecoil = true)
