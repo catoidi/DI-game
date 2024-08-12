@@ -6,7 +6,7 @@ Class DoubleShotgun : GreenShotgun
 {
 	Default
 	{
-		DI_Weapon.FreshBonus 1;
+		DI_Weapon.FreshBonus 2;
 		DI_Weapon.BaseDamage 8;
 		DI_Weapon.BaseAccuracy 8;
 		DI_Weapon.Projectiles 18;
