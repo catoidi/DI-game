@@ -118,6 +118,7 @@ CLASS GrenadeLauncherBullet : DI_Projectile
 		Speed 20;
 		DamageFunction impactdam;
 		Projectile;
+		DI_Projectile.FlatBullet true;
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FLATSPRITE;
@@ -140,7 +141,6 @@ CLASS GrenadeLauncherBullet : DI_Projectile
 			basedam = tarwpn.CheckDamage();
 			impactdam = basedam / 10;
 			if (impactdam < 1) {impactdam = 1;}
-			pitch = target.pitch;
 		}
 	}
 	

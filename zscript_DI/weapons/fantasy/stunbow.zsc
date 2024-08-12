@@ -99,6 +99,7 @@ CLASS StunCrossbowBullet : DI_Projectile
 		Height 6;
 		Speed 20;
 		DamageType "Lightning";
+		DI_Projectile.FlatBullet true;
 		+FLATSPRITE;
 	}
 	
@@ -118,7 +119,6 @@ CLASS StunCrossbowBullet : DI_Projectile
 		{
 			basedam = wpn.CheckDamage(1.0 / 6.0);
 			if (basedam < 1) {basedam = 1;}
-			pitch = target.pitch;
 		}
 	}
 	
