@@ -370,7 +370,7 @@ Class DI_Weapon : Weapon abstract
 	{
 		int doammo = -32768;
 		if (!useammo) {doammo = 0;}
-		DI_FireProjectile("DI_Tracer", ammouse: useammo);
+		DI_FireProjectile("DI_Tracer", ammouse: useammo, spawnofs_xy: -4);
 	}
 	
 	action void DI_BasicBullet(int dmgnum = 0, bool useammo = true, string defpuff = "DI_BulletPuff", bool isRecoil = true)
