@@ -170,6 +170,10 @@ Class DI_Projectile : DI_Actor
 {
 	mixin DI_ProjectileMixin;
 
+	bool flatbullet;
+
+	property FlatBullet : flatbullet; //combine with +FLATSPRITE to create fake 3d bullets.
+
 	Default
 	{
 		DamageFunction GetWeaponDamage();
@@ -185,6 +189,18 @@ Class DI_Projectile : DI_Actor
 
 		CheckStatusChange();
 		UpdateSize();
+		if (flatbullet) {DI_SideBullet();}
+	}
+
+	void DI_SideBullet()
+	{
+		A_SpawnItemEX("DI_Tracer_Side", flags: SXF_NOCHECKPOSITION | SXF_ORIGINATOR | SXF_SETMASTER | SXF_TRANSFERSPRITEFRAME | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERTRANSLATION | SXF_TRANSFERSCALE);
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		if (flatbullet) {pitch = (-Vel.Z / Speed) * 90;}
 	}
 }
 
@@ -199,12 +215,15 @@ Class DI_Tracer : DI_Projectile
 		Height 4;
 		Speed 60;
 		Scale 0.2;
+		DI_Projectile.FlatBullet true;
+		+FLATSPRITE;
+		+BRIGHT;
 	}
 
 	States
 	{
 		Spawn:
-			HEAL A 1; //A_SpawnParticle("Yellow", SPF_FULLBRIGHT, 4, 5 * invoker.wpn.wpn_bulletsize);
+			TRAC A -1;
 			Loop;
 		Crash:
 		Death.Sky:
@@ -220,6 +239,50 @@ Class DI_Tracer : DI_Projectile
 			{
 				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
 			}
+			Stop;
+	}
+}
+
+Class DI_Tracer_Side : DI_Actor
+{
+	Default
+	{
+		Health 1;
+		+INVISIBLE;
+		+ROLLSPRITE;
+		+WALLSPRITE;
+		+NOCLIP;
+		+NOGRAVITY;
+	}
+
+	bool finished;
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (master)
+		{
+			SetOrigin(master.Pos, true);
+			bBRIGHT = master.bBRIGHT;
+			roll = -90 - master.pitch;
+			angle = master.angle + 90;
+			bINVISIBLE = false;
+		}
+		else if (!finished) 
+		{
+			SetStateLabel("Death");
+			finished = true;
+		}
+	}
+
+	States
+	{
+		Spawn:
+			#### # -1;
+			Loop;
+		Death:
+			TNT1 A 1 {bINVISIBLE = true;}
 			Stop;
 	}
 }
