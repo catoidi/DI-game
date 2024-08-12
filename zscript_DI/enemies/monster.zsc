@@ -512,18 +512,11 @@ Class DI_Monster : DI_Actor abstract
 			Loop;
 		Death.FakeLightning:
 			#### # 0 A_Jump(256, "Death.Lightning");
-			Stop;
-		Death.Lightning:
-			#### # 0 A_DIShockDeath();
-			#### # 0 A_Jump(256, "Death");
-			Stop;
-		Death.FakeLightning:
-			#### # 0 A_Jump(256, "Death.Lightning");
 		Death.Lightning:
 			#### # 0 A_DIShockDeath();
 			#### # 0 A_Jump(256, "Death");
 		Death.FakeFire:
-			#### # 0 A_Jump(256, "Death.Lightning");
+			#### # 0 A_Jump(256, "Death.Fire");
 		Death.Fire:
 			#### # 0 A_DIFireDeath();
 			#### # 0 A_Jump(256, "Death");
@@ -554,7 +547,7 @@ Class DI_Monster : DI_Actor abstract
 			#### # 0 A_DIShockDeath();
 			#### # 0 A_Jump(256, "XDeath");
 		XDeath.FakeFire:
-			#### # 0 A_Jump(256, "XDeath.Lightning");
+			#### # 0 A_Jump(256, "XDeath.Fire");
 		XDeath.Fire:
 			#### # 0 A_DIFireDeath();
 			#### # 0 A_Jump(256, "XDeath");
