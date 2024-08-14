@@ -325,6 +325,10 @@ SHOPITEM_DI_DEPLETEDMAG = "Depleted Magazine";
 SHOPDESC_DI_DEPLETEDMAG = "Increases firerate the closer\nyou are to running out of ammo.";
 SHOPDESC2_DI_DEPLETEDMAG = "\cbFirerate is increased up to 1% per ammo consumed. Max of +20% firerate per stack. Prioritizes which ammo your weapon has the most of. Has diminishing returns when max ammo is higher than 20.";
 SHOPTYPE_DI_DEPLETEDMAG = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_LAVABOOT = "The Boot";
+SHOPDESC_DI_LAVABOOT = "Gives you complete immunity to \ciLava Damage.";
+SHOPDESC2_DI_LAVABOOT = "\cbThis item only appears in levels featuring lava stage hazards.";
+SHOPTYPE_DI_LAVABOOT = "\cd[Passive] \cl[Max: 1]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

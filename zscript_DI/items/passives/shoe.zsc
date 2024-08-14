@@ -51,9 +51,15 @@ Class DI_Shoe_Throw : DI_Projectile
 		+INTERPOLATEANGLES;
 	}
 
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		//if (plr.CountInv("DI_LavaBoot") > 0) {SetStateLabel("Boot");} 
+	}
+
 	override int GetWeaponDamage()
 	{
-		if (plr) {return 20 + (plr.CountInv("DI_Shoe") * 5);}
+		if (plr) {return 20 + (plr.CountInv("DI_Shoe") * 5) + (plr.CountInv("DI_LavaBoot") * 15);}
 		else return 25;
 	}
 	
@@ -66,7 +72,10 @@ Class DI_Shoe_Throw : DI_Projectile
 	{
 		Spawn:
 			SHOE A 1 A_SetRoll(roll + 8);
-			Loop;
+			Wait;
+		Boot:
+			BOOT B 1 A_SetRoll(roll - 8);
+			Wait;
 		Death.Sky:
 		Death:
 			TNT1 A 1 
