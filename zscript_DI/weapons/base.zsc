@@ -398,6 +398,7 @@ Class DI_Weapon : Weapon abstract
 		if (bulnum == 1) {bulnum = -1;} //stop that hard-coded thing in a_firebullets that'll ignore accuracy values for the first bullet if the gun only fires 1 bullet.
 		
 		A_FireBullets(invoker.wpn_accuracy + invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil, bulnum, dmgnum, defpuff, bflag);
+		invoker.plr.justfired = true;
 		
 		if (isRecoil) 
 		{
@@ -423,6 +424,7 @@ Class DI_Weapon : Weapon abstract
 		}
 		
 		A_CustomPunch(damage, true, flags, defpuff, range, lifesteal, lifestealmax, armorbonustype, meleesound, misssound);
+		invoker.plr.justfired = true;
 		
 		if (isRecoil) 
 		{
@@ -449,6 +451,7 @@ Class DI_Weapon : Weapon abstract
 			if (pitch == -32768) {randompitch = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
 		
 			A_FireProjectile(missiletype, randomangle, false, spawnofs_xy, spawnheight, flags, randompitch);
+			invoker.plr.justfired = true;
 		}
 
 		if (ammouse > 0) {invoker.DepleteAmmo(invoker.bAltFire, false);}

@@ -47,16 +47,13 @@ class DI_PlayerBox : DI_PlayerBase
 		See:
 			#### AB 8;
 			Loop;
-		Missile:
-			#### C 1;
-			#### C 11;
-			Goto Spawn;
 		Melee:
 			#### C 1 BRIGHT {A_DIScale(0.05, -0.05); A_AttachLightDef("shoot", "BULLETSHOOT");}
 			#### C 1 BRIGHT;
 			#### # 2 A_RemoveLight("shoot");
-			#### # 0 A_DIScale(-0.05, 0.05);
-			Goto Missile;
+			#### # 11;
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
 		Pain:
 			#### D 8 A_DIPlayerPain(true);
 			Goto Spawn;

@@ -38,6 +38,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	string CurrentWeaponKill;
 	int LastKillTimer, LastKillTimer_Max;
 	bool JustKilled; //returns true when the player activates a fresh weapon kill.
+	bool justfired; //set to true on tics where the player has fired their weapon.
 	Array<String> freshlist; //every weapon that's activated a fresh weapon bonus.
 	Array<String> wavewipe; //a list of items to wipe every wave.
 	Array<String> wavekeep; //any items you've purchased that should not be wiped every wave.
@@ -68,6 +69,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	bool iamfrozen;
 	
 	bool inwave;
+
 	
 	override void PostBeginPlay(void)
 	{
@@ -111,6 +113,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			}
 			//weaponnum = 0;
 			
+			justfired = false;
 			JustKilled = false;
 			
 			if (prevhp != self.health) {hpupdate = true;}

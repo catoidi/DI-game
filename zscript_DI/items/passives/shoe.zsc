@@ -19,7 +19,7 @@ Class DI_Shoe : DIPassiveInventory
 		if ((owner is "DI_PlayerBase") && (owner.player.ReadyWeapon is "DI_Weapon"))
 		{
 			DI_PlayerBase plr = DI_PlayerBase(owner);
-			if (plr.CurState == plr.ResolveState("Melee"))
+			if (plr.justfired)
 			{
 				if (random(1, 8) <= plr.CountInv("DI_Shoe"))
 				{
@@ -51,10 +51,17 @@ Class DI_Shoe_Throw : DI_Projectile
 		+INTERPOLATEANGLES;
 	}
 
+	string shoepart;
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		//if (plr.CountInv("DI_LavaBoot") > 0) {SetStateLabel("Boot");} 
+		if (plr.CountInv("DI_LavaBoot") > 0) 
+		{
+			shoepart = "BOOTA0";
+			SetStateLabel("Boot");
+		} 
+		else {shoepart = "SHOEA0";}
 	}
 
 	override int GetWeaponDamage()
@@ -65,7 +72,7 @@ Class DI_Shoe_Throw : DI_Projectile
 	
 	action void ShoeParticle()
 	{
-		A_SpawnParticleEX("White", TexMan.CheckForTexture("SHOEA0"), 0, SPF_ROLL, 24, 32.0, random(0, 359), 0, 0, 0, random(-1, 1), random(-1, 1), random(1, 3), 0, 0, -0.33, 0.5, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(invoker.shoepart), 0, SPF_ROLL, 24, 32.0, random(0, 359), 0, 0, 0, random(-1, 1), random(-1, 1), random(1, 3), 0, 0, -0.33, 0.5, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
 	}
 	
 	States
