@@ -65,16 +65,16 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 {
 	Default
 	{
-		Tag "Inflation";
+		Tag "9 Dollar Bill";
 		Inventory.Icon "POWRB0";
-		Inventory.PickupMessage "Inflation Rate Increased! (+1 Coin from all enemies, unless you're in debt.)";
+		Inventory.PickupMessage "9 Dollar Bill acquired! (Combo-based chance to make enemies drop +1 coin.)";
 		Inventory.MaxAmount 3;
 	}
 	
 	override int GiveExtraCoin()
 	{
 		if (!plr) {return 0;}
-		if (plr.score < 0) {return 0;}
+		if (random(plr.GetCombo(), 9) != 9) {return 0;}
 		return plr.CountInv(GetClassName());
 	}
 	
