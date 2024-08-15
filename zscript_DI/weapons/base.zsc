@@ -18,6 +18,7 @@ Class DI_Weapon : Weapon abstract
 	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
 	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
 	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
+	int maxammouse; //the max amount inventory items can increase ammo.
 	
 	double plr_speed;
 	
@@ -190,8 +191,16 @@ Class DI_Weapon : Weapon abstract
 		wpn_recoil_recover = Default.wpn_recoil_recover;
 		wpn_projectiles = Default.wpn_projectiles;
 		wpn_bulletsize = Default.wpn_bulletsize;
-		if (Ammo1) {Ammo1.MaxAmount = Ammo1.Default.MaxAmount;}
-		if (Ammo2) {Ammo2.MaxAmount = Ammo2.Default.MaxAmount;}
+		if (Ammo1) 
+		{
+			AmmoUse1 = Default.AmmoUse1;
+			Ammo1.MaxAmount = Ammo1.Default.MaxAmount;
+		}
+		if (Ammo2) 
+		{
+			AmmoUse2 = Default.AmmoUse2;
+			Ammo2.MaxAmount = Ammo2.Default.MaxAmount;
+		}
 		wpn_speed = Default.wpn_speed;
 		wpn_speed_fire = Default.wpn_speed_fire;
 		wpn_speed_reload = Default.wpn_speed_reload;
@@ -212,14 +221,23 @@ Class DI_Weapon : Weapon abstract
 				wpn_projectiles += curinv.GiveProjectiles();
 				wpn_bulletsize += curinv.GiveBulletSize();
 				if (wpn_bulletsize < 0.1) {wpn_bulletsize = 0.1;}
-				if ((Ammo1) && (wpn_dontgiveammo1 == false)) {Ammo1.MaxAmount += curinv.GiveMaxAmmo1();}
-				if ((Ammo2) && (wpn_dontgiveammo2 == false)) {Ammo2.MaxAmount += curinv.GiveMaxAmmo2();}
+				if ((Ammo1) && (wpn_dontgiveammo1 == false)) 
+				{
+					AmmoUse1 += curinv.GiveAmmoUse1();
+					Ammo1.MaxAmount += curinv.GiveMaxAmmo1();
+				}
+				if ((Ammo2) && (wpn_dontgiveammo2 == false)) 
+				{
+					AmmoUse2 += curinv.GiveAmmoUse2();
+					Ammo2.MaxAmount += curinv.GiveMaxAmmo2();
+				}
 				wpn_speed += curinv.GiveWeaponSpeed();
 				wpn_speed_fire += curinv.GiveFirerate();
 				wpn_speed_reload += curinv.GiveReloadSpeed();
 				plr_speed += curinv.GivePlayerSpeed();
 			}
 		}
+		maxammouse = CalculateAmmoCost();
 		
 		if (wpn_damage < 1) {wpn_damage = 1;}
 	}
@@ -246,6 +264,30 @@ Class DI_Weapon : Weapon abstract
 			}
 			return returnvalue;
 		}
+	}
+
+	//Used for items that increase ammo consumption. Determines the max value that ammo can currently be increased, taking both ammo types into account.
+	int debugtime;
+	private int CalculateAmmoCost()
+	{
+		++debugtime;
+		console.printf("tic: %d", debugtime);
+		int ammocheck;
+		if (Ammo1 && !wpn_dontgiveammo1) 
+		{
+			ammocheck = Ammo1.MaxAmount - AmmoUse1;
+			console.printf("ammo1: %d - %d = %d", Ammo1.MaxAmount, AmmoUse1, ammocheck);
+		}
+		if (Ammo2 && !wpn_dontgiveammo2) 
+		{
+			int ammocheck2 = Ammo2.MaxAmount - AmmoUse2;
+			if (ammocheck2 < ammocheck) {ammocheck = ammocheck2;}
+			console.printf("ammo2: %d - %d = %d", Ammo2.MaxAmount, AmmoUse2, ammocheck2);
+		}
+		int itemnum = plr.CountInv(GetClassName());
+		if (ammocheck < 0) {ammocheck = 0;}
+		if (itemnum > ammocheck) {return ammocheck;}
+		else return itemnum;
 	}
 
 	clearscope virtual int CheckDamage(float basescale = 1.0, float multscale = 1.0)

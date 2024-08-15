@@ -47,12 +47,10 @@ class DIPassiveInventory : Inventory
 		
 		if (owner is "DI_PlayerBase")
 		{
-			let playerbase = DI_PlayerBase(owner);
-			plr = playerbase;
-			if (playerbase.player.ReadyWeapon is "DI_Weapon")
+			plr = DI_PlayerBase(owner);
+			if (plr.player.ReadyWeapon is "DI_Weapon")
 			{
-				let playerweapon = DI_Weapon(playerbase.player.ReadyWeapon);
-				wpn = playerweapon;
+				wpn = DI_Weapon(plr.player.ReadyWeapon);
 			}
 		}
 	}
@@ -70,6 +68,8 @@ class DIPassiveInventory : Inventory
 	virtual double GiveWeaponSpeed() {return 0.0;} //Lower numbers improve weapon's animation speed at diminishing rates, and vice versa.
 	virtual double GiveFirerate() {return 0.0;} //Weapon Speed again, but only while the weapon is being fired.
 	virtual double GiveReloadSpeed() {return 0.0;} //Weapon Speed again, but only while the weapon is being reloaded.
+	virtual int GiveAmmoUse1() {return 0;} //Control how much ammo is required to fire the current weapon. Is hard-capped to never exceed the max ammo.
+	virtual int GiveAmmoUse2() {return 0;} //2nd ammo control
 	virtual int GiveMaxAmmo1() {return 0;} //Controls the max primary ammo. Can't go below the minimum ammo requirement for ammo type.
 	virtual int GiveMaxAmmo2() {return 0;} //Same as above, but for secondary ammo.
 	virtual double GivePlayerSpeed() {return 0.0;} //Adds movement speed to the player. Has a lower cap of 0.1.
