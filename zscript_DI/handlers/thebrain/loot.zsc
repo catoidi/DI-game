@@ -62,9 +62,22 @@ extend class DIHandler
 	
 	virtual void BoxDrops(WorldEvent e, DI_PlayerBase plr, bool notweapon = false)
 	{
-		if ((plr.boxammonum > 0) && (plr.CanFreshKill() == true))
+		if (plr.CanFreshKill())
 		{
-			e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			int drinks = plr.CountInv("DI_CarbonatedDrink");
+			if ((drinks > 0) && (random(drinks, 4) >= 4))
+			{
+				for (int i = 0; i < drinks; ++i)
+				{
+					int failure = 256 - (256 * ((1.0 * (plr.DIMaxHealth() - plr.health)) / plr.DIMaxHealth()));
+					failure += i * 80;
+					e.Thing.A_SpawnItemEX("DI_CarbonatedDrink_Pickup", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION, failchance: failure);
+				}
+			}
+			if (plr.boxammonum > 0)
+			{
+				e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
 		}
 		if ((plr.CountInv("Glowstick") > 0) && (notweapon == false))
 		{

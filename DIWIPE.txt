@@ -34,7 +34,7 @@ DI_ComboDamageMult;
 DI_PainRhombus;
 DI_GunHoarder;
 DI_RewardsProgram;
-DI_FreshRegen;
+DI_CarbonatedDrink;
 DI_Shoe;
 DI_WealthJar;
 DI_Consumer;
