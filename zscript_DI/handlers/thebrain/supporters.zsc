@@ -20,10 +20,6 @@ extend class DIHandler
 		suppos = random(0, supporters.size());
 		supporters.Insert(suppos, "\clMuffins");
 		suppos = random(0, supporters.size());
-		supporters.Insert(suppos, "\cfmr.casual");
-		suppos = random(0, supporters.size());
-		supporters.Insert(suppos, "\csNuts");
-		suppos = random(0, supporters.size());
 		supporters.Insert(suppos, "\cvTheatreHeathen20");
 	}
 	
@@ -56,7 +52,7 @@ extend class DIHandler
 			DTA_Alpha, supportalpha
 		);
 		
-		txt = "\ca<3 \cbMarch/April/May '24 Supporters: \ca<3\n----------------------------------";
+		txt = "\cnSupporters:\n--------------";
 		offsety -= bigfont.GetHeight() * 2 * sizey;
 		Screen.DrawText(bigfont, Font.CR_WHITE, 4 * sizex, offsety, txt,
 			DTA_ScaleX, sizex * 0.6,
