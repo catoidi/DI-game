@@ -45,6 +45,9 @@ SHOPTYPE_HAZARDREMOVAL = "[Instant Use]";
 SHOPITEM_REMOVEDEBUFF = "\ctDebuff Removal Tool";
 SHOPDESC_REMOVEDEBUFF = "Removes a random permanent debuff.\n\caCannot remove current quest debuff.";
 SHOPTYPE_REMOVEDEBUFF = "[Instant Use]";
+SHOPITEM_BUYNEWSECTION = "\ctLevel Reroll";
+SHOPDESC_BUYNEWSECTION = "Replaces the next wave's arena with a new one.\n\caAvailable arenas depend on current wave.";
+SHOPTYPE_BUYNEWSECTION = "[Instant Use]";
 
 //Starting Weapons
 SHOPITEM_STARPISTOL = "Star Pistol";
