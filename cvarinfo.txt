@@ -86,6 +86,7 @@ server cheat bool di_unlock_item_freshbullets = false; //get 10 fresh bonuses wi
 server cheat bool di_unlock_item_freshcharger = false; //get 40 fresh bonuses in 1 run.
 server cheat bool di_unlock_item_bulletsplitter = false; //unlock 15 items.
 server cheat bool di_unlock_item_toomanybullets = false; //get 3 bullet splitters.
+server cheat bool di_unlock_item_glassgem = false; //own at least $1200 at once.
 //shop unlocks (LEVEL 2)
 server cheat int di_sidequests = 0; //how many side quests you've completed.
 server cheat bool di_unlock_item_partyshotty = false; //complete 10 side quests in Level 2.

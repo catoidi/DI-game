@@ -1,0 +1,37 @@
+//zscript_DI/passives/glassgem.zsc
+
+Class DI_GlassGem : DIPassiveInventory
+{
+    Default
+	{
+		Tag "Glass Gem";
+		Inventory.Icon "POW1X0";
+		Inventory.PickupMessage "Glass Gem acquired! (Enemies drop +1 coin while you have at least 95% health remaining.)";
+		Inventory.MaxAmount 3;
+	}
+
+    override int GiveExtraCoin()
+    {
+        if (!plr) {return 0;}
+        if (plr.health < (plr.DIMaxHealth() * 0.95)) {return 0;}
+		return plr.CountInv(GetClassName());
+    }
+}
+
+Class DI_GlassGem_Tracker : Inventory
+{
+    bool unlocked;
+
+    override void DoEffect()
+    {
+        if (di_unlock_item_glassgem == false)
+        {
+            if (owner && owner.score >= 1200 && !unlocked)
+            {
+                eventhandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_glassgem");
+                unlocked = true;
+            }
+        }
+        else {Use(true);}
+    }
+}

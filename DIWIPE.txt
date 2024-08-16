@@ -55,3 +55,4 @@ CheeseGun;
 DI_Toaster;
 DI_DepletedMag;
 DI_LavaBoot;
+DI_GlassGem;

@@ -209,3 +209,10 @@ SCRIPT "AddSalePercent" (int addnum)
 {
 	ScriptCall("EventHandler", "SendNetworkEvent", "AddSalePercent", addnum);
 }
+
+SCRIPT "DIGiveMoney" (int cashmoney)
+{
+	int oldscore = GetActorProperty(0, APROP_Score);
+	SetActorProperty(0, APROP_Score, oldscore + cashmoney);
+	Print(s:"You have received $", d:cashmoney, s:" directly into your bank account.");
+}

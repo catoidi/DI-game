@@ -34,6 +34,7 @@ di_unlock_item_painstar DI_PainStar 2 di_deathcounter 666;
 di_unlock_item_rewardsprogram DI_RewardsProgram 2 di_debtwaves 667;
 di_unlock_item_creditfraud DI_CreditFraud 2 di_debtwaves 667;
 di_unlock_item_9leafclover DI_9LeafClover 3  777;
+di_unlock_item_glassgem DI_GlassGem 2  777;
 di_unlock_item_bloodyheart DI_BloodyHeart 2 di_tomahawkcount 50000;
 di_unlock_item_heartbomb DI_HeartBomb 3 di_heartcount 50000;
 di_unlock_item_consumer DI_Consumer 2  50000;

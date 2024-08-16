@@ -329,6 +329,10 @@ SHOPITEM_DI_LAVABOOT = "The Boot";
 SHOPDESC_DI_LAVABOOT = "Gives you complete immunity to \ciLava Damage.";
 SHOPDESC2_DI_LAVABOOT = "\cbThis item only appears in levels featuring lava stage hazards.";
 SHOPTYPE_DI_LAVABOOT = "\cd[Passive] \cl[Max: 1]";
+SHOPITEM_DI_GLASSGEM = "Glass Gem";
+SHOPDESC_DI_GLASSGEM = "Gain +1 coin per enemy while you\nhave at least 95% health remaining.";
+SHOPDESC2_DI_GLASSGEM = "\cbExtra item stacks will increase coin drops while this item's effect is active.";
+SHOPTYPE_DI_GLASSGEM = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
