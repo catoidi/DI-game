@@ -631,7 +631,6 @@ Class DIUnlockHandler : EventHandler
 				cvar lockcvar = cvar.findcvar(curline[1]);
 				if (lockcvar && (!lockcvar.getbool())) 
 				{
-					console.printf("locked item: %s", curline[1]);
 					lockeditems.push(curline[1]);
 				}
 			}
