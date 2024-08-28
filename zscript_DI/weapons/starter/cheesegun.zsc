@@ -162,7 +162,7 @@ CLASS CheeseGunBullet : DI_Projectile
 		Super.Tick();
 		if ((random(1, 10) == 1) && (damagetype == "Fire"))
 		{
-			A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_NONE, 0, 70, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.25, 0.25, -1, 0, random(0, 359));
+			A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_NONE, SPF_ROLL, 70, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.25, 0.25, -1, 0, random(0, 359));
 		}
 	}
 	
@@ -181,7 +181,7 @@ CLASS CheeseGunBullet : DI_Projectile
 			{
 				if (invoker.damagetype == "Fire")
 				{
-					A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_NONE, 0, 140, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.125, 0.25, -1, 0, random(0, 359));
+					A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_NONE, SPF_ROLL, 140, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.125, 0.25, -1, 0, random(0, 359));
 				}
 				for (int i = 0; i < 5; ++i)
 				{
