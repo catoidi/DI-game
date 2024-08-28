@@ -92,14 +92,14 @@ Class DI_FreshBonusGiver : DIPassiveInventory
 	{
 		Tag "Fresh Bonus +";
 		Inventory.Icon "POWRC0";
-		Inventory.PickupMessage "Freshness Increased! (x2 to Fresh Weapon Bonuses)";
-		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Freshness Increased! (+1 coin per Fresh Weapon Bonus)";
+		Inventory.MaxAmount 3;
 	}
 	
 	override int GiveFreshBonus()
 	{
 		if (!wpn || !plr) {return 0;}
-		return (plr.CountInv(GetClassName()) * wpn.default.wpn_freshbonus);
+		return (plr.CountInv(GetClassName()));
 	}
 	
 	States
