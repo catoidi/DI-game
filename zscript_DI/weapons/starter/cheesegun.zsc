@@ -157,6 +157,15 @@ CLASS CheeseGunBullet : DI_Projectile
 		}
 	}
 	
+	override void Tick()
+	{
+		Super.Tick();
+		if ((random(1, 10) == 1) && (damagetype == "Fire"))
+		{
+			A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_NONE, 0, 70, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.25, 0.25, -1, 0, random(0, 359));
+		}
+	}
+	
 	States
 	{
 		Spawn:
@@ -168,10 +177,21 @@ CLASS CheeseGunBullet : DI_Projectile
 			CHES E 0 BRIGHT A_StartSound("weapons/laser/lasrhit");
 		Death.Sky:
 		Death:
+			CHES E 0
+			{
+				if (invoker.damagetype == "Fire")
+				{
+					A_SpawnParticleEX("White", TexMan.CheckForTexture("SMOKA0"), STYLE_NONE, 0, 140, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.125, 0.25, -1, 0, random(0, 359));
+				}
+				for (int i = 0; i < 5; ++i)
+				{
+					A_SpawnParticle("f8cc3b", 0, 35, 6, 0, 0, 0, 0, frandom(-2, 2), frandom(-2, 2), frandom(-2, 2), 0, 0, -0.33);
+				}
+			}
 			CHES E 1
 			{
-				A_FadeOut(0.02);
-				A_DIScale(1.01, 1.01, true);
+				A_FadeOut(0.005);
+				A_DIScale(1.0025, 1.0025, true);
 				if (invoker.Pos.Z <= FloorZ)
 				{
 					invoker.Scale.Y = invoker.Scale.X;
@@ -180,7 +200,7 @@ CLASS CheeseGunBullet : DI_Projectile
 				}
 				else {invoker.Vel.Z += 0.01;}
 			}
-			Loop;
+			Wait;
 	}
 }
 
