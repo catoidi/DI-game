@@ -144,7 +144,7 @@ CLASS DI_BloodPuff_Gib : DI_BloodPuff
 			TNT1 A 1;
 			BLUD A 1 DoGibPuff();
 		Puffing:
-			#### # 1 {A_DIScale(1.02, 1.02, true); A_FadeOut(0.1);}
+			#### # 1 {A_DIScale(1.02, 1.02, true); A_FadeOut(0.04);}
 			Wait;
 	}
 }
