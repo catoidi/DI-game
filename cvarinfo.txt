@@ -84,7 +84,7 @@ server cheat bool di_unlock_item_heartbomb = false; //pickup 100 hearts.
 server cheat int di_heartcount = 0;
 server cheat bool di_unlock_item_freshbullets = false; //get 10 fresh bonuses without reloading.
 server cheat bool di_unlock_item_freshcharger = false; //get 40 fresh bonuses in 1 run.
-server cheat bool di_unlock_item_bulletsplitter = false; //unlock 15 items.
+server cheat bool di_unlock_item_bulletmitosis = false; //unlock 15 items.
 server cheat bool di_unlock_item_toomanybullets = false; //get 3 bullet splitters.
 server cheat bool di_unlock_item_glassgem = false; //own at least $1200 at once.
 //shop unlocks (LEVEL 2)
