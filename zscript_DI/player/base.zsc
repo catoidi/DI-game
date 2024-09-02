@@ -212,6 +212,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		A_StartSound("combord", 0);
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
 		int diwep_fresh = diwep.wpn_freshbonus;
+		combonum_bonus += diwep_fresh;
 		ACS_ScriptCall("dofreshflash");
 		eventhandler.sendnetworkevent("diplayerfreshbonus");
 		console.printf("\cnfresh weapon bonus! (+%d)", diwep_fresh);
@@ -248,6 +249,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 			
 		LastKillTimer -= killbonus;
 		if (LastKillTimer < 1) {LastKillTimer = 0;}
+
+		if (CanFreshKill() && !notweapon) {IsFreshKill();}
 	}
 	
 	virtual void BoxAmmoChecker(void)
@@ -344,19 +347,12 @@ Class DI_PlayerBase : PlayerPawn abstract
 		
 		if (combodrain == 0) {combodrain = combonum;}
 		
-		combonum_bonus = combonum;
+		combonum_bonus = 0;
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
 		if (diwep)
 		{
 			combonum_bonus += diwep.wpn_extracoin;
-			if (CanFreshKill())
-			{
-				if (player.ReadyWeapon is "DI_Weapon")
-				{
-					combonum_bonus += diwep.wpn_freshbonus;
-				}
-				else {combonum_bonus += combonum + 1;}
-			}
+			//if (CanFreshKill())	{combonum_bonus += diwep.wpn_freshbonus;}
 			
 			if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
 			{
@@ -371,7 +367,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				}
 				else if ((LastKillTimer > 0) && (freshmsg == true)) {freshmsg = false;}
 			}
-			A_SetInventory("DI_TokenCombo", combonum_bonus);
+			A_SetInventory("DI_TokenCombo", combonum + combonum_bonus);
 		}
 	}
 	

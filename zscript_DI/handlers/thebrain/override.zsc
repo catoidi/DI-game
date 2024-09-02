@@ -82,6 +82,7 @@ extend class DIHandler
 			if (e.Thing is "PlayerPawn")
 			{
 				e.Thing.A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+				if (!di_unlock_item_glassgem) {e.Thing.GiveInventory("DI_GlassGem_Tracker", 1);}
 			}
 		}
 	}

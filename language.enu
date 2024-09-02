@@ -81,6 +81,8 @@ DIPOPUP_di_unlock_item_heartbomb = "Heart Bomb";
 DIPOPUP_di_unlock_item_bowtie = "Bow Tie";
 DIPOPUP_di_unlock_item_bigbullet = "Big Bullets";
 DIPOPUP_di_unlock_item_gunslinger = "Gunslinger";
+DIPOPUP_di_unlock_item_depletedmag = "Depleted Magazine";
+DIPOPUP_di_unlock_item_glassgem = "Glass Gem";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbto unlock this weapon.";
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbto unlock this weapon.";
@@ -126,6 +128,7 @@ SHOPLOCK_DI_BOWTIE = "\cbReach \cfSwag Level 4 \cbor higher to unlock this item.
 SHOPLOCK_DI_DEPLETEDMAG = "\cbReach \cfSwag Level 5 \cbor higher to unlock this item.";
 SHOPLOCK_SLEDGEHAMMER = "\cfThis unlock will be available in v0.10.";
 SHOPLOCK_DI_HEARTBOMB = "\cbPickup 100 hearts to unlock this item.";
+SHOPLOCK_DI_GLASSGEM = "\cbUnlocked by possessing at least $1200.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

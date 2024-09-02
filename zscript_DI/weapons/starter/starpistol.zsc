@@ -27,7 +27,12 @@ CLASS StarPistol : DI_Weapon
 	override int CheckBaseDamage(float basescale)
 	{
 		//base damage is increased by 2 per combo mult.
-		if (owner) {return (wpn_damage + (2 * owner.CountInv("DI_TokenCombo"))) * basescale;}
+		if (plr) 
+		{
+			int coindmg = plr.combonum + plr.combonum_bonus;
+			if (plr.CanFreshKill()) {coindmg += wpn_freshbonus;}
+			return (wpn_damage + (2 * coindmg)) * basescale;
+		}
 		else return Super.CheckBaseDamage(basescale);
 	}
 	

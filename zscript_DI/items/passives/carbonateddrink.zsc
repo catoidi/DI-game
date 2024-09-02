@@ -1,0 +1,43 @@
+//zscript_DI/items/passives/carbonateddrink.zsc
+
+Class DI_CarbonatedDrink : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Carbonated Drink";
+		Inventory.Icon "POWRX0";
+		Inventory.PickupMessage "Acquired Carbonated Drink! (Enemies have a chance to drop Regen on fresh weapon kills.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR X -1;
+			Stop;
+	}
+}
+
+Class DI_CarbonatedDrink_Pickup : Inventory
+{
+	Default
+	{
+		Health 10;
+		+BRIGHT;
+		+FLOATBOB;
+		+Inventory.AUTOACTIVATE;
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (owner) {owner.GiveInventory("DI_Regen", 10);}
+		return true;
+	}
+
+	States
+	{
+		Spawn:
+			POWR X -1;
+			Stop;
+	}
+}

@@ -9,6 +9,16 @@ class DI_Farsight : DIPassiveInventory
 		Inventory.PickupMessage "Farsight acquired! (Enemies take more damage from long distances.)";
 		Inventory.MaxAmount 5;
 	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			return "DI_Farsight_Enemy", owner.CountInv(self.GetClassName());
+		}
+
+		return "", 0;
+	}
 	
 	States
 	{

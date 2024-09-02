@@ -11,6 +11,20 @@ Class DI_DeathMark : DIPassiveInventory
 		Inventory.PickupMessage "Marked for Death Acquired! (Enemies have a 15% chance to be marked. Marked enemies take extra damage and always gib.)";
 		Inventory.MaxAmount 5;
 	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			int chance = owner.CountInv(self.GetClassName()) * 3;
+			if (random(1, 20) <= chance)
+			{
+				return "DI_DeathMark_Enemy", 1;
+			}
+		}
+		
+		return "", 0;
+	}
 	
 	States
 	{
@@ -22,6 +36,11 @@ Class DI_DeathMark : DIPassiveInventory
 
 Class DI_DeathMark_Enemy : Inventory
 {
+	default
+	{
+		inventory.maxamount 1;
+	}
+
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
 		if (passive == true)

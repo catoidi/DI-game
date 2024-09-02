@@ -107,12 +107,12 @@ DamagePassive DI_DepletedMag POW1W 14 256 di_unlock_item_depletedmag;
 DefensePassive DI_BloodyHeart POWRD 7 256 di_unlock_item_bloodyheart;
 DefensePassive DI_BonusArmor POWRE 7 256 di_unlock_item_fred1;
 DefensePassive DI_HatHat POWRM 14 128;
-DefensePassive DI_FreshRegen POWRX 14;
+DefensePassive DI_CarbonatedDrink POWRX 7;
 DefensePassive DI_Consumer POW1A 7 256 di_unlock_item_consumer;
 DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 18;
-ComboPassive DI_FreshBonusGiver POWRC 28;
+ComboPassive DI_FreshBonusGiver POWRC 14;
 ComboPassive DI_FreshBonusCharger POWRL 14 256 di_unlock_item_freshcharger;
 ComboPassive DI_WealthJar POWRZ 35 128 di_unlock_item_wealthjar;
 ComboPassive DI_FreshBullets POW1E 28 256 di_unlock_item_freshbullets;
@@ -120,6 +120,7 @@ ComboPassive DI_LeadRecycling POW1B 21 128;
 ComboPassive DI_LeadSwitch POW1I 14 128;
 ComboPassive DI_CoinMagnet POW1L 21 256 di_unlock_item_coinmagnet;
 ComboPassive DI_RewardsProgram POWRW 28 256 di_unlock_item_rewardsprogram;
+ComboPassive DI_GlassGem POW1X 21 256 di_unlock_item_glassgem;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 7 128 di_unlock_item_icebullet;
 StatusPassive DI_StatusGiver_Fire POWRO 7 128 di_unlock_item_firebullet;

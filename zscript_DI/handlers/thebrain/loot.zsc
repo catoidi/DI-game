@@ -15,23 +15,24 @@ extend class DIHandler
 				if ((dropper.di_notweapon == false) && (plr.CanFreshKill()))
 				{
 					let diwep = DI_Weapon(plr.player.ReadyWeapon);
-					combo += diwep.wpn_freshbonus;
+					combo += plr.combonum_bonus;
 				}
 			}
-			else if (dropper.di_notweapon == true) {combo = plr.combonum;}
-			else {combo = plr.CountInv("DI_TokenCombo");}
+			else {combo = plr.combonum + plr.combonum_bonus;}
 		}
 		else {combo = 1;}
-		
+
 		for (int i = 0; i < combo; ++i)
 		{
 			dropper.A_SpawnItemEx(dropper.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 		}
 		
+		/*
 		if ((plr) && (dropper.di_notweapon == false))
 		{
 			if (plr.CanFreshKill()) {plr.IsFreshKill();}
 		}
+		*/
 	}
 	
 	virtual void GivePlayerCombo(WorldEvent e, bool notweapon = false)
@@ -62,9 +63,22 @@ extend class DIHandler
 	
 	virtual void BoxDrops(WorldEvent e, DI_PlayerBase plr, bool notweapon = false)
 	{
-		if ((plr.boxammonum > 0) && (plr.CanFreshKill() == true))
+		if (plr.CanFreshKill())
 		{
-			e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			int drinks = plr.CountInv("DI_CarbonatedDrink");
+			if ((drinks > 0) && (random(drinks, 4) >= 4))
+			{
+				for (int i = 0; i < drinks; ++i)
+				{
+					int failure = 256 - (256 * ((1.0 * (plr.DIMaxHealth() - plr.health)) / plr.DIMaxHealth()));
+					failure += i * 80;
+					e.Thing.A_SpawnItemEX("DI_CarbonatedDrink_Pickup", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION, failchance: failure);
+				}
+			}
+			if (plr.boxammonum > 0)
+			{
+				e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
 		}
 		if ((plr.CountInv("Glowstick") > 0) && (notweapon == false))
 		{

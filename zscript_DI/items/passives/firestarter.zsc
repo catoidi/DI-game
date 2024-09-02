@@ -2,8 +2,6 @@
 
 Class DI_Firestarter : DIPassiveInventory
 {
-	//this code for this is contained within an eventhandler.
-
 	Default
 	{
 		Tag "Firestarter";
@@ -11,11 +9,46 @@ Class DI_Firestarter : DIPassiveInventory
 		Inventory.PickupMessage "Firestarter acquired! (Enemies have a chance to spawn on fire.)";
 		Inventory.MaxAmount 4;
 	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			return "DI_Firestarter_Enemy", owner.CountInv(self.GetClassName());
+		}
+
+		return "", 0;
+	}
 	
 	States
 	{
 		Spawn:
 			POW1 F -1;
 			Stop;
+	}
+}
+
+Class DI_Firestarter_Enemy : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+		+Inventory.AUTOACTIVATE;
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (owner && pickup)
+		{
+			let firenum = owner.CountInv(self.GetClassName());
+			let firechance = 3 + (firenum * 3);
+			if ((random(1, 20) <= firechance) || (owner.CheckRange(192) == false))
+			{
+				let firedmg = 4 + (firenum * 4);
+				if (firedmg >= owner.Health) {firedmg = owner.Health - 1;}
+				owner.A_DamageSelf(firedmg, "Fire");
+			}
+		}
+		return false;
 	}
 }
