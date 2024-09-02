@@ -1,0 +1,57 @@
+//zscript_DI/weapons/scifi/oredrill.zsc
+
+Class DI_OreDrill : DI_Weapon
+{
+	Default
+	{
+		DI_Weapon.FreshBonus 4;
+		DI_Weapon.BaseDamage 8;
+		DI_Weapon.BaseAccuracy 2;
+		Weapon.SelectionOrder 9999;
+		Weapon.SlotNumber 1;
+		Weapon.SlotPriority 1;
+		Weapon.Kickback 100;
+		Inventory.PickupMessage "Picked up the Ore Drill! (Rapid-fire melee weapon. Super effective on ore deposits.)";
+		Inventory.Icon "DRILZ0";
+		Tag "Ore Drill";
+		DamageType "Melee";
+		+BLOODSPLATTER;
+		+WEAPON.MELEEWEAPON;
+		+WEAPON.WIMPY_WEAPON;
+	}
+	
+	override void PostBeginPlay()
+	{
+		MarkSound("drill");
+	}
+
+	States
+	{	
+		Select:
+			DRIL A 1 A_Raise;
+			Loop;
+		Deselect:
+			DRIL A 1 A_Lower;
+			Loop;
+		Ready:
+			DRIL A 1 DI_WeaponReady();
+			Loop;
+		Fire:
+			#### # 0 {WeaponMode(1);}
+			#### # 0 A_StartSound("drill", 1, 0, 0.4);
+			#### ##### 1 A_OverlayOffset(PSP_WEAPON, 6, -6, WOF_ADD);
+		Hold:
+			#### # 0 A_StartSound("drill", 1, 0, 0.4, ATTN_NORM, 0.0, 0.3);
+			#### # 0 DI_BasicMelee(defpuff: "DI_BulletPuff", range: 80);
+			DRIL ABCD 1;
+			#### # 0 A_Refire("Hold");
+			#### # 0 A_StartSound("drill2", 1, volume: 0.2);
+			DRIL ABCD 2 A_Refire("Hold");
+			DRIL ABCD 3 A_Refire("Hold");
+			#### ##### 1 A_OverlayOffset(PSP_WEAPON, -6, 6, WOF_ADD);
+			Goto Ready;
+		Spawn:
+			DRIL Z -1;
+			Wait;
+	}
+}

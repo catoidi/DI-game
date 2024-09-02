@@ -167,6 +167,7 @@ version "4.12"
 //#include "zscript_DI/weapons/fantasy/magicstaff.zsc"
 //#include "zscript_DI/wepaons/fantasy/cards.zsc"
 //sci-fi weapons
+#include "zscript_DI/weapons/scifi/oredrill.zsc"
 //#include "zscript_DI/weapons/scifi/plasmapistol.zsc"
 //#include "zscript_DI/weapons/scifi/plasmarifle.zsc"
 //#include "zscript_DI/weapons/scifi/railgun.zsc"
