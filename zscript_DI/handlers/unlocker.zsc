@@ -684,7 +684,7 @@ Class DIUnlockHandler : EventHandler
 		//for items that are unlocked based on how many other unlocks the player has.
 		if (unlockcount >= 15)
 		{
-			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletsplitter");
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletmitosis");
 		}
 		if (unlockcount >= 30)
 		{

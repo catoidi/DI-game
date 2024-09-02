@@ -17,7 +17,7 @@ DI_FreshBonusGiver;
 DI_BloodyHeart;
 DI_BonusArmor;
 DI_Starfruit;
-DI_BulletSplitter;
+DI_BulletMitosis;
 DI_TooManyBullets;
 DI_LongMagazine;
 DI_PainStar;
