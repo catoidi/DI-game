@@ -7,6 +7,7 @@
 * Debuff DI_QuestDebuff_TornPockets;
 * Debuff DI_QuestDebuff_Encumbered;
 * Debuff DI_QuestDebuff_MotionBlur;
+* Debuff DI_QuestDebuff_SpeedyFoes;
 * Objective DI_QuestObjective_Fresh;
 * Objective DI_QuestObjective_BloodDrive;
 * Objective DI_QuestObjective_SleightOfHand;

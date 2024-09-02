@@ -1,0 +1,34 @@
+//zscript_DI/items/debuffs/speedyfoes.zsc
+
+Class DI_QuestDebuff_SpeedyFoes : DI_QuestDebuff
+{
+    default 
+	{
+		Tag "\cgCurse (Speedy Foes)";
+	}
+
+    override string, int GiveEnemyItem()
+    {
+        if (owner) {return "DI_SpeedyFoes_Buff", owner.CountInv(GetClassName());}
+        else return "", 0;
+    }
+}
+
+Class DI_SpeedyFoes_Buff : Inventory
+{
+    default
+    {
+        inventory.maxamount 999999;
+        +inventory.autoactivate;
+    }
+
+    override bool Use(bool pickup)
+    {
+        if (owner is "DI_Monster")
+        {
+            let mon = DI_Monster(owner);
+            mon.speedmult *= 1.0 + (0.4 * mon.CountInv(self.GetClassName()));
+        }
+        return false;
+    }
+}
