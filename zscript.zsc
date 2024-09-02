@@ -97,6 +97,7 @@ version "4.12"
 #include "zscript_DI/items/debuffs/encumbered.zsc"
 #include "zscript_DI/items/debuffs/motionblur.zsc"
 #include "zscript_DI/items/debuffs/speedyfoes.zsc"
+#include "zscript_DI/items/debuffs/bulletsponge.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
 #include "zscript_DI/items/objectives/blooddrive.zsc"

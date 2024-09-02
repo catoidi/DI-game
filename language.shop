@@ -35,6 +35,10 @@ SHOPITEM_DI_QUESTDEBUFF_SPEEDYFOES = "\cgCurse of Speedy Foes";
 SHOPDESC_DI_QUESTDEBUFF_SPEEDYFOES = "Increases enemy speed by 40%.";
 SHOPDESC2_DI_QUESTDEBUFF_SPEEDYFOES = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_SPEEDYFOES = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_BULLETSPONGE = "\cgCurse of Bullet Sponge";
+SHOPDESC_DI_QUESTDEBUFF_BULLETSPONGE = "Enemies will regenerate a portion of\nreceived damage over time.";
+SHOPDESC2_DI_QUESTDEBUFF_BULLETSPONGE = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_BULLETSPONGE = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

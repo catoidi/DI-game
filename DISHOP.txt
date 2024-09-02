@@ -147,3 +147,4 @@ FakeShopItem DI_QuestDebuff_TornPockets BOOKB 1;
 FakeShopItem DI_QuestDebuff_Encumbered BOOKB 1;
 FakeShopItem DI_QuestDebuff_MotionBlur BOOKB 1;
 FakeShopItem DI_QuestDebuff_SpeedyFoes BOOKB 1;
+FakeShopItem DI_QuestDebuff_BulletSponge BOOKB 1;
