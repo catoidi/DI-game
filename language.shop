@@ -116,6 +116,10 @@ SHOPITEM_POPCORNGUN = "Popcorn Gun";
 SHOPDESC_POPCORNGUN = "shoots popcorn.\nand popcorn kernels.\n\cxget fresh bonuses for more ammo.";
 SHOPDESC2_POPCORNGUN = "\cbThis is a \ctBox Party \cbitem. Shooting the primary will give ammo for the secondary. The secondary needs 12 kernels to fire. You must get a Fresh Weapon Bonus to replenish ammo. Only ammo for 1 weapon can spawn per fresh bonus.";
 SHOPTYPE_POPCORNGUN = "\cb[Weapon] \ca[Limited Ammo]";
+SHOPITEM_DI_OREDRILL = "Ore Drill";
+SHOPDESC_DI_OREDRILL = "Rapid-fire melee weapon.\nSuper effective against ore deposits.";
+SHOPDESC2_DI_OREDRILL = "\cbCrossover item from the hit indie game, \cv'Exoplanetary Pitstop'\cb. Check it out on itch.io!";
+SHOPTYPE_DI_OREDRILL = "\cb[Weapon]";
 
 //Armor
 SHOPITEM_DI_TOPHAT = "Top Hat";

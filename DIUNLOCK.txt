@@ -53,4 +53,4 @@ di_unlock_item_laserpointer LaserPointer 1 di_swaglevel 1000003;
 di_unlock_item_bowtie DI_BowTie 3 di_swaglevel 1000004;
 di_unlock_item_depletedmag DI_DepletedMag 2 di_swaglevel 1000005;
 di_unlock_item_oredrill DI_OreDrill 1 di_swaglevel 1000005;
-di_unlock_item_stunbow DI_StunCrossbow 1 di_swaglevel 1000006;
+di_unlock_item_stunbow StunCrossbow 1 di_swaglevel 1000006;
