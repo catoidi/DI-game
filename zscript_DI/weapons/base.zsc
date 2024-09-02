@@ -267,27 +267,19 @@ Class DI_Weapon : Weapon abstract
 	}
 
 	//Used for items that increase ammo consumption. Determines the max value that ammo can currently be increased, taking both ammo types into account.
-	int debugtime;
 	private int CalculateAmmoCost()
 	{
-		++debugtime;
-		console.printf("tic: %d", debugtime);
-		int ammocheck;
-		if (Ammo1 && !wpn_dontgiveammo1) 
+		int returnvalue;
+		if (Ammo1 && !wpn_dontgiveammo1)
 		{
-			ammocheck = Ammo1.MaxAmount - AmmoUse1;
-			console.printf("ammo1: %d - %d = %d", Ammo1.MaxAmount, AmmoUse1, ammocheck);
+			returnvalue = Ammo1.MaxAmount - Default.AmmoUse1;
 		}
-		if (Ammo2 && !wpn_dontgiveammo2) 
+		if (Ammo2 && !wpn_dontgiveammo2)
 		{
-			int ammocheck2 = Ammo2.MaxAmount - AmmoUse2;
-			if (ammocheck2 < ammocheck) {ammocheck = ammocheck2;}
-			console.printf("ammo2: %d - %d = %d", Ammo2.MaxAmount, AmmoUse2, ammocheck2);
+			if (returnvalue > (Ammo2.MaxAmount - Default.AmmoUse2)) {returnvalue = Ammo2.MaxAmount - Default.AmmoUse2;}
 		}
-		int itemnum = plr.CountInv(GetClassName());
-		if (ammocheck < 0) {ammocheck = 0;}
-		if (itemnum > ammocheck) {return ammocheck;}
-		else return itemnum;
+
+		return returnvalue;
 	}
 
 	clearscope virtual int CheckDamage(float basescale = 1.0, float multscale = 1.0)

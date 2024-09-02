@@ -67,7 +67,7 @@ CLASS LaserPointer : DI_Weapon //20020
 			LAZR H 0 A_AlertMonsters();
 			LAZR H 0 A_StartSound("weapons/laser/lasrpew2");
 			LAZR H 0 BRIGHT DI_FireProjectile("LaserPointerBullet2", -32768, -32768, -32768, -4, 4, FPF_AIMATANGLE, isRecoil: false);
-			LAZR H 0 BRIGHT A_TakeInventory("LaserPointer_Ammo", 4);
+			LAZR HHHH 0 BRIGHT {invoker.DepleteAmmo(false);}
 			LAZR H 1 BRIGHT A_WeaponOffset(-6, 60, WOF_INTERPOLATE);
 			LAZR HHH 1 BRIGHT A_WeaponOffset(-3, 4, WOF_ADD | WOF_INTERPOLATE);
 			LAZR A 6;

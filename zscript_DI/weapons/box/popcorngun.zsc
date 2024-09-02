@@ -76,7 +76,7 @@ CLASS PopcornGun : DI_Weapon //200
 	{
 		A_StartSound("weapons/popcorn/popcorn");
 		DI_FireProjectile("PopcornBullet", -32768, -32768, -32768, -4, 8, FPF_AIMATANGLE, isRecoil: false);
-		A_GiveInventory("PopcornGunAmmo2", 1);
+		A_GiveInventory("PopcornGunAmmo2", invoker.AmmoUse1);
 	}
 	
 	States
