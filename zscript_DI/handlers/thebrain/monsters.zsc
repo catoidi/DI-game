@@ -67,49 +67,34 @@ extend class DIHandler
 		{
 			mon.speedmult *= endless_speedmult;
 		}
-		
-		//code for DI_Firestarter Passive Item.
-		int firenum = 0;
+
+		//Parsing data from GiveEnemyItem, found in DIPassiveInventory items.
+		//AKA items to give to enemies from passive items the player owns.
+		//Idk if this will impact performance in any meaningful way, but if you notice freezing when enemies spawn, this is probably why.
 		for (int i = 0; i < players.Size(); ++i) 
 		{
-			if (firenum >= 4) {firenum = 4; continue;}
-			if (playeringame[i]) {firenum += players[i].mo.CountInv("DI_Firestarter");}
-		}
-		if (firenum > 0)
-		{
-			let firechance = 3 + (firenum * 3);
-			if ((random(1, 20) <= firechance) || (mon.CheckRange(192) == false))
+			if (playeringame[i])
 			{
-				let firedmg = 4 + (firenum * 4);
-				if (firedmg >= mon.Health) {firedmg = mon.Health - 1;}
-				mon.A_DamageSelf(firedmg, "Fire");
+				let plr = DI_PlayerBase(players[i].mo);
+				if (plr)
+				{
+					for (int i = 0; i < plr.knownpassives.Size(); ++i)
+					{
+						DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+						if (curinv)
+						{
+							string returnstring;
+							int returnnum;
+							[returnstring, returnnum] = curinv.GiveEnemyItem();
+							if (returnstring != "")
+							{
+								mon.GiveInventory(returnstring, returnnum);
+							}
+						}
+					}
+				}
 			}
 		}
-		
-		//code for DI_DeathMark passive item.
-		int markednum = 0;
-		for (int i = 0; i < players.Size(); ++i) 
-		{
-			if (markednum >= 3) {markednum = 3; continue;}
-			if (playeringame[i]) {markednum += players[i].mo.CountInv("DI_DeathMark");}
-		}
-		if (markednum > 0)
-		{
-			if (random(1, 20) <= (markednum * 3))
-			{
-				//multiple death marks dont make the marks stronger, just more likely to appear.
-				mon.A_GiveInventory("DI_DeathMark_Enemy", 1);
-			}
-		}
-		
-		//code for DI_Farsight passive item.
-		int farnum = 0;
-		for (int i = 0; i < players.Size(); ++i) 
-		{
-			if (farnum >= 5) {farnum = 5; continue;}
-			if (playeringame[i]) {farnum += players[i].mo.CountInv("DI_Farsight");}
-		}
-		if (farnum > 0) {mon.A_GiveInventory("DI_Farsight_Enemy", farnum);}
 	}
 	
 	virtual void DIBossHandler(WorldEvent e)

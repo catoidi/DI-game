@@ -74,6 +74,9 @@ class DIPassiveInventory : Inventory
 	virtual int GiveMaxAmmo2() {return 0;} //Same as above, but for secondary ammo.
 	virtual double GivePlayerSpeed() {return 0.0;} //Adds movement speed to the player. Has a lower cap of 0.1.
 	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
+
+	//Called by thebrain handler's monster code.
+	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item to make enemies spawn with.
 	
 	//Functions activated by scripts or events. Returns true if item is activated.
 	virtual bool EnterWave() {return false;} //called once a new wave is started.
