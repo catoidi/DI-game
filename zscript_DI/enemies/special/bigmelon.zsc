@@ -4,7 +4,7 @@ Class DI_BigMelon : DI_Boss
 {
 	Default
 	{
-		Health 2400;
+		Health 2000;
 		Speed 10;
 		Radius 96;
 		Height 120;
@@ -12,6 +12,8 @@ Class DI_BigMelon : DI_Boss
 		MinMissileChance 1;
 		MeleeThreshold 0;
 		MeleeRange 128;
+		PainChance 64;
+		RadiusDamageFactor 0.25;
 		Tag "* SUPER TURBO FRUIT PUNCHER *";
 		+THRUSPECIES;
 		+MTHRUSPECIES;
@@ -47,27 +49,29 @@ Class DI_BigMelon : DI_Boss
 			BMEL # 0 A_Jump(256, "BigSlamATK", "GloveATK");
 			Goto GloveATK;
 		GloveATK:
-			#### # 0 A_StartSound("enemies/whiffA", attenuation: ATTN_NONE);
+			#### # 0 {bNOPAIN = true;}
+			#### # 0 A_StartSound("whiffA", attenuation: ATTN_NONE);
 			BMEL D 12 Slow A_FaceTarget;
 			BMEL E 0 A_DIScale(0.05, -0.05);
-			#### # 0 A_StartSound("enemies/peppowA");
+			#### # 0 A_StartSound("peppowA");
 			BMEL E 12 Slow BRIGHT A_SpawnProjectile("BossMelonBullet", 64, 0, 0, CMF_OFFSETPITCH, 0);
-			#### # 0 A_StartSound("enemies/whiffA", attenuation: ATTN_NONE);
+			#### # 0 A_StartSound("whiffA", attenuation: ATTN_NONE);
 			BMEL F 12 Slow A_FaceTarget;
 			BMEL G 0 A_DIScale(0.05, -0.05);
-			#### # 0 A_StartSound("enemies/peppowA");
+			#### # 0 A_StartSound("peppowA");
 			BMEL G 12 Slow BRIGHT A_SpawnProjectile("BossMelonBullet", 64, 0, 0, CMF_OFFSETPITCH, 0);
 			//#### # 0 A_BoxExhaust(8);
 			BMEL HH 6 Slow A_DIScale(-0.1, 0.1);
+			#### # 0 {bNOPAIN = false;}
 			Goto JustOneSec;
 		BigSlamATK:
 			#### # 0 {bNOPAIN = true;}
 			BMEL AAAA 3 A_DIScale(0.05, -0.15);
-			#### # 0 A_StartSound("enemies/pwooshA", attenuation: ATTN_NONE);
+			#### # 0 A_StartSound("pwooshA", attenuation: ATTN_NONE);
 			BMEL I 0 A_ResetScale();
 			BMEL I 0 {self.Vel.X = 0.0; self.Vel.Y = 0.0;}
 			BMEL I 0 A_FaceTarget;
-			BMEL I 0 ThrustThingZ(0, 52, 0, 1);
+			BMEL I 4 ThrustThingZ(0, 52, 0, 1);
 			//BMEL I 0 A_BoxParticle("d7 d7 d7", 12, 40, 80, 8.0, 10.0, true);
 			//BMEL III 4 A_SpawnItemEX("BoxSlamBIG", 0, 0, 0, 0, 0, -4, 0, SXF_NOCHECKPOSITION);
 			Goto BigSlamLoop;
@@ -100,7 +104,7 @@ Class DI_BigMelon : DI_Boss
 				//A_SpawnItemEX("BoxSlamSUPER", 0, 0, 0, 0, 0, 4, 0, SXF_NOCHECKPOSITION);
 				//A_DIScale(-0.075, 0.075);
 			}
-			#### # 0 {bNOPAIN = true;}
+			#### # 0 {bNOPAIN = false;}
 			#### # 0 A_ResetScale();
 			Goto JustOneSec;
 		Death.Melee:
