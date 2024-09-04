@@ -2,6 +2,7 @@
 >>Arg 1: Which map to spawn the debuff/objective in. "*" will spawn in every map.
 >>Arg 2: Specify either "Debuff" or "Objective" here.
 >>Arg 3: Class name of your chosen debuff or objective.
+>>Arg 4: (Optional) Chance of quest/debuff being added to the NPC. Default/Maximum is 256, which is guaranteed to appear.
 * Debuff DI_QuestDebuff_Slow;
 * Debuff DI_QuestDebuff_Defenseless;
 * Debuff DI_QuestDebuff_TornPockets;
@@ -9,8 +10,8 @@
 * Debuff DI_QuestDebuff_MotionBlur;
 * Debuff DI_QuestDebuff_SpeedyFoes;
 * Debuff DI_QuestDebuff_BulletSponge;
->>* Objective DI_QuestObjective_Fresh;
->>* Objective DI_QuestObjective_BloodDrive;
->>* Objective DI_QuestObjective_SleightOfHand;
->>* Objective DI_QuestObjective_Overconsumption;
+* Objective DI_QuestObjective_Fresh;
+* Objective DI_QuestObjective_BloodDrive;
+* Objective DI_QuestObjective_SleightOfHand;
+* Objective DI_QuestObjective_Overconsumption;
 DI02 Objective DI_QuestObjective_Kill_BigMelon;
