@@ -17,7 +17,7 @@ class DIXHairHandler : EventHandler
 	transient ui cvar fresh_toggle;
 	transient ui cvar fresh_scale;
 	transient ui cvar fresh_alpha;
-	transient ui double xspread, curspread;
+	transient ui double xspread, curspread, newy, oldy;
 	transient ui double xhair_startalpha;
 	transient ui string diwep_name;
 	transient double wep_acc; //base weapon accuracy.
@@ -54,6 +54,8 @@ class DIXHairHandler : EventHandler
 			if (curspread ~== xspread) {xspread = curspread;}
 			else if (curspread > xspread) {xspread += (curspread - xspread) / 3.0;}
 			else if (curspread < xspread) {xspread -= (xspread - curspread) / 3.0;}
+			
+			oldy = newy;
 		}
 		Super.UITick();
 	}
@@ -95,7 +97,11 @@ class DIXHairHandler : EventHandler
 		{
 			double cenx = screen.GetWidth() / 2;
 			double ceny = screen.GetHeight() / 2;
-			if (xhair_precise_toggle.GetBool() == true) {ceny = xhair_precise.GetFloat();} //mod compatibility with Precise Crosshair.
+			if (xhair_precise_toggle.GetBool() == true) //mod compatibility with Precise Crosshair.
+			{
+				newy = xhair_precise.GetFloat();
+				ceny = oldy + ((newy - oldy) * e.FracTic);
+			} 
 			
 			//get variables
 			double pfov = diplayer.player.fov;
