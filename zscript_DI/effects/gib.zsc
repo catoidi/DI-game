@@ -62,7 +62,7 @@ Class DI_Gib : DI_FloorActor
 			Stop;
 		Looper:
 			#### # 15;
-			#### # 0 {A_FadeOut(0.1);}
+			#### # 0 {A_FadeOut(0.01);}
 			Loop;
 		Death.Sky:
 		Death:

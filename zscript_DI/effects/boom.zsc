@@ -157,3 +157,39 @@ Class SafeSplashSmall : SafeBoomSmall
 {
 
 }
+
+CLASS GIANTBOOM : SafeBoom
+{
+	Default
+	{
+		Radius 4;
+		Height 4;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			BOOM C 0 BRIGHT A_Jump(256, "Booming");
+		Booming:
+			#### # 0 BRIGHT 
+			{
+				A_AttachLightDef("Boomer", "GIANTBOOM");
+				A_StartSound("boxboom", 0, CHANF_OVERLAP, 0.5);
+				A_QuakeEX(2, 2, 2, 35, 0, 1024);
+				for (int i = 0; i < 32; ++i)
+				{
+					if (i < 5)
+					{
+						A_SpawnItemEX("SafeBoomExtra", frandom(-4, 4), frandom(-4, 4), frandom(-4, 4), frandom(-4, 4), frandom(-4, 4), frandom(-4, 4), 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSPRITEFRAME);
+					}
+					A_SpawnParticle("ffeb00", SPF_FULLBRIGHT | SPF_RELVEL, 48, 16, random(0, 359), 0, 0, 0, random(0, 16), 0, random(0, 8), 0, 0, -0.33, 1.0, -1, -0.15);
+				}
+			}
+			#### # 0 A_Jump(256, "Expander");
+		Expander:
+			#### # 1 BRIGHT A_FadeOut(0.1);
+			#### # 0 BRIGHT A_DIScale(0.1, 0.1);
+			Loop;
+	}
+}
