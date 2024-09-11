@@ -17,6 +17,7 @@ Class DI_BigMelon : DI_Boss
 		Tag "* SUPER TURBO FRUIT PUNCHER *";
 		BloodType "DI_BigMelonBlood";
 		DI_Monster.GibType "DI_BigMelonExplosion";
+		DI_Monster.DIDrop "DI_Gem";
 		+THRUSPECIES;
 		+MTHRUSPECIES;
 		+MISSILEMORE;
@@ -126,7 +127,10 @@ Class DI_BigMelon : DI_Boss
 			BMEL LLLLL 5 A_SpawnItemEX("SafeBoom", random(-64, 64), random(-64, 64), random(32, 96), random(-2, 2), random(-2, 2), random(-2, 2));
 			BMEL L 10;
 			TNT1 A 0 A_SpawnItemEX("GIANTBOOM", random(-64, 64), random(-64, 64), random(32, 96), random(-2, 2), random(-2, 2), random(-2, 2));
+			#### # 0 A_DIDie();
+			#### ### 0 A_DIDieBlood();
 			#### # 0 A_DIGibExplode();
+			#### # 0 A_DISpawnBloodCoins();
 			//#### ############ 0 A_SpawnItemEX("BoomSmokeBig", random(-64, 64), random(-64, 64), random(32, 96), frandom(-2, 2), frandom(-2, 2), frandom(-2, 2), 0, SXF_NOCHECKPOSITION);
 			//#### # 0 A_QuakeEX(3, 3, 3, 35, 0, 1280, 0);
 			#### # 5 A_NoBlocking;
