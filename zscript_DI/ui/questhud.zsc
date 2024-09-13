@@ -61,7 +61,7 @@ Class DIQuestHUDHandler : EventHandler
 	//UI ELEMENTS
 	ui DI_PlayerBase plr;
 	ui DI_MainQuest quest;
-	ui string curquest, curdesc, curprogress;
+	ui string curquest, curdesc, curdebuff, curprogress;
 	ui bool doquest;
 	ui float questalpha, scalenum;
 	transient ui cvar scalefactor;
@@ -78,6 +78,7 @@ Class DIQuestHUDHandler : EventHandler
 			{
 				curquest = stringtable.localize(quest.objective.QuestName());
 				curdesc = stringtable.localize(quest.objective.QuestDescription());
+				curdebuff = stringtable.localize(string.format("$SHOPDESC_%s", quest.debuff.GetClassName()));
 				curprogress = stringtable.localize(quest.objective.QuestProgress());
 				doquest = true;
 			}
@@ -92,7 +93,7 @@ Class DIQuestHUDHandler : EventHandler
 	{
 		let startx = 0;
 		let starty = Screen.GetHeight() / 2;
-		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curprogress);
+		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\caDebuff:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curdebuff, curprogress);
 		
 		textureid back = texman.checkfortexture("graphics/hpbar/shopbar.png");
 		screen.drawtexture(back, false, startx - (16 * CleanXFac), starty - (16 * CleanYFac),

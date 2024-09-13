@@ -4,6 +4,7 @@ Class DI_QuestObjective_Audit : DI_QuestObjective
 {
 	bool queststarted; //checks when the player first enters the next wave.
     int lostcoins;
+	int maxcoins;
 
     override void doeffect()
 	{
@@ -16,10 +17,14 @@ Class DI_QuestObjective_Audit : DI_QuestObjective
 		if ((plr) && (plr.inwave))
 		{
 			queststarted = true;
-            if (lostcoins >= 10)
+            if (maxcoins == 0)
+			{
+				maxcoins = ACS_ScriptCall("DICheckWave");
+			}
+			else if (lostcoins >= 5)
             {
                 ObjectiveFailed();
-            }
+			}
         }
 		else if ((queststarted) && (!plr.inwave)) 
 		{
@@ -30,12 +35,13 @@ Class DI_QuestObjective_Audit : DI_QuestObjective
     virtual void CoinLost()
     {
         ++lostcoins;
-        plr.A_StartSound("piebomb", slot: CHAN_AUTO, volume: 0.15, pitch: 0.75 - (0.05 * lostcoins));
+        plr.A_StartSound("piebomb", slot: CHAN_AUTO, volume: 0.15, pitch: 0.75 - (0.05 * lostcoins) + (0.05 * maxcoins));
     }
 
     override string QuestName() {return "Audit";}
 	override string QuestProgress()
 	{
-		return string.format("Coins Lost: %d/10", lostcoins);
+		if (!plr.inwave) {return "Wave hasn't started yet!";}
+		return string.format("Coins Lost: %d/%d", lostcoins, maxcoins);
 	}
 }
