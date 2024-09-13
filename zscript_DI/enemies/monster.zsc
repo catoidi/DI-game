@@ -4,7 +4,7 @@ Class DI_Monster : DI_Actor abstract
 	property DIDrop: coindrop;
 	int coinnum;
 	property DIDropNum: coinnum; //control how many coins the enemy drops on death. -1 uses combo meter, and is the default.
-	PlayerPawn plrtarget;
+	DI_PlayerBase plrtarget;
 	DI_Weapon plrwpn; //used for tracking fresh bonuses for status effect deaths.
 	
 	bool killedbyplayer;
@@ -24,6 +24,8 @@ Class DI_Monster : DI_Actor abstract
 	bool forcefresh; //allow a fresh weapon bonus, if conditions are correct.
 	double speedmult; //speed multiplier.
 	property DISpeedMult: speedmult;
+
+	bool wasfreshkilled;
 	
 	name GibType;
 	Property GibType: GibType;
@@ -91,7 +93,7 @@ Class DI_Monster : DI_Actor abstract
 	
 		if ((target) && (target is "PlayerPawn"))
 		{
-			plrtarget = PlayerPawn(target);
+			plrtarget = DI_PlayerBase(target);
 		}
 		
 		if (Level.IsFrozen() == false) {StatusTick();}
@@ -256,7 +258,7 @@ Class DI_Monster : DI_Actor abstract
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 	
-	virtual void ConfirmPlayerWeapon(PlayerPawn plr, DI_Weapon wpn)
+	virtual void ConfirmPlayerWeapon(DI_PlayerBase plr, DI_Weapon wpn)
 	{
 		if (wpn == plr.player.readyweapon) {killedbyplayer = true;}
 		else {killedbyplayer = false;}

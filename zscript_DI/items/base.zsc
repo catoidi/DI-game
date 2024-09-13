@@ -94,7 +94,8 @@ class DIPassiveInventory : Inventory
 	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
 
 	//Called by thebrain handler's monster code.
-	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item to make enemies spawn with.
+	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item and its quantity to make enemies spawn with.
+	virtual string, int GiveEnemyDrop(DI_Monster mon, bool isfresh) {return "", 0;} //Specify an item and its quantity to drop when an enemy is killed.
 	
 	//Functions activated by scripts or events. Returns true if item is activated.
 	virtual bool EnterWave() {return false;} //called once a new wave is started.

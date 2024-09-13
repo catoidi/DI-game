@@ -3,36 +3,32 @@ extend class DIHandler
 	virtual void CoinDropper(WorldEvent e)
 	{
 		DI_Drop dropper = DI_Drop(e.Thing);
-		int combo;
-		DI_PlayerBase plr;
-		
-		if (e.Thing.target is "DI_PlayerBase")
+		if (dropper && dropper.coindropper)
 		{
-			plr = DI_PlayerBase(dropper.target);
-			if (dropper.coinnum > -1) 
+			int combo;
+			DI_PlayerBase plr;
+			DI_Weapon diwep;
+			DI_Monster mon = dropper.coindropper;
+			
+			if (e.Thing.target is "DI_PlayerBase")
 			{
-				combo = dropper.coinnum;
-				if ((dropper.di_notweapon == false) && (plr.CanFreshKill()))
-				{
-					let diwep = DI_Weapon(plr.player.ReadyWeapon);
-					combo += plr.combonum_bonus;
-				}
+				plr = DI_PlayerBase(dropper.target);
+				diwep = DI_Weapon(plr.player.ReadyWeapon);
+				if (mon.coinnum > -1) {combo = mon.coinnum + diwep.wpn_extracoin;}
+				else {combo = plr.combonum + diwep.wpn_extracoin;}
 			}
-			else {combo = plr.combonum + plr.combonum_bonus;}
-		}
-		else {combo = 1;}
+			else {combo = 1;}
 
-		for (int i = 0; i < combo; ++i)
-		{
-			dropper.A_SpawnItemEx(dropper.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			if (diwep && mon.wasfreshkilled)
+			{
+				combo += diwep.wpn_freshbonus;
+			}
+	
+			for (int i = 0; i < combo; ++i)
+			{
+				dropper.A_SpawnItemEx(mon.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
 		}
-		
-		/*
-		if ((plr) && (dropper.di_notweapon == false))
-		{
-			if (plr.CanFreshKill()) {plr.IsFreshKill();}
-		}
-		*/
 	}
 	
 	virtual void GivePlayerCombo(WorldEvent e, bool notweapon = false)
@@ -54,7 +50,7 @@ extend class DIHandler
 					if (fakescore < 0) {fakescore = 0;}
 					if ((iskiller == true) && (plr.CanFreshKill()) && (notweapon == false)) {compoint += (30 * (plr.CountInv("DI_TokenCombo") + 2)) + fakescore;}
 					cplr.GiveInventory("DI_TokenComboTimer", compoint);
-					if (iskiller == true) {plr.DIMonsterKilled(notweapon);}
+					if (iskiller == true) {plr.DIMonsterKilled(DI_Monster(e.thing), notweapon);}
 				}
 			
 			}
