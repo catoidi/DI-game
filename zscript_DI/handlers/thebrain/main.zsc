@@ -54,6 +54,4 @@ class DIHandler : EventHandler
 	DI_WaveSpawnTimer wavetimeractor;
 	
 	private Array<String> supporters;
-
-	Array<DI_Pickup> pickups; //all pickups currently in the level.
 }

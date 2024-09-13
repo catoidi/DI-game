@@ -22,6 +22,7 @@ Class DI_Pickup : ScoreItem abstract
 	{
 		super.postbeginplay();
 		if (!(target is "DI_PlayerBase")) {A_LookEX(LOF_NOJUMP, 0, 512, 512, 360);}
+		ChangeTID(7499);
 	}
 	
 	override void tick()
@@ -52,12 +53,6 @@ Class DI_Pickup : ScoreItem abstract
 		
 		Super.TryPickup(toucher);
 		return true;
-	}
-
-	state TimeToDie()
-	{
-		console.printf("%s", "IM GOING TO DIE!!!!!!!!!");
-		return FindState("PleaseDieNow");
 	}
 	
 	override void PlayPickupSound(Actor toucher)
@@ -138,7 +133,6 @@ Class DI_Pickup : ScoreItem abstract
 					blinktoggle = true;
 				}
 			}
-		PleaseDieNow:
 			#### # 0 BRIGHT
 			{
 				for (int i = 0; i < 4; ++i)
