@@ -42,7 +42,6 @@ class DIPassiveInventory : Inventory
 					}
 				}
 
-				console.printf("%d", insertnum);
 				if (insertnum == -1) {plr.knownpassives.Push(GetClassName());}
 				else {plr.knownpassives.Insert(insertnum, GetClassName());}
 			}

@@ -600,6 +600,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 			let curwpn = DI_Weapon(invoker.FindInventory(allwpns[i]));
 			if (curwpn != null) {curwpn.RestoreStartAmmo();}
 		}
+
+		//remove spawned coins
+		EventHandler.SendNetworkEvent("DI_RemoveAllCoins");
 	}
 
 	action void A_DIPlayerPain(bool noblood = false)

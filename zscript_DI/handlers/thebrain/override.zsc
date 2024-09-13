@@ -84,6 +84,10 @@ extend class DIHandler
 				e.Thing.A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 				if (!di_unlock_item_glassgem) {e.Thing.GiveInventory("DI_GlassGem_Tracker", 1);}
 			}
+			if (e.Thing is "DI_Pickup")
+			{
+				pickups.Push(DI_Pickup(e.Thing));
+			}
 		}
 	}
 	
@@ -135,6 +139,14 @@ extend class DIHandler
 					if (shoparray.Find(shopmo) < shoparray.Size()) {removeshop = shoparray.Find(shopmo);}
 				}
 				shoparray.Delete(removeshop);
+			}
+			if (e.Thing is "DI_Pickup")
+			{
+				int picknum = pickups.Find(DI_Pickup(e.Thing));
+				if (picknum != pickups.Size())
+				{
+					pickups.Delete(picknum);
+				}
 			}
 		}
 	}
@@ -282,6 +294,29 @@ extend class DIHandler
 						plr.ACS_NamedExecuteAlways("DebuffRemoved");
 					}
 				}
+			}
+		}
+		else if (e.Name == "DI_CoinDespawned")
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				if (players[i].mo is "DI_PlayerBase")
+				{
+					let plr = DI_PlayerBase(players[i].mo);
+					DI_MainQuest quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+					if (quest && quest.objective.GetClassName() == "DI_QuestObjective_Audit")
+					{
+						let audit = DI_QuestObjective_Audit(quest.objective);
+						audit.CoinLost();
+					}
+				}
+			}
+		}
+		else if (e.Name == "DI_RemoveAllCoins")
+		{
+			for (int i = 0; i < pickups.Size(); ++i)
+			{
+				pickups[i].TimeToDie();
 			}
 		}
 	}

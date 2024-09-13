@@ -1,0 +1,41 @@
+//zscript_DI/items/objectives/audit.zsc
+
+Class DI_QuestObjective_Audit : DI_QuestObjective
+{
+	bool queststarted; //checks when the player first enters the next wave.
+    int lostcoins;
+
+    override void doeffect()
+	{
+		super.doeffect();
+		ObjectiveTick();
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if ((plr) && (plr.inwave))
+		{
+			queststarted = true;
+            if (lostcoins >= 10)
+            {
+                ObjectiveFailed();
+            }
+        }
+		else if ((queststarted) && (!plr.inwave)) 
+		{
+			ObjectiveComplete();
+		}
+    }
+
+    virtual void CoinLost()
+    {
+        ++lostcoins;
+        plr.A_StartSound("piebomb", slot: CHAN_AUTO, volume: 0.15, pitch: 0.75 - (0.05 * lostcoins));
+    }
+
+    override string QuestName() {return "Audit";}
+	override string QuestProgress()
+	{
+		return string.format("Coins Lost: %d/10", lostcoins);
+	}
+}

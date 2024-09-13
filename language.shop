@@ -10,6 +10,7 @@ DIQUEST_DI_QUESTOBJECTIVE_BLOODDRIVE = "Complete the wave while not losing\nmore
 DIQUEST_DI_QUESTOBJECTIVE_SLEIGHTOFHAND = "Every weapon kill this wave must be\ndone with a different weapon than the last.";
 DIQUEST_DI_QUESTOBJECTIVE_OVERCONSUMPTION = "Complete the wave while using\na consumable every 25 seconds.";
 DIQUEST_DI_QUESTOBJECTIVE_KILL_BIGMELON = "You must defeat a new boss in this wave.";
+DIQUEST_DI_QUESTOBJECTIVE_AUDIT = "Don't let any coins despawn, or else!";
 //Quest Debuffs.
 SHOPITEM_DI_QUESTDEBUFF_SLOW = "\cgCurse of Slow Movement Speed";
 SHOPDESC_DI_QUESTDEBUFF_SLOW = "Player movement speed is reduced by 20%.";
