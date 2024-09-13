@@ -15,6 +15,9 @@ class DIPassiveInventory : Inventory
 		+BRIGHT;
 		+FLOATBOB;
 	}
+
+	//Called in "AttachToOwner".
+	virtual int ItemPriority() {return 0;} //Used for determining which passive item's functions are ran first. Set to a high positive number to ensure your item's code is ran after everything else.
 	
 	override void AttachToOwner(Actor other)
 	{
@@ -25,7 +28,23 @@ class DIPassiveInventory : Inventory
 			let plr = DI_PlayerBase(other);
 			if (plr.knownpassives.Find(GetClassName()) == plr.knownpassives.Size())
 			{
-				plr.knownpassives.Push(GetClassName());
+				//plr.knownpassives.Push(GetClassName());
+				int insertnum = -1;
+				for (int i = 0; i < plr.knownpassives.Size(); ++i)
+				{
+					let curitem = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+					if (!curitem) {continue;}
+					if (ItemPriority() >= curitem.ItemPriority()) {continue;}
+					else
+					{
+						insertnum = i;
+						i = plr.knownpassives.Size();
+					}
+				}
+
+				console.printf("%d", insertnum);
+				if (insertnum == -1) {plr.knownpassives.Push(GetClassName());}
+				else {plr.knownpassives.Insert(insertnum, GetClassName());}
 			}
 		}
 	}
