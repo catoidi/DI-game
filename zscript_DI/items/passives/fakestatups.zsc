@@ -193,7 +193,6 @@ Class DI_LongMagazine : DIPassiveInventory
 		int itemnum = plr.CountInv(GetClassName());
 		int returnvalue = itemnum * (wpn.Ammo1.Default.MaxAmount / 2);
 		if (returnvalue < itemnum) {returnvalue = itemnum;}
-		console.printf("\cfmaxammo1: %d", returnvalue);
 		return returnvalue;
 	}
 	
@@ -204,7 +203,6 @@ Class DI_LongMagazine : DIPassiveInventory
 		int itemnum = plr.CountInv(GetClassName());
 		int returnvalue = itemnum * (wpn.Ammo2.Default.MaxAmount / 2);
 		if (returnvalue < itemnum) {returnvalue = itemnum;}
-		console.printf("\cfmaxammo2: %d", returnvalue);
 		return returnvalue;
 	}
 
@@ -256,7 +254,6 @@ Class DI_BulletMitosis : DIPassiveInventory
 	override int GiveProjectiles()
 	{
 		if (!wpn) {return 0;}
-		console.printf("projectile: %d", returnvalue);
 		return returnvalue;
 	}
 	
@@ -264,7 +261,6 @@ Class DI_BulletMitosis : DIPassiveInventory
 	{
 		if (!wpn) {return 0;}
 		if (wpn.wpn_dontgiveammo1) {return 0;}
-		console.printf("ammouse1: %d", returnvalue);
 		return returnvalue;
 	}
 	
@@ -272,7 +268,6 @@ Class DI_BulletMitosis : DIPassiveInventory
 	{
 		if (!wpn) {return 0;}
 		if (wpn.wpn_dontgiveammo2) {return 0;}
-		console.printf("ammouse2: %d", returnvalue);
 		return returnvalue;
 	}
 	
