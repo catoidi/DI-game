@@ -95,7 +95,7 @@ class DIPassiveInventory : Inventory
 
 	//Called by thebrain handler's monster code.
 	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item and its quantity to make enemies spawn with.
-	virtual string, int GiveEnemyDrop(DI_Monster mon, bool isfresh) {return "", 0;} //Specify an item and its quantity to drop when an enemy is killed.
+	virtual string, int, int GiveEnemyDrop(DI_Monster mon) {return "", 0, 0;} //Add new drops to killed enemies. Outputs item name, quantity, and failchance (like A_SpawnItemEX).
 	
 	//Functions activated by scripts or events. Returns true if item is activated.
 	virtual bool EnterWave() {return false;} //called once a new wave is started.

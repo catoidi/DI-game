@@ -23,10 +23,35 @@ extend class DIHandler
 			{
 				combo += diwep.wpn_freshbonus;
 			}
+
+			//GiveEnemyDrop code
+			Array<String> itemdrops;
+			for (int i = 0; i < plr.knownpassives.Size(); ++i)
+			{
+				DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+				if (curinv)
+				{
+					string returnstring;
+					int returnnum;
+					int failchance;
+					[returnstring, returnnum, failchance] = curinv.GiveEnemyDrop(mon);
+					if ((returnstring != "") && (returnnum > 0))
+					{
+						for (int j = 0; j < returnnum; ++j)
+						{
+							if (random(1, 256) > failchance) {itemdrops.push(returnstring);}
+						}
+					}
+				}
+			}
 	
 			for (int i = 0; i < combo; ++i)
 			{
 				dropper.A_SpawnItemEx(mon.coindrop, random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
+			for (int i = 0; i < itemdrops.Size(); ++i)
+			{
+				dropper.A_SpawnItemEx(itemdrops[i], random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 			}
 		}
 	}
@@ -61,16 +86,6 @@ extend class DIHandler
 	{
 		if (plr.CanFreshKill())
 		{
-			int drinks = plr.CountInv("DI_CarbonatedDrink");
-			if ((drinks > 0) && (random(drinks, 4) >= 4))
-			{
-				for (int i = 0; i < drinks; ++i)
-				{
-					int failure = 256 - (256 * ((1.0 * (plr.DIMaxHealth() - plr.health)) / plr.DIMaxHealth()));
-					failure += i * 80;
-					e.Thing.A_SpawnItemEX("DI_CarbonatedDrink_Pickup", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION, failchance: failure);
-				}
-			}
 			if (plr.boxammonum > 0)
 			{
 				e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
