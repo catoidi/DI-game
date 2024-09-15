@@ -72,8 +72,8 @@ SHOPDESC_CHEESEGUN = "Fires 3 melted cheese pellets.\nGenerates heat over time."
 SHOPDESC2_CHEESEGUN = "\cbFiring uses 70 heat. If there's at least 70 heat, the pellets deal fire damage. Damage is multiplied by heat. Ammo upgrades improve this gun massively.";
 SHOPTYPE_CHEESEGUN = "\cv[Starting Weapon]";
 SHOPITEM_SLEDGEHAMMER = "Sledgehammer";
-SHOPDESC_SLEDGEHAMMER = "Extremely powerful melee weapon.";
-SHOPDESC2_SLEDGEHAMMER = "\cbThis is a \ctBox Party \cbitem. Primary charges a regular melee attack that does 160 DMG. Secondary lifts the hammer over your head, then slams it back on the ground, doing 80 splash DMG.";
+SHOPDESC_SLEDGEHAMMER = "Very powerful Melee Weapon.\nCan do either a strong focused attack,\nor a ground slam with AOE damage.";
+SHOPDESC2_SLEDGEHAMMER = "\cbThis is a \ctBox Party \cbitem. Primary charges a regular melee attack that does 160 DMG, and always gibs enemies. Secondary attack slams the hammer on the ground, doing 40 splash DMG, plus bonus DMG if the player is falling.";
 SHOPTYPE_SLEDGEHAMMER = "\cb[Starting Weapon]";
 
 //Weapons

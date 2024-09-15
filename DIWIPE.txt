@@ -57,3 +57,4 @@ DI_DepletedMag;
 DI_LavaBoot;
 DI_GlassGem;
 DI_OreDrill;
+Sledgehammer;

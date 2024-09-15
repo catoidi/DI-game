@@ -2,7 +2,7 @@ class DI_PlayerHam : DI_PlayerBase
 {
 	Default
 	{
-		Speed 0.46; //the slowest speed in the game.
+		Speed 0.5; //the slowest speed in the game.
 		Height 58;
 		Health 160;
 		Player.MaxHealth 160;
