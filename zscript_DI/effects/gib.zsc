@@ -194,7 +194,7 @@ Class DI_GibExplosion : DI_Actor
 		
 		if (target)
 		{
-			gibamount = (target.height * target.radius) / 50;
+			gibamount = (target.height * target.radius) / 32;
 			if (gibamount < 2) {gibamount = 2;}
 			if (gibamount > 24) {gibamount = 24;}
 			boomsize = (target.height + target.radius) / 48;
