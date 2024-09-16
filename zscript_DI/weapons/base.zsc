@@ -437,7 +437,7 @@ Class DI_Weapon : Weapon abstract
 		if (isRecoil) 
 		{
 			invoker.DoRecoil();
-			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4), SPF_INTERPOLATE);
+			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4));
 		}
 	}
 	
@@ -463,7 +463,7 @@ Class DI_Weapon : Weapon abstract
 		if (isRecoil) 
 		{
 			invoker.DoRecoil();
-			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4), SPF_INTERPOLATE);
+			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4));
 		}
 	}
 	
@@ -493,7 +493,7 @@ Class DI_Weapon : Weapon abstract
 		if (isRecoil) 
 		{
 			invoker.DoRecoil();
-			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4), SPF_INTERPOLATE);
+			A_SetPitch(invoker.owner.pitch - (invoker.wpn_recoil * 0.4));
 		}
 	}
 	

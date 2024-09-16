@@ -126,9 +126,9 @@ Class SwagHandler : EventHandler
 			{
 				float newmove = 0.02 + ((4.0 - diedmove) / 35);
 				diedmove += newmove;
-				if ((plr.ScoreUnlock() != "") && (!unlockedscore))
+				if (!unlockedscore)
 				{
-					eventhandler.sendinterfaceevent(consoleplayer, plr.ScoreUnlock());
+					DoScoreUnlocks();
 					unlockedscore = true;
 				}
 			}
@@ -140,6 +140,40 @@ Class SwagHandler : EventHandler
 			DeathFade = 0.0;
 			DeathTimer = 0;
 			diedmove = 2.0;
+		}
+	}
+	
+	ui virtual void DoScoreUnlocks()
+	{
+		console.printf("%s", "Doing Score Unlocks...");
+	
+		Array<string> unlockdata;
+		
+		int ThisLump = Wads.FindLump("DISCORE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISCORE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(unlockdata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISCORE", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < unlockdata.Size(); i++)
+		{
+			if (unlockdata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (unlockdata[i].Length() < 3) {continue;}
+			unlockdata[i] = unlockdata[i].Left(unlockdata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			unlockdata[i].Split(currentline, " ");
+			if (currentline.Size() != 4) {continue;}
+			
+			if (currentline[0] != Level.MapName) {continue;}
+			if (currentline[1] != plr.GetClassName()) {continue;}
+			if (currentline[2].ToInt(10) > plr.Score) {continue;}
+			
+			EventHandler.SendInterfaceEvent(consoleplayer, string.format("diunlock_%s", currentline[3]));
 		}
 	}
 	

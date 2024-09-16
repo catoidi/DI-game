@@ -31,12 +31,6 @@ class DI_PlayerBox : DI_PlayerBase
 		BuyPermaItem("GlowstickAmmo");
 		BuyPermaItem("GlowstickAmmo");
 	}
-	
-	override string ScoreUnlock()
-	{
-		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_glowstick";}
-		else return "";
-	}
 
 	States
 	{

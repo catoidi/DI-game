@@ -16,12 +16,6 @@ class DI_PlayerHam : DI_PlayerBase
 		BloodType "DI_HammerBlood";
 	}
 	
-	override string ScoreUnlock()
-	{
-		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_sledgehammer";}
-		else return "";
-	}
-	
 	States
 	{
 		Spawn:

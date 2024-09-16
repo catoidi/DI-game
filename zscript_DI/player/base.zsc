@@ -337,12 +337,6 @@ Class DI_PlayerBase : PlayerPawn abstract
 		return ((((wavenum - 1) * 100) * (0.2 * wavenum)) + (killcounter * 3) + (buycounter * 25) + (Score + moneyspent)) * skillmult;
 	}
 	
-	clearscope virtual string ScoreUnlock()
-	{
-		//if you'd like any player unlocks tied to their final score, this is where you'd put them.
-		return "";
-	}
-	
 	virtual void ComboCounter(void)
 	{
 		combonum = GetCombo();
