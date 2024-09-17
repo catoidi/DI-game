@@ -126,14 +126,15 @@ Class SwagHandler : EventHandler
 			{
 				float newmove = 0.02 + ((4.0 - diedmove) / 35);
 				diedmove += newmove;
-				if (!unlockedscore)
-				{
-					DoScoreUnlocks();
-					unlockedscore = true;
-				}
 			}
 			else if (diedmove > 4.0) {diedmove = 4.0;}
 			else if (diedmove < 2.0) {diedmove = 2.0;}
+			
+			if (scoredone && !unlockedscore)
+			{
+				DoScoreUnlocks();
+				unlockedscore = true;
+			}
 		}
 		else
 		{
@@ -171,7 +172,7 @@ Class SwagHandler : EventHandler
 			
 			if (currentline[0] != Level.MapName) {continue;}
 			if (currentline[1] != plr.GetClassName()) {continue;}
-			if (currentline[2].ToInt(10) > plr.Score) {continue;}
+			if (currentline[2].ToInt(10) > finalscore) {continue;}
 			
 			EventHandler.SendInterfaceEvent(consoleplayer, string.format("diunlock_%s", currentline[3]));
 		}
