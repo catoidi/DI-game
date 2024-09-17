@@ -10,9 +10,9 @@
 * Debuff DI_QuestDebuff_MotionBlur;
 * Debuff DI_QuestDebuff_SpeedyFoes;
 * Debuff DI_QuestDebuff_BulletSponge;
->>* Objective DI_QuestObjective_Fresh;
->>* Objective DI_QuestObjective_BloodDrive;
->>* Objective DI_QuestObjective_SleightOfHand;
->>* Objective DI_QuestObjective_Overconsumption;
+* Objective DI_QuestObjective_Fresh;
+* Objective DI_QuestObjective_BloodDrive;
+* Objective DI_QuestObjective_SleightOfHand;
+* Objective DI_QuestObjective_Overconsumption;
 * Objective DI_QuestObjective_Audit;
 DI02 Objective DI_QuestObjective_Kill_BigMelon;
