@@ -11,8 +11,9 @@ class DI_PlayerHam : DI_PlayerBase
 		Player.ViewHeight 41;
 		Player.WeaponSlot 1, "Sledgehammer";
 		Player.StartItem "Sledgehammer";
-		DI_PlayerBase.AutoBlacklist "Sledgehammer";
-		DI_PlayerBase.PermaStart "Sledgehammer";
+		Player.StartItem "DI_WhoppeeCushion";
+		DI_PlayerBase.AutoBlacklist "Sledgehammer,DI_WhoppeeCushion";
+		DI_PlayerBase.PermaStart "Sledgehammer,DI_WhoppeeCushion";
 		BloodType "DI_HammerBlood";
 	}
 	
