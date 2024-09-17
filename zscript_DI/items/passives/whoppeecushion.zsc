@@ -20,7 +20,7 @@ Class DI_WhoppeeCushion : DIPassiveInventory
 		{
 			if (dashed < plr.CountInv(GetClassName()) && (dashhold == 0))
 			{
-				dashed = true;
+				++dashed;
 				plr.A_Recoil(-15);
 				if (plr.Vel.Z < 0) {plr.Vel.Z = 0.0;}
 				plr.A_StartSound("whiff2", CHAN_AUTO);
@@ -39,7 +39,7 @@ Class DI_WhoppeeCushion : DIPassiveInventory
 			if (onground)
 			{
 				jumped = 0;
-				dashed = false;
+				dashed = 0;
 			}
 			else {++jumped;}
 			
