@@ -79,6 +79,7 @@ Class DoubleShotgun : GreenShotgun
 			{
 				A_OverlayRotate(PSP_WEAPON, 6, WOF_ADD);
 				A_OverlayRotate(2, 6, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 0.125);
 			}
 			//pump
 			#### # 0 DI_StartSound("lushot2", CHAN_WEAPON, pitch: 0.85);
@@ -91,7 +92,11 @@ Class DoubleShotgun : GreenShotgun
 			#### # 0 {invoker.DepleteAmmo(false);}
 			PUSG B 3 A_GiveInventory("DoubleShotgunPump", 2);
 			//rotate again
-			#### AAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, -6, WOF_ADD);
+			#### AAAAAAAA 1 
+			{
+				A_OverlayRotate(PSP_WEAPON, -6, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 0.125);
+			}
 			Goto Ready;
 		Pump_Barrel:
 			TNT1 A 8 A_OverlayOffset(2, -38, -70); //wait for rotate

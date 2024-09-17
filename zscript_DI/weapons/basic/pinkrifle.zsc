@@ -70,20 +70,35 @@ CLASS PinkRifle : DI_Weapon
 			PRIF A 0 DI_ReloadCheck();
 			PRIF A 0 A_OverlayPivot(PSP_WEAPON, 0.2, 0.3);
 			#### # 0 DI_StartSound("hpnmov1");
-			PRIF AAAAAAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, 4, WOF_ADD); //A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+			PRIF AAAAAAAAAAAA 1 
+			{
+				A_OverlayRotate(PSP_WEAPON, 4, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 0.25);
+			}
 			PRIF A 6;
 			#### # 0 DI_StartSound("gunmov1", pitch: 1.0);
 			PRIF A 0 A_Overlay(-2, "ReloadClip");
 			PRIF AA 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
-			PRIF A 0; //A_Overlay(-2, "ReloadClip");
-			PRIF G 1 A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+			PRIF G 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 1.5);
+			}
 			PRIF GGGG 1 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			PRIF G 31;
-			PRIF A 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+			PRIF A 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 1.125);
+			}
 			PRIF AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 0.5, WOF_ADD);
 			PRIF A 0 A_GiveInventory("PinkRifleAmmo", invoker.Ammo1.MaxAmount);
 			#### # 0 DI_StartSound("hpnmov1", pitch: 1.2, startTime: 0.4);
-			PRIF AAAAAAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, -4, WOF_ADD);
+			PRIF AAAAAAAAAAAA 1 
+			{
+				A_OverlayRotate(PSP_WEAPON, -4, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 0.25);
+			}
 			Goto Ready;
 		ReloadClip:
 			TNT1 A 1 {A_OverlayPivot(-2, 0.2, 0.3); A_OverlayRotate(-2, 48, WOF_ADD);}

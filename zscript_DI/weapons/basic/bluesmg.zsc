@@ -82,10 +82,18 @@ CLASS BlueSMG : DI_Weapon
 			BSMG A 6;
 			BSMG AA 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
 			BSMG A 0 A_Overlay(-2, "ReloadClip");
-			BSMG G 1 A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+			BSMG G 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 1.0);
+			}
 			BSMG GGGG 1 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			BSMG G 31;
-			BSMG A 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+			BSMG A 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 0.75);
+			}
 			BSMG AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 1.5, WOF_ADD);
 			BSMG A 0 A_GiveInventory("BlueSMGAmmo", invoker.Ammo1.MaxAmount);
 			BSMG AAAAAAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 5.5, WOF_ADD);

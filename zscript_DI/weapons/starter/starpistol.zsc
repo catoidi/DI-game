@@ -68,10 +68,18 @@ CLASS StarPistol : DI_Weapon
 			PIST AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -12, WOF_ADD);
 			PIST A 4;
 			PIST A 0 A_Overlay(-2, "ReloadClip");
-			PIST A 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
+			PIST A 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 0.5);
+			}
 			PIST AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
 			PIST A 13;
-			PIST A 1 A_OverlayOffset(PSP_WEAPON, 0, -4, WOF_ADD);
+			PIST A 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, -4, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 0.5);
+			}
 			PIST AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 1, WOF_ADD);
 			PIST A 0 A_GiveInventory("StarPistolAmmo", invoker.Ammo1.MaxAmount);
 			PIST AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 12, WOF_ADD);
