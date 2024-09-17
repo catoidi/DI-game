@@ -111,6 +111,7 @@ DefensePassive DI_HatHat POWRM 14 128;
 DefensePassive DI_CarbonatedDrink POWRX 7;
 DefensePassive DI_Consumer POW1A 7 256 di_unlock_item_consumer;
 DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
+DefensePassive DI_WhoppeeCushion POW1Y 7 di_unlock_item_whoppeecushion;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 18;
 ComboPassive DI_FreshBonusGiver POWRC 14;

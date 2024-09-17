@@ -1,0 +1,57 @@
+//zscript_DI/items/passives/whoppeecushion.zsc
+
+Class DI_WhoppeeCushion : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Whoppee Cushion";
+		Inventory.Icon "POW1Y0";
+		Inventory.PickupMessage "Whoppee Cushion Acquired! (Press the Run button while in the air to do a dash.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	int jumped;
+	int dashed;
+	int dashhold;
+	
+	virtual void DoDash()
+	{
+		if (plr && (jumped > 4))
+		{
+			if (dashed < plr.CountInv(GetClassName()) && (dashhold == 0))
+			{
+				dashed = true;
+				plr.A_Recoil(-15);
+				if (plr.Vel.Z < 0) {plr.Vel.Z = 0.0;}
+				plr.A_StartSound("whiff2", CHAN_AUTO);
+			}
+			++dashhold;
+		}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			bool onground = ((plr.Pos.Z ~== plr.FloorZ) || (plr.bOnMobj));
+			if (onground)
+			{
+				jumped = 0;
+				dashed = false;
+			}
+			else {++jumped;}
+			
+			if (plr.Player.Buttons & BT_SPEED) {DoDash();}
+			else {dashhold = 0;}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 Y -1;
+			Stop;
+	}
+}

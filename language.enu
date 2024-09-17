@@ -85,6 +85,7 @@ DIPOPUP_di_unlock_item_depletedmag = "Depleted Magazine";
 DIPOPUP_di_unlock_item_glassgem = "Glass Gem";
 DIPOPUP_di_unlock_item_oredrill = "Ore Drill";
 DIPOPUP_di_unlock_item_stunbow = "Stun Crossbow";
+DIPOPUP_di_unlock_item_whoppeecushion = "Whoppee Cushion";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbto unlock this weapon.";
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbto unlock this weapon.";

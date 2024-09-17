@@ -349,6 +349,10 @@ SHOPITEM_DI_GLASSGEM = "Glass Gem";
 SHOPDESC_DI_GLASSGEM = "Gain +1 coin per enemy while you\nhave at least 95% health remaining.";
 SHOPDESC2_DI_GLASSGEM = "\cbExtra item stacks will increase coin drops while this item's effect is active.";
 SHOPTYPE_DI_GLASSGEM = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_WHOPPEECUSHION = "Whoppee Cushion";
+SHOPDESC_DI_WHOPPEECUSHION = "Gain a reusable air dash.";
+SHOPDESC2_DI_WHOPPEECUSHION = "\cbStacking this item allows you to dash multiple times.";
+SHOPTYPE_DI_WHOPPEECUSHION = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
