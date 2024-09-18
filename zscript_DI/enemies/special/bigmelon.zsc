@@ -39,7 +39,7 @@ Class DI_BigMelon : DI_Boss
 		JustOneSec:
 			#### # 0 A_ResetScale();
 			BMEL A 0 A_DIScale(0.1, -0.1);
-			BMEL AA 25 Fast;
+			BMEL AA 12;
 			BMEL A 0 A_DIScale(-0.1, 0.1);
 			Goto See;
 		See:
@@ -100,7 +100,7 @@ Class DI_BigMelon : DI_Boss
 			BMEL J 0 BRIGHT A_FaceTarget;
 			BMEL J 0 BRIGHT
 			{
-				A_QuakeEX(2, 2, 2, 16, 0, 1448);
+				A_QuakeEX(2, 2, 2, 16, 1448, 1448, damage: 1);
 				A_Explode(40, 256, XF_NOTMISSILE);
 				A_SpawnItemEX("GIANTBOOM", -64, 0, random(12, 32), random(-2, 2), random(-2, 2), random(-2, 2), 0, SXF_NOCHECKPOSITION);
 				//A_SpawnItemEX("HammerSlamPuff", -64, 0, random(12, 32), random(-2, 2), random(-2, 2), random(-2, 2), 0, SXF_NOCHECKPOSITION);
@@ -124,7 +124,11 @@ Class DI_BigMelon : DI_Boss
 			#### # 0 A_ResetScale();
 			BMEL L 0 A_RemoveLight("Shocking");
 			BMEL L 0 A_FaceTarget;
-			BMEL LLLLL 5 A_SpawnItemEX("SafeBoom", random(-64, 64), random(-64, 64), random(32, 96), random(-2, 2), random(-2, 2), random(-2, 2));
+			BMEL LLLLL 5 
+			{
+				A_SpawnItemEX("SafeBoom", random(-64, 64), random(-64, 64), random(32, 96), random(-2, 2), random(-2, 2), random(-2, 2));
+				A_SpawnItemEX(invoker.coindrop, random(-64, 64), random(-64, 64), random(32, 96), random(-2, 2), random(-2, 2), random(-2, 2), flags: SXF_TRANSFERPOINTERS);
+			}
 			BMEL L 10;
 			TNT1 A 0 A_SpawnItemEX("GIANTBOOM", random(-64, 64), random(-64, 64), random(32, 96), random(-2, 2), random(-2, 2), random(-2, 2));
 			#### # 0 A_DIDie();
