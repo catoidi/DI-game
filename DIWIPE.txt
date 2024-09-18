@@ -59,3 +59,4 @@ DI_GlassGem;
 DI_OreDrill;
 Sledgehammer;
 DI_WhoppeeCushion;
+DI_MiniFred;

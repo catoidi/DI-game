@@ -85,8 +85,10 @@ DIPOPUP_di_unlock_item_glassgem = "Glass Gem";
 DIPOPUP_di_unlock_item_oredrill = "Ore Drill";
 DIPOPUP_di_unlock_item_stunbow = "Stun Crossbow";
 DIPOPUP_di_unlock_item_whoppeecushion = "Whoppee Cushion";
+DIPOPUP_di_unlock_item_minifred = "Mini Fred";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
+SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
 SHOPLOCK_CHEESEGUN = "\cbReach 10k score as \cvBurger \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 2 \cbto unlock this weapon.";
 SHOPLOCK_SLEDGEHAMMER = "\cbReach 10k score as \cvHamill \cbon \cfLVL 2 \cbto unlock this weapon.";

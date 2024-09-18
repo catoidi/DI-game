@@ -353,6 +353,10 @@ SHOPITEM_DI_WHOPPEECUSHION = "Whoppee Cushion";
 SHOPDESC_DI_WHOPPEECUSHION = "Gain a reusable air dash.";
 SHOPDESC2_DI_WHOPPEECUSHION = "\cbStacking this item allows you to dash multiple times.";
 SHOPTYPE_DI_WHOPPEECUSHION = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_MINIFRED = "Mini Fred";
+SHOPDESC_DI_MINIFRED = "Spawn a mini fred to assist you\nupon getting a fresh bonus.";
+SHOPDESC2_DI_MINIFRED = "\cbMax freds determined by item stack. Small chance to spawn a fiendish fred. Chance increases with item stacks.";
+SHOPTYPE_DI_MINIFRED = "\cd[Passive] \cl[Max: 10]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

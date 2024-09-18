@@ -7,5 +7,6 @@
 DI01 DI_PlayerFredrick 10000 di_unlock_item_starpistol;
 DI01 DI_PlayerBurger 10000 di_unlock_item_cheesegun;
 DI01 DI_PlayerHam 10000 di_unlock_item_whoppeecushion;
+DI02 DI_PlayerFredrick 10000 di_unlock_item_minifred;
 DI02 DI_PlayerBox 10000 di_unlock_item_glowstick;
 DI02 DI_PlayerHam 10000 di_unlock_item_sledgehammer;
