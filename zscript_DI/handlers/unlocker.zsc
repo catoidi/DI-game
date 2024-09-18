@@ -572,7 +572,7 @@ Class DIUnlockHandler : EventHandler
 			cvar statuskills = cvar.getcvar("di_statuskills");
 			int newstatus = statuskills.GetInt() + 1;
 			statuskills.SetInt(newstatus);
-			if (newstatus >= 100) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_rainbowbullet");}
+			if (newstatus >= 300) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_rainbowbullet");}
 		}
 		switch(whichstatus)
 		{
@@ -580,25 +580,25 @@ Class DIUnlockHandler : EventHandler
 				cvar icekills = cvar.getcvar("di_icekills");
 				int newice = icekills.GetInt() + 1;
 				icekills.SetInt(newice);
-				if (newice >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_icebullet");}
+				if (newice >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_icebullet");}
 				break;
 			case 1:
 				cvar firekills = cvar.getcvar("di_firekills");
 				int newfire = firekills.GetInt() + 1;
 				firekills.SetInt(newfire);
-				if (newfire >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_firebullet");}
+				if (newfire >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_firebullet");}
 				break;
 			case 2:
 				cvar poisonkills = cvar.getcvar("di_poisonkills");
 				int newpoison = poisonkills.GetInt() + 1;
 				poisonkills.SetInt(newpoison);
-				if (newpoison >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_poisonbullet");}
+				if (newpoison >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_poisonbullet");}
 				break;
 			case 3:
 				cvar shockkills = cvar.getcvar("di_shockkills");
 				int newshock = shockkills.GetInt() + 1;
 				shockkills.SetInt(newshock);
-				if (newshock >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shockbullet");}
+				if (newshock >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shockbullet");}
 				break;
 		}
 	}
