@@ -156,6 +156,12 @@ CLASS CheeseGunBullet : DI_Projectile
 			}
 			pitch = target.pitch;
 		}
+		else if (target is "DI_CheeseArtifact_Cloud")
+		{
+			damagetype = "Fire";
+			damnum = 16;
+			di_notweapon = true;
+		}
 	}
 	
 	override void Tick()

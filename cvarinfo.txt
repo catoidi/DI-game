@@ -39,6 +39,7 @@ server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by rea
 server cheat bool di_unlock_item_minifred = false; //LVL 2 Fredrick 10k points
 server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
 server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
+server cheat bool di_unlock_item_cheeseartifact = false; //LVL 2 Burger 10k points
 server cheat bool di_unlock_item_sledgehammer = false; //10k points as Hamill on Level 2.
 server cheat bool di_unlock_item_whoppeecushion = false; //10k points as Hamill on Level 1.
 //DI shop item unlocks (LEVEL 1)

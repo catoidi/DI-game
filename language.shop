@@ -192,6 +192,10 @@ SHOPITEM_DI_FASTFORWARD = "Fast Forward";
 SHOPDESC_DI_FASTFORWARD = "Increases weapon/movement speed\nfor a limited time.";
 SHOPDESC2_DI_FASTFORWARD = "\cb+50% weapon speed, +25% movement speed for 30 seconds. Can be stacked.";
 SHOPTYPE_DI_FASTFORWARD = "\ct[Consumable] \cl[Max: 3]";
+SHOPITEM_DI_CHEESEARTIFACT = "Cheese Artifact";
+SHOPDESC_DI_CHEESEARTIFACT = "Summon a sentient cheese cloud to \nattack enemies for 30 seconds.";
+SHOPDESC2_DI_CHEESEARTIFACT = "\cbThe cheese storm shoots cheese projectiles from above the enemy's head, dealing constant fire damage. Can easily shred through crowds of enemies.";
+SHOPTYPE_DI_CHEESEARTIFACT = "\ct[Consumable] \cl[Max: 3]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";
@@ -383,3 +387,7 @@ SHOPITEM_DI_CONSUMER_POWERUP = "\cvConsumer (Active)";
 SHOPDESC_DI_CONSUMER_POWERUP = "Gives you +25% DMG for a limited time.";
 SHOPDESC2_DI_CONSUMER_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_CONSUMER_POWERUP = "\cv[Powerup] \cl[Max Timer: 30]";
+SHOPITEM_DI_CHEESEARTIFACT_TIMER = "\cvCheese Storm (Active)";
+SHOPDESC_DI_CHEESEARTIFACT_TIMER = "A sentient cloud of cheese will roam around and attack enemies for you for 30 seconds.";
+SHOPDESC2_DI_CHEESEARTIFACT_TIMER = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_CHEESEARTIFACT_TIMER = "\cv[Powerup] \cl[Max Timer: 30]";

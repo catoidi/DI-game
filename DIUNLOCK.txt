@@ -15,6 +15,7 @@ di_unlock_item_shoe DI_Shoe 2 di_roncount 1;
 di_unlock_item_coinmagnet DI_CoinMagnet 2 di_coinbags 1;
 di_unlock_item_wealthjar DI_WealthJar 2  1;
 di_unlock_item_minifred DI_MiniFred 2  2;
+di_unlock_item_cheeseartifact DI_CheeseArtifact 3  2;
 di_unlock_item_glowstick Glowstick 1  2;
 di_unlock_item_sledgehammer Sledgehammer 1  2;
 di_unlock_item_partyshotty PartyShotty 1 di_sidequests 2;

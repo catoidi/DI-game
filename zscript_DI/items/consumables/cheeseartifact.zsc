@@ -1,0 +1,191 @@
+//zscript_DI/items/consumables/cheeseartifact.zsc
+
+Class DI_CheeseArtifact : DI_ThrowBomb
+{
+	Default
+	{
+		Tag "Cheese Artifact";
+		Inventory.MaxAmount 10;
+		Inventory.Icon "ARTIA0";
+		Inventory.PickupMessage "Got the Cheese Artifact... It seems pleased to meet you.";
+	}
+	
+	States
+	{
+		Spawn:
+			ARTI A -1;
+			Loop;
+		Use:
+			ARTI A 0 {A_FireProjectile("DI_CheeseArtifact_Projectile", 0, 0, 0, self.height / 2, FPF_NOAUTOAIM, 0);}
+			Stop;
+	}
+}
+
+Class DI_CheeseArtifact_Projectile : DI_Actor
+{
+	Default
+	{
+		DI_Actor.IgnoreWeapon true;
+		Projectile;
+		+NOINTERACTION;
+		+NOBLOCKMAP;
+		+FLOATBOB;
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		return false;
+	}
+	
+	States
+	{
+		Spawn:
+			ARTI A 35 A_Recoil(-10);
+			ARTI AAAAAAAAAA 0 A_SpawnParticleEX("FFFFFF", TexMan.CheckForTexture("ARTIC0"), STYLE_None, SPF_ROLL, 105, random(16, 24), 0, random(-12, 12), random(-12, 12), random(0, 24), 0, 0, 0, 0, 0, 0, 0.25, -1, 0, random(0, 359));
+			ARTI A 0
+			{
+				actor yea;
+				bool yea2;
+				[yea2, yea] = A_SpawnItemEX("DI_CheeseArtifact_Cloud", flags: SXF_NOCHECKPOSITION);
+				if (yea && (invoker.target is "DI_PlayerBase"))
+				{
+					let cloudy = DI_CheeseArtifact_Cloud(yea);
+					cloudy.plr = DI_PlayerBase(invoker.target);
+				}
+			}
+			ARTI A 1 A_FadeOut(0.1);
+			Wait;
+	}
+}
+
+Class DI_CheeseArtifact_Cloud : DI_Actor
+{
+	Default
+	{
+		DI_Actor.IgnoreWeapon true;
+		Speed 4;
+		Scale 0.1;
+		+FRIENDLY;
+		+FLOAT;
+		+NOGRAVITY;
+	}
+
+	bool cheesedtomeetyou;
+	int lifetimer;
+	bool expiredcheese;
+	bool targetfound;
+	DI_PlayerBase plr;
+	int raintimer;
+	
+	override void Tick()
+	{
+		Super.Tick();
+	
+		if (cheesedtomeetyou && !isFrozen())
+		{
+			++lifetimer;
+			
+			if (lifetimer < 1050)
+			{
+				if (target is "DI_PlayerBase")
+				{
+					plr = DI_PlayerBase(target);
+					A_ClearTarget();
+				}
+				
+				if (plr && (lifetimer == 1)) {plr.A_SetInventory("DI_CheeseArtifact_Timer", 30);}
+				
+				scale.X = 1.0 + (0.3 * sin(lifetimer));
+				scale.Y = 1.0 + (0.3 * cos(lifetimer));
+				
+				if (random(1, 10) == 10)
+				{
+					A_SpawnParticleEX("FFFFFF", TexMan.CheckForTexture("ARTIC0"), STYLE_None, SPF_ROLL, 105, random(8, 12), 0, random(-12, 12), random(-12, 12), random(0, 24), 0, 0, 0, 0, 0, 0, 0.25, -1, 0, random(0, 359));
+				}
+				
+				if (target && target.health > 0)
+				{
+					if (!targetfound)
+					{
+						if (Distance3D(target) <= 64)
+						{
+							SetStateLabel("Rain");
+							targetfound = true;
+						}
+					}
+				}
+				else if (targetfound)
+				{
+					raintimer = 0;
+					SetStateLabel("See");
+					targetfound = false;
+				}
+			}
+			else if (!InStateSequence(curstate, ResolveState("Death")))
+			{
+				SetStateLabel("Death");
+				expiredcheese = true;
+			}
+		}
+	}
+	
+	action void CheeseRain()
+	{
+		if (invoker.target)
+		{
+			if (invoker.raintimer < 10) {++invoker.raintimer;}
+			else {invoker.raintimer = 10;}
+		
+			vector3 newpos = invoker.target.Pos;
+			
+			double between = (invoker.Pos.Z - (invoker.target.Pos.Z + invoker.target.Height + 8)) / 2;
+			
+			newpos.Z = invoker.Pos.Z - between;
+			
+			invoker.SetOrigin(newpos, true);
+			if ((invoker.raintimer == 10) && (random(1, 10) == 10))
+			{
+				invoker.A_SpawnProjectile("CheeseGunBullet", random(8, 24), random(-12, 12), 0, CMF_AIMDIRECTION, 90);
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			ARTI BBBBBBBBB 1 NoDelay A_DIScale(0.1, 0.1);
+			#### # 0 {invoker.cheesedtomeetyou = true;}
+			ARTI B 1 A_Look();
+			Wait;
+		See:
+			ARTI B 1 A_Chase(null, null, CHF_DONTIDLE);
+			Loop;
+		Rain:
+			ARTI B 1 CheeseRain();
+			Loop;
+		Death:
+			ARTI BBBBBBBBBB 1 
+			{	
+				A_SpawnParticleEX("FFFFFF", TexMan.CheckForTexture("ARTIC0"), STYLE_None, SPF_ROLL, 105, random(16, 24), 0, random(-12, 12), random(-12, 12), random(0, 24), 0, 0, 0, 0, 0, 0, 0.25, -1, 0, random(0, 359));
+				A_DIScale(-0.1, -0.1);
+			}
+			Stop;
+	}
+}
+
+Class DI_CheeseArtifact_Timer : DIPowerup
+{
+	Default
+	{
+		Tag "Cheese Storm";
+		Inventory.Icon "ARTID0";
+		Inventory.MaxAmount 30;
+	}
+	
+	States
+	{
+		Spawn:
+			ARTI D -1;
+			Stop;
+	}
+}
