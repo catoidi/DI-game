@@ -1,0 +1,71 @@
+//zscript_DI/items/consumables/tomato.zsc
+
+Class DI_Tomato : DI_ThrowBomb
+{
+	Default
+	{
+		Tag "Tomato";
+		Inventory.MaxAmount 100;
+		Inventory.Icon "POW1Z0";
+		Inventory.PickupMessage "You got the tomato. (Throw at an enemy to mark them, making them take 50% more damage.)";
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 Z -1;
+			Loop;
+		Use:
+			POW1 Z 0 {A_FireProjectile("DI_Tomato_Projectile", 0, 0, 0, self.height / 3, FPF_NOAUTOAIM, -10);}
+			Stop;
+	}
+}
+
+Class DI_Tomato_Projectile : DI_ThrowBomb_Projectile
+{
+	Default
+	{
+		DamageFunction (8);
+	}
+
+	override int DoSpecialDamage(Actor target, int damage, Name damagetype)
+	{
+		if (target && (target.CountInv("DI_DeathMark_Enemy") == 0))
+		{
+			target.A_GiveInventory("DI_DeathMark_Enemy", 1);
+		}
+		
+		return Super.DoSpecialDamage(target, damage, damagetype);
+	}
+
+	States
+	{
+		Spawn:
+			POW1 Z 1 A_SetRoll(roll + 8);
+			Loop;
+		Death:
+			TNT1 A 1 
+			{
+			
+			}
+			Stop;
+	}
+}
+
+Class DI_Tomato_Bundle : DIBundle
+{
+	Default
+	{
+		Tag "Pack of Tomatoes";
+		DIBundle.BundleItem "DI_Tomato";
+		DIBundle.BundleAmount 8;
+		Inventory.PickupMessage "Got a pack of tomatoes, ready for lobbing at enemies.";
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 Z -1;
+			Stop;
+	}
+}
