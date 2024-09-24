@@ -27,7 +27,7 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 
 	Default
 	{
-		DamageFunction (256);
+		DamageFunction (512);
 		+NOGRAVITY;
 		+BLOODSPLATTER;
 		//+EXTREMEDEATH;
@@ -70,7 +70,7 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 				{
 					for (int i = 0; i < 6; ++i)
 					{
-						A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 0, random(-6, 6), random(-6, 6), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+						A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 0, random(-3, 3), random(-3, 3), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
 						if (hearted.bNOBLOOD == false)
 						{
 							hearted.BloodSplatter(invoker.Pos, invoker.Angle);
