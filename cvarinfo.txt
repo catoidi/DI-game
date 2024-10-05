@@ -129,6 +129,7 @@ user int box_hudshake = 2; //how much hud shakes when taking damage
 user bool di_showfreshtimer = false;
 user noarchive bool di_photomode = false; //hides all HUD elements. gets reset on game restart.
 server bool di_depletedperma = true; //show perma consumables in item hud, even if item is fully depleted.
+user bool di_hudnumbers = true; //show more detailed health/ammo numbers on hud
 
 //nashhpbar
 user bool nashhpbar_enable = true;

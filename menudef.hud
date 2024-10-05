@@ -10,6 +10,8 @@ OptionMenu "DIHudOptions"
 	Tooltip "Controls the size of the main HUD elements."
 	Slider "Damage Shake",		"box_hudshake",		0, 5, 1, 0	
 	Tooltip "Controls how much the HUD will 'shake' upon you taking damage.\n\nAlso influences the minimum threshold of damage needed for shake to occur."
+	Option "Detailed Numbers", "di_hudnumbers", OnOff
+	Tooltip "Adds numbers for your current max ammo and max health to the HUD."
 	Option "Show Fresh Timer", "di_showfreshtimer", OnOff
 	Tooltip "Adds a number timer beside the 'Fresh' meter.\n\nCan help you understand the fresh bonus cooldown a bit more."
 	StaticText ""

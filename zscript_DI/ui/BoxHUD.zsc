@@ -6,7 +6,7 @@ class DI_HUD : BaseStatusBar
 	HUDFont SmallFont; //default smallfont font.
 	InventoryBarState invbar;
 	
-	cvar photomode;
+	cvar photomode, detailnum;
 	
 	//stuff
 	bool HasAmmo1;
@@ -75,6 +75,7 @@ class DI_HUD : BaseStatusBar
 		freshtimer = cvar.findcvar("di_showfreshtimer");
 		
 		photomode = cvar.findcvar("di_photomode");
+		detailnum = cvar.findcvar("di_hudnumbers");
 	}
 
 	override void NewGame()
@@ -239,7 +240,9 @@ class DI_HUD : BaseStatusBar
 		
 		let hpfont = Font.CR_WHITE;
 		if (cplayer.health > diplayer.DIMaxHealth()) {hpfont = Font.CR_BRICK;}
-		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, hpfont);
+		string drawhealth = FormatNumber(cplayer.health, 0);
+		if (detailnum.GetBool()) {drawhealth.AppendFormat("\cu/\cb%d", diplayer.DIMaxHealth());}
+		DrawString(SmallFont, drawhealth, GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, hpfont);
 		let regfont = Font.CR_GREEN;
 		if (regenamount > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
 		if (GetAmount("DI_Regen") > 0)
@@ -259,7 +262,10 @@ class DI_HUD : BaseStatusBar
 			{
 				DrawBar("graphics/boxhud/HUDBARK.png", "graphics/boxhud/HUDBARH.png", BoxArmorInterpolator.GetValue() - ArmorMax, ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 			}
-			DrawString(SmallFont, FormatNumber(GetArmorAmount(), 0), GlobalOffset + (-48, -49), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
+			
+			string drawarmor = FormatNumber(GetArmorAmount(), 0);
+			if (detailnum.GetBool()) {drawarmor.AppendFormat("\cu/\cb%d", ArmorMax);}
+			DrawString(SmallFont, drawarmor, GlobalOffset + (-48, -49), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
 			
 			DrawInventoryIcon(curarmor, GlobalOffset + (-24, -36), DI_ITEM_OFFSETS);
 		}
@@ -303,7 +309,10 @@ class DI_HUD : BaseStatusBar
 			ammo1max = CPlayer.ReadyWeapon.Ammo1.MaxAmount;
 			ammo1icon = GetIcon(cplayer.readyweapon.ammo1, 0);
 			DrawBar(ammo1bar, "graphics/boxhud/HUDBARE.png", BoxAmmoInterpolator.GetValue(), ammo1max, GlobalOffset + ArmorOffset + (-136, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			DrawString(SmallFont, FormatNumber(ammocount1, 1), GlobalOffset + ArmorOffset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			
+			string drawammo1 = FormatNumber(ammocount1, 1);
+			if (detailnum.GetBool()) {drawammo1.AppendFormat("\cu/\cb%d", ammo1max);}
+			DrawString(SmallFont, drawammo1, GlobalOffset + ArmorOffset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
 			
 			/*
@@ -341,7 +350,10 @@ class DI_HUD : BaseStatusBar
 			ammo2max = cplayer.readyweapon.ammo2.maxamount;
 			ammo2icon = GetIcon(cplayer.readyweapon.ammo2, 0);
 			DrawBar(ammo2bar, "graphics/boxhud/HUDBARE.png", BoxAmmo2Interpolator.GetValue(), ammo2max, GlobalOffset + ArmorOffset + Ammo1Offset + (-136, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			DrawString(SmallFont, FormatNumber(ammocount2, 1), GlobalOffset + ArmorOffset + Ammo1Offset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			
+			string drawammo2 = FormatNumber(ammocount2, 1);
+			if (detailnum.GetBool()) {drawammo2.AppendFormat("\cu/\cb%d", ammo2max);}
+			DrawString(SmallFont, drawammo2, GlobalOffset + ArmorOffset + Ammo1Offset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
 			
 			/*
