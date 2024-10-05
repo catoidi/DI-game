@@ -8,6 +8,7 @@ class Sledgehammer : DI_Weapon
 		DI_Weapon.BaseDamage 80;
 		DI_Weapon.PlayerSpeed -0.15;
 		DI_Weapon.Ammo1HUD 3;
+		DI_Weapon.DontGiveAmmo1 true;
 		Weapon.SelectionOrder 1000;
 		Weapon.SlotNumber 1;
 		Weapon.SlotPriority 1;
