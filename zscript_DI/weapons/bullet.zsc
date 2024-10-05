@@ -237,6 +237,7 @@ Class DI_Tracer : DI_Projectile
 		XDeath:
 			TNT1 A 1 
 			{
+				A_SpawnParticleEX("fff59e", TexMan.CheckForTexture("PUFFA0"), STYLE_NONE, SPF_ROLL, 10, 8 + sqrt(invoker.GetWeaponDamage()), startroll: random(0, 359));
 				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
 			}
 			Stop;
