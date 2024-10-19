@@ -23,8 +23,6 @@ Class DI_Trailblazer : DIPassiveInventory
 			if (daspeed < 0.0) {daspeed = 0.0;}
 			
 			daspeed *= 0.30 * plr.CountInv(self.GetClassName());
-			
-			console.printf("%.2f", daspeed);
 		}
 	}
 	
