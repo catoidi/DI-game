@@ -1,0 +1,40 @@
+//zscript_DI/items/passives/trailblazer.zsc
+
+Class DI_Trailblazer : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Trailblazer";
+		Inventory.Icon "POW2A0";
+		Inventory.PickupMessage "Trailblazer acquired! (Gain player/weapon speed based on health lost.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	double daspeed;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			double hplost = plr.GetMaxHealth(true) - plr.health; //ignoring di_degen value
+			daspeed = 1.0 * (hplost / plr.GetMaxHealth(true));
+			if (daspeed < 0.0) {daspeed = 0.0;}
+			
+			daspeed *= 0.30 * plr.CountInv(self.GetClassName());
+			
+			console.printf("%.2f", daspeed);
+		}
+	}
+	
+	override double GivePlayerSpeed()
+	{
+		return daspeed;
+	}
+	
+	override double GiveWeaponSpeed()
+	{
+		return -daspeed;
+	}
+}

@@ -25,6 +25,7 @@ di_unlock_item_popcorngun PopcornGun 1 di_sidequests 2;
 di_unlock_item_melon DI_Melon 3 di_meloncount 2;
 di_unlock_item_toaster DI_Toaster 2 di_hammercount 2;
 di_unlock_item_tomato DI_Tomato 3  2;
+di_unlock_item_trailblazer DI_Trailblazer 2  2;
 di_unlock_item_icebullet DI_StatusGiver_Ice 2 di_icekills 3;
 di_unlock_item_firebullet DI_StatusGiver_Fire 2 di_firekills 3;
 di_unlock_item_shockbullet DI_StatusGiver_Lightning 2 di_shockkills 3;

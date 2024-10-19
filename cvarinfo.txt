@@ -97,6 +97,7 @@ server cheat bool di_unlock_item_partyshotty = false; //complete 10 side quests 
 server cheat bool di_unlock_item_popcorngun = false; //reach the first endless loop in Level 2.
 server cheat bool di_unlock_item_partyshotty2 = false; //not used ingame.
 server cheat bool di_unlock_item_tomato = false; //defeat the big melon boss.
+server cheat bool di_unlock_item_trailblazer = false; //max out level 2's shop.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.
