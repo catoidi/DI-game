@@ -1,0 +1,109 @@
+//zscript_DI/consumables/banana.zsc
+
+Class DI_Banana : DI_ThrowBomb
+{
+	Default
+	{
+		Tag "Banana";
+		Inventory.MaxAmount 4;
+		Inventory.Icon "BANAA0";
+		Inventory.PickupMessage "Got a banana. (Gives +15 HP and +15 Regen. Drops a banana peel on the ground.)";
+		+INVENTORY.INVBAR;
+	}
+	
+	States
+	{
+		Spawn:
+			BANA A -1;
+			Stop;
+		Use:
+			BANA A 0
+			{
+				if (invoker.owner)
+				{
+					invoker.owner.GiveBody(15);
+					invoker.owner.A_GiveInventory("DI_Regen", 15);
+					A_FireProjectile("DI_Banana_Projectile", 0, false);
+				}
+			}
+			Stop;
+	}
+}
+
+Class DI_Banana_Projectile : DI_ThrowBomb_Projectile
+{
+	bool gorped;
+	
+	Default
+	{
+		DamageFunction (30);
+		BounceFactor 0.1;
+		-BRIGHT;
+		+BOUNCEONWALLS;
+		+BOUNCEONFLOORS;
+		+BOUNCEONCEILINGS;
+	}
+	
+	override int SpecialBounceHit(Actor bounceMobj, Line bounceLine, readonly<SecPlane> bouncePlane)
+	{
+		if (!gorped && bouncePlane)
+		{
+			vel = (0, 0, 0);
+			SetStateLabel("Chillin");
+		}
+		
+		return -1;
+	}
+	
+	override void CollidedWith(Actor other, bool passive)
+	{
+		if (!gorped)
+		{
+			if (other is "DI_Monster")
+			{
+				other.vel.Z += 20;
+				other.vel.X += frandom(-20, 20);
+				other.vel.y += frandom(-20, 20);
+				gorped = true;
+			}
+		}
+	}
+
+	States
+	{
+		Spawn:
+			BANA B 1 A_SetRoll(roll + 8);
+			Loop;
+		XDeath:
+		Crash:
+			BANA B 0 A_Jump(256, "RealDeath");
+		Death:
+		Chillin:
+			BANA B 0 A_SetRoll(0);
+			BANA B -1;
+			Wait;
+		RealDeath:
+			BANA B 0 A_FadeOut(0.1);
+			BANA B 1 A_DIScale(1.05, 0.95, true);
+			Loop;
+			
+	}
+}
+
+Class DI_Banana_Bundle : DIBundle
+{
+	Default
+	{
+		Tag "Banana (x4)";
+		DIBundle.BundleItem "DI_Banana";
+		DIBundle.BundleAmount 5;
+		Inventory.PickupMessage "Acquired 4 bananas. (Gives +15 HP and +15 Regen. Drops a banana peel on the ground.)";
+	}
+	
+	States
+	{
+		Spawn:
+			BANA C -1;
+			Stop;
+	}
+}

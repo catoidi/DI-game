@@ -6,6 +6,7 @@
 >>Arg #5 (Optional): An integer used to sort the unlocks. Default is 0. Accepts negative numbers.
 di_unlock_item_starpistol StarPistol 1  1;
 di_unlock_item_cheesegun CheeseGun 1  1;
+di_unlock_item_banana DI_Banana_Bundle 3  1;
 di_unlock_item_whoppeecushion DI_WhoppeeCushion 2  1;
 di_unlock_item_fred1 DI_BonusArmor 2 di_fredcount 1;
 di_unlock_item_fred2 DI_Firestarter 2 di_fredcount 1;

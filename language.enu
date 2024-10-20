@@ -89,6 +89,7 @@ DIPOPUP_di_unlock_item_minifred = "Mini Fred";
 DIPOPUP_di_unlock_item_cheeseartifact = "Cheese Artifact";
 DIPOPUP_di_unlock_item_tomato = "Tomato";
 DIPOPUP_di_unlock_item_trailblazer = "Trailblazer";
+DIPOPUP_di_unlock_item_banana = "Banana";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -142,6 +143,7 @@ SHOPLOCK_DI_OREDRILL = "\cbReach \cfSwag Level 5 \cbor higher to unlock this ite
 SHOPLOCK_STUNCROSSBOW = "\cbReach \cfSwag Level 6 \cbor higher to unlock this item.";
 SHOPLOCK_DI_TOMATO = "\cbDefeat the \cfMelon Boss \cbin \cfLevel 2 \cbto unlock this consumable.";
 SHOPLOCK_DI_TRAILBLAZER = "\cbFully upgrade Level 2's Shop to unlock this item.";
+SHOPLOCK_DI_BANANA_BUNDLE = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 1 \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
