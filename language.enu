@@ -25,7 +25,7 @@ DIMENU_SELECT_DI_PLAYERBURGER = "Burger";
 DIMENU_SELECT_DI_PLAYERHAM = "Hamill";
 DIMENU_LOCKED_DI_PLAYERBOX = "\ccunlocked by owning 2 Box Party Weapons at once.";
 DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
-DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by completing 5 Side Quests in a row without failing once.";
+DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by completing 5 Side Quests in a row in Level 2.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 DIMENU_LOCKED_LEVEL_DI03 = "\ccthis level will be added in a future update.";
 
