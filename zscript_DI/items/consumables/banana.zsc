@@ -37,11 +37,12 @@ Class DI_Banana_Projectile : DI_ThrowBomb_Projectile
 	Default
 	{
 		DamageFunction (30);
-		BounceFactor 0.1;
+		BounceFactor 0.3;
 		-BRIGHT;
 		+BOUNCEONWALLS;
 		+BOUNCEONFLOORS;
 		+BOUNCEONCEILINGS;
+		+CANBOUNCEWATER;
 	}
 	
 	override int SpecialBounceHit(Actor bounceMobj, Line bounceLine, readonly<SecPlane> bouncePlane)
@@ -64,8 +65,8 @@ Class DI_Banana_Projectile : DI_ThrowBomb_Projectile
 				other.vel.Z += 20;
 				other.vel.X += frandom(-20, 20);
 				other.vel.y += frandom(-20, 20);
-				other.A_StartSound("wow", 1000, startTime: 0.3);
-				other.A_StartSound("wow", 1001, startTime: 0.3);
+				other.A_StartSound("wow", CHAN_AUTO, startTime: 0.3);
+				other.A_StartSound("wow", CHAN_AUTO, startTime: 0.3);
 				gorped = true;
 			}
 		}
@@ -100,6 +101,7 @@ Class DI_Banana_Bundle : DIBundle
 		DIBundle.BundleItem "DI_Banana";
 		DIBundle.BundleAmount 5;
 		Inventory.PickupMessage "Acquired 4 bananas. (Gives +15 HP and +15 Regen. Drops a banana peel on the ground.)";
+		Inventory.MaxAmount 4;
 	}
 	
 	States
