@@ -384,11 +384,18 @@ Class DIShop : DIShop_Base
 		
 			int buyprice = GetShopPrice();
 			plr = PlayerPawn(target);
+			let desc2 = String.Format("$shopdesc2_%s", shop_currentitem); //GROSS HACK !!!!!!!!!!
 			itemactor = plr.FindInventory(shop_currentitem);
+			desc2 = StringTable.Localize(desc2);
+			if (desc2.Left(9) ~== "IsBundle ")
+			{
+				let itemname = desc2.Mid(9);
+				itemactor = plr.FindInventory(itemname);
+			}
 			if ((itemactor) && (itemactor.maxamount))
 			{
 				itemmax = itemactor.maxamount;
-				if (plr.CountInv(shop_currentitem) >= itemmax) {hasroom = false;}
+				if (plr.CountInv(itemactor.getclassname()) >= itemmax) {hasroom = false;}
 			}
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
 			if ((canafford == true) && (canshop == true) && (hasroom == true) && (CanDoDebt(plr) == true))
