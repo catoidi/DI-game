@@ -388,14 +388,15 @@ Class SwagHandler : EventHandler
 		int newlvl = 0;
 		while (curexp >= expmax)
 		{
-			++newlvl;
+			int addlvl = 1;
 			if (overlvl > 0) 
 			{
 				//if overlevel detected, do 2 level increases to compensate.
-				++newlvl;
+				++addlvl;
 				--overlvl;
 			}
-			curlvl += newlvl;
+			curlvl += addlvl;
+			newlvl += addlvl;
 			curexp -= expmax;
 			expmax = 5000 * (1 + curlvl + overlvl);
 		}
