@@ -10,6 +10,7 @@ Class DI_BigMelon : DI_Boss
 		Height 120;
 		Mass 20000;
 		MinMissileChance 1;
+		MissileChanceMult 0.0625;
 		MeleeThreshold 0;
 		MeleeRange 128;
 		PainChance 64;
@@ -20,8 +21,6 @@ Class DI_BigMelon : DI_Boss
 		DI_Monster.DIDrop "DI_Gem";
 		+THRUSPECIES;
 		+MTHRUSPECIES;
-		+MISSILEMORE;
-		+MISSILEEVENMORE;
 	}
 	
 	override bool CanCollideWith(Actor other, bool passive)

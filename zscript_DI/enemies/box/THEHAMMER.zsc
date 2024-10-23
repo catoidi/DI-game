@@ -9,6 +9,7 @@ class THEHAMMER : DI_Monster
 		Mass 400;
 		MeleeRange 72;
 		MeleeThreshold 180;
+		MissileChanceMult 0.0625;
 		DamageFactor "Enemy", 0.0;
 		DamageFactor "Lightning", 1.6;
 		DamageFactor "FakeLightning", 1.6;
@@ -19,8 +20,6 @@ class THEHAMMER : DI_Monster
 		Obituary "$BOX_DIE_HAMMER";
 		+FLOORCLIP;
 		+NOBLOODDECALS;
-		+MISSILEMORE;
-		+MISSILEEVENMORE;
 		+SLIDESONWALLS;
 		//$Category "Box Party/Enemies/"
 		//$Title "THE HAMMER"
