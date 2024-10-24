@@ -6,14 +6,14 @@ Class DI_GlassGem : DIPassiveInventory
 	{
 		Tag "Glass Gem";
 		Inventory.Icon "POW1X0";
-		Inventory.PickupMessage "Glass Gem acquired! (Enemies drop +1 coin while you have at least 95% health remaining.)";
+		Inventory.PickupMessage "Glass Gem acquired! (Enemies drop +1 coin while you have at least 75% health remaining.)";
 		Inventory.MaxAmount 3;
 	}
 
     override int GiveExtraCoin()
     {
         if (!plr) {return 0;}
-        if (plr.health < (plr.DIMaxHealth() * 0.95)) {return 0;}
+        if (plr.health < (plr.DIMaxHealth() * 0.75)) {return 0;}
 		return plr.CountInv(GetClassName());
     }
 }
