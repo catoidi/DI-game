@@ -4,11 +4,11 @@ class DI_PlayerBurger : DI_PlayerBase
 {
 	Default
 	{
-		Speed 0.6;
+		Speed 0.65;
 		Height 48;
-		Health 75;
+		Health 60;
 		Scale 1.5;
-		Player.MaxHealth 125;
+		Player.MaxHealth 120;
 		Player.DisplayName "Burger";
 		Player.Portrait "graphics/info_burger.png";
 		Player.StartItem "CheeseGun";
@@ -18,8 +18,8 @@ class DI_PlayerBurger : DI_PlayerBase
 		Player.ViewHeight 40;
 		Player.ViewBob 0.5;
 		Player.DamageScreenColor "Yellow";
-		DI_PlayerBase.AutoBlacklist "CheeseGun";
-		DI_PlayerBase.PermaStart "CheeseGun";
+		DI_PlayerBase.AutoBlacklist "CheeseGun,DI_FullHeal,DI_JuiceBox";
+		DI_PlayerBase.PermaStart "CheeseGun,DI_JuiceBox";
 		BloodColor "Yellow";
 		BloodType "DI_Blood_Burger";
 	}
