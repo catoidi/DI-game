@@ -7,7 +7,7 @@ Class DI_Trailblazer : DIPassiveInventory
 		Tag "Trailblazer";
 		Inventory.Icon "POW2A0";
 		Inventory.PickupMessage "Trailblazer acquired! (Gain player/weapon speed based on health lost.)";
-		Inventory.MaxAmount 3;
+		Inventory.MaxAmount 4;
 	}
 	
 	double daspeed;
@@ -22,7 +22,7 @@ Class DI_Trailblazer : DIPassiveInventory
 			daspeed = 1.0 * (hplost / plr.GetMaxHealth(true));
 			if (daspeed < 0.0) {daspeed = 0.0;}
 			
-			daspeed *= 0.30 * plr.CountInv(self.GetClassName());
+			daspeed *= 0.20 * plr.CountInv(self.GetClassName());
 		}
 	}
 	

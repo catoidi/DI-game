@@ -379,8 +379,8 @@ SHOPDESC2_DI_MINIFRED = "\cbMax freds determined by item stack. Small chance to 
 SHOPTYPE_DI_MINIFRED = "\cd[Passive] \cl[Max: 10]";
 SHOPITEM_DI_TRAILBLAZER = "Trailblazer";
 SHOPDESC_DI_TRAILBLAZER = "Gain weapon/movement speed the closer\nyou are to death.";
-SHOPDESC2_DI_TRAILBLAZER = "\cbGives up to 30% speed to both weapon and player per item stack. Weapon speed has diminishing returns. Borrowed health can grant speed bonus as well.";
-SHOPTYPE_DI_TRAILBLAZER = "\cd[Passive] \cl[Max: 3]";
+SHOPDESC2_DI_TRAILBLAZER = "\cbGives up to 20% speed to both weapon and player per item stack. Weapon speed has diminishing returns. Borrowed health can grant speed bonus as well.";
+SHOPTYPE_DI_TRAILBLAZER = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
