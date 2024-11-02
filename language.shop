@@ -381,6 +381,10 @@ SHOPITEM_DI_TRAILBLAZER = "Trailblazer";
 SHOPDESC_DI_TRAILBLAZER = "Gain weapon/movement speed the closer\nyou are to death.";
 SHOPDESC2_DI_TRAILBLAZER = "\cbGives up to 20% speed to both weapon and player per item stack. Weapon speed has diminishing returns. Borrowed health can grant speed bonus as well.";
 SHOPTYPE_DI_TRAILBLAZER = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_SUPERGLUE = "Super Glue";
+SHOPDESC_DI_SUPERGLUE = "Improves Accuracy/Recoil by 1.\n\caTemporarily reduce weapon speed\nupon switching weapons.";
+SHOPDESC2_DI_SUPERGLUE = "\cbThe severity and the length of the weapon speed debuff increases based on item stack.";
+SHOPTYPE_DI_SUPERGLUE = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
@@ -411,3 +415,7 @@ SHOPITEM_DI_CHEESEARTIFACT_TIMER = "\cvCheese Storm (Active)";
 SHOPDESC_DI_CHEESEARTIFACT_TIMER = "A sentient cloud of cheese will roam around and attack enemies for you for 30 seconds.";
 SHOPDESC2_DI_CHEESEARTIFACT_TIMER = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_CHEESEARTIFACT_TIMER = "\cv[Powerup] \cl[Max Timer: 30]";
+SHOPITEM_DI_SUPERGLUE_POWERUP = "\cgSuper Glue (Active)";
+SHOPDESC_DI_SUPERGLUE_POWERUP = "\caTemporarily reduces weapon speed.";
+SHOPDESC2_DI_SUPERGLUE_POWERUP = "\cbDebuff applied from switching weapons while having Super Glue equipped.";
+SHOPTYPE_DI_SUPERGLUE_POWERUP = "\cv[Powerup] \cl[Max Timer: 4]";

@@ -1,0 +1,77 @@
+//zscript_DI/items/passives/superglue.zsc
+
+Class DI_SuperGlue : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Super Glue";
+		Inventory.Icon "POW2B0";
+		Inventory.PickupMessage "Acquired Super Glue! (Improves Accuracy and Recoil, but switching weapons temporarily reduces weapon speed.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	Weapon prevwpn;
+	int gluetimer;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+	
+		if (plr && (plr.IsFrozen() == false))
+		{
+			if (prevwpn != plr.player.ReadyWeapon)
+			{
+				gluetimer = 35 * plr.CountInv(GetClassName());
+				plr.A_SetInventory("DI_SuperGlue_Powerup", plr.CountInv(GetClassName()));
+			}
+			prevwpn = plr.player.ReadyWeapon;
+			
+			if (gluetimer > 0)
+			{
+				--gluetimer;
+			}
+		}
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0.0;}
+		return -1 * plr.countinv(GetClassName());
+	}
+	
+	override double GiveRecoil()
+	{
+		if (!plr) {return 0.0;}
+		return -1 * plr.countinv(GetClassName());
+	}
+	
+	override double GiveWeaponSpeed()
+	{
+		if (!plr) {return 0.0;}
+		return 0.01 * plr.CountInv(GetClassName()) * gluetimer;
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 B -1;
+			Stop;
+	}
+}
+
+Class DI_SuperGlue_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cgSuper Glue (Active)";
+		Inventory.Icon "POW2C0";
+		Inventory.MaxAmount 4;
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 C -1;
+			Stop;
+	}
+}

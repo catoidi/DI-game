@@ -218,6 +218,8 @@ Class DI_Weapon : Weapon abstract
 				wpn_accuracy += curinv.GiveAccuracy();
 				wpn_recoil += curinv.GiveRecoil();
 				wpn_recoil_recover += curinv.GiveRecoilRecover();
+				double finalaccuracy = wpn_accuracy + current_recoil;
+				if (finalaccuracy < 0.0) {wpn_accuracy += -finalaccuracy;}
 				wpn_projectiles += curinv.GiveProjectiles();
 				wpn_bulletsize += curinv.GiveBulletSize();
 				if (wpn_bulletsize < 0.1) {wpn_bulletsize = 0.1;}

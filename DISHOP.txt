@@ -110,6 +110,7 @@ DamagePassive DI_Toaster POW1P 14 256 di_unlock_item_toaster;
 DamagePassive DI_DepletedMag POW1W 14 256 di_unlock_item_depletedmag;
 DamagePassive DI_MiniFred POW1N 7 256 di_unlock_item_minifred;
 DamagePassive DI_Trailblazer POW2A 14 256 di_unlock_item_trailblazer;
+DamagePassive DI_SuperGlue POW2B 7;
 >>Defense Passives...
 DefensePassive DI_BloodyHeart POWRD 7 256 di_unlock_item_bloodyheart;
 DefensePassive DI_BonusArmor POWRE 7 256 di_unlock_item_fred1;
@@ -159,3 +160,4 @@ FakeShopItem DI_QuestDebuff_MotionBlur BOOKB 1;
 FakeShopItem DI_QuestDebuff_SpeedyFoes BOOKB 1;
 FakeShopItem DI_QuestDebuff_BulletSponge BOOKB 1;
 FakeShopItem DI_CheeseArtifact_Timer ARTID 1;
+FakeShopItem DI_SuperGlue_Powerup POW2C 1;
