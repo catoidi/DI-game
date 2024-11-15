@@ -9,4 +9,4 @@ DI01, Event, dievent_fredpuncher, 25, 1;
 DI01, ACS, dievent_spawnwalltraps, 25, 1;
 DI01, Event, dievent_hammertime, 25, 1;
 >>DI01, Event, dievent_addron, 0, 1;
-DI02, Event, dievent_bulletdeath, 1, 1;
+DI02, Event, dievent_bulletdeath, 25, 1;
