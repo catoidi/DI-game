@@ -65,9 +65,11 @@ Class DIQuestHUDHandler : EventHandler
 	ui bool doquest;
 	ui float questalpha, scalenum;
 	transient ui cvar scalefactor;
+	ui string curevent, curevent_desc;
 	
 	override void UITick()
 	{
+		//side quest stuff
 		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
 		scalenum = scalefactor.getfloat();
 		plr = DI_PlayerBase(players[consoleplayer].mo);
@@ -87,18 +89,30 @@ Class DIQuestHUDHandler : EventHandler
 		
 		if (doquest) {questalpha = 1.0;}
 		else if (questalpha > 0.0) {questalpha -= 0.02;}
+		
+		if (plr && (plr.currentevent != ""))
+		{
+			curevent = StringTable.Localize(plr.currentevent, false);
+			curevent_desc = StringTable.Localize(String.Format("$%s_desc", plr.currentevent));
+		}	
+		else 
+		{
+			curevent = "";
+			curevent_desc = "";
+		}
 	}
 	
 	override void RenderUnderlay(RenderEvent e)
 	{
+		//side quest stuff
 		let startx = 0;
-		let starty = Screen.GetHeight() / 2;
+		let starty = (Screen.GetHeight() / 2) - (32 * CleanYFac);
 		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\caDebuff:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curdebuff, curprogress);
 		
 		textureid back = texman.checkfortexture("graphics/hpbar/shopbar.png");
-		screen.drawtexture(back, false, startx - (16 * CleanXFac), starty - (16 * CleanYFac),
+		screen.drawtexture(back, false, startx - (16 * CleanXFac), starty - (12 * CleanYFac),
 			DTA_ScaleX, scalenum * CleanXFac * 0.75,
-			DTA_ScaleY, scalenum * CleanYFac,
+			DTA_ScaleY, scalenum * CleanYFac * 1.125,
 			DTA_Alpha, questalpha
 		);
 		
@@ -108,5 +122,28 @@ Class DIQuestHUDHandler : EventHandler
 			DTA_Alpha, questalpha,
 			DTA_KeepRatio, true
 		);
+		
+		if (curevent != "")
+		{
+			int backsizex, backsizey;
+			let starty2 = starty;
+			if (doquest)
+			{
+				//move event UI downwards while side quest is active
+				[backsizex, backsizey] = TexMan.GetSize(back);
+				starty2 += backsizey * (scalenum * CleanYFac * 1.125);
+			}
+			
+			screen.drawtexture(back, false, startx - (16 * CleanXFac), starty2 - (8 * CleanYFac),
+				DTA_ScaleX, scalenum * CleanXFac * 0.75,
+				DTA_ScaleY, scalenum * CleanYFac * 0.5
+			);
+			let txt2 = string.format("%s\n\n%s", curevent, curevent_desc);
+			screen.drawtext(SmallFont, Font.CR_UNTRANSLATED, startx, starty2, txt2,
+				DTA_ScaleX, scalenum * CleanXFac,
+				DTA_ScaleY, scalenum * CleanYFac,
+				DTA_KeepRatio, true
+			);
+		}
 	}
 }

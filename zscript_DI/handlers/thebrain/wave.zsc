@@ -425,15 +425,20 @@ extend class DIHandler
 			
 			if (currentevents.Size() > 0)
 			{
+				//not multiplayer compatible cuz im lazy :p
+				let plr = DI_PlayerBase(players[consoleplayer].mo);
+			
 				int eventnum = random(1, currentevents.Size()) - 1;
 				Array<string> eventline;
 				currentevents[eventnum].Split(eventline, ",", TOK_SKIPEMPTY);
 				if (eventline[1] == "acs") //activate an ACS script.
 				{
+					plr.currentevent = eventline[2];
 					e.Thing.ACS_ScriptCall(eventline[2], 0, 0, 0, 0);
 				}
 				else if (eventline[1] == "event") //activate an Event Handler script.
 				{
+					plr.currentevent = eventline[2];
 					EventHandler.SendNetworkEvent(eventline[2]);
 				}
 				

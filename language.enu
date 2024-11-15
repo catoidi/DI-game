@@ -172,3 +172,13 @@ PAINTING_MANGO = "This painting appears to depict a mango, but you're not 100% s
 PAINTING_MAP = "This appears to be a map of the arena.";
 PAINTING_YOLK = "This is a drawing of some kind of slimey egg yolk creature.\nThe author is credited as 'thebluuster'.";
 PAINTING_BOXPARTY = "This is an advertisement for the demo of 'Box Party', available now on Steam and itch.io.";
+
+//Random Events
+dievent_spawnwalltraps = "\cgHazard Warning";
+dievent_spawnwalltraps_desc = "\caSpawns some extra hazards around the arena.";
+dievent_bulletdeath = "\cgPostmortem Surprise";
+dievent_bulletdeath_desc = "\caEnemies fire a projectile upon death.";
+dievent_fredpuncher = "\cgMelon Mixup";
+dievent_fredpuncher_desc = "\caAll Fred's are replaced with Fruit Punchers.";
+dievent_hammertime = "\cgHammer Time";
+dievent_hammertime_desc = "\caAdds some new THE HAMMER's to the wave.";

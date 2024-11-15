@@ -5,8 +5,8 @@
 >>Argument 4: Random chance of the event being added to the event pool. Only 1 event in the pool will be activated per wave. Setting this to 0 means this event will always be added to the pool.
 >>Argument 5: The minimum wave required for this event. The event won't be added to the pool if the player has not reached this wave yet.
 DI01, Event, dievent_bulletdeath, 50, 1;
-DI01, Event, dievent_fredpuncher, 30, 1;
-DI01, ACS, dievent_spawnwalltraps, 8, 1;
-DI01, Event, dievent_hammertime, 30, 1;
+DI01, Event, dievent_fredpuncher, 25, 1;
+DI01, ACS, dievent_spawnwalltraps, 25, 1;
+DI01, Event, dievent_hammertime, 25, 1;
 >>DI01, Event, dievent_addron, 0, 1;
-DI02, Event, dievent_bulletdeath, 50, 1;
+DI02, Event, dievent_bulletdeath, 1, 1;
