@@ -127,6 +127,10 @@ user int di_itemhud_toggle = 1; //enables the item hud.
 user float di_itemhud_scale = 0.75; //controls the size of the passive items shown at the top left of the screen.
 user float di_itemhud_alpha = 0.75; //opacity of the item hud.
 
+//DI Quest/Event scale
+user float di_questscale = 1.0; //scale of the quest/event hud.
+user float di_questalpha = 1.0; //alpha of the above thing.
+
 //boxhud
 user int box_hudshake = 2; //how much hud shakes when taking damage
 user bool di_showfreshtimer = false;

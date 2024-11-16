@@ -63,17 +63,20 @@ Class DIQuestHUDHandler : EventHandler
 	ui DI_MainQuest quest;
 	ui string curquest, curdesc, curdebuff, curprogress;
 	ui bool doquest;
-	ui float questalpha, scalenum;
-	transient ui cvar scalefactor;
+	ui float questalpha, scalenum, eventalpha, finalalpha;
+	transient ui cvar scalefactor, questscale, cvaralpha;
 	ui string curevent, curevent_desc;
 	
 	override void UITick()
 	{
 		//side quest stuff
 		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
-		scalenum = scalefactor.getfloat();
+		questscale = cvar.getcvar("di_questscale", players[consoleplayer]);
+		cvaralpha = cvar.getcvar("di_questalpha", players[consoleplayer]);
+		scalenum = scalefactor.getfloat() * questscale.getfloat();
+		finalalpha = cvaralpha.getfloat();
 		plr = DI_PlayerBase(players[consoleplayer].mo);
-		if (plr) 
+		if (plr && (plr.health > 0)) 
 		{
 			quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
 			if ((quest) && (quest.objective))
@@ -87,39 +90,46 @@ Class DIQuestHUDHandler : EventHandler
 			else {doquest = false;}
 		}
 		
-		if (doquest) {questalpha = 1.0;}
-		else if (questalpha > 0.0) {questalpha -= 0.02;}
+		if (doquest) {if (questalpha < 1.0) {questalpha += 0.1;}}
+		else if (questalpha >= 0.04) {questalpha -= 0.04;}
+		else if (questalpha > 0.0) {questalpha = 0.0;}
 		
 		if (plr && (plr.currentevent != ""))
 		{
+			if (eventalpha < 1.0) {eventalpha += 0.1;}
 			curevent = StringTable.Localize(plr.currentevent, false);
 			curevent_desc = StringTable.Localize(String.Format("$%s_desc", plr.currentevent));
 		}	
 		else 
 		{
-			curevent = "";
-			curevent_desc = "";
+			if (eventalpha >= 0.04) {eventalpha -= 0.04;}
+			else if (eventalpha > 0.0) {eventalpha = 0.0;}
+			else
+			{
+				curevent = "";
+				curevent_desc = "";
+			}
 		}
 	}
 	
 	override void RenderUnderlay(RenderEvent e)
 	{
 		//side quest stuff
-		let startx = 0;
-		let starty = (Screen.GetHeight() / 2) - (32 * CleanYFac);
+		let startx = 2 * scalenum * CleanXFac;
+		let starty = (Screen.GetHeight() / 2) - (32 * scalenum * CleanYFac);
 		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\caDebuff:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curdebuff, curprogress);
 		
 		textureid back = texman.checkfortexture("graphics/hpbar/shopbar.png");
-		screen.drawtexture(back, false, startx - (16 * CleanXFac), starty - (12 * CleanYFac),
-			DTA_ScaleX, scalenum * CleanXFac * 0.75,
+		screen.drawtexture(back, false, startx - (25.6 * scalenum * CleanXFac), starty - (12 * scalenum * CleanYFac),
+			DTA_ScaleX, scalenum * CleanXFac * 0.8,
 			DTA_ScaleY, scalenum * CleanYFac * 1.125,
-			DTA_Alpha, questalpha
+			DTA_Alpha, questalpha * finalalpha
 		);
 		
 		Screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, startx, starty, txt,
 			DTA_ScaleX, scalenum * CleanXFac,
 			DTA_ScaleY, scalenum * CleanYFac,
-			DTA_Alpha, questalpha,
+			DTA_Alpha, questalpha * finalalpha,
 			DTA_KeepRatio, true
 		);
 		
@@ -127,21 +137,23 @@ Class DIQuestHUDHandler : EventHandler
 		{
 			int backsizex, backsizey;
 			let starty2 = starty;
-			if (doquest)
+			if (questalpha > 0.0)
 			{
 				//move event UI downwards while side quest is active
 				[backsizex, backsizey] = TexMan.GetSize(back);
 				starty2 += backsizey * (scalenum * CleanYFac * 1.125);
 			}
 			
-			screen.drawtexture(back, false, startx - (16 * CleanXFac), starty2 - (8 * CleanYFac),
-				DTA_ScaleX, scalenum * CleanXFac * 0.75,
-				DTA_ScaleY, scalenum * CleanYFac * 0.5
+			screen.drawtexture(back, false, startx - (25.6 * scalenum * CleanXFac), starty2 - (8 * scalenum * CleanYFac),
+				DTA_ScaleX, scalenum * CleanXFac * 0.8,
+				DTA_ScaleY, scalenum * CleanYFac * 0.5,
+				DTA_Alpha, eventalpha * finalalpha
 			);
 			let txt2 = string.format("%s\n\n%s", curevent, curevent_desc);
 			screen.drawtext(SmallFont, Font.CR_UNTRANSLATED, startx, starty2, txt2,
 				DTA_ScaleX, scalenum * CleanXFac,
 				DTA_ScaleY, scalenum * CleanYFac,
+				DTA_Alpha, eventalpha * finalalpha,
 				DTA_KeepRatio, true
 			);
 		}

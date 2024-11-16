@@ -22,6 +22,11 @@ OptionMenu "DIHudOptions"
 	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
 	Tooltip "Prevents pickup messages from appearing at the top of your screen."
 	StaticText ""
+	Slider "Event Scale", "di_questscale", 0.0, 1.0, 0.025, 3
+	Tooltip "Tweak the size of Random Event and Side Quest popups on the left side of the screen."
+	Slider "Event Alpha", "di_questalpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Tweak the alpha of Random Event and Side Quest popups. Set to 0 to completely hide them."
+	StaticText ""
 	StaticText "Submenus", "Purple"
 	SubMenu "Passive Hotbar Options", "DIHUDOptions_Hotbar", 0, 1
 	Tooltip "Change the item HUD shown at the top right of your screen, containing your current passive items and powerups."
