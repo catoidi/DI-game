@@ -83,7 +83,6 @@ Class DIPopupHandler : EventHandler
 	{
 		if (e.Name == "DI_WaveStartUI")
 		{
-			console.printf("%s", "wave start ui activated");
 			dowavestart = true;
 			dowaveend = false;
 			waveuitimer = 0;
