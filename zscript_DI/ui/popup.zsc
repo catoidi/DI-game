@@ -70,7 +70,7 @@ Class DIPopupHandler : EventHandler
 	
 	ui bool dowavestart, dowaveend;
 	ui int waveuitimer, curwave;
-	ui float wavemove;
+	ui float wavemove, newmove;
 	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
@@ -141,6 +141,24 @@ Class DIPopupHandler : EventHandler
 		if (dowavestart || dowaveend)
 		{
 			++waveuitimer;
+			
+			if (waveuitimer <= 50)
+			{
+				newmove = ((1.59 - wavemove) / 50);
+				wavemove += newmove;
+			}
+			else if ((waveuitimer >= 155) && (waveuitimer <= 205))
+			{
+				newmove = -((1.59 - wavemove) / 50);
+				wavemove += newmove;
+			}
+			if (wavemove >= 1.0) 
+			{
+				wavemove = 1.0;
+				newmove = 0.0;
+			}
+			
+			console.printf("%.2f", wavemove);
 		}
 	}
 	
@@ -193,32 +211,23 @@ Class DIPopupHandler : EventHandler
 		
 		if (dowavestart)
 		{
-			if (waveuitimer < 175)
-			{
-				let realtime = waveuitimer + e.FracTic;
-				
-				if ((realtime < 50))
-				{
-					float newmove = 0.01 + ((0.5 - wavemove) / 50);
-					wavemove += newmove;
-				}
-				else if (wavemove > 1.0) {wavemove = 1.0;}
-				
-				console.printf("%.2f", wavemove);
-				
+			if (waveuitimer < 205)
+			{	
 				let wavex = Screen.GetWidth() / 2;
-				let wavey = (Screen.GetHeight() / 3) * wavemove;
+				let wavey = (Screen.GetHeight() / 3) * (wavemove + (newmove * e.FracTic));
 				let wavetxt = string.format("%s", "\cgWave:");
 				let wavetxt2 = string.format("\n%d", curwave);
 				
 				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac) / 2), wavey, wavetxt,
 					DTA_ScaleX, CleanXFac,
 					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, wavemove,
 					DTA_KeepRatio, true
 				);
 				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt2) * CleanXFac) / 2), wavey, wavetxt2,
 					DTA_ScaleX, CleanXFac,
 					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, wavemove,
 					DTA_KeepRatio, true
 				);
 			}
