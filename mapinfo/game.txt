@@ -24,7 +24,7 @@ GameInfo
 		"DIEventHandler", //random event handler.
 		"DIXHairHandler", //crosshair.
 		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
-		"DIQuestHUDHandler", //Displays side quests on the middle left of your screen.
+		"DIPopupHandler", //Displays side quests on the middle left of your screen.
 		"SwagHandler", //Controls swag level things, and player death screen.
 		"DIUnlockHandler", //For controlling unlocks and stuff.
 		"PaintHandler", //controls the paintings.

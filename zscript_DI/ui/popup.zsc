@@ -1,6 +1,6 @@
 //zscript_DI/ui/questhud.zsc
 
-Class DIQuestHUDHandler : EventHandler
+Class DIPopupHandler : EventHandler
 {
 	//PLAY ELEMENTS
 	Array<String> debuffs;
@@ -65,7 +65,32 @@ Class DIQuestHUDHandler : EventHandler
 	ui bool doquest;
 	ui float questalpha, scalenum, eventalpha, finalalpha;
 	transient ui cvar scalefactor, questscale, cvaralpha;
+	
 	ui string curevent, curevent_desc;
+	
+	ui bool dowavestart, dowaveend;
+	ui int waveuitimer, curwave;
+	ui float wavemove;
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name == "DI_WaveStartUI")
+		{
+			console.printf("%s", "wave start ui activated");
+			dowavestart = true;
+			dowaveend = false;
+			waveuitimer = 0;
+			wavemove = 0.0;
+			curwave = e.Args[0];
+		}
+		else if (e.Name == "DI_WaveEndUI")
+		{
+			dowaveend = true;
+			dowavestart = false;
+			waveuitimer = 0;
+			wavemove = 0.0;
+		}
+	}
 	
 	override void UITick()
 	{
@@ -90,6 +115,7 @@ Class DIQuestHUDHandler : EventHandler
 			else {doquest = false;}
 		}
 		
+		//random event stuff
 		if (doquest) {if (questalpha < 1.0) {questalpha += 0.1;}}
 		else if (questalpha >= 0.04) {questalpha -= 0.04;}
 		else if (questalpha > 0.0) {questalpha = 0.0;}
@@ -109,6 +135,12 @@ Class DIQuestHUDHandler : EventHandler
 				curevent = "";
 				curevent_desc = "";
 			}
+		}
+		
+		//wave stuff
+		if (dowavestart || dowaveend)
+		{
+			++waveuitimer;
 		}
 	}
 	
@@ -133,6 +165,7 @@ Class DIQuestHUDHandler : EventHandler
 			DTA_KeepRatio, true
 		);
 		
+		//random event stuff
 		if (curevent != "")
 		{
 			int backsizex, backsizey;
@@ -156,6 +189,39 @@ Class DIQuestHUDHandler : EventHandler
 				DTA_Alpha, eventalpha * finalalpha,
 				DTA_KeepRatio, true
 			);
+		}
+		
+		if (dowavestart)
+		{
+			if (waveuitimer < 175)
+			{
+				let realtime = waveuitimer + e.FracTic;
+				
+				if ((realtime < 50))
+				{
+					float newmove = 0.01 + ((0.5 - wavemove) / 50);
+					wavemove += newmove;
+				}
+				else if (wavemove > 1.0) {wavemove = 1.0;}
+				
+				console.printf("%.2f", wavemove);
+				
+				let wavex = Screen.GetWidth() / 2;
+				let wavey = (Screen.GetHeight() / 3) * wavemove;
+				let wavetxt = string.format("%s", "\cgWave:");
+				let wavetxt2 = string.format("\n%d", curwave);
+				
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac) / 2), wavey, wavetxt,
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_KeepRatio, true
+				);
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt2) * CleanXFac) / 2), wavey, wavetxt2,
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_KeepRatio, true
+				);
+			}
 		}
 	}
 }

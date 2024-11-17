@@ -16,7 +16,7 @@ Class DI_QuestGiver : DI_Actor
 	int unsquish;
 	string objective;
 	string debuff;
-	DIQuestHUDHandler handler;
+	DIPopupHandler handler;
 	
 	override void tick(void)
 	{
