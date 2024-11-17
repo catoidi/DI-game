@@ -126,6 +126,7 @@ SCRIPT "DIWaveFinished" (int nextwave)
 SCRIPT "DIStartWave" (void)
 {	
 	ACS_NamedExecute("DIStartWave_Level", 0, 0, 0, 0);
+	Delay(35);
 	if (announcewave == true) //set this to false if you want your level to announce waves in a different way.
 	{
 		//SetFont("BIGFONT");
@@ -133,7 +134,6 @@ SCRIPT "DIStartWave" (void)
 		//HudMessageBold(s:"Wave\n", d:curwave; HUDMSG_FADEINOUT, -123456781, CR_RED, 160.4, 70.0, 3.0, 1.0, 1.0);
 		ScriptCall("EventHandler", "SendInterfaceEvent", 0, "DI_WaveStartUI", curwave);
 	}
-	Delay(35);
 	SpawnForced("DI_WaveStarter", 0, 0, 0, 0, 0);
 	waveinprogress = true;
 	queuefinished = false;

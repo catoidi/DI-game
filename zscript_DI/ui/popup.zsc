@@ -7,6 +7,8 @@ Class DIPopupHandler : EventHandler
 	Array<String> objectives;
 	array<string> filedata;
 	
+	DIHandler link;
+	
 	override void WorldLoaded(WorldEvent e)
 	{
 		int ThisLump = Wads.FindLump("DIQUEST", 0, Wads.ANYNAMESPACE);
@@ -45,6 +47,11 @@ Class DIPopupHandler : EventHandler
 		{
 			let curquest = DI_QuestGiver(e.Thing);
 			curquest.handler = self;
+		}
+		if (e.Thing is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(e.Thing);
+			if (plr.thebrain) {link = plr.thebrain;}
 		}
 	}
 	
@@ -157,8 +164,6 @@ Class DIPopupHandler : EventHandler
 				wavemove = 1.0;
 				newmove = 0.0;
 			}
-			
-			console.printf("%.2f", wavemove);
 		}
 	}
 	
@@ -210,17 +215,17 @@ Class DIPopupHandler : EventHandler
 		}
 		
 		if (dowavestart)
-		{
+		{	
 			if (waveuitimer < 205)
 			{	
 				let wavex = Screen.GetWidth() / 2;
-				let wavey = (Screen.GetHeight() / 3) * (wavemove + (newmove * e.FracTic));
+				let wavey = (Screen.GetHeight() * 0.25) * (0.75 + (0.25 * (wavemove + (newmove * e.FracTic))));
 				let wavetxt = string.format("%s", "\cgWave:");
-				let wavetxt2 = string.format("\n%d", curwave);
+				let wavetxt2 = string.format("\n\n%d/%d", curwave, link.wavemax);
 				
-				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac) / 2), wavey, wavetxt,
-					DTA_ScaleX, CleanXFac,
-					DTA_ScaleY, CleanYFac,
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac * 1.5) / 2), wavey, wavetxt,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5,
 					DTA_Alpha, wavemove,
 					DTA_KeepRatio, true
 				);

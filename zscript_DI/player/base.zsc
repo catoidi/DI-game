@@ -71,6 +71,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	bool inwave;
 	string currentevent;
 	
+	DIHandler thebrain;
+	
 	override void PostBeginPlay(void)
 	{
 		Super.PostBeginPlay();

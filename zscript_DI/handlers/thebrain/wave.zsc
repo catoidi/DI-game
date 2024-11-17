@@ -113,6 +113,8 @@ extend class DIHandler
 				}
 			}
 		}
+		
+		wavemax = finalwave;
 	
 		for (int i = 0; i < leveldata.Size(); i++)
 		{
