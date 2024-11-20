@@ -219,7 +219,7 @@ Class DIPopupHandler : EventHandler
 			{	
 				let wavex = Screen.GetWidth() / 2;
 				let wavey = (Screen.GetHeight() * 0.25) * (0.75 + (0.25 * (wavemove + (newmove * e.FracTic))));
-				let wavetxt = string.format("%s", "\cgWave:");
+				let wavetxt = string.format("%s", "\cgWave");
 				let wavetxt2 = string.format("\n\n%d/%d", curwave, link.wavemax);
 				
 				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac * 1.5) / 2), wavey, wavetxt,
