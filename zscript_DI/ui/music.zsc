@@ -1,0 +1,86 @@
+//zscript_DI/ui/music.zsc
+
+Class DIMusicHandler : EventHandler
+{
+	DI_PlayerBase plr;
+	DIHandler link;
+	
+	array<string> filedata;
+	array<string> musiclines;
+	
+	bool automusic;
+	int gamestate; //0 = main. 1 = action. 2 = shop. -1 = death.
+	float mainvolume, actionvolume, shopvolume, deathvolume;
+	string mainsong, actionsong, shopsong, deathsong;
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		int ThisLump = Wads.FindLump("DIMUSIC", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIMUSIC", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIMUSIC", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i].Split(currentline, " ");
+			if (currentline.Size() != 3) {ThrowAbortException("DIMUSIC Error: Incorrect amount of arguments found.\nLine: '%s'\nArguments: %d", filedata[i], currentline.Size());}
+			
+			if (currentline[0] ~== level.MapName) {musiclines.push(filedata[i]);}
+		}
+		
+		for (int i = 0; i < musiclines.Size(); ++i)
+		{
+			console.printf("scanning %s for music", musiclines[i]);
+			Array<String> currentline;
+			musiclines[i].Split(currentline, " ");
+			if (currentline[1] ~== "main") {mainsong = currentline[2];}
+			else if (currentline[1] ~== "action") {actionsong = currentline[2];}
+			else if (currentline[1] ~== "shop") {shopsong = currentline[2];}
+			else if (currentline[1] ~== "death") {deathsong = currentline[2];}
+		}
+		
+		mainvolume = 1.0;
+		automusic = true;
+	}
+	
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing is "DI_PlayerBase")
+		{
+			plr = DI_PlayerBase(e.Thing);
+			link = plr.thebrain; //this handler has a lower priority than the main handler, so this function will never fail.
+		}
+	}
+	
+	ui virtual void PlayMusic(sound whattoplay, int slot = 50000, double volume = 1.0)
+	{
+		if (plr)
+		{
+			//console.printf("now playing: %s", whattoplay);
+			plr.A_StartSound(whattoplay, slot, CHANF_UI | CHANF_LOCAL | CHANF_LOOPING, volume);
+		}
+	}
+	
+	override void UITick()
+	{
+		if (plr && automusic)
+		{
+			switch(gamestate)
+			{
+				case 0:
+					PlayMusic(mainsong, 50000, mainvolume);
+					break;
+			}
+		}
+	}
+}
