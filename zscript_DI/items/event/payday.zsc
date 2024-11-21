@@ -1,0 +1,14 @@
+//zscript_DI/items/event/payday.zsc
+
+Class DI_Payday : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+
+	override int GiveExtraCoin()
+	{
+		return 2 * plr.CountInv(self.GetClassName());
+	}
+}

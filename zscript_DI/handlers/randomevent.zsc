@@ -16,6 +16,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	bool dobrokenglasses; //Massively reduce weapon accuracy.
 	bool dooldmagazine; //Gives you a random damage debuff that's rerolled on reloading.
 	bool dohyperfocusing; //Player speed is reduced while reloading.
+	bool dopayday; //Enemies drop +2 coins.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -75,6 +76,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dohyperfocusing = true;
 			plr.GiveInventory("DI_Hyperfocusing", 1);
+		}
+		else if (e.Name == "dievent_payday")
+		{
+			dopayday = true;
+			plr.GiveInventory("DI_Payday", 1);
 		}
 	}
 	
@@ -157,6 +163,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dohyperfocusing = false;
 			plr.TakeInventory("DI_Hyperfocusing", 1);
+		}
+		if (dopayday) 
+		{
+			dopayday = false;
+			plr.TakeInventory("DI_Payday", 1);
 		}
 	}
 	

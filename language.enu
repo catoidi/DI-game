@@ -200,3 +200,5 @@ dievent_oldmagazine = "\cgOld Magazine";
 dievent_oldmagazine_desc = "\caGet a random damage debuff. This effect is\nrerolled upon switching/reloading weapons.";
 dievent_hyperfocusing = "\cgHyperfocusing";
 dievent_hyperfocusing_desc = "\caMovement speed is massively reduced\nwhile reloading a weapon.";
+dievent_payday = "\cfPayday";
+dievent_payday_desc = "\cbEnemies drop +2 coins on death.";
