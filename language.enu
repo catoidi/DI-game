@@ -188,3 +188,5 @@ dievent_pizzahorde = "\cgPizza Horde";
 dievent_pizzahorde_desc = "\caKilling enemies has a chance to\nspawn Pizza Slicers.";
 dievent_iamrisen = "\cgI AM RISEN";
 dievent_iamrisen_desc = "\caEnemies have a chance to respawn.";
+dievent_addron = "\cgRon comes over to visit";
+dievent_addron_desc = "\caAdds some new Ron's to the wave.";
