@@ -6,6 +6,8 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	int pizzanum;
 	bool doiamrisen; //enemies gain a chance to respawn.
 	int risennum;
+	bool dofiendfolio; //Increased chance of fiendish enemy spawns.
+	int folionum;
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -43,6 +45,10 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			doiamrisen = true;
 		}
+		else if (e.Name == "dievent_fiendfolio")
+		{
+			dofiendfolio = true;
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
@@ -78,6 +84,10 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 				e.Replacement = 'FruitPuncher';
 			}
 		}
+		if (dofiendfolio == true)
+		{
+			FiendFolio(e);
+		}
 	}
 	
 	virtual void ResetRandomEvents()
@@ -88,6 +98,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		pizzanum = 0;
 		doiamrisen = false;
 		risennum = 0;
+		dofiendfolio = false;
 	}
 	
 	virtual void BulletDeath(DI_Monster mon)
@@ -135,6 +146,26 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			string cmd = string.format("addwaveenemy %s 1 %s", thingy.getclassname(), thingy.spawnspotted);
 			SendNetworkEvent(cmd);
 			++risennum;
+		}
+	}
+	
+	virtual void FiendFolio(ReplaceEvent e)
+	{
+		if (e.Replacee.GetClassName() == "Fred")
+		{
+			if (random(0, folionum) == 0)
+			{
+				e.Replacement = 'Fred2';
+				if (folionum < 5) {++folionum;}
+			}
+		}
+		else if (e.Replacee.GetClassName() == "Ron")
+		{
+			if (random(0, folionum) == 0)
+			{
+				e.Replacement = 'Ron2';
+				if (folionum < 5) {++folionum;}
+			}
 		}
 	}
 }
