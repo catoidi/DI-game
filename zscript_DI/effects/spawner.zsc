@@ -189,7 +189,16 @@ Class DISpawner : DI_Actor
 		bool hasspawned;
 		actor creature;
 		[hasspawned, creature] = A_SpawnItemEX(SpawnChoice, flags: SXF_NOCHECKPOSITION);
-		if (hasspawned && creature) {Spotter.spawned = creature;} //give spawned creature pointer to spawnerspot
+		if (hasspawned && creature) 
+		{
+			 //give spawned creature pointer to spawnerspot
+			Spotter.spawned = creature;
+			if (creature is "DI_Monster")
+			{
+				let newmon = DI_Monster(creature);
+				newmon.spawnspotted = Spotter.getclassname();
+			}
+		}
 		SpawnerToggle(true);
 		for (int i = 0; i < 6; ++i)
 		{

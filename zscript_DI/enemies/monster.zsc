@@ -33,6 +33,8 @@ Class DI_Monster : DI_Actor abstract
 	Property StunSquish: StunSquish;
 	bool CanSwim;
 	Property CanSwim: CanSwim;
+	
+	string spawnspotted; //keep track of what type of spawner this enemy originated from.
 
 	//Called by all of DI's enemies.
 	Default
