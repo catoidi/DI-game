@@ -100,6 +100,14 @@ Class DIPopupHandler : EventHandler
 	
 	override void UITick()
 	{
+		if (!paused && !menuactive)
+		{
+			PopupTick();
+		}
+	}
+	
+	ui virtual void PopupTick()
+	{
 		//side quest stuff
 		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
 		questscale = cvar.getcvar("di_questscale", players[consoleplayer]);
