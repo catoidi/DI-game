@@ -15,6 +15,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	int bigguynum, bigguycount;
 	bool dobrokenglasses; //Massively reduce weapon accuracy.
 	bool dooldmagazine; //Gives you a random damage debuff that's rerolled on reloading.
+	bool dohyperfocusing; //Player speed is reduced while reloading.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -69,6 +70,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dooldmagazine = true;
 			plr.GiveInventory("DI_OldMagazine", 1);
+		}
+		else if (e.Name == "dievent_hyperfocusing")
+		{
+			dohyperfocusing = true;
+			plr.GiveInventory("DI_Hyperfocusing", 1);
 		}
 	}
 	
@@ -146,6 +152,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dooldmagazine = false;
 			plr.TakeInventory("DI_OldMagazine", 1);
+		}
+		if (dohyperfocusing)
+		{
+			dohyperfocusing = false;
+			plr.TakeInventory("DI_Hyperfocusing", 1);
 		}
 	}
 	

@@ -108,6 +108,7 @@ version "4.13"
 //random event items
 #include "zscript_DI/items/event/brokenglasses.zsc"
 #include "zscript_DI/items/event/oldmagazine.zsc"
+#include "zscript_DI/items/event/hyperfocusing.zsc"
 //passive items
 #include "zscript_DI/items/passives/fakestatups.zsc"
 #include "zscript_DI/items/passives/statups.zsc"
