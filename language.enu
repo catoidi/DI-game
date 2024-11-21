@@ -192,3 +192,5 @@ dievent_addron = "\cgRon comes over to visit";
 dievent_addron_desc = "\caAdds some new Ron's to the wave.";
 dievent_fiendfolio = "\cgFiend Folly";
 dievent_fiendfolio_desc = "\caFreds and Rons have an increased\nchance to become Fiendish.";
+dievent_thebigguy = "\cgThe Big Guy";
+dievent_thebigguy_desc = "\caSpawn a Giant Fred every 60 seconds.";

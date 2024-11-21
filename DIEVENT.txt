@@ -17,3 +17,4 @@ DI02, Event, dievent_bulletdeath, 40, 1;
 DI02, Event, dievent_iamrisen, 40, 1;
 DI02, Event, dievent_addron, 20, 1;
 DI02, Event, dievent_pizzahorde, 20, 1;
+DI02, Event, dievent_thebigguy, 20, 5;

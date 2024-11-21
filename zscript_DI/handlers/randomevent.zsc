@@ -1,5 +1,8 @@
 class DIEventHandler : EventHandler //you see the joke here is that this eventhandler is the one that handles DI's random events.
 {
+	DI_PlayerBase plr;
+	DIHandler thebrain;
+
 	bool dobulletdeath; //enables the bullet death event.
 	bool dofredpunch; //replace freds with fruit punchers.
 	bool dopizzahorde; //spawn a pizza slicer when killing enemies.
@@ -8,6 +11,8 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	int risennum;
 	bool dofiendfolio; //Increased chance of fiendish enemy spawns.
 	int folionum;
+	bool dothebigguy; //Spawn a Giant Fred once every minute.
+	int bigguynum, bigguycount;
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -49,15 +54,23 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dofiendfolio = true;
 		}
+		else if (e.Name == "dievent_thebigguy")
+		{
+			dothebigguy = true;
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		if (e.Thing is "DI_PlayerBase")
+		{
+			plr = DI_PlayerBase(e.Thing);
+			thebrain = plr.thebrain;
+		}
 		if (e.Thing is "DI_Monster")
 		{
 			//stuff
 		}
-		
 		if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
 		{
 			ResetRandomEvents();
@@ -90,6 +103,17 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		}
 	}
 	
+	override void WorldTick()
+	{
+		if (thebrain)
+		{
+			if (!Level.IsFrozen() && thebrain.waveinprogress)
+			{
+				if (dothebigguy) {TheBigGuy();}
+			}
+		}
+	}
+	
 	virtual void ResetRandomEvents()
 	{
 		dobulletdeath = false;
@@ -99,6 +123,8 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		doiamrisen = false;
 		risennum = 0;
 		dofiendfolio = false;
+		dothebigguy = false;
+		bigguynum = 0;
 	}
 	
 	virtual void BulletDeath(DI_Monster mon)
@@ -165,6 +191,27 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			{
 				e.Replacement = 'Ron2';
 				if (folionum < 5) {++folionum;}
+			}
+		}
+	}
+	
+	virtual void TheBigGuy()
+	{
+		if (bigguycount < thebrain.wavenum)
+		{
+			if (bigguynum == 0) 
+			{
+				SendNetworkEvent("addwaveenemy Fred3 1 DISpawnerSpot_Big");
+				++bigguycount;
+			}
+			++bigguynum;
+			if (bigguynum >= 2100) 
+			{
+				if (plr)
+				{
+					plr.ACS_ScriptCall("SpawningTheBigGuy");
+				}
+				bigguynum = 0;
 			}
 		}
 	}

@@ -157,6 +157,13 @@ SCRIPT "EventIsStarting" (void)
 	}
 }
 
+SCRIPT "SpawningTheBigGuy" (void)
+{
+	SetFont("BIGFONT");
+	SetHudSize(640, 400, false);
+	HudMessageBold(s:"BIG GUY SPAWNING SOON"; HUDMSG_FADEINOUT, -123456782, CR_ORANGE, 320.4, 248.0, 3.0, 1.0, 1.0);
+}
+
 SCRIPT "EnemyCount" (int nme)
 {
 	enemycount = nme;
