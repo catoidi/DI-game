@@ -39,6 +39,15 @@ Class RonSpawner1 : RandomSpawner
 	}
 }
 
+Class RonSpawner2 : RandomSpawner
+{
+	Default
+	{
+		DropItem "Ron", 255, 5;
+		DropItem "Ron2", 255, 1;
+	}
+}
+
 Class FiendSpawner : RandomSpawner
 {
 	Default

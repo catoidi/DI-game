@@ -99,7 +99,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	{
 		//example script to add new enemies to a wave.
 		int ronnum = wavenum * 2;
-		string cmd = string.format("addwaveenemy Ron %d", ronnum);
+		string cmd = string.format("addwaveenemy RonSpawner2 %d", ronnum);
 		//console.printf("%s", cmd);
 		SendNetworkEvent(cmd);
 	}
