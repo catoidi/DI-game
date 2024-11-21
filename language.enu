@@ -182,3 +182,5 @@ dievent_fredpuncher = "\cgMelon Mixup";
 dievent_fredpuncher_desc = "\caAll Fred's are replaced with Fruit Punchers.";
 dievent_hammertime = "\cgHammer Time";
 dievent_hammertime_desc = "\caAdds some new THE HAMMER's to the wave.";
+dievent_pepperparty = "\cgAdding Some Spice";
+dievent_pepperparty_desc = "\caAdds some new Pepper's to the wave.";

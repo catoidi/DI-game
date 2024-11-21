@@ -26,6 +26,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
 			HammerTime(eventnum);
 		}
+		else if (e.Name == "dievent_pepperparty")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			PepperParty(eventnum);
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
@@ -77,13 +82,19 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		//example script to add new enemies to a wave.
 		int ronnum = wavenum * 2;
 		string cmd = string.format("addwaveenemy Ron %d", ronnum);
-		console.printf("%s", cmd);
+		//console.printf("%s", cmd);
 		SendNetworkEvent(cmd);
 	}
 	
 	virtual void HammerTime(int wavenum)
 	{
 		string cmd = string.format("addwaveenemy THEHAMMER %d", wavenum);
+		SendNetworkEvent(cmd);
+	}
+	
+	virtual void PepperParty(int wavenum)
+	{
+		string cmd = string.format("addwaveenemy Pepper %d", wavenum);
 		SendNetworkEvent(cmd);
 	}
 }

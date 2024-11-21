@@ -6,7 +6,8 @@
 >>Argument 5: The minimum wave required for this event. The event won't be added to the pool if the player has not reached this wave yet.
 DI01, Event, dievent_bulletdeath, 50, 1;
 DI01, Event, dievent_fredpuncher, 25, 1;
-DI01, ACS, dievent_spawnwalltraps, 25, 1;
+DI01, ACS, dievent_spawnwalltraps, 50, 1;
 DI01, Event, dievent_hammertime, 25, 1;
+DI01, Event, dievent_pepperparty, 25, 1;
 >>DI01, Event, dievent_addron, 0, 1;
-DI02, Event, dievent_bulletdeath, 25, 1;
+DI02, Event, dievent_bulletdeath, 50, 1;
