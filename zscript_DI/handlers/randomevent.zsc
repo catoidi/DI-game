@@ -2,6 +2,10 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 {
 	bool dobulletdeath; //enables the bullet death event.
 	bool dofredpunch; //replace freds with fruit punchers.
+	bool dopizzahorde; //spawn a pizza slicer when killing enemies.
+	int pizzanum;
+	bool doiamrisen; //enemies gain a chance to respawn.
+	int risennum;
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -31,6 +35,14 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
 			PepperParty(eventnum);
 		}
+		else if (e.Name == "dievent_pizzahorde")
+		{
+			dopizzahorde = true;
+		}
+		else if (e.Name == "dievent_iamrisen")
+		{
+			doiamrisen = true;
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
@@ -52,6 +64,8 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			DI_Monster thingy = DI_Monster(e.Thing);
 			if (dobulletdeath) {BulletDeath(thingy);}
+			if (dopizzahorde) {PizzaHorde(thingy);}
+			if (doiamrisen) {IAmRisen(thingy);}
 		}
 	}
 	
@@ -70,6 +84,10 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	{
 		dobulletdeath = false;
 		dofredpunch = false;
+		dopizzahorde = false;
+		pizzanum = 0;
+		doiamrisen = false;
+		risennum = 0;
 	}
 	
 	virtual void BulletDeath(DI_Monster mon)
@@ -96,5 +114,27 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	{
 		string cmd = string.format("addwaveenemy Pepper %d", wavenum);
 		SendNetworkEvent(cmd);
+	}
+	
+	virtual void PizzaHorde(DI_Monster thingy)
+	{
+		if (thingy is "PizzaSlicer") {return;}
+		if (random(0, pizzanum) == 0) 
+		{
+			SendNetworkEvent("addwaveenemy PizzaSlicer 3 DISpawnerSpot_Flying");
+			++pizzanum;
+		}
+	}
+	
+	virtual void IAmRisen(DI_Monster thingy)
+	{
+		if (thingy is "DI_Boss") {return;}
+		if (thingy.spawnspotted = "") {return;}
+		if (random(0, risennum) == 0) 
+		{
+			string cmd = string.format("addwaveenemy %s 1 %s", thingy.getclassname(), thingy.spawnspotted);
+			SendNetworkEvent(cmd);
+			++risennum;
+		}
 	}
 }

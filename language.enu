@@ -184,3 +184,7 @@ dievent_hammertime = "\cgHammer Time";
 dievent_hammertime_desc = "\caAdds some new THE HAMMER's to the wave.";
 dievent_pepperparty = "\cgAdding Some Spice";
 dievent_pepperparty_desc = "\caAdds some new Pepper's to the wave.";
+dievent_pizzahorde = "\cgPizza Horde";
+dievent_pizzahorde_desc = "\caKilling enemies has a chance to\nspawn Pizza Slicers.";
+dievent_iamrisen = "\cgI AM RISEN";
+dievent_iamrisen_desc = "\caEnemies have a chance to respawn.";
