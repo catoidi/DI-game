@@ -194,3 +194,5 @@ dievent_fiendfolio = "\cgFiend Folly";
 dievent_fiendfolio_desc = "\caFreds and Rons have an increased\nchance to become Fiendish.";
 dievent_thebigguy = "\cgThe Big Guy";
 dievent_thebigguy_desc = "\caSpawn a Giant Fred every 60 seconds.";
+dievent_brokenglasses = "\cgBroken Glasses";
+dievent_brokenglasses_desc = "\caMassively reduce weapon accuracy.";

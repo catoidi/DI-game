@@ -13,6 +13,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	int folionum;
 	bool dothebigguy; //Spawn a Giant Fred once every minute.
 	int bigguynum, bigguycount;
+	bool dobrokenglasses; //Massively reduce weapon accuracy.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -57,6 +58,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		else if (e.Name == "dievent_thebigguy")
 		{
 			dothebigguy = true;
+		}
+		else if (e.Name == "dievent_brokenglasses")
+		{
+			dobrokenglasses = true;
+			plr.GiveInventory("DI_BrokenGlasses", 1);
 		}
 	}
 	
@@ -125,6 +131,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		dofiendfolio = false;
 		dothebigguy = false;
 		bigguynum = 0;
+		if (dobrokenglasses)
+		{
+			dobrokenglasses = false;
+			plr.TakeInventory("DI_BrokenGlasses", 1);
+		}
 	}
 	
 	virtual void BulletDeath(DI_Monster mon)

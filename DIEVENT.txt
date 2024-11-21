@@ -8,6 +8,7 @@
 DI01, Event, dievent_bulletdeath, 50, 1;
 DI01, ACS, dievent_spawnwalltraps, 50, 1;
 DI01, Event, dievent_iamrisen, 50, 1;
+DI01, Event, dievent_brokenglasses, 50, 1;
 DI01, Event, dievent_fredpuncher, 25, 1;
 DI01, Event, dievent_hammertime, 25, 1;
 DI01, Event, dievent_pepperparty, 25, 1;
@@ -15,6 +16,7 @@ DI01, Event, dievent_fiendfolio, 25, 1;
 >>LEVEL TWO EVENTS:
 DI02, Event, dievent_bulletdeath, 40, 1;
 DI02, Event, dievent_iamrisen, 40, 1;
+DI02, Event, dievent_thebigguy, 40, 5;
+DI02, Event, dievent_brokenglasses, 40, 1;
 DI02, Event, dievent_addron, 20, 1;
 DI02, Event, dievent_pizzahorde, 20, 1;
-DI02, Event, dievent_thebigguy, 20, 5;

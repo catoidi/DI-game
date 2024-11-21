@@ -1,0 +1,14 @@
+//zscript_DI/items/event/brokenglasses.zsc
+
+Class DI_BrokenGlasses : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+
+	override double GiveAccuracy()
+	{
+		return 5.0 * plr.CountInv(self.GetClassName());
+	}
+}
