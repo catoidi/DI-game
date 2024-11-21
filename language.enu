@@ -196,3 +196,5 @@ dievent_thebigguy = "\cgThe Big Guy";
 dievent_thebigguy_desc = "\caSpawn a Giant Fred every 60 seconds.";
 dievent_brokenglasses = "\cgBroken Glasses";
 dievent_brokenglasses_desc = "\caMassively reduce weapon accuracy.";
+dievent_oldmagazine = "\cgOld Magazine";
+dievent_oldmagazine_desc = "\caGet a random damage debuff. This effect is\nrerolled upon switching/reloading weapons.";

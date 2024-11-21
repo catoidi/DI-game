@@ -14,6 +14,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	bool dothebigguy; //Spawn a Giant Fred once every minute.
 	int bigguynum, bigguycount;
 	bool dobrokenglasses; //Massively reduce weapon accuracy.
+	bool dooldmagazine; //Gives you a random damage debuff that's rerolled on reloading.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -63,6 +64,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dobrokenglasses = true;
 			plr.GiveInventory("DI_BrokenGlasses", 1);
+		}
+		else if (e.Name == "dievent_oldmagazine")
+		{
+			dooldmagazine = true;
+			plr.GiveInventory("DI_OldMagazine", 1);
 		}
 	}
 	
@@ -135,6 +141,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dobrokenglasses = false;
 			plr.TakeInventory("DI_BrokenGlasses", 1);
+		}
+		if (dooldmagazine)
+		{
+			dooldmagazine = false;
+			plr.TakeInventory("DI_OldMagazine", 1);
 		}
 	}
 	

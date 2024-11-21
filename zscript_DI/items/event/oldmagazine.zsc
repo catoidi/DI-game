@@ -1,0 +1,40 @@
+//zscript_DI/items/event/brokenglasses.zsc
+
+Class DI_OldMagazine : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+	
+	DI_Weapon prevwpn;
+	
+	double newdmg;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			if (plr.player.readyweapon != prevwpn)
+			{
+				RerollDMG();
+				prevwpn = DI_Weapon(plr.player.readyweapon);
+				//if the weapon isn't a DI_Weapon this function will explode and die
+			}
+			else if (prevwpn.CheckWeaponMode() == 2) {RerollDMG();}
+			else if (newdmg == 0.0) {RerollDMG();}
+		}
+	}
+	
+	virtual void RerollDMG()
+	{
+		newdmg = frandom(-0.5, -0.01);
+	}
+	
+	override double GiveDamageMult()
+	{
+		return newdmg * plr.CountInv(self.GetClassName());
+	}
+}
