@@ -244,5 +244,22 @@ Class DIPopupHandler : EventHandler
 				);
 			}
 		}
+		else if (dowaveend)
+		{
+			if (waveuitimer < 999) //placeholder number
+			{
+				let wavex = Screen.GetWidth() / 2;
+				let wavey = (Screen.GetHeight() * 0.25) * (0.75 + (0.25 * (wavemove + (newmove * e.FracTic))));
+				let wavetxt = string.format("%s", "\cgWave Complete!");
+				let wavetxt2 = string.format("\n\n%d/%d", curwave, link.wavemax);
+				
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac * 1.5) / 2), wavey, wavetxt,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5,
+					DTA_Alpha, wavemove,
+					DTA_KeepRatio, true
+				);
+			}
+		}
 	}
 }
