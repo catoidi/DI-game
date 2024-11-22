@@ -76,7 +76,7 @@ Class DIPopupHandler : EventHandler
 	ui string curevent, curevent_desc;
 	
 	ui bool dowavestart, dowaveend;
-	ui int waveuitimer, curwave;
+	ui int waveuitimer, curwave, waveteleporttimer;
 	ui float wavemove, newmove;
 	
 	override void InterfaceProcess(ConsoleEvent e)
@@ -95,6 +95,16 @@ Class DIPopupHandler : EventHandler
 			dowavestart = false;
 			waveuitimer = 0;
 			wavemove = 0.0;
+			waveteleporttimer = e.Args[0];
+			console.printf("%d", e.Args[0]);
+			if (waveteleporttimer == 0)
+			{
+				waveteleporttimer = 105;
+			}
+			else if (waveteleporttimer <= -1) 
+			{
+				waveteleporttimer = 0;
+			}
 		}
 	}
 	
@@ -156,12 +166,17 @@ Class DIPopupHandler : EventHandler
 		{
 			++waveuitimer;
 			
+			int wavefinished = 155;
+			if (waveteleporttimer > 0) {wavefinished = waveteleporttimer;}
+			
+			
+			//console.printf("%d/%d", waveuitimer, wavefinished);
 			if (waveuitimer <= 50)
 			{
 				newmove = ((1.59 - wavemove) / 50);
 				wavemove += newmove;
 			}
-			else if ((waveuitimer >= 155) && (waveuitimer <= 205))
+			else if ((waveuitimer >= wavefinished) && (waveuitimer <= wavefinished + 50))
 			{
 				newmove = -((1.59 - wavemove) / 50);
 				wavemove += newmove;
