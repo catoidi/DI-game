@@ -57,6 +57,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		else if (e.Name == "dievent_fiendfolio")
 		{
 			dofiendfolio = true;
+			folionum = 3;
 		}
 		else if (e.Name == "dievent_thebigguy")
 		{
@@ -226,7 +227,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			if (random(0, folionum) == 0)
 			{
 				e.Replacement = 'Fred2';
-				if (folionum < 5) {++folionum;}
+				++folionum;
 			}
 		}
 		else if (e.Replacee.GetClassName() == "Ron")
@@ -234,7 +235,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			if (random(0, folionum) == 0)
 			{
 				e.Replacement = 'Ron2';
-				if (folionum < 5) {++folionum;}
+				++folionum;
 			}
 		}
 	}

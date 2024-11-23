@@ -24,7 +24,6 @@ GameInfo
 		"DIEventHandler", //random event handler.
 		"DIXHairHandler", //crosshair.
 		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
-		"DIPopupHandler", //Displays side quests on the middle left of your screen.
 		"SwagHandler", //Controls swag level things, and player death screen.
 		"DIUnlockHandler", //For controlling unlocks and stuff.
 		"PaintHandler", //controls the paintings.
@@ -32,7 +31,8 @@ GameInfo
 		"NashHPBarHandler", //HP bar + Shop UI combo.
 		"DamNumEventHandler", //Damage Numbers.
 		"AimAssistHandler", //controls everything Aim Assist related.
-		"pc_EventHandler" //controls everything Precise Crosshair related.
+		"pc_EventHandler", //controls everything Precise Crosshair related.
+		"DIPopupHandler" //Displays side quests on the middle left of your screen.
 }
 
 DamageType "Spawner" {}

@@ -277,4 +277,30 @@ Class DIPopupHandler : EventHandler
 			}
 		}
 	}
+	
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (plr && (plr.deathrestart > 0))
+		{
+			float DeathFade = plr.deathrestart / 35.0;
+		
+			let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
+			Screen.DrawTexture(blackscreen, false,
+				0, 0,
+				DTA_DestWidth, Screen.GetWidth(),
+				DTA_DestHeight, Screen.GetHeight(),
+				DTA_Alpha, 0.5 + (DeathFade / 2)
+			);
+		
+			string restart = "Restarting...";
+			let textx = (Screen.GetWidth() - (bigfont.StringWidth(restart) * CleanXFac * 1.5)) / 2;
+			let texty = Screen.GetHeight() / 2;
+			screen.drawtext(bigfont, Font.CR_UNTRANSLATED, textx, texty, restart,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5,
+					DTA_Alpha, DeathFade,
+					DTA_KeepRatio, true
+				);
+		}
+	}
 }
