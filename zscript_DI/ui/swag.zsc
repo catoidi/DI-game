@@ -680,6 +680,17 @@ Class SwagHandler : EventHandler
 					);
 				}
 			}
+			if (DeathTimer > 285)
+			{
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					0,
+					Screen.GetHeight() - (smallfont.GetHeight() * CleanYFac),
+					"Press and hold the 'Activate' key to restart the game.",
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, 0.5
+				);
+			}
 		}
 		else if (!IsDead)
 		{
