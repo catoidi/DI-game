@@ -5,15 +5,20 @@ Class DIMusicHandler : EventHandler
 	DI_PlayerBase plr;
 	DIHandler link;
 	
-	array<string> filedata;
-	array<string> musiclines;
+	ui array<string> filedata;
+	ui array<string> musiclines;
 	
-	bool automusic;
-	int gamestate; //0 = main. 1 = action. 2 = shop. -1 = death.
-	float mainvolume, actionvolume, shopvolume, deathvolume;
-	string mainsong, actionsong, shopsong, deathsong;
+	ui bool automusic, musicstarted;
+	ui int gamestate; //0 = main. 1 = action. 2 = shop. -1 = death.
+	ui float mainvolume, actionvolume, shopvolume, deathvolume;
+	ui string mainsong, actionsong, shopsong, deathsong;
 	
 	override void WorldLoaded(WorldEvent e)
+	{
+		SendInterfaceEvent(consoleplayer, "DI_MusicInit");
+	}
+	
+	ui virtual void MusicInit()
 	{
 		int ThisLump = Wads.FindLump("DIMUSIC", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DIMUSIC", ThisLump + 1, Wads.ANYNAMESPACE);
@@ -62,25 +67,86 @@ Class DIMusicHandler : EventHandler
 		}
 	}
 	
-	ui virtual void PlayMusic(sound whattoplay, int slot = 50000, double volume = 1.0)
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			SendInterfaceEvent(consoleplayer, "DI_MusicActionSting");
+		}
+	}
+	
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "DI_MusicVolume")
+		{
+			if (plr)
+			{
+				//console.printf("Adjusting: %d, %.3f", e.Args[0], 0.001 * e.Args[1]);
+				plr.A_SoundVolume(e.Args[0], 0.001 * e.Args[1]);
+			}
+		}
+	}
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name == "DI_MusicInit")
+		{
+			MusicInit();
+		}
+	
+		if (e.Name == "DI_MusicActionSting")
+		{
+			if (actionvolume <= 0.65) {actionvolume += 0.35;}
+			else {actionvolume = 1.0;}
+		}
+	}
+	
+	ui virtual void StartMusic(sound whattoplay, int slot = 50000, double volume = 1.0)
 	{
 		if (plr)
 		{
-			//console.printf("now playing: %s", whattoplay);
-			plr.A_StartSound(whattoplay, slot, CHANF_UI | CHANF_LOCAL | CHANF_LOOPING, volume);
+			//console.printf("now playing: %s, volume: %.3f", whattoplay, volume);
+			plr.A_StartSound(whattoplay, slot, CHANF_UI | CHANF_LOOPING, volume);
+		}
+	}
+	
+	ui virtual void ControlMusic(int slot = 50000, double volume = 1.0)
+	{
+		if (plr)
+		{
+			SendNetworkEvent("DI_MusicVolume", slot, volume * 1000);
 		}
 	}
 	
 	override void UITick()
 	{
-		if (plr && automusic)
+		if (!paused && !menuactive)
 		{
-			switch(gamestate)
+			if (actionvolume > 0.0025) {actionvolume -= 0.0025;}
+			else {actionvolume = 0.0001;}
+			
+			console.printf("Action Volume: (%.2f)", actionvolume);
+		
+			if (plr && automusic)
 			{
-				case 0:
-					PlayMusic(mainsong, 50000, mainvolume);
-					break;
+				switch(gamestate)
+				{
+					case 0:
+						if (!musicstarted)
+						{
+							StartMusic(mainsong, 50000, mainvolume);
+							StartMusic(actionsong, 50001, mainvolume * actionvolume);
+							musicstarted = true;
+						}
+						else
+						{
+							ControlMusic(50000, mainvolume);
+							ControlMusic(50001, mainvolume * actionvolume);
+						}
+						break;
+				}
 			}
 		}
 	}
+	
 }
