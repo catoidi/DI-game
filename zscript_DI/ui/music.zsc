@@ -112,7 +112,7 @@ Class DIMusicHandler : EventHandler
 		{
 			//console.printf("now playing: %s, volume: %.3f", whattoplay, volume);
 			plr.A_StartSound(whattoplay, slot, CHANF_UI | CHANF_LOOPING, volume);
-			console.printf("Started %s at %d", whattoplay, musictimer);
+			//console.printf("Started %s at %d", whattoplay, musictimer);
 		}
 	}
 	
@@ -124,7 +124,18 @@ Class DIMusicHandler : EventHandler
 		}
 	}
 	
+	ui virtual bool MusicExists()
+	{
+		if (mainsong != "") {return true;}
+		else {return false;}
+	}
+	
 	override void UITick()
+	{
+		if (MusicExists()) {MusicTick();}
+	}
+	
+	ui virtual void MusicTick()
 	{
 		++musictimer;
 	
@@ -133,7 +144,7 @@ Class DIMusicHandler : EventHandler
 			if (actionvolume > 0.0025) {actionvolume -= 0.0025;}
 			else {actionvolume = 0.0001;}
 			
-			console.printf("Action Volume: (%.2f)", actionvolume);
+			//console.printf("Action Volume: (%.2f)", actionvolume);
 		
 			if (plr && automusic)
 			{
