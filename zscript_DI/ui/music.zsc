@@ -8,8 +8,8 @@ Class DIMusicHandler : EventHandler
 	ui array<string> filedata;
 	ui array<string> musiclines;
 	
-	ui bool automusic, musicstarted;
-	ui int gamestate; //0 = main. 1 = action. 2 = shop. -1 = death.
+	ui bool automusic;
+	ui int gamestate, musictimer, musicstarted; //0 = main. 1 = action. 2 = shop. -1 = death.
 	ui float mainvolume, actionvolume, shopvolume, deathvolume;
 	ui string mainsong, actionsong, shopsong, deathsong;
 	
@@ -85,6 +85,11 @@ Class DIMusicHandler : EventHandler
 				plr.A_SoundVolume(e.Args[0], 0.001 * e.Args[1]);
 			}
 		}
+		else if (e.Name == "DI_StopMusic")
+		{
+			plr.A_StopSound(50000);
+			plr.A_StopSound(50001);
+		}
 	}
 	
 	override void InterfaceProcess(ConsoleEvent e)
@@ -107,6 +112,7 @@ Class DIMusicHandler : EventHandler
 		{
 			//console.printf("now playing: %s, volume: %.3f", whattoplay, volume);
 			plr.A_StartSound(whattoplay, slot, CHANF_UI | CHANF_LOOPING, volume);
+			console.printf("Started %s at %d", whattoplay, musictimer);
 		}
 	}
 	
@@ -120,6 +126,8 @@ Class DIMusicHandler : EventHandler
 	
 	override void UITick()
 	{
+		++musictimer;
+	
 		if (!paused && !menuactive)
 		{
 			if (actionvolume > 0.0025) {actionvolume -= 0.0025;}
@@ -132,11 +140,18 @@ Class DIMusicHandler : EventHandler
 				switch(gamestate)
 				{
 					case 0:
-						if (!musicstarted)
+						if (musicstarted == 0)
 						{
 							StartMusic(mainsong, 50000, mainvolume);
 							StartMusic(actionsong, 50001, mainvolume * actionvolume);
-							musicstarted = true;
+							++musicstarted;
+							SendNetworkEvent("DI_StopMusic");
+						}
+						else if (musicstarted == 1)
+						{			
+							StartMusic(mainsong, 50000, mainvolume);
+							StartMusic(actionsong, 50001, mainvolume * actionvolume);
+							++musicstarted;
 						}
 						else
 						{
