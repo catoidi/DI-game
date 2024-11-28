@@ -45,6 +45,7 @@ Class Pizzaulter : DI_Monster
 		while (rnum > 360) {rnum -= 360;}
 		A_SpawnProjectile("PepperoniBullet", (30 + (rnum/90)), (-4 + (rnum/45)), (-9 + (rnum/20)), 0, (-6 + (rnum/30)));
 		A_SetRoll(roll - 40);
+		A_StartSound("peppow", volume: 0.25, pitch: 1.5);
 	}
 	
 	States
@@ -80,7 +81,7 @@ Class PepperoniBullet : DI_Bullet
 	{
 		Radius 3;
 		Height 6;
-		Speed 8;
+		Speed 12;
 		DamageFunction (3);
 		DI_Bullet.Trail "PIZZC0";
 		DI_Bullet.TrailSize 6.0;
