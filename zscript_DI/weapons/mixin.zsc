@@ -27,7 +27,7 @@ mixin class DI_ProjectileMixin
 				double newhigh = height * wpn.wpn_bulletsize;
 				if (newhigh < 1.0) {newhigh = 1.0;}
 
-				A_DIScale(wpn.wpn_bulletsize, wpn.wpn_bulletsize);
+				A_DIScale(wpn.wpn_bulletsize, wpn.wpn_bulletsize, true);
 				A_SetSize(newrad, newhigh, true);
 			}
 		}
