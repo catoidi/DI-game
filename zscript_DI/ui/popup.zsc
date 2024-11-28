@@ -96,7 +96,6 @@ Class DIPopupHandler : EventHandler
 			waveuitimer = 0;
 			wavemove = 0.0;
 			waveteleporttimer = e.Args[0];
-			console.printf("%d", e.Args[0]);
 			if (waveteleporttimer == 0)
 			{
 				waveteleporttimer = 105;
