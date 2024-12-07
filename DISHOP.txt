@@ -130,7 +130,7 @@ ComboPassive DI_LeadSwitch POW1I 14 128;
 ComboPassive DI_CoinMagnet POW1L 21 256 di_unlock_item_coinmagnet;
 ComboPassive DI_RewardsProgram POWRW 28 256 di_unlock_item_rewardsprogram;
 ComboPassive DI_GlassGem POW1X 21 256 di_unlock_item_glassgem;
-ComboPassive DI_DirectDeposit POW2D 14 256 di_unlock_item_directdeposit;
+ComboPassive DI_DirectDeposit POW2D 7 256 di_unlock_item_directdeposit;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 7 128 di_unlock_item_icebullet;
 StatusPassive DI_StatusGiver_Fire POWRO 7 128 di_unlock_item_firebullet;
