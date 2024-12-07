@@ -37,18 +37,18 @@ Episode di02
 //Levels:
 Map "titlemap" "Title Screen"
 {
-	Music = "titlesong"
+	//Music = "titlesong"
 }
 
 Map "di01" "Your first death"
 {
-	Music = "music01"
+	//Music = "music01"
 	Sky1 = "textures/sky1.png"
 }
 
 Map "di02" "The afterparty"
 {
-	Music = "music02"
+	//Music = "music02"
 	Sky1 = "textures/boxsky1.png"
 }
 
