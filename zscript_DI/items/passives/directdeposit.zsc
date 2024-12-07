@@ -1,0 +1,21 @@
+//zscript_DI/items/passives/directdeposit.zsc
+
+Class DI_DirectDeposit : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Direct Deposit";
+		Inventory.Icon "POW2D0";
+		Inventory.PickupMessage "Direct Deposit acquired! (Gain a chance to instantly pickup coins.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	//does nothing. all the code lies within the coins themselves.
+	
+	States
+	{
+		Spawn:
+			POW2 D -1;
+			Loop;
+	}
+}

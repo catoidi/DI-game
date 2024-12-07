@@ -9,4 +9,5 @@
 >>4 di_unlock_item_fingergun;
 5 di_unlock_item_depletedmag;
 5 di_unlock_item_oredrill;
+6 di_unlock_item_directdeposit;
 6 di_unlock_item_stunbow;

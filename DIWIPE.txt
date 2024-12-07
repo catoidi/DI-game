@@ -62,3 +62,4 @@ DI_WhoppeeCushion;
 DI_MiniFred;
 DI_Trailblazer;
 DI_SuperGlue;
+DI_DirectDeposit;

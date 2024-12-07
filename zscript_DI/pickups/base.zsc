@@ -3,6 +3,7 @@ Class DI_Pickup : ScoreItem abstract
 	string parcolor;
 	
 	bool ispicked;
+	bool directdeposit;
 	
 	Property DespawnColor : parcolor;
 
@@ -31,6 +32,15 @@ Class DI_Pickup : ScoreItem abstract
 	
 		if ((ispicked == false) && (target is "DI_PlayerBase"))
 		{
+			if (!directdeposit)
+			{
+				if (random(1, 8) <= target.CountInv("DI_DirectDeposit"))
+				{
+					self.touch(target);
+				}
+				directdeposit = true;
+			}
+			
 			int magnetnum = target.CountInv("DI_CoinMagnet");
 			if (magnetnum > 0)
 			{
