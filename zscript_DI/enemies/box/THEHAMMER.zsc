@@ -68,7 +68,8 @@ class THEHAMMER : DI_Monster
 				if (BoxHammerCheck() == true) {SetStateLabel("NoMissile", false);}
 			}
 			HAMM A 10 Slow A_FaceTarget;
-			//HAMM B 0 A_SpawnItemEX("BoxSlamWall", 0, 0, 28, -4, 0, 0, 0, SXF_NOCHECKPOSITION);
+			HAMM B 0 A_StartSound("whiff2");
+			HAMM B 0 A_SpawnItemEX("BoxSlamWall", 0, 0, 28, -4, 0, 0, 0, SXF_NOCHECKPOSITION);
 			HAMM B 0 A_Recoil(-20);
 			HAMM B 0 ThrustThingZ(0, 15, 0, 1);
 			HAMM B 16;
@@ -226,6 +227,44 @@ CLASS BoxSlamWall : BoxSlam
 	{
 		-FLATSPRITE;
 		+WALLSPRITE;
+	}
+}
+
+CLASS BoxSlamWallBIG : BoxSlamWall
+{
+	Default {Scale 2.0;}
+}
+
+CLASS BoxSlamBig : BoxSlam
+{
+	Default
+	{
+		Scale 3;
+	}
+	
+	States
+	{
+		Looper:
+			SLAM B 1 {
+				A_DIScale(0.15, 0.15);
+				A_FadeOut(0.05);
+			}
+			Loop;
+	}
+}
+
+CLASS BoxSlamSUPER : BoxSlam
+{
+	Default {Scale 10;}
+	
+	States
+	{
+		Looper:
+			SLAM B 1 {
+				A_DIScale(1.5, 1.5, true);
+				A_FadeOut(0.02);
+			}
+			Loop;
 	}
 }
 
