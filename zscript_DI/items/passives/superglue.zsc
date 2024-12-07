@@ -45,12 +45,6 @@ Class DI_SuperGlue : DIPassiveInventory
 		return -1 * plr.countinv(GetClassName());
 	}
 	
-	override double GiveWeaponSpeed()
-	{
-		if (!plr) {return 0.0;}
-		return 0.01 * plr.CountInv(GetClassName()) * gluetimer;
-	}
-	
 	States
 	{
 		Spawn:
@@ -66,6 +60,12 @@ Class DI_SuperGlue_Powerup : DIPowerup
 		Tag "\cgSuper Glue (Active)";
 		Inventory.Icon "POW2C0";
 		Inventory.MaxAmount 4;
+	}
+	
+	override double GiveWeaponSpeed()
+	{
+		if (!plr) {return 0;}
+		return 0.35;
 	}
 	
 	States
