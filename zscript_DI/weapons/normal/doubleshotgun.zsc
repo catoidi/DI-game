@@ -113,6 +113,10 @@ Class DoubleShotgun : GreenShotgun
 			Goto ReloadStart;
 		ReloadStart:
 			PUSG D 10 {A_Overlay(2, "Reload_Barrel"); A_Overlay(3, "Reload_Shell");}
+			PUSG D 4 {A_Overlay(4, "Reload_Shell2"); A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);}
+			PUSG B 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
+			#### # 0 A_GiveInventory("DoubleShotgunAmmo", 1);
+			#### # 4;
 			PUSG D 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
 			PUSG B 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			#### # 0 A_GiveInventory("DoubleShotgunAmmo", 1);
@@ -121,13 +125,21 @@ Class DoubleShotgun : GreenShotgun
 			PUSG A 2 DI_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD);
 			Goto ReloadEnd;
 		Reload_Barrel:
-			PUSG F 17;
+			PUSG F 27;
 			Stop;
 		Reload_Shell:
 			TNT1 A 0 A_OverlayOffset(3, 6, 36, WOF_ADD);
 			PUSG GGGGGG 1 A_OverlayOffset(3, -2, -6, WOF_ADD);
 			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.75);
 			PUSG GGGG 1 A_OverlayOffset(3, 1.5, 0, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 1.0);
+			PUSG H 4;
+			Stop;
+		Reload_Shell2:
+			TNT1 A 0 A_OverlayOffset(4, 6, 36, WOF_ADD);
+			PUSG GGGGGG 1 A_OverlayOffset(4, -2, -6, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.75);
+			PUSG GGGG 1 A_OverlayOffset(4, 1.5, 0, WOF_ADD);
 			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 1.0);
 			PUSG H 4;
 			Stop;
