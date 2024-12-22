@@ -254,6 +254,11 @@ version "4.13"
 //weapon speed scaling
 #include "zscript_libraries/speedscale/psprite-speed-scaler.zc"
 
+//kminimap
+#include "zscript_libraries/kMinimap/ATMP_MapHandler.zsc"
+#include "zscript_libraries/kMinimap/ATMP_GlobalMaths.zsc"
+#include "zscript_libraries/kMinimap/ATMP_kShape.zsc"
+
 //////////////////////////////////////////////////////////////
 //The below included code is under the MIT License.
 //You can find the details either embedded in the file itself,

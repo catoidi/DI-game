@@ -32,6 +32,7 @@ GameInfo
 		"DamNumEventHandler", //Damage Numbers.
 		"AimAssistHandler", //controls everything Aim Assist related.
 		"pc_EventHandler", //controls everything Precise Crosshair related.
+		"ATMP_MapHandler", //the minimap.
 		"DIMusicHandler", //handles music.
 		"DIPopupHandler" //Displays side quests on the middle left of your screen.
 }

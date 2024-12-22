@@ -222,3 +222,14 @@ user float pc_y;
 	user bool rc_enabled = false;
 	user float rc_step = 1.0;
 	user bool rc_always_enabled = false;
+	
+//kMinimap
+user bool ATMP_MapRotates = false;
+user bool ATMP_MapBackground = true;
+user bool ATMP_EnableMap = true;
+user int ATMP_MapX = 100;
+user int ATMP_MapY = 100;
+user int ATMP_MapSize = 200;
+user float ATMP_MapScale = 0.5;
+user float ATMP_BackgroundAlpha = 1.0;
+user float ATMP_MapAlpha = 1.0;

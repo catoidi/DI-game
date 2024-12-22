@@ -23,6 +23,7 @@ The game is planned to be released in 2024.
 - [Aim Assist, by RichardLuis0](https://github.com/RicardoLuis0/AimAssist)
 - [Precise Crosshair, by mmaulwurff](https://github.com/mmaulwurff/precise-crosshair)
 - [PSprite speed scaler, by argv_minus_one](https://github.com/argv-minus-one/gzdoom-psprite-speed-scaling)
+- [kMinimap, by kodi](https://forum.zdoom.org/viewtopic.php?t=64867)
 
 
 This repo also shares A LOT of code from my previous project, [Box Party.](https://github.com/catoidi/box-party-demo) 
