@@ -104,18 +104,18 @@ class ATMP_MapHandler : StaticEventHandler
         if (!plr)
             return;
 
-        double mapscale = miniMapScale.GetFloat();
+        double mapscale = miniMapScale.GetFloat() * CleanXFac;
 		
 		vector2 pos = (miniMapX.GetInt(), miniMapY.GetInt());
 		vector2 size = (100,100);
-		size = (max(100.0,miniMapSize.GetInt()),max(100.0,miniMapSize.GetInt()));
+		size = (max(100.0,miniMapSize.GetInt()*CleanXFac),max(100.0,miniMapSize.GetInt()*CleanYFac));
 		vector2 offset_2D = size*0.5;
 		
 		if(MapBackground.GetBool())
 		{
 			if(backgroundShape)
 			{
-				vector2 shapeSize = (miniMapSize.GetFloat(),miniMapSize.GetFloat());
+				vector2 shapeSize = (miniMapSize.GetFloat()*CleanXFac,miniMapSize.GetFloat()*CleanYFac);
 				vector2 shapePos = (minimapX.GetInt(),minimapY.GetInt()); 
 				backgroundShape.Alter(shapeSize,shapePos+(shapesize*0.5),0); //move and scale the square
 				screen.DrawShape(backgroundShape.tex,False,backgroundShape,DTA_FillColor,backColor.GetInt(), DTA_Alpha, backgroundAlpha.GetFloat());
@@ -126,7 +126,7 @@ class ATMP_MapHandler : StaticEventHandler
 		
 		//thanks to phantombeta for altering the below to use BlockLinesIterator. Initially I iterated through every line in the level, hurting performance.
 		//using map size and scale cvars to alter the search radius was my addition though.
-        let lineIterator = BlockLinesIterator.Create (plr, miniMapSize.GetFloat()/miniMapScale.GetFloat());
+        let lineIterator = BlockLinesIterator.Create (plr, (miniMapSize.GetFloat()*CleanXFac)/(miniMapScale.GetFloat()*CleanXFac));
         while(lineIterator.Next ())
         {
             line l = lineIterator.CurLine;
@@ -151,10 +151,10 @@ class ATMP_MapHandler : StaticEventHandler
 			//here we rotate and draw the arrow indicating the player position.
 			
 			if(MapRotates.GetBool())
-				MapArrow.Alter((40,40)*max(miniMapScale.GetFloat(),0.3), pos+offset_2D,0.0);
+				MapArrow.Alter((40,40)*max(miniMapScale.GetFloat()*CleanXFac,0.3), pos+offset_2D,0.0);
 				//don't rotate arrow if map rotates
 			else
-				MapArrow.Alter((40, 40)*max(miniMapScale.GetFloat(),0.3), pos+offset_2D,-plr.angle+90);
+				MapArrow.Alter((40, 40)*max(miniMapScale.GetFloat()*CleanXFac,0.3), pos+offset_2D,-plr.angle+90);
 				//rotate arrow instead
 			screen.DrawShape(MapArrow.tex,TRUE,MapArrow,DTA_FillColor,yourColor.GetInt(),DTA_Alpha, miniMapAlpha.GetFloat());
 		}
