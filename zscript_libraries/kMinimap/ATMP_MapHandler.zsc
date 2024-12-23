@@ -2,6 +2,9 @@ class ATMP_MapHandler : StaticEventHandler
 {
 		ui ATMP_kShape mapArrow;
 		ui ATMP_kShape backgroundShape;
+		
+		Array<DI_Monster> monsters;
+		TextureID EnemyDot;
 		//note: writing all the cvar stuff below was not pleasant.
 		
 		//these are mod-specific
@@ -14,6 +17,7 @@ class ATMP_MapHandler : StaticEventHandler
 		transient cvar enableMap;
 		transient cvar minimapAlpha;
 		transient cvar backgroundAlpha;
+		transient cvar MapEnemies;
 		
 		
 		//below are native to gzdoom
@@ -53,6 +57,7 @@ class ATMP_MapHandler : StaticEventHandler
 		if(!miniMapScale) miniMapScale = Cvar.FindCvar("ATMP_MapScale");
 		if(!miniMapAlpha) miniMapAlpha = Cvar.FindCvar("ATMP_MapAlpha");
 		if(!backgroundAlpha) backgroundAlpha = Cvar.FindCvar("ATMP_backgroundAlpha");
+		if(!MapEnemies) MapEnemies = Cvar.FindCvar("ATMP_Enemies");
 			
 		
 		//internal
@@ -78,9 +83,33 @@ class ATMP_MapHandler : StaticEventHandler
     //  if(!showAllEnabled) showAllEnabled = Cvar.GetCvar("am_ShowAllEnabled", players[consoleplayer]);
         if(!secretWallColor) secretWallColor = Cvar.GetCvar("am_secretWallColor", players[consoleplayer]);
         if(!showtriggerlines) showtriggerlines = Cvar.GetCvar("am_showtriggerlines", players[consoleplayer]);
+		
+		if (!EnemyDot) EnemyDot = TexMan.CheckForTexture("graphics/enemydot.png");
+		
 		super.WorldLoaded(e);
     }
-    override void RenderOverlay(RenderEvent e)
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			monsters.Push(DI_Monster(e.Thing));
+		}
+	}
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			let mon = DI_Monster(e.Thing);
+			
+			let spot = monsters.Find(mon);
+			
+			if (spot < monsters.Size())
+			{
+				monsters.Delete(spot);
+			}
+		}
+	}
+    override void RenderUnderlay(RenderEvent e)
     {
 		if(!mapArrow)
 		{
@@ -106,7 +135,7 @@ class ATMP_MapHandler : StaticEventHandler
 
         double mapscale = miniMapScale.GetFloat() * CleanXFac;
 		
-		vector2 pos = (miniMapX.GetInt(), miniMapY.GetInt());
+		vector2 pos = (miniMapX.GetInt() * CleanXFac, miniMapY.GetInt() * CleanYFac);
 		vector2 size = (100,100);
 		size = (max(100.0,miniMapSize.GetInt()*CleanXFac),max(100.0,miniMapSize.GetInt()*CleanYFac));
 		vector2 offset_2D = size*0.5;
@@ -116,7 +145,7 @@ class ATMP_MapHandler : StaticEventHandler
 			if(backgroundShape)
 			{
 				vector2 shapeSize = (miniMapSize.GetFloat()*CleanXFac,miniMapSize.GetFloat()*CleanYFac);
-				vector2 shapePos = (minimapX.GetInt(),minimapY.GetInt()); 
+				vector2 shapePos = (minimapX.GetInt()*CleanXFac,minimapY.GetInt()*CleanYFac); 
 				backgroundShape.Alter(shapeSize,shapePos+(shapesize*0.5),0); //move and scale the square
 				screen.DrawShape(backgroundShape.tex,False,backgroundShape,DTA_FillColor,backColor.GetInt(), DTA_Alpha, backgroundAlpha.GetFloat());
 			}
@@ -157,6 +186,45 @@ class ATMP_MapHandler : StaticEventHandler
 				MapArrow.Alter((40, 40)*max(miniMapScale.GetFloat()*CleanXFac,0.3), pos+offset_2D,-plr.angle+90);
 				//rotate arrow instead
 			screen.DrawShape(MapArrow.tex,TRUE,MapArrow,DTA_FillColor,yourColor.GetInt(),DTA_Alpha, miniMapAlpha.GetFloat());
+		}
+		
+		if (MapEnemies && MapEnemies.GetBool())
+		{
+			for (int i = 0; i < monsters.Size(); ++i)
+			{
+				DI_Monster curmon = monsters[i];
+				if (!curmon) {continue;}
+				if (curmon.health <= 0) {continue;}
+				
+				float monalpha = minimapAlpha.GetFloat() * curmon.Alpha;
+				double monsize = (curmon.radius * miniMapScale.GetFloat() * CleanXFac) / 3.0;
+				vector2 startpos = (((minimapX.GetInt() + (minimapsize.GetFloat() / 2)) * CleanXFac), ((minimapY.GetInt() + (minimapsize.GetFloat() / 2)) * CleanYFac));
+				vector2 monoffset = (-(plr.pos.X - curmon.pos.X) * (miniMapScale.GetFloat()), (plr.pos.y - curmon.pos.y) * (miniMapScale.GetFloat()));
+				
+				if (MapRotates.GetBool())
+				{
+					double newX = (cos(plr.angle + 90) * (-monoffset.x)) - (sin(plr.angle - 90) * (monoffset.y));
+					double newY = (sin(plr.angle + 90) * (-monoffset.x)) + (cos(plr.angle - 90) * (monoffset.y));
+					monoffset.X = newX;
+					monoffset.Y = newY;
+				}
+				
+				monoffset.X *= CleanXFac;
+				monoffset.Y *= CleanYFac;
+				
+				if (monoffset.X > (minimapsize.GetFloat() / 2) * CleanXFac) {monoffset.X = (minimapsize.GetFloat() * CleanXFac) / 2;}
+				if (monoffset.Y > (minimapsize.GetFloat() / 2) * CleanYFac) {monoffset.Y = (minimapsize.GetFloat() * CleanYFac) / 2;}
+				if (monoffset.X < -(minimapsize.GetFloat() / 2) * CleanXFac) {monoffset.X = -(minimapsize.GetFloat() * CleanXFac) / 2;}
+				if (monoffset.Y < -(minimapsize.GetFloat() / 2) * CleanYFac) {monoffset.Y = -(minimapsize.GetFloat() * CleanYFac) / 2;}
+				
+				Screen.DrawTexture(EnemyDot, false,
+					startpos.x + monoffset.x - (monsize * 3),
+					startpos.y + monoffset.y - (monsize * 3),
+					DTA_ScaleX, monsize,
+					DTA_ScaleY, monsize,
+					DTA_Alpha, monalpha
+				);
+			}
 		}
 	}
 	
