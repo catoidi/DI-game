@@ -12,7 +12,8 @@ class ATMP_MapHandler : StaticEventHandler
 		transient cvar MapBackground ;
 		transient cvar miniMapX;
 		transient cvar miniMapY;
-		transient cvar miniMapSize;
+		transient cvar miniMapSizeX;
+		transient cvar miniMapSizeY;
 		transient cvar miniMapScale;
 		transient cvar enableMap;
 		transient cvar minimapAlpha;
@@ -53,7 +54,8 @@ class ATMP_MapHandler : StaticEventHandler
 		if(!EnableMap) EnableMap = Cvar.FindCvar("ATMP_EnableMap");
 		if(!miniMapX) miniMapX = Cvar.FindCvar("ATMP_MapX");
 		if(!miniMapY) miniMapY = Cvar.FindCvar("ATMP_MapY");
-		if(!miniMapSize) miniMapSize = Cvar.FindCvar("ATMP_MapSize");
+		if(!miniMapSizeX) miniMapSizeX = Cvar.FindCvar("ATMP_MapSizeX");
+		if(!miniMapSizeY) miniMapSizeY = Cvar.FindCvar("ATMP_MapSizeY");
 		if(!miniMapScale) miniMapScale = Cvar.FindCvar("ATMP_MapScale");
 		if(!miniMapAlpha) miniMapAlpha = Cvar.FindCvar("ATMP_MapAlpha");
 		if(!backgroundAlpha) backgroundAlpha = Cvar.FindCvar("ATMP_backgroundAlpha");
@@ -137,14 +139,14 @@ class ATMP_MapHandler : StaticEventHandler
 		
 		vector2 pos = (miniMapX.GetInt() * CleanXFac, miniMapY.GetInt() * CleanYFac);
 		vector2 size = (100,100);
-		size = (max(100.0,miniMapSize.GetInt()*CleanXFac),max(100.0,miniMapSize.GetInt()*CleanYFac));
+		size = (max(100.0,miniMapSizeX.GetInt()*CleanXFac),max(100.0,miniMapSizeY.GetInt()*CleanYFac));
 		vector2 offset_2D = size*0.5;
 		
 		if(MapBackground.GetBool())
 		{
 			if(backgroundShape)
 			{
-				vector2 shapeSize = (miniMapSize.GetFloat()*CleanXFac,miniMapSize.GetFloat()*CleanYFac);
+				vector2 shapeSize = (miniMapSizeX.GetFloat()*CleanXFac,miniMapSizeY.GetFloat()*CleanYFac);
 				vector2 shapePos = (minimapX.GetInt()*CleanXFac,minimapY.GetInt()*CleanYFac); 
 				backgroundShape.Alter(shapeSize,shapePos+(shapesize*0.5),0); //move and scale the square
 				screen.DrawShape(backgroundShape.tex,False,backgroundShape,DTA_FillColor,backColor.GetInt(), DTA_Alpha, backgroundAlpha.GetFloat());
@@ -155,7 +157,7 @@ class ATMP_MapHandler : StaticEventHandler
 		
 		//thanks to phantombeta for altering the below to use BlockLinesIterator. Initially I iterated through every line in the level, hurting performance.
 		//using map size and scale cvars to alter the search radius was my addition though.
-        let lineIterator = BlockLinesIterator.Create (plr, (miniMapSize.GetFloat()*CleanXFac)/(miniMapScale.GetFloat()*CleanXFac));
+        let lineIterator = BlockLinesIterator.Create (plr, (miniMapSizeX.GetFloat()*CleanXFac)/(miniMapScale.GetFloat()*CleanXFac));
         while(lineIterator.Next ())
         {
             line l = lineIterator.CurLine;
@@ -198,7 +200,7 @@ class ATMP_MapHandler : StaticEventHandler
 				
 				float monalpha = minimapAlpha.GetFloat() * curmon.Alpha;
 				double monsize = (curmon.radius * miniMapScale.GetFloat() * CleanXFac) / 3.0;
-				vector2 startpos = (((minimapX.GetInt() + (minimapsize.GetFloat() / 2)) * CleanXFac), ((minimapY.GetInt() + (minimapsize.GetFloat() / 2)) * CleanYFac));
+				vector2 startpos = (((minimapX.GetInt() + (minimapsizeX.GetFloat() / 2)) * CleanXFac), ((minimapY.GetInt() + (minimapsizeY.GetFloat() / 2)) * CleanYFac));
 				vector2 monoffset = (-(plr.pos.X - curmon.pos.X) * (miniMapScale.GetFloat()), (plr.pos.y - curmon.pos.y) * (miniMapScale.GetFloat()));
 				
 				if (MapRotates.GetBool())
@@ -212,10 +214,10 @@ class ATMP_MapHandler : StaticEventHandler
 				monoffset.X *= CleanXFac;
 				monoffset.Y *= CleanYFac;
 				
-				if (monoffset.X > (minimapsize.GetFloat() / 2) * CleanXFac) {monoffset.X = (minimapsize.GetFloat() * CleanXFac) / 2;}
-				if (monoffset.Y > (minimapsize.GetFloat() / 2) * CleanYFac) {monoffset.Y = (minimapsize.GetFloat() * CleanYFac) / 2;}
-				if (monoffset.X < -(minimapsize.GetFloat() / 2) * CleanXFac) {monoffset.X = -(minimapsize.GetFloat() * CleanXFac) / 2;}
-				if (monoffset.Y < -(minimapsize.GetFloat() / 2) * CleanYFac) {monoffset.Y = -(minimapsize.GetFloat() * CleanYFac) / 2;}
+				if (monoffset.X > (minimapsizeX.GetFloat() / 2) * CleanXFac) {monoffset.X = (minimapsizeX.GetFloat() * CleanXFac) / 2;}
+				if (monoffset.Y > (minimapsizeY.GetFloat() / 2) * CleanYFac) {monoffset.Y = (minimapsizeY.GetFloat() * CleanYFac) / 2;}
+				if (monoffset.X < -(minimapsizeX.GetFloat() / 2) * CleanXFac) {monoffset.X = -(minimapsizeX.GetFloat() * CleanXFac) / 2;}
+				if (monoffset.Y < -(minimapsizeY.GetFloat() / 2) * CleanYFac) {monoffset.Y = -(minimapsizeY.GetFloat() * CleanYFac) / 2;}
 				
 				Screen.DrawTexture(EnemyDot, false,
 					startpos.x + monoffset.x - (monsize * 3),
