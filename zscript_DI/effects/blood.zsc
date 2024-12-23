@@ -46,7 +46,8 @@ CLASS DI_Blood : DI_Actor replaces Blood
 		Roller:
 			#### # 0 
 			{
-				frame = random(0, 2);
+				frame = random(0, 5);
+				if (frame > 2) {++frame;}
 				self.Scale.X *= frandom(0.5, 1.2); 
 				self.Scale.Y *= frandom(0.5, 1.2);
 				A_SetRoll(random(0, 359));
