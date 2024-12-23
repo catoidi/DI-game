@@ -73,6 +73,10 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	DIHandler thebrain;
 	
+	ui DI_HUD thehud;
+	
+	bool hidemap;
+	
 	override void PostBeginPlay(void)
 	{
 		Super.PostBeginPlay();

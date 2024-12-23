@@ -8,6 +8,8 @@ class DI_HUD : BaseStatusBar
 	
 	cvar photomode, detailnum;
 	
+	bool drawAutomap;
+	
 	//stuff
 	bool HasAmmo1;
 	bool HasAmmo2;
@@ -170,6 +172,7 @@ class DI_HUD : BaseStatusBar
 				if (!diplayer) {return;}
 				DrawBoxHUD(diplayer, TicFrac);
 			}
+			if (drawAutomap) {drawAutomap = false;}
 		}
 	}
 	
@@ -182,8 +185,10 @@ class DI_HUD : BaseStatusBar
 		{
 			DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
 			if (!diplayer) {return;}
+			if (!diplayer.thehud) {diplayer.thehud = self;}
 			DrawBoxHUD(diplayer, TicFrac);
 			DrawWeaponStats(diplayer, TicFrac);
+			drawAutomap = true;
 		}
 	}
 	

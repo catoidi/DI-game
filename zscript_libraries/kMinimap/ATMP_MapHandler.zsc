@@ -19,6 +19,7 @@ class ATMP_MapHandler : StaticEventHandler
 		transient cvar minimapAlpha;
 		transient cvar backgroundAlpha;
 		transient cvar MapEnemies;
+		transient cvar PhotoMode;
 		
 		
 		//below are native to gzdoom
@@ -60,6 +61,7 @@ class ATMP_MapHandler : StaticEventHandler
 		if(!miniMapAlpha) miniMapAlpha = Cvar.FindCvar("ATMP_MapAlpha");
 		if(!backgroundAlpha) backgroundAlpha = Cvar.FindCvar("ATMP_backgroundAlpha");
 		if(!MapEnemies) MapEnemies = Cvar.FindCvar("ATMP_Enemies");
+		if(!PhotoMode) PhotoMode = Cvar.FindCvar("di_photomode");
 			
 		
 		//internal
@@ -123,7 +125,7 @@ class ATMP_MapHandler : StaticEventHandler
 			backgroundShape = ATMP_kShape.init("BLACK");	
 		}
 		
-		if(EnableMap.GetBool() && !automapactive)
+		if(EnableMap.GetBool() && !PhotoMode.GetBool() && !automapactive && (Level.MapName != 'TITLEMAP'))
 		{
 			drawMiniMap();
 		}
@@ -131,9 +133,11 @@ class ATMP_MapHandler : StaticEventHandler
 
     ui void DrawMiniMap()
     {
-        let plr = PlayerPawn(players[consoleplayer].mo);
+        let plr = DI_PlayerBase(players[consoleplayer].mo);
         if (!plr)
             return;
+		if (plr.hidemap) {return;}
+		if (plr.thehud && plr.thehud.drawAutomap) {return;}
 
         double mapscale = miniMapScale.GetFloat() * CleanXFac;
 		
