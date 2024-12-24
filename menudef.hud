@@ -5,7 +5,7 @@ OptionMenu "DIHudOptions"
 	class "DITF_TooltipOptionMenu"
 	Title "HUD Options"
 	Tooltip ""
-	StaticText "Main HUD Options", "Purple"
+	StaticText "-= Main HUD =-", "Purple"
 	Slider "Scale", "hud_scalefactor", 0.0, 1.0, 0.025, 3
 	Tooltip "Controls the size of the main HUD elements."
 	Slider "Damage Shake",		"box_hudshake",		0, 5, 1, 0	
@@ -22,32 +22,46 @@ OptionMenu "DIHudOptions"
 	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
 	Tooltip "Prevents pickup messages from appearing at the top of your screen."
 	StaticText ""
-	Slider "Event Scale", "di_questscale", 0.0, 1.0, 0.025, 3
-	Tooltip "Tweak the size of Random Event and Side Quest popups on the left side of the screen."
-	Slider "Event Alpha", "di_questalpha", 0.0, 1.0, 0.05, 2
-	Tooltip "Tweak the alpha of Random Event and Side Quest popups. Set to 0 to completely hide them."
-	StaticText ""
-	StaticText "Submenus", "Purple"
-	SubMenu "Passive Hotbar Options", "DIHUDOptions_Hotbar", 0, 1
-	Tooltip "Change the item HUD shown at the top right of your screen, containing your current passive items and powerups."
+	StaticText "-= Submenus =-", "Purple"
+	SubMenu "Extra HUD Options", "DIHUDOptions_Extra", 0, 1
+	Tooltip "You can find options for the Passive HUD, Event Popups, and Minimap here."
 	SubMenu "Crosshair Options", "DIHUDOptions_Crosshair", 0, 1
 	Tooltip "Change the appearance and the behavior of your crosshair."
 	SubMenu "Damage Number Options", "DIHUDOptions_DamNums", 0, 1
 	Tooltip "Change the behavior of the damage numbers that appear above enemies."
 }
 
-OptionMenu "DIHUDOptions_Hotbar"
+OptionMenu "DIHUDOptions_Extra"
 {
 	class "DITF_TooltipOptionMenu"
-	Title "HUD Options (Hotbar)"
+	Title "HUD Options (Extra)"
 	Tooltip ""
-	//StaticText "Passive Hotbar Options", "Purple"
+	StaticText "Passive Hotbar", "Purple"
 	Option "Enabled?", "di_itemhud_toggle", "passivevalues"
 	Tooltip "Shows you your Passive items and Powerups at the top right of the screen.\n\nSetting to 'Powerups Only' prevents Passives from being rendered.\n\nIt also shows the item quantity and whether or not it's 'permanent'.\n\nYou can also see these at anytime from the Catalogue Menu."
 	Slider "Scale", "di_itemhud_scale", 0.25, 3.0, 0.05, 2, "di_itemhud_toggle"
 	Tooltip "Controls the size of the Item HUD."
 	Slider "Alpha", "di_itemhud_alpha", 0.05, 1.0, 0.05, 2, "di_itemhud_toggle"
 	Tooltip "Controls the opacity of the Item HUD."
+	StaticText ""
+	StaticText "Random Events / Side Quests", "Purple"
+	Slider "Event Scale", "di_questscale", 0.0, 1.0, 0.025, 3
+	Tooltip "Tweak the size of Random Event and Side Quest popups on the left side of the screen."
+	Slider "Event Alpha", "di_questalpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Tweak the alpha of Random Event and Side Quest popups. Set to 0 to completely hide them."
+	StaticText ""
+	StaticText "Minimap", "Purple"
+	Option "Enabled?", "atmp_enablemap", "onoff"
+	Tooltip "Toggles the minimap. Matches the behavior of the fullscreen map.\n\nMinimap is always displayed below other HUD elements, in case of conflicts.\n\nMinimap is recommended to leave on, as it displays enemy locations."
+	Slider "X Offset", "ATMP_MapX", 0, 500, 5, 0
+	Slider "Y Offset", "ATMP_MapY", 0, 500, 5, 0
+	Tooltip "Adjust the position of the minimap.\n\nMinimap is anchored to the top left of the screen. Offset scales with game resolution."
+	Slider "Minimap Width", "ATMP_MapSizeX", 50, 300, 5, 0
+	Slider "Minimap Height", "ATMP_MapSizeY", 50, 300, 5, 0
+	Tooltip "Adjust the size of the minimap.\n\nLarger minimaps will allow you to render more level geometry at once, but may conflict with other HUD elements.\n\nMap size scales with game resolution."
+	Slider "Zoom Level", "ATMP_MapScale", 0.005, 0.4, 0.005, 3
+	Tooltip "Adjust how much of the level is visible on the minimap.\n\nScales with width/height and game resolution."
+	
 }
 
 OptionMenu "DIHUDOptions_Crosshair"

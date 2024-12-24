@@ -224,11 +224,11 @@ user float pc_y;
 	user bool rc_always_enabled = false;
 	
 //kMinimap
-user bool ATMP_MapRotates = false;
+user bool ATMP_MapRotates = true;
 user bool ATMP_MapBackground = true;
 user bool ATMP_EnableMap = true;
-user int ATMP_MapX = 20;
-user int ATMP_MapY = 20;
+user int ATMP_MapX = 10;
+user int ATMP_MapY = 10;
 user int ATMP_MapSizeX = 80;
 user int ATMP_MapSizeY = 80;
 user float ATMP_MapScale = 0.1;
