@@ -161,7 +161,10 @@ class ATMP_MapHandler : StaticEventHandler
 		
 		//thanks to phantombeta for altering the below to use BlockLinesIterator. Initially I iterated through every line in the level, hurting performance.
 		//using map size and scale cvars to alter the search radius was my addition though.
-        let lineIterator = BlockLinesIterator.Create (plr, (miniMapSizeX.GetFloat()*CleanXFac)/(miniMapScale.GetFloat()*CleanXFac));
+		float searchradius = (miniMapSizeX.GetFloat()*CleanXFac)/(miniMapScale.GetFloat()*CleanXFac);
+		float searchradiusY = (miniMapSizeY.GetFloat()*CleanYFac)/(miniMapScale.GetFloat()*CleanYFac);
+		if (searchradiusY > searchradius) {searchradius = searchradiusY;} //use the largest radius out of the two.
+        let lineIterator = BlockLinesIterator.Create (plr, searchradius);
         while(lineIterator.Next ())
         {
             line l = lineIterator.CurLine;
