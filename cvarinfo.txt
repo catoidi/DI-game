@@ -232,6 +232,6 @@ user int ATMP_MapY = 10;
 user int ATMP_MapSizeX = 80;
 user int ATMP_MapSizeY = 80;
 user float ATMP_MapScale = 0.1;
-user float ATMP_BackgroundAlpha = 1.0;
+user float ATMP_BackgroundAlpha = 0.25;
 user float ATMP_MapAlpha = 1.0;
 user bool ATMP_Enemies = true;

@@ -4,7 +4,8 @@ class ATMP_MapHandler : StaticEventHandler
 		ui ATMP_kShape backgroundShape;
 		
 		Array<DI_Monster> monsters;
-		TextureID EnemyDot;
+		Array<DI_Pickup> coins;
+		TextureID EnemyDot, CoinDot;
 		//note: writing all the cvar stuff below was not pleasant.
 		
 		//these are mod-specific
@@ -89,6 +90,7 @@ class ATMP_MapHandler : StaticEventHandler
         if(!showtriggerlines) showtriggerlines = Cvar.GetCvar("am_showtriggerlines", players[consoleplayer]);
 		
 		if (!EnemyDot) EnemyDot = TexMan.CheckForTexture("graphics/enemydot.png");
+		if (!CoinDot) CoinDot = TexMan.CheckForTexture("graphics/coindot.png");
 		
 		super.WorldLoaded(e);
     }
@@ -97,6 +99,10 @@ class ATMP_MapHandler : StaticEventHandler
 		if (e.Thing is "DI_Monster")
 		{
 			monsters.Push(DI_Monster(e.Thing));
+		}
+		else if (e.Thing is "DI_Pickup")
+		{
+			coins.Push(DI_Pickup(e.Thing));
 		}
 	}
 	override void WorldThingDestroyed(WorldEvent e)
@@ -110,6 +116,17 @@ class ATMP_MapHandler : StaticEventHandler
 			if (spot < monsters.Size())
 			{
 				monsters.Delete(spot);
+			}
+		}
+		else if (e.Thing is "DI_Pickup")
+		{
+			let mon = DI_Pickup(e.Thing);
+			
+			let spot = coins.Find(mon);
+			
+			if (spot < coins.Size())
+			{
+				coins.Delete(spot);
 			}
 		}
 	}
@@ -199,6 +216,42 @@ class ATMP_MapHandler : StaticEventHandler
 		
 		if (MapEnemies && MapEnemies.GetBool())
 		{
+			for (int i = 0; i < coins.Size(); ++i)
+			{
+				DI_Pickup curmon = coins[i];
+				if (!curmon) {continue;}
+				if (curmon.health <= 0) {continue;}
+				
+				float monalpha = minimapAlpha.GetFloat() * curmon.Alpha;
+				double monsize = (curmon.radius * miniMapScale.GetFloat() * CleanXFac) / 3.0;
+				vector2 startpos = (((minimapX.GetInt() + (minimapsizeX.GetFloat() / 2)) * CleanXFac), ((minimapY.GetInt() + (minimapsizeY.GetFloat() / 2)) * CleanYFac));
+				vector2 monoffset = (-(plr.pos.X - curmon.pos.X) * (miniMapScale.GetFloat()), (plr.pos.y - curmon.pos.y) * (miniMapScale.GetFloat()));
+				
+				if (MapRotates.GetBool())
+				{
+					double newX = (cos(plr.angle + 90) * (-monoffset.x)) - (sin(plr.angle - 90) * (monoffset.y));
+					double newY = (sin(plr.angle + 90) * (-monoffset.x)) + (cos(plr.angle - 90) * (monoffset.y));
+					monoffset.X = newX;
+					monoffset.Y = newY;
+				}
+				
+				monoffset.X *= CleanXFac;
+				monoffset.Y *= CleanYFac;
+				
+				if (monoffset.X > (minimapsizeX.GetFloat() / 2) * CleanXFac) {monoffset.X = (minimapsizeX.GetFloat() * CleanXFac) / 2;}
+				if (monoffset.Y > (minimapsizeY.GetFloat() / 2) * CleanYFac) {monoffset.Y = (minimapsizeY.GetFloat() * CleanYFac) / 2;}
+				if (monoffset.X < -(minimapsizeX.GetFloat() / 2) * CleanXFac) {monoffset.X = -(minimapsizeX.GetFloat() * CleanXFac) / 2;}
+				if (monoffset.Y < -(minimapsizeY.GetFloat() / 2) * CleanYFac) {monoffset.Y = -(minimapsizeY.GetFloat() * CleanYFac) / 2;}
+				
+				Screen.DrawTexture(CoinDot, false,
+					startpos.x + monoffset.x - (monsize * 3),
+					startpos.y + monoffset.y - (monsize * 3),
+					DTA_ScaleX, monsize,
+					DTA_ScaleY, monsize,
+					DTA_Alpha, monalpha
+				);
+			}
+		
 			for (int i = 0; i < monsters.Size(); ++i)
 			{
 				DI_Monster curmon = monsters[i];

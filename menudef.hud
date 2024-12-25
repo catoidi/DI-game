@@ -23,10 +23,12 @@ OptionMenu "DIHudOptions"
 	Tooltip "Prevents pickup messages from appearing at the top of your screen."
 	StaticText ""
 	StaticText "-= Submenus =-", "Purple"
-	SubMenu "Extra HUD Options", "DIHUDOptions_Extra", 0, 1
-	Tooltip "You can find options for the Passive HUD, Event Popups, and Minimap here."
 	SubMenu "Crosshair Options", "DIHUDOptions_Crosshair", 0, 1
 	Tooltip "Change the appearance and the behavior of your crosshair."
+	SubMenu "Minimap Options", "DIHUDOptions_Minimap", 0, 1
+	Tooltip "A menu for all of your minimap needs."
+	SubMenu "Extra HUD Options", "DIHUDOptions_Extra", 0, 1
+	Tooltip "Find options for HUD elements that weren't important enough to get their own dedicated submenu."
 	SubMenu "Damage Number Options", "DIHUDOptions_DamNums", 0, 1
 	Tooltip "Change the behavior of the damage numbers that appear above enemies."
 }
@@ -50,18 +52,6 @@ OptionMenu "DIHUDOptions_Extra"
 	Slider "Event Alpha", "di_questalpha", 0.0, 1.0, 0.05, 2
 	Tooltip "Tweak the alpha of Random Event and Side Quest popups. Set to 0 to completely hide them."
 	StaticText ""
-	StaticText "Minimap", "Purple"
-	Option "Enabled?", "atmp_enablemap", "onoff"
-	Tooltip "Toggles the minimap. Matches the behavior of the fullscreen map.\n\nMinimap is always displayed below other HUD elements, in case of conflicts.\n\nMinimap is recommended to leave on, as it displays enemy locations."
-	Slider "X Offset", "ATMP_MapX", 0, 500, 5, 0
-	Slider "Y Offset", "ATMP_MapY", 0, 500, 5, 0
-	Tooltip "Adjust the position of the minimap.\n\nMinimap is anchored to the top left of the screen. Offset scales with game resolution."
-	Slider "Minimap Width", "ATMP_MapSizeX", 50, 300, 5, 0
-	Slider "Minimap Height", "ATMP_MapSizeY", 50, 300, 5, 0
-	Tooltip "Adjust the size of the minimap.\n\nLarger minimaps will allow you to render more level geometry at once, but may conflict with other HUD elements.\n\nMap size scales with game resolution."
-	Slider "Zoom Level", "ATMP_MapScale", 0.005, 0.4, 0.005, 3
-	Tooltip "Adjust how much of the level is visible on the minimap.\n\nScales with width/height and game resolution."
-	
 }
 
 OptionMenu "DIHUDOptions_Crosshair"
@@ -87,6 +77,33 @@ OptionMenu "DIHUDOptions_Crosshair"
 	Tooltip "Controls the length of the fresh meter.\n\nAlso takes your crosshair scaling into account."
 	Slider "Fresh Alpha", "di_xhair_fresh_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_fresh_toggle"
 	Tooltip "Controls the alpha of the fresh meter.\n\nAlso takes your crosshair alpha into account."
+}
+
+OptionMenu "DIHUDOptions_Minimap"
+{
+	class "DITF_TooltipOptionMenu"
+	Title "HUD Options (Minimap)"
+	Tooltip ""
+	//StaticText "Minimap", "Purple"
+	Option "Enabled?", "atmp_enablemap", "onoff"
+	Tooltip "Toggles the minimap. Matches the behavior of the fullscreen map.\n\nMinimap is always displayed below other HUD elements, in case of conflicts."
+	Option "Minimap Icons", "atmp_enemies", "onoff"
+	Tooltip "Controls whether or not you can see enemies and coins on the minimap."
+	StaticText ""
+	Slider "X Offset", "ATMP_MapX", 0, 500, 5, 0
+	Slider "Y Offset", "ATMP_MapY", 0, 500, 5, 0
+	Tooltip "Adjust the position of the minimap.\n\nMinimap is anchored to the top left of the screen. Offset scales with game resolution."
+	StaticText ""
+	Slider "Minimap Width", "ATMP_MapSizeX", 50, 300, 5, 0
+	Slider "Minimap Height", "ATMP_MapSizeY", 50, 300, 5, 0
+	Tooltip "Adjust the size of the minimap.\n\nLarger minimaps will allow you to render more level geometry at once, but may conflict with other HUD elements.\n\nMap size scales with game resolution."
+	Slider "Zoom Level", "ATMP_MapScale", 0.005, 0.4, 0.005, 3
+	Tooltip "Adjust how much of the level is visible on the minimap.\n\nScales with width/height and game resolution."
+	StaticText ""
+	Slider "Minimap Alpha", "ATMP_MapAlpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Adjust the opacity of the minimap's foreground objects, which includes the level geometry and minimap icons."
+	Slider "Background Alpha", "ATMP_BackgroundAlpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Adjust the opacity of the minimap's background. Does not influence the alpha of the foreground in any way."
 }
 
 OptionMenu "DIHUDOptions_DamNums"
