@@ -23,6 +23,7 @@ Class Fred : DI_Monster
 			Health = 120;
 			StartHealth = 120;
 			SpeedMult = 4.0;
+			coindrop = "DI_Gem";
 		}
 		Super.PostBeginPlay();
 	}
