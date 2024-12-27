@@ -1,0 +1,142 @@
+//zscript_DI/weapons/super/minigun.zsc
+
+Class DI_Minigun : DI_Weapon
+{
+	Default
+	{
+		DI_Weapon.FreshBonus 2;
+		DI_Weapon.BaseDamage 16;
+		DI_Weapon.BaseAccuracy 2;
+		DI_Weapon.PlayerSpeed -0.3;
+		DI_Weapon.Recoil 2;
+		DI_Weapon.RecoilRecover 1;
+		DI_Weapon.RecoilOffset 2.5;
+		Weapon.Kickback 200;
+		Weapon.SelectionOrder 10000;
+		Weapon.SlotNumber 4;
+		Weapon.SlotPriority 1;
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 80;
+		Weapon.AmmoType "MinigunAmmo";
+		Inventory.PickupMessage "Acquired the Minigun!!! Hell yea.";
+		Inventory.Icon "MINIZ0";
+		Tag "Minigun";
+	}
+	
+	action void MinigunShoot(int flashnum)
+	{
+		A_StartSound("drill", 1, 0, 0.4, ATTN_NORM, 0.9, 0.3);
+		if (CountInv("MinigunAmmo") > 0)
+		{
+			if (flashnum == 0) {A_Overlay(-2, "Flash");}
+			else {A_Overlay(-2, "Flash2");}
+			DI_Shoot();
+			DI_StartSound("gunpow2", pitch: frandom(0.8, 0.85));
+			DI_BulletCasing(2);
+			invoker.bBRIGHT = true;
+		}
+		else {DI_StartSound("noammo", CHAN_AUTO, starttime: 0.1);}
+	}
+	
+	States
+	{
+		Ready:
+			MINI A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Deselect:
+			MINI A 0 A_Lower;
+			Loop;
+		Select:
+			MINI AAA 0 A_Raise;
+			MINI A 1 A_Raise;
+			Loop;
+		Fire:
+			MINI A 0 WeaponMode(1);
+			#### # 0 A_StartSound("drill", 1, 0, 0.4, pitch: 0.9);
+			MINI BBAABAB 2;
+			Goto Hold;
+		Hold:
+			MINI A 2 MinigunShoot(0);
+			MINI B 2 {invoker.bBRIGHT = false;}
+			MINI A 2 MinigunShoot(1);
+			MINI B 2 {invoker.bBRIGHT = false;}
+			MINI A 2 MinigunShoot(0);
+			MINI B 2 {invoker.bBRIGHT = false;}
+			MINI A 2 MinigunShoot(1);
+			MINI B 2 {invoker.bBRIGHT = false;}
+			#### # 0 A_Refire("Hold");
+			MINI AB 4;
+			#### # 0 A_StartSound("drill2", 1, volume: 0.2, pitch: 0.9);
+			MINI ABAABB 4 A_Refire("Hold");
+			//PRIF CCCCC 1 PinkRifleStop(false);
+			//PRIF C 1 PinkRifleStop(true);
+			Goto Ready;
+		Reload:
+			MINI A 0 DI_ReloadCheck();
+			#### # 0 DI_StartSound("gunrel1", pitch: 1.0);
+			MINI AAAAAAAACCCCCCCCDDDDDDDD 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+			MINI D 6;
+			MINI DD 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
+			MINI D 0 A_Overlay(-2, "ReloadClip");
+			MINI E 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 1.0);
+			}
+			MINI EEEE 1 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
+			MINI E 31;
+			MINI D 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 0.75);
+			}
+			MINI DDDD 1 A_OverlayOffset(PSP_WEAPON, 0, 1.5, WOF_ADD);
+			MINI D 0 A_GiveInventory("MinigunAmmo", invoker.Ammo1.MaxAmount);
+			MINI DDDDDDDDCCCCCCCCAAAAAAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 5.5, WOF_ADD);
+			Goto Ready;
+		ReloadClip:
+			MINI F 1;
+			MINI FFFFFFFFFFF 1 A_OverlayOffset(-2, 6, 12, WOF_ADD);
+			#### # 0 DI_EjectMagazine("BlueSMGMagazine");
+			TNT1 A 12;
+			#### # 0 DI_StartSound("gunrel2", pitch: 0.8);
+			TNT1 A 4;
+			MINI GGGGGGGG 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
+			Stop;
+		Flash:
+			#### # 0 A_OverlayOffset(-2, -18, 10, WOF_ADD);
+			BSMG D 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
+			Stop;
+		Flash2:
+			#### # 0 A_OverlayOffset(-2, -18, 10, WOF_ADD);
+			BSMG H 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
+			Stop;
+		Spawn:
+			PRIF Z -1;
+			Stop;
+	}
+}
+
+Class MinigunAmmo : Ammo
+{
+	//it sure is ammo.
+	Default
+	{
+		Radius 20;
+		Height 24;
+		Inventory.PickupMessage "$BOX_AMMO_STUPID";
+		Inventory.Amount 80;
+		Inventory.MaxAmount 80;
+		Inventory.Icon "PRIFF0";
+		+CASTSPRITESHADOW;
+	}
+	
+	States
+	{
+		Spawn:
+			PRIF F -1;
+			Stop;
+	}
+}

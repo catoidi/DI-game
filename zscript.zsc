@@ -189,7 +189,7 @@ version "4.13"
 //super weapons
 //#include "zscript_DI/weapons/super/flamethrower.zsc"
 //#include "zscript_DI/weapons/super/missilelauncher.zsc"
-//#include "zscript_DI/weapons/super/minigun.zsc"
+#include "zscript_DI/weapons/super/minigun.zsc"
 //#include "zscript_DI/weapons/super/boomshotgun.zsc"
 //#include "zscript_DI/weapons/super/thebigone.zsc"
 //box party weapons
