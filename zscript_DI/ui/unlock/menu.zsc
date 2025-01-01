@@ -126,8 +126,12 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		{
 			array<string> curline;
 			unlocklist[i].Split(curline, " ");
-			let curcvar = cvar.findcvar(curline[0]);
-			if (curcvar.getbool()) {++unlockcounter;}
+			if (curline[0].Left(1) == "!") {--totalunlocks;}
+			else
+			{
+				let curcvar = cvar.findcvar(curline[0]);
+				if (curcvar.getbool()) {++unlockcounter;}
+			}
 		}
 		
 		unlocktext.AppendFormat("\cb%d/%d", unlockcounter, totalunlocks);
@@ -366,10 +370,14 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					//console.printf("%s", "getting cvar #%d", i);
 					unlocklist[i].Split(curline, " ");
-					cvar curcvar = cvar.getcvar(curline[0], plr);
-					
-					if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
-					if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					if (curline[0].Left(1) == "!") {buttonmode = 2;}
+					else
+					{
+						cvar curcvar = cvar.getcvar(curline[0], plr);
+						
+						if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
+						if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					}
 				}
 				
 				//CREATE THE BACKGROUND IMAGE
@@ -378,6 +386,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					case 0: backimg = "graphics/hat/DILOCK.png"; break;
 					case 1: backimg = "graphics/hat/HATBLANK4.png"; break;
+					case 2: backimg = "graphics/hat/HATBLANK3.png"; break;
 				}
 				let curtex = boxparty_ZF_BoxTextures.CreateSingleTexture(backimg, false);
 				let curboximage = boxparty_ZF_BoxImage.Create
@@ -395,13 +404,14 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				curboximage.Pack(mainFrame);
 				
 				//CREATE THE UNLOCKED IMAGE
-				let unlockimg = 'graphics/hat/HATIDLE.png';
+				string unlockimg = 'graphics/hat/HATIDLE.png';
 				vector2 iconsize = (44, 44);
 				float bonusx, bonusy = 0;
 				float sizescale = 1.0;
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					unlockimg = string.format('graphics/unlocks/%s.png', curline[0]);
+					if (buttonmode == 2) {unlockimg.Replace("!", "");}
 					let temptex = texman.checkfortexture(unlockimg);
 					if (temptex.IsValid())
 					{
@@ -440,7 +450,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				//CREATE THE BLACKLIST IMAGE
 				let blimg = 'graphics/hat/HATIDLE.png';
 				vector2 blimgsize = (40 * buttonscale, 40 * buttonscale);
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					name curclass = curline[1];
 					for (int j = 0; j < blacklistdata.Size(); ++j)
@@ -469,6 +479,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				let docommand = "sorrynothing";
 				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[1]);}
 				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[1]);}
+				else if (buttonmode == 2) {docommand = string.format("DEFAULT:%s", curline[1]);}
 				//CREATE THE BUTTON ITSELF
 				let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
 				let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATHOVER.png", true);
@@ -516,10 +527,13 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					//console.printf("%s", "getting cvar #%d", i);
 					unlocklist[newpos].Split(curline, " ");
-					cvar curcvar = cvar.getcvar(curline[0], plr);
-					
-					if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
-					if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					if (curline[0].Left(1) == "!") {buttonmode = 2;}
+					else
+					{ 
+						cvar curcvar = cvar.getcvar(curline[0], plr);
+						if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
+						if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					}
 				}
 				
 				//UPDATE BACK IMAGE
@@ -528,6 +542,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					case 0: backimg = "graphics/hat/DILOCK.png"; break;
 					case 1: backimg = "graphics/hat/HATBLANK4.png"; break;
+					case 2: backimg = "graphics/hat/HATBLANK3.png"; break;
 				}
 				let curtex = boxparty_ZF_BoxTextures.CreateSingleTexture(backimg, false);
 				backimage[i].setPos((startx_img, starty_img));
@@ -536,13 +551,14 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				backimage[i].setBoxScale((buttonscale, buttonscale));
 				
 				//UPDATE ICON IMAGE
-				let unlockimg = 'graphics/hat/HATIDLE.png';
+				string unlockimg = 'graphics/hat/HATIDLE.png';
 				vector2 iconsize = (44, 44);
 				float bonusx, bonusy = 0;
 				float sizescale = 1.0;
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					unlockimg = string.format('graphics/unlocks/%s.png', curline[0]);
+					if (buttonmode == 2) {unlockimg.Replace("!", "");}
 					let temptex = texman.checkfortexture(unlockimg);
 					if (temptex.IsValid())
 					{
@@ -571,7 +587,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				
 				//UPDATE THE BLACKLIST IMAGE
 				let blimg = 'graphics/hat/HATIDLE.png';
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					name curclass = curline[1];
 					for (int j = 0; j < blacklistdata.Size(); ++j)
@@ -589,6 +605,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				let docommand = "sorrynothing";
 				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[1]);}
 				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[1]);}
+				else if (buttonmode == 2) {docommand = string.format("DEFAULT:%s", curline[1]);}
 				buttonlist[i].setCommand(docommand);
 			}
 		}

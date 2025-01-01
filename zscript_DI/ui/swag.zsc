@@ -440,6 +440,7 @@ Class SwagHandler : EventHandler
 			array<string> curline;
 			filedata[i].Split(curline, " ");
 			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
+			if (curline[0].Left(1) == "!") {continue;}
 			
 			let unlockcvar = cvar.getcvar(curline[0]);
 			if (unlockcvar.getbool() == true) {++returnnum;}

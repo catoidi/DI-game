@@ -61,6 +61,14 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 			}
 			link.UpdateInfoLabel(labelcommand);
 		}
+		else if (commandstring.Left(8) == 'DEFAULT:')
+		{
+			commandstring = commandstring.Mid(8);
+			let itemname = string.format("$SHOPITEM_%s", commandstring);
+			itemname = stringtable.localize(itemname);
+			let labelcommand = string.format("\ca%s is a default item and cannot be blacklisted.", itemname);
+			link.UpdateInfoLabel(labelcommand);
+		}
 		else if (commandstring.Left(9) == 'SwitchTab')
 		{
 			link.pagenum = 0;

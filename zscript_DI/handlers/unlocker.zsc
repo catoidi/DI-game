@@ -527,6 +527,8 @@ Class DIUnlockHandler : EventHandler
 		{
 			array<string> curline;
 			unlocklines[i].Split(curline, " ");
+
+			if (curline[0].Left(1) == "!") {continue;}
 			
 			unlockcvars.push(curline[0]);
 			if (curline.size() >= 4) 
