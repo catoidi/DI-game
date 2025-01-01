@@ -4,6 +4,33 @@
 >>Arg #3: Which Category to place the item into. 1 = Weapon, 2 = Passive, 3 = Other.
 >>Arg #4 (Optional): An integer CVAR to display the progress for this item.
 >>Arg #5 (Optional): An integer used to sort the unlocks. Default is 0. Accepts negative numbers.
+
+>>These items are always unlocked and cannot be blacklisted.
+!di_unlock_item_greenshotgun GreenShotgun 1;
+!di_unlock_item_bluesmg BlueSMG 1;
+!di_unlock_item_pinkrifle PinkRifle 1;
+!di_unlock_item_minigun DI_Minigun 1;
+!di_unlock_item_knifebullets DI_KnifeBullets 2;
+!di_unlock_item_longmagazine DI_LongMagazine 2;
+!di_unlock_item_superglue DI_SuperGlue 2;
+!di_unlock_item_hathat DI_HatHat 2;
+!di_unlock_item_carbonateddrink DI_CarbonatedDrink 2;
+!di_unlock_item_extracoingiver DI_ExtraCoinGiver 2;
+!di_unlock_item_freshbonusgiver DI_FreshBonusGiver 2;
+!di_unlock_item_leadrecycling DI_LeadRecycling 2;
+!di_unlock_item_leadswitch DI_LeadSwitch 2;
+!di_unlock_item_peerpressure DI_PeerPressure 2;
+!di_unlock_item_turret DITurret 3;
+!di_unlock_item_tomahawk DI_Tomahawk 3;
+!di_unlock_item_ammosatchel DI_AmmoSatchel 3;
+!di_unlock_item_brick DI_Brick 3;
+!di_unlock_item_fullheal DI_FullHeal 3;
+!di_unlock_item_pizza DI_Pizza 3;
+!di_unlock_item_juicebox DI_JuiceBox 3;
+!di_unlock_item_tophat DI_TopHat 3;
+!di_unlock_item_tophat2 DI_TopHat2 3;
+!di_unlock_item_partyhat DI_PartyHat 3;
+>>These ones are just regular items though.
 di_unlock_item_starpistol StarPistol 1  1;
 di_unlock_item_cheesegun CheeseGun 1  1;
 di_unlock_item_banana DI_Banana_Bundle 3  1;
