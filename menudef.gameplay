@@ -13,11 +13,13 @@ OptionMenu "DIGameplay"
 	Command "Update Now (Ingame)","netevent AimAssistUpdateCVARs"
 	Tooltip "Normally changing Aim Assist settings won't take effect until you start a new game.\n\nThis forces the settings to update immediately."
 	StaticText ""
-	StaticText "Cheat Codes", "Purple"
+	StaticText "Unlock Options", "Purple"
 	Option "Unlock Everything", "di_unlock_cheat", OnOff
 	Tooltip "This will force all items, players, levels, etc. to become unlocked.\n\nThis does not take full effect until a new game is started."
 	Option "Bigger Unlock Menu", "di_unlock_morebuttons", OnOff
 	Tooltip "When enabled, displays 60 unlocks at once in the unlock menu.\n\nWhen disabled, the menu only displays 15 unlocks at once."
+	Option "Show Default Items", "di_unlock_showdefaults", OnOff
+	Tooltip "When enabled, shows all the default items in the Unlock menu.\n\nDefault items are always enabled and cannot be blacklisted."
 	SafeCommand "RESET SHOP UNLOCKS", "netevent di_resetitems"
 	Tooltip "This will reset ALL shop item unlocks back to default settings.\n\nThis does not affect player/level unlocks.\n\n\cbThis only works while currently ingame.\n\n\caUse with caution, this cannot be undone!"
 }

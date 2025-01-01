@@ -9,7 +9,9 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	cvar tutcvar, //check to see if player has done tutorial yet.
 		 cheatmode, //force everything to be enabled when cheatmode is on.
 		 blacklistcvar, //the cvar containing everything that's blacklisted.
-		 morebuttoncvar;
+		 morebuttoncvar,
+		 defaultcvar;
+		 
 		 
 	bool justkeyed; //keyboard was pressed this tic.
 	int keypos, curkey; //more keyboard stuff.
@@ -48,6 +50,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		morebuttoncvar = cvar.getcvar("di_unlock_morebuttons", plr);
 		cheatmode = cvar.getcvar("di_unlock_cheat", plr);
 		blacklistcvar = cvar.getcvar("di_unlock_blacklist", plr);
+		defaultcvar = cvar.getcvar("di_unlock_showdefaults", plr);
 		if (morebuttoncvar.GetBool() == true) {morebuttons = true;} //DO NOT UPDATE THIS POST-INIT, EVERYTHING WILL EXPLODE....................
 		//make background texture
 		let bgtex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/hat/HATBACK.png", (0, 0), (640, 400), true, true);
@@ -222,6 +225,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
 			array<string> curline;
 			filedata[i].Split(curline, " ");
+			if ((defaultcvar.GetBool() == false) && (curline[0].Left(1) == "!")) {continue;}
 			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
 			let unlockpos = 0;
 			if (curline.Size() == 5) 
