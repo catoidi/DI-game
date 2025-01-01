@@ -23,19 +23,74 @@ Class DI_Minigun : DI_Weapon
 		Tag "Minigun";
 	}
 	
+	array<int> bulletangles; //initial roll of reload bullets.
+	array<double> bulletX;
+	array<double> bulletY; //the X and Y offset of reload bullets.
+	
 	action void MinigunShoot(int flashnum)
 	{
 		A_StartSound("drill", 1, 0, 0.4, ATTN_NORM, 0.9, 0.3);
 		if (CountInv("MinigunAmmo") > 0)
 		{
-			if (flashnum == 0) {A_Overlay(-2, "Flash");}
-			else {A_Overlay(-2, "Flash2");}
+			float mpitch = 0.7;
+			if (flashnum == 0) 
+			{
+				A_Overlay(-2, "Flash");
+			}
+			else 
+			{
+				A_Overlay(-2, "Flash2");
+				mpitch = 0.725;
+			}
 			DI_Shoot();
-			DI_StartSound("gunpow2", pitch: frandom(0.8, 0.85));
+			DI_StartSound("gunpow2", pitch: mpitch, volume: 0.8);
 			DI_BulletCasing(2);
 			invoker.bBRIGHT = true;
 		}
 		else {DI_StartSound("noammo", CHAN_AUTO, starttime: 0.1);}
+	}
+	
+	action void SpawnReloadBullets()
+	{
+		invoker.bulletangles.Clear();
+		invoker.bulletX.Clear();
+		invoker.bulletY.Clear();
+		
+		int bnum = CountInv("MinigunAmmo");
+		if (bnum > 5) {bnum = 5;} //capped at 5 bullets.
+		
+		for (int i = 0; i < bnum; ++i)
+		{
+			invoker.bulletangles.Push(random(-20, 20));
+			invoker.bulletX.Push(frandom(1, 4));
+			invoker.bulletY.Push(frandom(10, 14));
+		
+			switch(i)
+			{
+				case 0: A_Overlay(-2, "ReloadBullet0"); break;
+				case 1: A_Overlay(-3, "ReloadBullet1"); break;
+				case 2: A_Overlay(-4, "ReloadBullet2"); break;
+				case 3: A_Overlay(-5, "ReloadBullet3"); break;
+				case 4: A_Overlay(-6, "ReloadBullet4"); break;
+			}
+		}
+	}
+	
+	action void ReloadBulletAngle(int bnum)
+	{
+		if (invoker.bulletangles.Size() >= bnum)
+		{
+			A_OverlayRotate(-2 - bnum, invoker.bulletangles[bnum], WOF_ADD);
+			A_OverlayOffset(-2 - bnum, frandom(-4, 4), frandom(-4, 4), WOF_ADD);
+		}
+	}
+	
+	action void ReloadBulletOffset(int bnum)
+	{	
+		if (invoker.bulletX.Size() >= bnum)
+		{
+			A_OverlayOffset(-2 - bnum, invoker.bulletX[bnum], invoker.bulletY[bnum], WOF_ADD);
+		}
 	}
 	
 	States
@@ -73,35 +128,71 @@ Class DI_Minigun : DI_Weapon
 			Goto Ready;
 		Reload:
 			MINI A 0 DI_ReloadCheck();
-			#### # 0 DI_StartSound("gunrel1", pitch: 1.0);
+			#### # 0 DI_StartSound("hpnmov1", pitch: 0.75);
 			MINI AAAAAAAACCCCCCCCDDDDDDDD 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
 			MINI D 6;
 			MINI DD 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
-			MINI D 0 A_Overlay(-2, "ReloadClip");
+			MINI D 0 A_Overlay(-7, "ReloadClip");
+			#### # 0 SpawnReloadBullets();
+			#### # 0 DI_StartSound("gunmov1", pitch: 0.75);
 			MINI E 1 
 			{
-				A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
-				A_SetPitch(invoker.owner.pitch + 1.0);
+				A_OverlayOffset(PSP_WEAPON, 0, 16, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 2.0);
 			}
-			MINI EEEE 1 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
+			MINI EEEE 1 A_OverlayOffset(PSP_WEAPON, 0, -4, WOF_ADD);
 			MINI E 31;
 			MINI D 1 
 			{
-				A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
-				A_SetPitch(invoker.owner.pitch - 0.75);
+				A_OverlayOffset(PSP_WEAPON, 0, -12, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 1.5);
 			}
-			MINI DDDD 1 A_OverlayOffset(PSP_WEAPON, 0, 1.5, WOF_ADD);
+			MINI DDDD 1 A_OverlayOffset(PSP_WEAPON, 0, 3, WOF_ADD);
 			MINI D 0 A_GiveInventory("MinigunAmmo", invoker.Ammo1.MaxAmount);
-			MINI DDDDDDDDCCCCCCCCAAAAAAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 5.5, WOF_ADD);
+			#### # 0 DI_StartSound("hpnmov1", pitch: 0.9, startTime: 0.4);
+			MINI DDDDDDDDCCCCCCCCAAAAAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 6, WOF_ADD);
+			MINI A 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
 			Goto Ready;
 		ReloadClip:
-			MINI F 1;
-			MINI FFFFFFFFFFF 1 A_OverlayOffset(-2, 6, 12, WOF_ADD);
-			#### # 0 DI_EjectMagazine("BlueSMGMagazine");
+			MINI G 0 A_JumpIfInventory("MinigunAmmo", 20, 2);
+			MINI F 0;
+			#### # 1;
+			MINI ########### 1 A_OverlayOffset(-7, 6, 12, WOF_ADD);
+			#### # 0 DI_EjectMagazine("MinigunMagazine");
 			TNT1 A 12;
-			#### # 0 DI_StartSound("gunrel2", pitch: 0.8);
+			#### # 0 DI_StartSound("gunrel2", pitch: 0.6);
 			TNT1 A 4;
-			MINI GGGGGGGG 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
+			MINI GGGGGGGG 1 A_OverlayOffset(-7, -8.25, -16.5, WOF_ADD);
+			Stop;
+		ReloadBullet0:
+			MINI H 0 ReloadBulletAngle(0);
+			#### ########### 1 ReloadBulletOffset(0);
+			#### # 0 A_SpawnItemEX("DI_Casing3", frandom(2, 6), frandom(-2, 2), invoker.height / 2, frandom(-1, 1), frandom(-1, 1), flags: SXF_NOCHECKPOSITION);
+			#### ###### 1 ReloadBulletOffset(0);
+			Stop;
+		ReloadBullet1:
+			MINI H 0 ReloadBulletAngle(1);
+			#### ########### 1 ReloadBulletOffset(1);
+			#### # 0 A_SpawnItemEX("DI_Casing3", frandom(2, 6), frandom(-2, 2), invoker.height / 2, frandom(-1, 1), frandom(-1, 1), flags: SXF_NOCHECKPOSITION);
+			#### ###### 1 ReloadBulletOffset(1);
+			Stop;
+		ReloadBullet2:
+			MINI H 0 ReloadBulletAngle(2);
+			#### ########### 1 ReloadBulletOffset(2);
+			#### # 0 A_SpawnItemEX("DI_Casing3", frandom(2, 6), frandom(-2, 2), invoker.height / 2, frandom(-1, 1), frandom(-1, 1), flags: SXF_NOCHECKPOSITION);
+			#### ###### 1 ReloadBulletOffset(2);
+			Stop;
+		ReloadBullet3:
+			MINI H 0 ReloadBulletAngle(3);
+			#### ########### 1 ReloadBulletOffset(3);
+			#### # 0 A_SpawnItemEX("DI_Casing3", frandom(2, 6), frandom(-2, 2), invoker.height / 2, frandom(-1, 1), frandom(-1, 1), flags: SXF_NOCHECKPOSITION);
+			#### ###### 1 ReloadBulletOffset(3);
+			Stop;
+		ReloadBullet4:
+			MINI H 0 ReloadBulletAngle(4);
+			#### ########### 1 ReloadBulletOffset(4);
+			#### # 0 A_SpawnItemEX("DI_Casing3", frandom(2, 6), frandom(-2, 2), invoker.height / 2, frandom(-1, 1), frandom(-1, 1), flags: SXF_NOCHECKPOSITION);
+			#### ###### 1 ReloadBulletOffset(4);
 			Stop;
 		Flash:
 			#### # 0 A_OverlayOffset(-2, -18, 10, WOF_ADD);
@@ -137,6 +228,21 @@ Class MinigunAmmo : Ammo
 	{
 		Spawn:
 			PRIF F -1;
+			Stop;
+	}
+}
+
+Class MinigunMagazine : DI_Casing1
+{
+	Default
+	{
+		Scale 0.16;
+	}
+	
+	States
+	{
+		Spawn:
+			MINI I 0 NoDelay A_Jump(256, "TimeToRoll");
 			Stop;
 	}
 }
