@@ -384,7 +384,7 @@ Class SwagHandler : EventHandler
 		newexp *= 1.0 + (0.01 * ((GetUnlockNum() * 2) + GetScoreBonus()));
 		
 		curexp += newexp;
-		int expmax = 5000 * (1 + curlvl + overlvl);
+		int expmax = 2500 * (1 + curlvl + overlvl);
 		int newlvl = 0;
 		while (curexp >= expmax)
 		{
@@ -398,7 +398,7 @@ Class SwagHandler : EventHandler
 			curlvl += addlvl;
 			newlvl += addlvl;
 			curexp -= expmax;
-			expmax = 5000 * (1 + curlvl + overlvl);
+			expmax = 2500 * (1 + curlvl + overlvl);
 		}
 		
 		exp1 = curexp;
