@@ -85,10 +85,10 @@ CLASS StarPistol : DI_Weapon
 			PIST AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 12, WOF_ADD);
 			Goto Ready;
 		ReloadClip:
-			PIST DDDDDDDDDDD 1 A_OverlayOffset(-2, 3, 12, WOF_ADD);
+			PIST DDDDDDDDDDD 1 A_OverlayOffset(-2, 0.5, 12, WOF_ADD);
 			#### # 0 DI_EjectMagazine("StarPistolMagazine");
 			#### # 0 DI_StartSound("gunrel2");
-			PIST EEEEEEE 1 A_OverlayOffset(-2, -4.5, -18, WOF_ADD);
+			PIST EEEEEEE 1 A_OverlayOffset(-2, -0.75, -18, WOF_ADD);
 			Stop;
 		Flash:
 			PIST C 2 BRIGHT DI_MuzzleFlash();
