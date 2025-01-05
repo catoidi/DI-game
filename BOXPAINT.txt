@@ -42,6 +42,7 @@ Painting = PANBB5, *, 49, 1, 0.5, PAINTING_CAT;
 Painting = PANBB6, di01, 4, 1, 0.5, PAINTING_MAP;
 Painting = PANTAE, di01, 8, 1, 1;
 Painting = PANTAF, di01, 8, 1, 1;
+Painting = PANBBC, di01, 0, 1, 0.125, PAINTING_YOUWILLDIE;
 Painting = PANTAG, di02, 4, 1, 1;
 Painting = PANBB8, di02, 0, 1, 0.125, PAINTING_BOXPARTY;
 Painting = PANBBB, di02, 0, 1, 0.125, PAINTING_MINIFRED;

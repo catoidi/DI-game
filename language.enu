@@ -177,6 +177,7 @@ PAINTING_BOXPARTY = "This is an advertisement for the demo of 'Box Party', avail
 PAINTING_JUICEBOX = "This is an advertisement for the Juice Box item.";
 PAINTING_BURGER = "This is an advertisement for the Burger item.";
 PAINTING_MINIFRED = "This is an advertisement for the Mini Fred item.";
+PAINTING_YOUWILLDIE = "This is not a threat. This is a promise.";
 
 //Random Events
 dievent_spawnwalltraps = "\cgHazard Warning";
