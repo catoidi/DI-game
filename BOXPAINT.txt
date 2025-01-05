@@ -18,6 +18,8 @@ Painting = PANTA8, *, 0, 1, 1, PAINTING_SEAWEED;
 Painting = PANBA2, *, 24, 1, 0.5, PAINTING_STRONG;
 Painting = PANTAD, *, 7, 1, 1, PAINTING_MANGO;
 Painting = PANBB7, *, 7, 1, 0.117, PAINTING_YOLK;
+Painting = PANBB9, *, 0, 1, 0.125, PAINTING_JUICEBOX;
+Painting = PANBBA, *, 0, 1, 0.125, PAINTING_BURGER;
 >>Pride Paintings (Spawn on any map)
 Painting = PANTAB, *, 3, 1, 1, PAINTING_FLAG;
 Painting = PANTAC, *, 3, 1, 1, PAINTING_FLAG;
@@ -42,6 +44,7 @@ Painting = PANTAE, di01, 8, 1, 1;
 Painting = PANTAF, di01, 8, 1, 1;
 Painting = PANTAG, di02, 4, 1, 1;
 Painting = PANBB8, di02, 0, 1, 0.125, PAINTING_BOXPARTY;
+Painting = PANBBB, di02, 0, 1, 0.125, PAINTING_MINIFRED;
 >>Fruit Puncher Paintings (Only on the Box Party map)
 Painting = PANTA1, di02, 2, 1, 1, PAINTING_MELON;
 Painting = PANTA2, di02, 2, 1, 1, PAINTING_MELON;

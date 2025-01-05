@@ -174,6 +174,9 @@ PAINTING_MANGO = "This painting appears to depict a mango, but you're not 100% s
 PAINTING_MAP = "This appears to be a map of the arena.";
 PAINTING_YOLK = "This is a drawing of some kind of slimey egg yolk creature.\nThe author is credited as 'thebluuster'.";
 PAINTING_BOXPARTY = "This is an advertisement for the demo of 'Box Party', available now on Steam and itch.io.";
+PAINTING_JUICEBOX = "This is an advertisement for the Juice Box item.";
+PAINTING_BURGER = "This is an advertisement for the Burger item.";
+PAINTING_MINIFRED = "This is an advertisement for the Mini Fred item.";
 
 //Random Events
 dievent_spawnwalltraps = "\cgHazard Warning";
