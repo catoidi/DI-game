@@ -2,7 +2,7 @@ Level DI01;
 {
 	Wave 1:
 	{
-		Music music/track01.mp3;
+		Music track01;
 		Cap 3;
 		Rate 1;
 		Time 1;
