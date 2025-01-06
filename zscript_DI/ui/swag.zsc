@@ -119,6 +119,11 @@ Class SwagHandler : EventHandler
 				msgrng = random[die](0, 100);
 			}
 			
+			if (DeathTimer == 0)
+			{
+				SendNetworkEvent("DI_ChangeMusic deathsong", 1);
+			}
+			
 			if (DeathFade < 1.0) {DeathFade += 0.01;}
 			//else {DeathFade2 += 0.04;}
 			++DeathTimer;
@@ -129,6 +134,7 @@ Class SwagHandler : EventHandler
 			}
 			else if (diedmove > 4.0) {diedmove = 4.0;}
 			else if (diedmove < 2.0) {diedmove = 2.0;}
+			
 			
 			if (scoredone && !unlockedscore)
 			{
@@ -503,7 +509,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.3
 				);
 			}
-			if (DeathTimer > 155)
+			if (DeathTimer > 177)
 			{
 				string died = string.format("Current Wave: \ck%d", wavenum);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
@@ -515,7 +521,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.5
 				);
 			}
-			if (DeathTimer > 170)
+			if (DeathTimer > 198)
 			{
 				string died = string.format("%sEnemies Killed: \cr%d", spacing, plr.killcounter);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
@@ -527,7 +533,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
-			if (DeathTimer > 170)
+			if (DeathTimer > 198)
 			{
 				string died = string.format("%sItems Bought: \cn%d", spacing, plr.buycounter);
 				int scaley = (32 * (CleanYFac * 2)) / 2;
@@ -539,7 +545,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
-			if (DeathTimer > 185)
+			if (DeathTimer > 219)
 			{
 				spacing.appendformat("%s", "\n\n");
 				string died = string.format("%sMoney Spent: \cp$%d", spacing, plr.moneyspent);
@@ -552,7 +558,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
-			if (DeathTimer > 185)
+			if (DeathTimer > 219)
 			{
 				int worth = plr.Score;
 				string dollar = "\cd$";
@@ -567,7 +573,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
-			if (DeathTimer > 200)
+			if (DeathTimer > 240)
 			{
 				spacing.appendformat("%s", "\n\n");
 				string totalcolor = "\cf";
@@ -582,7 +588,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
-			if (DeathTimer > 200)
+			if (DeathTimer > 240)
 			{	
 				string totalcolor = "\ci";
 				string newbest = "";
@@ -597,7 +603,7 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac * 1.0
 				);
 			}
-			if (DeathTimer > 215)
+			if (DeathTimer > 268)
 			{
 				string died = string.format("%s \cb%d/%d", "\ctSwag Level:", lvl1, di_swaglevel_max);
 				if (lvlover > 0)
@@ -681,7 +687,7 @@ Class SwagHandler : EventHandler
 					);
 				}
 			}
-			if (DeathTimer > 285)
+			if (DeathTimer > 289)
 			{
 				Screen.DrawText(smallfont, Font.CR_WHITE,
 					0,
