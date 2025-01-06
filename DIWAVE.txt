@@ -26,7 +26,6 @@ Level DI01;
 		Spawn Fred, 5;
 		Wait 7;
 		Spawn Ron, 2;
-		Music track02;
 	}
 	
 	Wave 3;
@@ -64,6 +63,7 @@ Level DI01;
 	
 	Wave 5;
 	{
+		Music track02;
 		Cap 10;
 		Rate 4;
 		Time 140;
@@ -143,6 +143,7 @@ Level DI01;
 	
 	Wave 10:
 	{
+		Music track06;
 		Cap 4;
 		Rate 4;
 		Time 35;

@@ -20,7 +20,7 @@ Class DIMusicHandler : EventHandler
 	
 	override void WorldTick()
 	{
-		console.printf("%s, %.1f, %d", curmusic, mvolume, musicmode);
+		//console.printf("%s, %.1f, %d", curmusic, mvolume, musicmode);
 	
 		switch(musicmode)
 		{
