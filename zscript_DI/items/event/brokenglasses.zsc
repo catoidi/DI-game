@@ -6,9 +6,30 @@ Class DI_BrokenGlasses : DIPassiveInventory
 	{
 		DIPassiveInventory.DIHidden true;
 	}
+	
+	int prevmon;
+	int itemtimer;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!Level.IsFrozen() && !plr.IsFrozen())
+		{
+			if (Level.Killed_Monsters == prevmon)
+			{
+				if ((itemtimer < 350) && (Level.Killed_Monsters < Level.Total_Monsters)) {++itemtimer;}
+			}
+			else
+			{
+				itemtimer = 0;
+				prevmon = Level.Killed_Monsters;
+			}
+		}
+	}
 
 	override double GiveAccuracy()
 	{
-		return 5.0 * plr.CountInv(self.GetClassName());
+		return 0.04 * itemtimer * plr.CountInv(self.GetClassName());
 	}
 }
