@@ -2,6 +2,7 @@ Level DI01;
 {
 	Wave 1:
 	{
+		Music music/track01.mp3;
 		Cap 3;
 		Rate 1;
 		Time 1;
@@ -25,6 +26,7 @@ Level DI01;
 		Spawn Fred, 5;
 		Wait 7;
 		Spawn Ron, 2;
+		Music track02;
 	}
 	
 	Wave 3;

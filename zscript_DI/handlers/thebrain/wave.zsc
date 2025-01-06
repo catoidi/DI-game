@@ -253,7 +253,12 @@ extend class DIHandler
 		//now it's time to actually get the current wave's data.
 		for (int i = 0; i < wavedata.Size(); i++)
 		{
-			if (wavedata[i].Left(4) == "Wait")
+			if (wavedata[i].Left(5) == "Music")
+			{
+				//console.printf("Activating %s", wavedata[i]);
+				SendNetworkEvent(string.format("DI_ChangeMusic %s", wavedata[i].Mid(5)));
+			}
+			else if (wavedata[i].Left(4) == "Wait")
 			{
 				++batchdata;
 				if (batchdata != batchnum + 1) {continue;}

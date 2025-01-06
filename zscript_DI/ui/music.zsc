@@ -1,178 +1,75 @@
 //zscript_DI/ui/music.zsc
 
+//device meant to smoothly transition from one track to another.
+
 Class DIMusicHandler : EventHandler
 {
+	float mvolume; //music volume controller.
+	string curmusic; //the name of the current track.
+	int musicmode; //0 = idle. -1 = fading out. 1 = fading in.
+	
 	DI_PlayerBase plr;
-	DIHandler link;
-	
-	ui array<string> filedata;
-	ui array<string> musiclines;
-	
-	ui bool automusic;
-	ui int gamestate, musictimer, musicstarted; //0 = main. 1 = action. 2 = shop. -1 = death.
-	ui float mainvolume, actionvolume, shopvolume, deathvolume;
-	ui string mainsong, actionsong, shopsong, deathsong;
 	
 	override void WorldLoaded(WorldEvent e)
 	{
-		SendInterfaceEvent(consoleplayer, "DI_MusicInit");
+		mvolume = 1.0;
+		plr = DI_PlayerBase(players[consoleplayer].mo); //NOT MULTIPLAYER COMPATIBLE.
 	}
 	
-	ui virtual void MusicInit()
+	override void WorldTick()
 	{
-		int ThisLump = Wads.FindLump("DIMUSIC", 0, Wads.ANYNAMESPACE);
-		int NextLump = Wads.FindLump("DIMUSIC", ThisLump + 1, Wads.ANYNAMESPACE);
-		
-		while (ThisLump != -1)
+		switch(musicmode)
 		{
-			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
-			ThisLump = NextLump;
-			NextLump = Wads.FindLump("DIMUSIC", ThisLump + 1, 1);
-		}
-		
-		for (int i = 0; i < filedata.Size(); i++)
-		{
-			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
-			if (filedata[i].Length() < 3) {continue;}
-			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
-			
-			Array<String> currentline;
-			filedata[i].Split(currentline, " ");
-			if (currentline.Size() != 3) {ThrowAbortException("DIMUSIC Error: Incorrect amount of arguments found.\nLine: '%s'\nArguments: %d", filedata[i], currentline.Size());}
-			
-			if (currentline[0] ~== level.MapName) {musiclines.push(filedata[i]);}
-		}
-		
-		for (int i = 0; i < musiclines.Size(); ++i)
-		{
-			console.printf("scanning %s for music", musiclines[i]);
-			Array<String> currentline;
-			musiclines[i].Split(currentline, " ");
-			if (currentline[1] ~== "main") {mainsong = currentline[2];}
-			else if (currentline[1] ~== "action") {actionsong = currentline[2];}
-			else if (currentline[1] ~== "shop") {shopsong = currentline[2];}
-			else if (currentline[1] ~== "death") {deathsong = currentline[2];}
-		}
-		
-		mainvolume = 1.0;
-		automusic = true;
-	}
-	
-	override void WorldThingSpawned(WorldEvent e)
-	{
-		if (e.Thing is "DI_PlayerBase")
-		{
-			plr = DI_PlayerBase(e.Thing);
-			link = plr.thebrain; //this handler has a lower priority than the main handler, so this function will never fail.
-		}
-	}
-	
-	override void WorldThingDied(WorldEvent e)
-	{
-		if (e.Thing is "DI_Monster")
-		{
-			SendInterfaceEvent(consoleplayer, "DI_MusicActionSting");
+			case -1:
+				if (mvolume > 0.02) 
+				{
+					mvolume -= 0.02;
+					SetMusicVolume(mvolume);
+				}
+				else
+				{
+					S_ChangeMusic(curmusic);
+					musicmode = 1;
+				}
+				break;
+			case 1:
+				if (mvolume < 1.0)
+				{
+					mvolume += 0.02;
+					SetMusicVolume(mvolume);
+				}
+				else
+				{
+					musicmode = 0;
+				}
+				break;
 		}
 	}
 	
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "DI_MusicVolume")
+		if (e.Name.Left(15) ~== "DI_ChangeMusic ")
 		{
-			if (plr)
-			{
-				//console.printf("Adjusting: %d, %.3f", e.Args[0], 0.001 * e.Args[1]);
-				plr.A_SoundVolume(e.Args[0], 0.001 * e.Args[1]);
-			}
-		}
-		else if (e.Name == "DI_StopMusic")
-		{
-			plr.A_StopSound(50000);
-			plr.A_StopSound(50001);
-		}
-	}
-	
-	override void InterfaceProcess(ConsoleEvent e)
-	{
-		if (e.Name == "DI_MusicInit")
-		{
-			MusicInit();
-		}
-	
-		if (e.Name == "DI_MusicActionSting")
-		{
-			if (actionvolume <= 0.65) {actionvolume += 0.35;}
-			else {actionvolume = 1.0;}
-		}
-	}
-	
-	ui virtual void StartMusic(sound whattoplay, int slot = 50000, double volume = 1.0)
-	{
-		if (plr)
-		{
-			//console.printf("now playing: %s, volume: %.3f", whattoplay, volume);
-			plr.A_StartSound(whattoplay, slot, CHANF_UI | CHANF_LOOPING, volume);
-			//console.printf("Started %s at %d", whattoplay, musictimer);
-		}
-	}
-	
-	ui virtual void ControlMusic(int slot = 50000, double volume = 1.0)
-	{
-		if (plr)
-		{
-			SendNetworkEvent("DI_MusicVolume", slot, volume * 1000);
-		}
-	}
-	
-	ui virtual bool MusicExists()
-	{
-		if (mainsong != "") {return true;}
-		else {return false;}
-	}
-	
-	override void UITick()
-	{
-		if (MusicExists()) {MusicTick();}
-	}
-	
-	ui virtual void MusicTick()
-	{
-		++musictimer;
-	
-		if (!paused && !menuactive)
-		{
-			if (actionvolume > 0.0025) {actionvolume -= 0.0025;}
-			else {actionvolume = 0.0001;}
-			
-			//console.printf("Action Volume: (%.2f)", actionvolume);
+			//console.printf("%s", e.Name);
 		
-			if (plr && automusic)
+			array<string> cmd;
+			
+			e.Name.Split(cmd, " ");
+			
+			if (cmd.Size() != 2) {ThrowAbortException("\caERROR: Expected 1 argument in DI_ChangeMusic command, got %d instead.", cmd.Size() - 1);}
+			
+			if (curmusic == "") 
 			{
-				switch(gamestate)
-				{
-					case 0:
-						if (musicstarted == 0)
-						{
-							StartMusic(mainsong, 50000, mainvolume);
-							StartMusic(actionsong, 50001, mainvolume * actionvolume);
-							++musicstarted;
-							SendNetworkEvent("DI_StopMusic");
-						}
-						else if (musicstarted == 1)
-						{			
-							StartMusic(mainsong, 50000, mainvolume);
-							StartMusic(actionsong, 50001, mainvolume * actionvolume);
-							++musicstarted;
-						}
-						else
-						{
-							ControlMusic(50000, mainvolume);
-							ControlMusic(50001, mainvolume * actionvolume);
-						}
-						break;
-				}
+				console.printf("initializing %s", cmd[1]); 
+				S_ChangeMusic(curmusic);
+				curmusic = cmd[1];
+			}
+			else if (curmusic != cmd[1])
+			{
+				console.printf("changing into %s", cmd[1]);
+				musicmode = -1;
+				curmusic = cmd[1];
 			}
 		}
 	}
-	
 }
