@@ -16,25 +16,34 @@ Class DIJanitor : EventHandler
 
 	override void WorldTick()
 	{
-		// While the array size is too large,
-		// keep destroying the oldest entry:
-		while (gib.Size() > di_floordecals)
+		if (di_floordecals > 0)
 		{
-			if (gib[0])
+			// While the array size is too large,
+			// keep destroying the oldest entry:
+			while (gib.Size() > di_floordecals)
 			{
-				//make the gibs cleanup after themselves, once they're done animating, and after a smooth fadeout animation as well.
-				gib[0].FloorCleanUp();
-				gib2.Push(gib[0]);
-				gib.Delete(0);
+				if (gib[0])
+				{
+					//make the gibs cleanup after themselves, once they're done animating, and after a smooth fadeout animation as well.
+					gib[0].FloorCleanUp();
+					gib2.Push(gib[0]);
+					gib.Delete(0);
+				}
+			}
+			
+			if (gib2.Size() > 100) {forcedelete = true;}
+			
+			if (forcedelete) 
+			{
+				while (gib2.Size() > 0) {gib2[0].Destroy();}
+				forcedelete = false;
 			}
 		}
-		
-		if (gib2.Size() > 100) {forcedelete = true;}
-		
-		if (forcedelete) 
+		else
 		{
-			while (gib2.Size() > 0) {gib2[0].Destroy();}
-			forcedelete = false;
+			let fcvar = cvar.getcvar("di_floordecals");
+			
+			fcvar.SetInt(250);
 		}
 	}
 
