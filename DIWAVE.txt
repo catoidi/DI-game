@@ -1,8 +1,7 @@
 Level DI01;
 {
-	Wave 1:
+	Wave 1;
 	{
-		Music track01;
 		Cap 3;
 		Rate 1;
 		Time 1;
@@ -63,7 +62,6 @@ Level DI01;
 	
 	Wave 5;
 	{
-		Music track02;
 		Cap 10;
 		Rate 4;
 		Time 140;
@@ -104,7 +102,7 @@ Level DI01;
 		Spawn Fred4, 1, DISpawnerSpot_Big;
 	}
 	
-	Wave 8:
+	Wave 8;
 	{
 		Cap 9;
 		Rate 9;
@@ -123,7 +121,7 @@ Level DI01;
 		Spawn Fred2, 6;
 	}
 	
-	Wave 9:
+	Wave 9;
 	{
 		Cap 10;
 		Rate 1;
@@ -141,9 +139,8 @@ Level DI01;
 		Spawn Fred4, 6, DISpawnerSpot_Big;
 	}
 	
-	Wave 10:
+	Wave 10;
 	{
-		Music track06;
 		Cap 4;
 		Rate 4;
 		Time 35;
@@ -169,7 +166,7 @@ Level DI01;
 		Spawn Ron2, 1, DISpawnerSpot_Big;
 	}
 	
-	Wave 11:
+	Wave 11;
 	{
 		Cap 32;
 		Rate 2;
@@ -183,7 +180,7 @@ Level DI01;
 		Spawn Ron2, 2, DISpawnerSpot_Big;
 	}
 	
-	Wave 12:
+	Wave 12;
 	{
 		Cap 24;
 		Rate 1;
@@ -221,7 +218,7 @@ Level DI01;
 		Spawn FredSpawner3, 48;
 	}
 	
-	Wave 13:
+	Wave 13;
 	{
 		Cap 20;
 		Rate 1;
@@ -252,7 +249,7 @@ Level DI01;
 
 Level DI02;
 {
-	Wave 1:
+	Wave 1;
 	{
 		Cap 3;
 		Rate 3;
@@ -263,7 +260,7 @@ Level DI02;
 		Time 70;
 		Spawn FruitPuncher, 5;
 	}
-	Wave 2:
+	Wave 2;
 	{
 		Cap 8;
 		Rate 5;
@@ -279,14 +276,14 @@ Level DI02;
 		Spawn FruitPuncher, 2;
 		Spawn Lemon, 3;
 	}
-	Wave 3:
+	Wave 3;
 	{
 		Cap 10;
 		Rate 1;
 		Time 35;
 		Spawn Lemon, 25;
 	}
-	Wave 4:
+	Wave 4;
 	{
 		Cap 6;
 		Rate 1;
@@ -306,7 +303,7 @@ Level DI02;
 		Spawn FruitPuncher, 9;
 		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
 	}
-	Wave 5:
+	Wave 5;
 	{
 		Cap 5;
 		Rate 5;
@@ -323,7 +320,7 @@ Level DI02;
 		Wait 5;
 		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
 	}
-	Wave 6:
+	Wave 6;
 	{
 		Cap 3;
 		Rate 1;
@@ -335,7 +332,7 @@ Level DI02;
 		Spawn Pepper, 3;
 		Spawn THEHAMMER, 3, DISpawnerSpot_Big;
 	}
-	Wave 7:
+	Wave 7;
 	{
 		Cap 15;
 		Rate 1;
@@ -347,7 +344,7 @@ Level DI02;
 		Wait 15;
 		Time 30;
 	}
-	Wave 8:
+	Wave 8;
 	{
 		Cap 15;
 		Rate 3;
@@ -368,7 +365,7 @@ Level DI02;
 		Spawn PizzaSlicer, 10, DISpawnerSpot_Flying;
 		Spawn PizzaSlicer, 10;
 	}
-	Wave 9:
+	Wave 9;
 	{
 		Cap 12;
 		Rate 4;
@@ -383,7 +380,7 @@ Level DI02;
 		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
 		Spawn OnionTurret, 3, DISpawnerSpot_Turret;
 	}
-	Wave 10:
+	Wave 10;
 	{
 		Cap 20;
 		Rate 1;
@@ -410,14 +407,14 @@ Level DI02;
 		Wait 10;
 		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
 	}
-	Wave 11:
+	Wave 11;
 	{
 		Cap 100;
 		Rate 1;
 		Time 20;
 		Spawn FruitPuncher, 100;
 	}
-	Wave 12:
+	Wave 12;
 	{
 		Cap 25;
 		Rate 5;

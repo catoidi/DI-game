@@ -77,7 +77,10 @@ extend class DIHandler
 			//grab endless wave data BEFORE getting regular wave data.
 			if (leveldata[i].Left(4) == "Wave") 
 			{
-				++finalwave;
+				console.printf("'%s'", leveldata[i]);
+				string lds = leveldata[i].Mid(4);
+				int ldi = lds.ToInt(10);
+				if (ldi > finalwave) {finalwave = ldi;}
 			}
 			else if ((leveldata[i].Left(7) == "Endless") && (fakewavenum > finalwave))
 			{
