@@ -6,17 +6,17 @@ CLASS GrenadeLauncher : DI_Weapon
 	{
 		DI_Weapon.FreshBonus 1;
 		DI_Weapon.BaseDamage 120; //direct hit does 1/10th of this.
-		DI_Weapon.BaseAccuracy 2;
+		DI_Weapon.BaseAccuracy 10;
 		DI_Weapon.PlayerSpeed -0.1;
-		DI_Weapon.Recoil 8.0;
+		DI_Weapon.Recoil 6.0;
 		DI_Weapon.RecoilOffset 2.0;
-		DI_Weapon.RecoilRecover 1.0;
+		DI_Weapon.RecoilRecover 0.5;
 		Weapon.Kickback 0;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 5;
 		Weapon.SlotPriority 1;
 		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 4;
+		Weapon.AmmoGive 3;
 		Weapon.AmmoType "GrenadeLauncherAmmo";
 		Inventory.Pickupmessage "Acquired the Grenade Launcher.";
 		Inventory.Icon "GLANZ0";
@@ -139,8 +139,7 @@ CLASS GrenadeLauncherBullet : DI_Projectile
 		{
 			GrenadeLauncher tarwpn = GrenadeLauncher(target.player.ReadyWeapon);
 			basedam = tarwpn.CheckDamage();
-			impactdam = basedam / 10;
-			if (impactdam < 1) {impactdam = 1;}
+			impactdam = 0;
 		}
 	}
 	
@@ -170,8 +169,8 @@ Class GrenadeLauncherAmmo : Ammo
 	{
 		Radius 20;
 		Height 24;
-		Inventory.Amount 4;
-		Inventory.MaxAmount 4;
+		Inventory.Amount 3;
+		Inventory.MaxAmount 3;
 		+CASTSPRITESHADOW;
 	}
 }

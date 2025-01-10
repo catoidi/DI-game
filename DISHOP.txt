@@ -28,7 +28,7 @@ BasicWeapon BlueSMG BSMGZ 15;
 BasicWeapon PinkRifle PRIFZ 20;
 BasicWeapon StarPistol PISTZ 15 192 di_unlock_item_starpistol;
 >>Normal Weapons...
-NormalWeapon GrenadeLauncher GLANZ 40 256 di_unlock_item_grenadelauncher;
+NormalWeapon GrenadeLauncher GLANZ 30 256 di_unlock_item_grenadelauncher;
 NormalWeapon DoubleShotgun PUSGZ 25 256 di_unlock_item_doubleshotgun;
 NormalWeapon CheeseGun CHESZ 10 192 di_unlock_item_cheesegun;
 NormalWeapon FingerGun FINGZ 15 256 di_unlock_item_fingergun;
