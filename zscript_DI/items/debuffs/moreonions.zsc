@@ -1,0 +1,67 @@
+//zscript_DI/items/debuffs/moreonions.zsc
+
+Class DI_QuestDebuff_MoreOnions : DI_QuestDebuff
+{
+	bool queststarted; //checks when the player first enters the next wave.
+	int oniontimer;
+	int onionsspawned;
+	
+	int maxmonsters;
+	int monsterdelay;
+	
+	Property MaxMonsters : maxmonsters;
+	Property MonsterDelay : monsterdelay;
+	
+	default
+	{
+		Tag "\cgCurse (More Onions)";
+		DI_QuestDebuff_MoreOnions.MaxMonsters 12;
+		DI_QuestDebuff_MoreOnions.MonsterDelay 105;
+	}
+
+    override void doeffect()
+	{
+		super.doeffect();
+		ObjectiveTick();
+	}
+	
+	virtual void AddMonster()
+	{
+		string nme = "RedOnion";
+		if (random(0, 5) == 0) {nme = "OnionTurret";}
+		
+		string cmd = string.format("addwaveenemy %s %d DISpawnerSpot_Turret", nme, plr.CountInv(self.GetClassName()));
+		
+		EventHandler.SendNetworkEvent(cmd);
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if ((plr) && (plr.inwave))
+		{
+			if (!queststarted) 
+			{
+				queststarted = true;
+				++onionsspawned;
+			}
+			
+			if (onionsspawned <= maxmonsters)
+			{
+				++oniontimer;
+				
+				if (oniontimer > (monsterdelay * onionsspawned))
+				{
+					AddMonster();
+					++onionsspawned;
+					oniontimer = 0;
+				}
+			}
+		}
+		else
+		{
+			queststarted = false;
+			oniontimer = 0;
+			onionsspawned = 0;
+		}
+	}
+}
