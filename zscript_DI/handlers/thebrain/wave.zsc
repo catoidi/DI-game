@@ -77,7 +77,7 @@ extend class DIHandler
 			//grab endless wave data BEFORE getting regular wave data.
 			if (leveldata[i].Left(4) == "Wave") 
 			{
-				console.printf("'%s'", leveldata[i]);
+				//console.printf("'%s'", leveldata[i]);
 				string lds = leveldata[i].Mid(4);
 				int ldi = lds.ToInt(10);
 				if (ldi > finalwave) {finalwave = ldi;}
