@@ -24,7 +24,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 						 defaultimage; //the item selected via keyboard.
 	boxparty_ZF_BoxImage currentsprite; //the item sprite shown at the top right of the screen. should be a duplicate of the current buttonimage.
 	
-	int unlockcounter, totalunlocks; //text showing how many unlocks you have so far.
+	int unlockcounter, defaultcounter, totalunlocks; //text showing how many unlocks you have so far.
 		   
 	boxparty_ZF_Label infolabel, pagelabel, unlocklabel; //this is the actual text you see on the menu.
 	
@@ -127,6 +127,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	virtual void UpdateUnlockLabel()
 	{
 		unlockcounter = 0;
+		defaultcounter = 0;
 		totalunlocks = unlocklist.Size();
 		string unlocktext = "Unlocked:\n";
 		
@@ -134,7 +135,11 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		{
 			array<string> curline;
 			unlocklist[i].Split(curline, " ");
-			if (curline[0].Left(1) == "!") {--totalunlocks;}
+			if (curline[0].Left(1) == "!") 
+			{
+				--totalunlocks;
+				++defaultcounter;
+			}
 			else
 			{
 				let curcvar = cvar.findcvar(curline[0]);
@@ -143,6 +148,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		}
 		
 		unlocktext.AppendFormat("\cb%d/%d", unlockcounter, totalunlocks);
+		if (showdefaults) {unlocktext.AppendFormat(" \cd(+%d)", defaultcounter);}
 		
 		if (cheatmode.getbool() == true) {unlocktext = "\cbCheats Enabled";}
 	
