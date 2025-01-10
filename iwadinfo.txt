@@ -2,12 +2,12 @@
 
 IWad 
 {
-    Name = "DI - Beta v0.10.1"
+    Name = "DI - Beta v0.10.2"
     Autoname = "DI"
     Game = "Doom"
     Config = "DI"
     IWADname = "DI.ipk3"
-	Load = "di-content.pk3", "di-bonus.pk3", "di-gearbox.pk3", "di-hdfont.pk3", "di-music.pk3"
+	Load = "di-content.pk3", "di-gearbox.pk3", "di-music.pk3"
 	LoadLights = 0
 	LoadBrightmaps = 0
 	LoadWidescreen = 0
