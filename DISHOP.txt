@@ -43,7 +43,7 @@ BoxWeapon PartyShotty SHUTZ 30 256 di_unlock_item_partyshotty;
 BoxWeapon PopcornGun POPGM 30 256 di_unlock_item_popcorngun;
 BoxWeapon Sledgehammer HAMRZ 30 192 di_unlock_item_sledgehammer;
 >>SUPER Weapons...
-SuperWeapon DI_Minigun MINIZ 90 64;
+SuperWeapon DI_Minigun MINIZ 50 64;
 >>Armor...
 Armor DI_TopHat ARMOA 30;
 Armor DI_TopHat2 ARMOB 67 224;
