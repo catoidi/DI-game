@@ -20,7 +20,8 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	
 	boxparty_ZF_BoxImage background, 
 						 topimage, //the title of the menu at the top left.
-					     keyboardselect; //the item selected via keyboard.
+					     keyboardselect,
+						 defaultimage; //the item selected via keyboard.
 	boxparty_ZF_BoxImage currentsprite; //the item sprite shown at the top right of the screen. should be a duplicate of the current buttonimage.
 	
 	int unlockcounter, totalunlocks; //text showing how many unlocks you have so far.
@@ -28,6 +29,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	boxparty_ZF_Label infolabel, pagelabel, unlocklabel; //this is the actual text you see on the menu.
 	
 	Array<string> fulllist, //all the date from the DIUNLOCK file, including the tabs we aren't using.
+				  defaultlist, //all the data pertaining to Default Items. needs to be separate as it can be toggled at anytime.
 				  unlocklist, //all the data from the DIUNLOCK file that we are currently using.
 				  blacklistdata; //all the data currently in the blacklist cvar.
 	Array<boxparty_ZF_BoxImage> buttonimage, backimage, blacklistimage; //the background image and sprite for the buttons.
@@ -35,6 +37,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	
 	bool unlockscreated; 
 	bool morebuttons; //display 60 buttons at once instead of 15.
+	bool showdefaults;
 	int pagenum; //current page of unlocks.
 	int tabnum; //current tab of unlocks.
 	
@@ -51,6 +54,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		cheatmode = cvar.getcvar("di_unlock_cheat", plr);
 		blacklistcvar = cvar.getcvar("di_unlock_blacklist", plr);
 		defaultcvar = cvar.getcvar("di_unlock_showdefaults", plr);
+		showdefaults = defaultcvar.GetBool();
 		if (morebuttoncvar.GetBool() == true) {morebuttons = true;} //DO NOT UPDATE THIS POST-INIT, EVERYTHING WILL EXPLODE....................
 		//make background texture
 		let bgtex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/hat/HATBACK.png", (0, 0), (640, 400), true, true);
@@ -79,6 +83,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		CreatePageButton(false);
 		UpdatePageLabel();
 		//create extra buttons
+		CreateDefaultButton();
 		CreateResetButton();
 		CreateTabButtons();
 		UpdateUnlockLabel();
@@ -225,7 +230,8 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
 			array<string> curline;
 			filedata[i].Split(curline, " ");
-			if ((defaultcvar.GetBool() == false) && (curline[0].Left(1) == "!")) {continue;}
+			bool isdefault = false;
+			if (curline[0].Left(1) == "!") {isdefault = true;}
 			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
 			let unlockpos = 0;
 			if (curline.Size() == 5) 
@@ -242,28 +248,57 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			}
 			
 			bool foundspot;
-			if (fulllist.Size() > 0)
+			if (!isdefault)
 			{
-				//console.printf("%s", "items already in list");
-				for (int j = 0; j < fulllist.Size(); ++j)
+				if (fulllist.Size() > 0)
 				{
-					array<string> listline;
-					fulllist[j].Split(listline, " ");
-					if (listline[4].ToInt(10) <= unlockpos) 
+					//console.printf("%s", "items already in list");
+					for (int j = 0; j < fulllist.Size(); ++j)
 					{
-						//console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
-						continue;
+						array<string> listline;
+						fulllist[j].Split(listline, " ");
+						if (listline[4].ToInt(10) <= unlockpos) 
+						{
+							//console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
+							continue;
+						}
+						//console.printf("%s %d", "inserting item at line", j);
+						fulllist.Insert(j, filedata[i]);
+						foundspot = true;
+						j = fulllist.Size();
 					}
-					//console.printf("%s %d", "inserting item at line", j);
-					fulllist.Insert(j, filedata[i]);
-					foundspot = true;
-					j = fulllist.Size();
+				}
+				if (foundspot == false) 
+				{
+					//console.printf("%s", "adding item to end of list");
+					fulllist.Push(filedata[i]);
 				}
 			}
-			if (foundspot == false) 
+			else
 			{
-				//console.printf("%s", "adding item to end of list");
-				fulllist.Push(filedata[i]);
+				if (defaultlist.Size() > 0)
+				{
+					//console.printf("%s", "items already in list");
+					for (int j = 0; j < defaultlist.Size(); ++j)
+					{
+						array<string> listline;
+						defaultlist[j].Split(listline, " ");
+						if (listline[4].ToInt(10) <= unlockpos) 
+						{
+							//console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
+							continue;
+						}
+						//console.printf("%s %d", "inserting item at line", j);
+						defaultlist.Insert(j, filedata[i]);
+						foundspot = true;
+						j = defaultlist.Size();
+					}
+				}
+				if (foundspot == false) 
+				{
+					//console.printf("%s", "adding item to end of list");
+					defaultlist.Push(filedata[i]);
+				}
 			}
 			//console.printf("%s", filedata[i]);
 		}
@@ -276,11 +311,30 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		
 		if ((tab == 0) || (tabnum == tab)) 
 		{
-			unlocklist.Copy(fulllist);
+			console.printf("%s", "\cgALL ITEMS COPIED");
+			if (showdefaults) 
+			{
+				console.printf("%s", "\cgDEFAULTS ENABLED");
+				unlocklist.Append(defaultlist);
+			}
+			unlocklist.Append(fulllist);
 			tabnum = 0;
 		}
 		else
 		{
+			if (showdefaults)
+			{
+				for (int i = 0; i < defaultlist.Size(); ++i)
+				{
+					array<string> curline;
+					defaultlist[i].Split(curline, " ");
+					//console.printf("%d, %d", curline[2].ToInt(10), tab);
+					if (curline[2].ToInt(10) == tab)
+					{
+						unlocklist.push(defaultlist[i]);
+					}
+				}
+			}
 			for (int i = 0; i < fulllist.Size(); ++i)
 			{
 				array<string> curline;
@@ -292,6 +346,11 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				}
 			}
 			tabnum = tab;
+		}
+		
+		for (int i = 0; i < unlocklist.Size(); ++i)
+		{
+			console.printf("'%s'", unlocklist[i]);
 		}
 	}
 	
@@ -693,25 +752,76 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	{
 		string docommand = "ResetBlacklist";
 		string dotexture = "graphics/hat/HATBUTTONOFF.png";
-		vector2 pagepos = (528, 288);
+		vector2 pagepos = (576, 308);
 	
-		let boxSize = (88, 88);
-		let boxSize2 = (80, 80);
+		let boxSize = (44, 44);
+		let boxSize2 = (40, 40);
 		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), boxSize, true, true);
 		let aBoxImage = boxparty_ZF_BoxImage.Create
         (
             // Position
-            pagepos - (4, 4),
+            pagepos - (2, 2),
             // Size
             boxSize,
             // Texture
             boxTexture,
             // Scale
-            (2, 2)
+            (1, 1)
         );
         // Add the box image element into the main frame.
 		buttonimage.Push(aBoxImage);
         aBoxImage.Pack (mainFrame);
+		
+		// Create the button's textures.
+        let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
+        let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATHOVER.png", true);
+        let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATSELECT.png", true);
+        // Add a button.
+        let aButton = boxparty_ZF_Button.Create
+        (
+            // Position
+            pagepos,
+            // Size
+            boxSize2,
+            // Our command handler
+            cmdHandler: handler,
+            // A command string for the button
+            command: docommand,
+            // The button's textures
+            inactive: buttonIdle,
+            hover: buttonHover,
+            click: buttonClick
+        );
+        // Add the button element into the main frame.
+		buttonlist.Push(aButton);
+        aButton.Pack (mainFrame);
+	}
+	
+	virtual void CreateDefaultButton()
+	{
+		string docommand = "ToggleDefaults";
+		string dotexture = "graphics/hat/DIDEFAULTA.png";
+		if (!showdefaults) {dotexture = "graphics/hat/DIDEFAULTB.png";}
+		vector2 pagepos = (520, 308);
+	
+		let boxSize = (44, 44);
+		let boxSize2 = (40, 40);
+		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), boxSize, true, true);
+		let aBoxImage = boxparty_ZF_BoxImage.Create
+        (
+            // Position
+            pagepos - (2, 2),
+            // Size
+            boxSize,
+            // Texture
+            boxTexture,
+            // Scale
+            (1, 1)
+        );
+        // Add the box image element into the main frame.
+		buttonimage.Push(aBoxImage);
+        aBoxImage.Pack (mainFrame);
+		defaultimage = aBoxImage;
 		
 		// Create the button's textures.
         let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);

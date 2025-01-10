@@ -23,6 +23,37 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 			link.blacklistdata.Clear();
 			link.UpdateUnlocks();
 		}
+		else if (command == 'ToggleDefaults')
+		{
+			int prevtab = link.tabnum;
+		
+			string dotexture, labelmsg;
+			if (!link.defaultcvar.GetBool()) 
+			{
+				link.defaultcvar.SetBool(true);
+				link.showdefaults = true;
+				dotexture = "graphics/hat/DIDEFAULTA.png";
+				labelmsg = "\cnDefault Items are now shown.";
+				if (prevtab > 0) {labelmsg.AppendFormat("%s", "\n\n\cbNow displaying: \ccall items.");}
+			}
+			else
+			{
+				link.defaultcvar.SetBool(false);
+				link.showdefaults = false;
+				dotexture = "graphics/hat/DIDEFAULTB.png";
+				labelmsg = "\cnDefault Items are now hidden.";
+				if (prevtab > 0) {labelmsg.AppendFormat("%s", "\n\n\cbNow displaying: \ccall items.");}
+			}
+			let newtex = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), (44, 44), true, true);
+			link.defaultimage.setBoxTex(newtex);
+			link.UpdateInfoLabel(labelmsg);
+			
+			link.pagenum = 0;
+			link.GenerateUnlocks(link.tabnum);
+			link.UpdatePageLabel();
+			link.UpdateUnlocks();
+			link.UpdateUnlockLabel();
+		}
 		else if (command == 'GoRight')
 		{
 			link.ChangePage(true);
