@@ -406,6 +406,7 @@ Level DI02;
 		Wait 5;
 		Spawn OnionTurret, 3, DISpawnerSpot_Turret;
 	}
+	>>Still using the old waves.
 	Wave 10;
 	{
 		Cap 20;
