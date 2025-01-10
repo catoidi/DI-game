@@ -176,6 +176,7 @@ version "4.13"
 //#include "zscript_DI/weapons/normal/sniperrifle.zsc"
 //#include "zscript_DI/weapons/normal/dualsmg.zsc"
 #include "zscript_DI/weapons/normal/doubleshotgun.zsc"
+#include "zscript_DI/weapons/normal/fingergun.zsc"
 //fantasy weapons
 #include "zscript_DI/weapons/fantasy/stunbow.zsc"
 //#include "zscript_DI/weapons/fantasy/swordshield.zsc"

@@ -31,6 +31,7 @@ BasicWeapon StarPistol PISTZ 15 192 di_unlock_item_starpistol;
 NormalWeapon GrenadeLauncher GLANZ 40 256 di_unlock_item_grenadelauncher;
 NormalWeapon DoubleShotgun PUSGZ 25 256 di_unlock_item_doubleshotgun;
 NormalWeapon CheeseGun CHESZ 10 192 di_unlock_item_cheesegun;
+NormalWeapon FingerGun FINGZ 15 256 di_unlock_item_fingergun;
 >>Fantasy Weapons...
 FantasyWeapon StunCrossbow SBOWZ 20 192 di_unlock_item_stunbow;
 >>Scifi Weapons...

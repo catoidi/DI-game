@@ -5,8 +5,7 @@
 3 di_unlock_item_gunslinger;
 3 di_unlock_item_laserpointer;
 4 di_unlock_item_bowtie;
->>This one is found within "di-bonus.pk3".
->>4 di_unlock_item_fingergun;
+4 di_unlock_item_fingergun;
 5 di_unlock_item_depletedmag;
 5 di_unlock_item_oredrill;
 6 di_unlock_item_directdeposit;

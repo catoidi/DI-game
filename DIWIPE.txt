@@ -64,3 +64,4 @@ DI_Trailblazer;
 DI_SuperGlue;
 DI_DirectDeposit;
 DI_Minigun;
+FingerGun;
