@@ -1,0 +1,25 @@
+//zscript_DI/items/passives/swagbullets.zsc
+
+Class DI_SwagBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Swag Shells";
+		Inventory.Icon "POWRR0";
+		Inventory.PickupMessage "Acquired Swag Shells! (+1% DMG per Swag Level, capped at 20.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0.0;}
+		return 0.01 * plr.countinv(GetClassName()) * (di_swaglevel + di_swaglevel_over);
+	}
+	
+	States
+	{
+		Spawn:
+			POWR R -1;
+			Stop;
+	}
+}
