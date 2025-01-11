@@ -225,7 +225,7 @@ Class DI_Tracer : DI_Projectile
 		Gravity 0.1;
 		Radius 2;
 		Height 4;
-		Speed 60;
+		Speed 30;
 		Scale 0.2;
 		DI_Projectile.FlatBullet true;
 		+FLATSPRITE;
