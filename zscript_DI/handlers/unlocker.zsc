@@ -397,6 +397,7 @@ Class DIUnlockHandler : EventHandler
 	
 	virtual void DMGMultTracker()
 	{
+		/*
 		cvar dmgcvar = cvar.getcvar("di_unlock_item_combomult");
 		if (diplr && (dmgcvar.getbool() == false))
 		{
@@ -406,6 +407,7 @@ Class DIUnlockHandler : EventHandler
 				if (wpn.CheckDamageMult() >= 2.0) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combomult");}
 			}
 		}
+		*/
 	}
 	
 	virtual void FreshTracker()

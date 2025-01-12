@@ -76,7 +76,7 @@ di_unlock_item_dice DI_Dice 3 di_rerollshop 50000;
 di_unlock_item_bulletmitosis DI_BulletMitosis 2  999999;
 di_unlock_item_toomanybullets DI_TooManyBullets 2  999999;
 di_unlock_item_starfruit DI_Starfruit 2  999999;
-di_unlock_item_combomult DI_ComboDamageMult 2  999999;
+>>di_unlock_item_combomult DI_ComboDamageMult 2  999999;
 >>Swag Level Unlocks
 di_unlock_item_bombbundle DI_ThrowBomb_Bundle 3 di_swaglevel 1000001;
 di_unlock_item_doubleshotgun DoubleShotgun 1 di_swaglevel 1000001;
