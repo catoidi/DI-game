@@ -9,7 +9,7 @@ Class DI_HatHat : DIPassiveInventory
 		Tag "Hat Hat";
 		Inventory.Icon "POWRM0";
 		Inventory.MaxAmount 5;
-		Inventory.PickupMessage "Hat Hat Acquired! (Reduce all incoming damage by 1. Can't go below 1.)";
+		Inventory.PickupMessage "Hat Hat Acquired! (Reduce all incoming damage by 1. Also reduce your DMG by 10%.)";
 	}
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
@@ -23,6 +23,13 @@ Class DI_HatHat : DIPassiveInventory
 		}
 	
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0;}
+		
+		return -0.1 * plr.CountInv(self.GetClassName());
 	}
 	
 	States
