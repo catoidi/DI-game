@@ -39,16 +39,16 @@ Class DI_Starfruit : DIPassiveInventory
 	{
 		Tag "Starfruit";
 		Inventory.Icon "POWRF0";
-		Inventory.PickupMessage "Starfruit Acquired! (Combo-based chance to gain +50% DMG.)";
-		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Starfruit Acquired! (Combo-based chance to gain +20% DMG.)";
+		Inventory.MaxAmount 10;
 	}
 	
 	override double GiveDamageMult()
 	{
 		if (!plr) {return 0;}
-		if (random(plr.combonum, 20) == 20)
+		if (random(plr.combonum, 9) == 9)
 		{
-			return 0.5 * plr.CountInv(GetClassName());
+			return 0.2 * plr.CountInv(GetClassName());
 		}
 		else {return 0;}
 	}
