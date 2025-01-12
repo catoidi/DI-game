@@ -168,7 +168,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				// Whether to automatically wrap the text or not
 				wrap: false,
 				// Whether to automatically resize the element based on the text width
-				autoSize: false,
+				autoSize: true,
 				//make the text smaller :)
 				textScale: 1.5,
 				// The text's colour
