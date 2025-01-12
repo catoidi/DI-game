@@ -9,7 +9,7 @@ class DI_PlayerBurger : DI_PlayerBase
 		Health 60;
 		Scale 1.5;
 		Player.MaxHealth 120;
-		Player.DisplayName "Burger";
+		Player.DisplayName "Cheeseburger";
 		Player.Portrait "graphics/info_burger.png";
 		Player.StartItem "CheeseGun";
 		Player.StartItem "CheeseGunAmmo", 1;
