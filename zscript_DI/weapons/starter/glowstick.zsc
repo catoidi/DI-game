@@ -197,14 +197,26 @@ Class GlowstickHealthDrop : Health
 	{
 		Height 20;
 		Radius 10;
-		Inventory.Amount 3;
 		Inventory.Icon "GLOWP0";
 		Inventory.PickupMessage "+3 Health";
 		+FLOATBOB;
 		+BRIGHT;
+		+Inventory.AUTOACTIVATE;
+		+Inventory.ALWAYSPICKUP;
 	}
 	
 	int FadeNum;
+	
+	override void DoPickupSpecial(Actor toucher)
+	{
+		if (toucher is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(toucher);
+			plr.DI_HealSelf(3);
+		
+			Super.DoPickupSpecial(toucher);
+		}
+	}
 	
 	States
 	{

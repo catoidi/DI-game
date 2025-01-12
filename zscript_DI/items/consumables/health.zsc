@@ -1,19 +1,30 @@
 //zscript_DI/inventory/health.zsc
 
-Class DI_Pizza : HealthPickup
+Class DI_Pizza : Inventory
 {
 	mixin DI_ConsumableMixin;
 	
 	Default
 	{
 		Tag "Pizza Slice";
-		Health 20;
 		Inventory.MaxAmount 5;
 		Inventory.Icon "HEALB0";
 		Inventory.PickupMessage "Acquired a Pizza Slice. (+20 Health on Usage)";
+		+Inventory.INVBAR;
 	}
 	
-	override bool Use(bool pickup) {DIUsed(); Super.Use(pickup); return true;}
+	override bool Use(bool pickup) 
+	{
+		if (owner is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(owner);
+			plr.DI_HealSelf(20);
+			DIUsed(); 
+			Super.Use(pickup); 
+			return true;
+		}
+		else {return false;}
+	}
 	
 	States
 	{

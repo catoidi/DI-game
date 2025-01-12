@@ -735,6 +735,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 		A_SpawnItemEX(self.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);
 	}
 	
+	action void DI_HealSelf(int healamount)
+	{
+		//restore health to the player without going beyond the max health (minus borrowed health).
+		int healnum = invoker.DIMaxHealth() - invoker.health;
+		if (healnum > 0)
+		{
+			if (healnum > healamount) {healnum = healamount;}
+			invoker.GiveBody(healnum);
+		}
+	}
+	
 	action void AutoOffset()
 	{
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);

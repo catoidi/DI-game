@@ -1,22 +1,28 @@
 //health.zsc
 
-Class DI_FullHeal : Health
+Class DI_FullHeal : Inventory
 {
 	mixin DI_ActorMixin;
 	
 	Default
 	{
-		Inventory.Amount 100;
 		Inventory.PickupMessage "+100 Health";
-		Health.LowMessage 10, "+100 Health (wow u almost died lol)";
+		+Inventory.AUTOACTIVATE;
+		+Inventory.ALWAYSPICKUP;
 		+BRIGHT;
 		+FLOATBOB;
 	}
 	
 	override void DoPickupSpecial(Actor toucher)
 	{
-		eventhandler.sendnetworkevent("di_burgerunlock");
-		Super.DoPickupSpecial(toucher);
+		if (toucher is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(toucher);
+			plr.DI_HealSelf(100);
+		
+			eventhandler.sendnetworkevent("di_burgerunlock");
+			Super.DoPickupSpecial(toucher);
+		}
 	}
 	
 	States

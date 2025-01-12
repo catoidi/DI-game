@@ -56,21 +56,28 @@ Class DI_BloodyHeart_Drop : DI_Actor
 	}
 }
 
-Class DI_BloodyHeart_Pickup : Health
+Class DI_BloodyHeart_Pickup : Inventory
 {
 	Default
 	{
 		Height 20;
 		Radius 10;
-		Inventory.Amount 2;
 		Inventory.Icon "HEALC0";
 		Inventory.PickupMessage "+2 Health";
+		+Inventory.AUTOACTIVATE;
+		+Inventory.ALWAYSPICKUP;
 		+FLOATBOB;
 		+BRIGHT;
 	}
 	
 	override void DoPickupSpecial(Actor toucher)
 	{
+		if (toucher is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(toucher);
+			plr.DI_HealSelf(2);
+		}
+		
 		eventhandler.sendnetworkevent("doheartpickup");
 		Super.DoPickupSpecial(toucher);
 	}
