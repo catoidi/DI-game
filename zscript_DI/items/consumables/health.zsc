@@ -7,10 +7,10 @@ Class DI_Pizza : HealthPickup
 	Default
 	{
 		Tag "Pizza Slice";
-		Health 25;
+		Health 20;
 		Inventory.MaxAmount 5;
 		Inventory.Icon "HEALB0";
-		Inventory.PickupMessage "Acquired a Pizza Slice. (+25 Health on Usage)";
+		Inventory.PickupMessage "Acquired a Pizza Slice. (+20 Health on Usage)";
 	}
 	
 	override bool Use(bool pickup) {DIUsed(); Super.Use(pickup); return true;}
@@ -32,7 +32,7 @@ Class DI_JuiceBox : Inventory
 		Tag "Juice Box";
 		Inventory.MaxAmount 4;
 		Inventory.Icon "HEALD0";
-		Inventory.PickupMessage "Acquired a Juice Box. (+40 Health Regen on Usage)";
+		Inventory.PickupMessage "Acquired a Juice Box. (+30 Health Regen on Usage)";
 		+INVENTORY.INVBAR;
 	}
 	
@@ -40,7 +40,7 @@ Class DI_JuiceBox : Inventory
 	{
 		if (owner)
 		{
-			owner.A_GiveInventory("DI_Regen", 40);
+			owner.A_GiveInventory("DI_Regen", 30);
 			return DIUsed();
 		}
 		else {return false;}

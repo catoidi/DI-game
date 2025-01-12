@@ -166,11 +166,11 @@ SHOPITEM_DI_MELON = "Melon";
 SHOPDESC_DI_MELON = "Seeds included. Gives 80 Health.\n\cnCan go up to 200 Health.";
 SHOPTYPE_DI_MELON = "[Instant Use]";
 SHOPITEM_DI_PIZZA = "Pizza Slice";
-SHOPDESC_DI_PIZZA = "Conveniently fits in your pockets.\nGives 25 health.";
+SHOPDESC_DI_PIZZA = "Conveniently fits in your pockets.\nGives 20 health.";
 SHOPDESC2_DI_PIZZA = "\cbUnfortunately you did not have enough room in your pockets to fit an entire pizza.";
 SHOPTYPE_DI_PIZZA = "\ct[Consumable] \cl[Max: 5]";
 SHOPITEM_DI_JUICEBOX = "Juice Box";
-SHOPDESC_DI_JUICEBOX = "Tastes great, gives 40 health regen.\nDoes not regen outside of combat.";
+SHOPDESC_DI_JUICEBOX = "Tastes great, gives 30 health regen.\nDoes not regen outside of combat.";
 SHOPDESC2_DI_JUICEBOX = "\cbHealth regen is represented by the green bar under your health bar. Regen will not prevent you from dying.";
 SHOPTYPE_DI_JUICEBOX = "\ct[Consumable] \cl[Max: 4]";
 
