@@ -317,10 +317,10 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		
 		if ((tab == 0) || (tabnum == tab)) 
 		{
-			console.printf("%s", "\cgALL ITEMS COPIED");
+			//console.printf("%s", "\cgALL ITEMS COPIED");
 			if (showdefaults) 
 			{
-				console.printf("%s", "\cgDEFAULTS ENABLED");
+				//console.printf("%s", "\cgDEFAULTS ENABLED");
 				unlocklist.Append(defaultlist);
 			}
 			unlocklist.Append(fulllist);
@@ -352,11 +352,6 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				}
 			}
 			tabnum = tab;
-		}
-		
-		for (int i = 0; i < unlocklist.Size(); ++i)
-		{
-			console.printf("'%s'", unlocklist[i]);
 		}
 	}
 	
