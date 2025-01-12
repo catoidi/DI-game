@@ -17,8 +17,12 @@ Class DI_CarbonatedDrink : DIPassiveInventory
 			int drinks = plr.CountInv("DI_CarbonatedDrink");
 			if (drinks > 0)
 			{
-				int failure = 256 - (256 * ((1.0 * (plr.DIMaxHealth() - plr.health - (plr.CountInv("DI_Regen") * 3))) / plr.DIMaxHealth()));
+				int failure = 400 - (400 * ((1.0 * (plr.DIMaxHealth() - plr.health - plr.CountInv("DI_Regen"))) / plr.DIMaxHealth()));
 				failure -= drinks * 40;
+				console.printf("%d", failure);
+				if (failure > 256) {failure = 256;}
+				
+				
 				return "DI_CarbonatedDrink_Pickup", drinks, failure;
 			}
 		}
@@ -46,7 +50,7 @@ Class DI_CarbonatedDrink_Pickup : Inventory
 
 	override bool Use(bool pickup)
 	{
-		if (owner) {owner.GiveInventory("DI_Regen", 5);}
+		if (owner) {owner.GiveInventory("DI_Regen", 3);}
 		return true;
 	}
 
