@@ -13,7 +13,7 @@ class DI_PlayerBox : DI_PlayerBase
 		Player.Portrait "graphics/info_boxpartyer.png";
 		Player.StartItem "Glowstick";
 		Player.StartItem "GlowstickAmmo", 4;
-		Player.StartItem "DI_Pizza", 3;
+		Player.StartItem "DI_TopHat", 1;
 		Player.ViewHeight 48;
 		Player.ViewBob 0.5;
 		DI_PlayerBase.AutoBlacklist "Glowstick";
