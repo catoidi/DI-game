@@ -9,7 +9,7 @@ Class DI_Brick : CustomInventory
 		Tag "Brick";
 		Inventory.MaxAmount 3;
 		Inventory.Icon "BRIKA0";
-		Inventory.PickupMessage "Got a brick.";
+		Inventory.PickupMessage "Got a brick. Has a chance to crack on use.";
 		+INVENTORY.INVBAR;
 	}
 	
@@ -35,8 +35,31 @@ Class DI_Brick : CustomInventory
 	}
 }
 
+Class DI_Brick2 : DI_Brick
+{
+	Default
+	{
+		Tag "Brick (Cracked)";
+		Inventory.PickupMessage "Got a cracked brick. Only good for 1 more use.";
+		Inventory.Icon "BRIKB0";
+	}
+	
+	States
+	{
+		Spawn:
+			BRIK B 0 NoDelay {if (random(1, 2) == 2) {bSPRITEFLIP = true;}}
+			BRIK B -1;
+			Wait;
+		Use:
+			BRIK B 0 {A_FireProjectile("DI_Brick2_Projectile", 0, 0, 0, self.height / 3, FPF_NOAUTOAIM, -10);}
+			Stop;
+	}
+}
+
 Class DI_Brick_Projectile : DI_Actor
 {
+	mixin DI_BoxBloodMixin;
+
 	Default
 	{
 		Radius 10;
@@ -64,9 +87,33 @@ Class DI_Brick_Projectile : DI_Actor
 		Death:
 			TNT1 A 1 
 			{
-				A_SpawnItemEX("ProjectileSmokeBig", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-				A_SpawnItemEX("DI_Brick", 0, 0, 4, random(-2, 2), random(-2, 2), random(2, 0));
+				A_SpawnItemEX("SledgePuff", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+				string item = "DI_Brick";
+				if (random(0, 4) == 0) {item = "DI_Brick2";}
+				A_SpawnItemEX(item, 0, 0, 4, random(-2, 2), random(-2, 2), random(2, 0));
+				
+				for (int i = 0; i < 3; ++i) {invoker.DI_BoxGib("BRIKC0", 16.0);}
 			}
+			Stop;
+	}
+}
+
+Class DI_Brick2_Projectile : DI_Brick_Projectile
+{
+	action void BrickGib()
+	{
+		A_SpawnItemEX("SledgePuff", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		for (int i = 0; i < 12; ++i) {invoker.DI_BoxGib("BRIKC0", 16.0);}
+	}
+
+	States
+	{
+		Spawn:
+			BRIK B 0 NoDelay {if (random(1, 2) == 2) {bSPRITEFLIP = true;}}
+			BRIK B 1 A_SetRoll(roll + 8);
+			Wait;
+		Death:
+			TNT1 A 5 BrickGib();
 			Stop;
 	}
 }
