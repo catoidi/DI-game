@@ -132,6 +132,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			if (cointimer > 50) {cointimer *= 0.98;}
 			else if (cointimer > 0) {--cointimer;}
 			
+			/*
 			if (isFrozen() == false)
 			{
 				int degenmax = 210;
@@ -149,6 +150,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				}
 				else {++self.degentimer;}
 			}
+			*/
 		}
 		
 		if (killtic > 0) {killtic = 0;}
