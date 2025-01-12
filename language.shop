@@ -415,6 +415,10 @@ SHOPITEM_DI_SWAGSHELLS = "Swag Shells";
 SHOPDESC_DI_SWAGSHELLS = "+1% DMG per Swag Level.\n(Capped at +20%.)";
 SHOPDESC2_DI_SWAGSHELLS = "\cbThis will also count any bonus levels you've acquired, either from reaching the Swag Level Cap or from previously unlocking swag items that have since been removed.";
 SHOPTYPE_DI_SWAGSHELLS = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_FRUITTAPE = "Fruit Gummy Tape";
+SHOPDESC_DI_FRUITTAPE = "Gain +1 Regen for every 5 DMG you take.\n(Contains artificial strawberry flavor.)";
+SHOPDESC2_DI_FRUITTAPE = "\cbItem stacks will reduce the damage threshold by 1, which exponentially increases the amount of regen gained from taking damage. Any damage absorbed by Armor will still count towards giving regen.";
+SHOPTYPE_DI_FRUITTAPE = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

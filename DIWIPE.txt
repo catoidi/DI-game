@@ -66,3 +66,4 @@ DI_DirectDeposit;
 DI_Minigun;
 FingerGun;
 DI_SwagShells;
+DI_FruitTape;

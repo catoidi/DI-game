@@ -1,0 +1,37 @@
+//zscript_DI/items/passives/fruittape.zsc
+
+Class DI_FruitTape : DIPassiveInventory
+{
+	//Gain +1 regen upon taking at least 5 damage.
+	
+	Default
+	{
+		Tag "Fruit Gummy Tape";
+		Inventory.Icon "POW2F0";
+		Inventory.PickupMessage "Acquired Fruit Gummy Tape! (Gain +1 regen for every 5 damage taken.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	int hpcount;
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags) 
+	{
+		Super.AbsorbDamage(damage, damageType, newdamage, inflictor, source, flags);
+		
+		if (plr)
+		{
+			if ((newdamage > 0) && (source != null) && (source != plr)) //damage must be from an object that is not the player.
+			{
+				hpcount += newdamage;
+				
+				int hpcap = 6 - plr.CountInv(self.GetClassName());
+				
+				while(hpcount >= hpcap)
+				{
+					plr.GiveInventory("DI_Regen", 1);
+					hpcount -= hpcap;
+				}
+			}
+		}
+	}
+}
