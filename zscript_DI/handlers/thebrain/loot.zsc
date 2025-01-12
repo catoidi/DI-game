@@ -84,28 +84,31 @@ extend class DIHandler
 	
 	virtual void BoxDrops(WorldEvent e, DI_PlayerBase plr, bool notweapon = false)
 	{
-		if (plr.CanFreshKill())
+		if (notweapon == false)
 		{
-			if (plr.boxammonum > 0)
+			if (plr.CanFreshKill())
 			{
-				e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
-			}
-		}
-		if ((plr.CountInv("Glowstick") > 0) && (notweapon == false))
-		{
-			if ((plr.player.ReadyWeapon is "Glowstick") && (plr.health < plr.DIMaxHealth()))
-			{
-				int glowamount = 1;
-				if (plr.health * 2 < plr.DIMaxHealth()) {++glowamount;}
-				if (plr.health * 4 < plr.DIMaxHealth()) {++glowamount;}
-				for (int i = 0; i < glowamount; ++i)
+				if (plr.boxammonum > 0)
 				{
-					e.Thing.A_SpawnItemEx("GlowstickHealthDrop", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+					e.Thing.A_SpawnItemEX("BoxAmmo", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 				}
 			}
-			if (plr.CanFreshKill() == true)
+			if (plr.CountInv("Glowstick") > 0)
 			{
-				e.Thing.A_SpawnItemEx("GlowstickAmmoDrop", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+				if ((plr.player.ReadyWeapon is "Glowstick") && (plr.health < plr.DIMaxHealth()))
+				{
+					int glowamount = 1;
+					if (plr.health * 2 < plr.DIMaxHealth()) {++glowamount;}
+					if (plr.health * 4 < plr.DIMaxHealth()) {++glowamount;}
+					for (int i = 0; i < glowamount; ++i)
+					{
+						e.Thing.A_SpawnItemEx("GlowstickHealthDrop", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+					}
+				}
+				if (plr.CanFreshKill() == true)
+				{
+					e.Thing.A_SpawnItemEx("GlowstickAmmoDrop", random(-8, 8), random(-8, 8), random(8, 16), random(-2, 2), random(-2, 2), random(6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+				}
 			}
 		}
 	}
