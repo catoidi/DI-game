@@ -10,3 +10,4 @@
 5 di_unlock_item_oredrill;
 6 di_unlock_item_directdeposit;
 6 di_unlock_item_stunbow;
+10 di_unlock_item_swagshells;

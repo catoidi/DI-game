@@ -113,6 +113,7 @@ server cheat bool di_unlock_item_depletedmag = false; //swag 5.
 server cheat bool di_unlock_item_oredrill = false; //swag 5.
 server cheat bool di_unlock_item_directdeposit = false; //swag 6.
 server cheat bool di_unlock_item_stunbow = false; //swag 6.
+server cheat bool di_unlock_item_swagshells = false; //swag 10.
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
