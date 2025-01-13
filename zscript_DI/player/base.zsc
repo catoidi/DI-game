@@ -430,7 +430,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	{
 		//use this to check the player's current combo number.
 		int cnum = 1;
-		int cdrain = 0;
+		int cdrain = 1;
 		if (CountInv("DI_TokenComboTimer") > ComboThreshold(9)) {cnum = 9; cdrain = 110;}
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(8)) {cnum = 8; cdrain = 55;}
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(7)) {cnum = 7; cdrain = 36;}
@@ -438,7 +438,17 @@ Class DI_PlayerBase : PlayerPawn abstract
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(5)) {cnum = 5; cdrain = 10;}
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(4)) {cnum = 4; cdrain = 6;}
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(3)) {cnum = 3; cdrain = 3;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(2)) {cnum = 2; cdrain = 1;}
+		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(2)) {cnum = 2; cdrain = 2;}
+		
+		if (player.readyweapon is "DI_Weapon")
+		{
+			let wpn = DI_Weapon(player.readyweapon);
+			double drainmult = 1.0 + wpn.plr_combodrainbonus;
+			if (drainmult < 0.1) {drainmult = 0.1;}
+			
+			cdrain *= drainmult;
+			//console.printf("%.2f", drainmult);
+		}
 		
 		if (getdrain == true) {return cdrain;}
 		else {return cnum;}
@@ -458,7 +468,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		combonum = GetCombo();
 		combodrain = GetCombo(true);
 		
-		if (combodrain == 0) {combodrain = combonum;}
+		//if (combodrain == 0) {combodrain = combonum;}
 		
 		combonum_bonus = 0;
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
@@ -468,7 +478,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			
 			if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
 			{
-				A_TakeInventory("DI_TokenComboTimer", combodrain);
+				if (combodrain > 0) {A_TakeInventory("DI_TokenComboTimer", combodrain);}
 				if (LastKillTimer > 0) {LastKillTimer -= 1 + diwep.wpn_freshcharge;}
 				if (LastKillTimer < 0) {LastKillTimer = 0;}
 				

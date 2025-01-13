@@ -1,0 +1,50 @@
+//zscript_DI/items/passives/creditfreeze.zsc
+
+Class DI_CreditFreeze : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Credit Freeze";
+		Inventory.PickupMessage "Acquired Credit Freeze! (Temporarily reduce combo drain upon killing an enemy.)";
+		Inventory.MaxAmount 4;
+		Inventory.Icon "POW2G0";
+	}
+	
+	int prevmon;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (plr)
+		{
+			if (Level.Killed_Monsters != prevmon)
+			{
+				plr.GiveInventory("DI_CreditFreeze_Powerup", plr.CountInv(self.GetClassName()));
+				prevmon = Level.Killed_Monsters;
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 G -1;
+			Stop;
+	}
+}
+
+Class DI_CreditFreeze_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvCredit Freeze (Active)";
+		Inventory.MaxAmount 4;
+		Inventory.Icon "POW2H0";
+	}
+
+	override double GiveComboDrain()
+	{
+		if (!plr) {return 0.0;}
+		return -0.5;
+	}
+}

@@ -20,7 +20,7 @@ Class DI_Weapon : Weapon abstract
 	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
 	int maxammouse; //the max amount inventory items can increase ammo.
 	
-	double plr_speed;
+	double plr_speed, plr_combodrainbonus;
 	
 	private int wpn_speed_mode; //determines which "mode" the weapon is in. 0 is neutral. 1 is firing. 2 is reloading.
 	double wpn_speed_current; //weapon speed for this specific tic.
@@ -51,6 +51,7 @@ Class DI_Weapon : Weapon abstract
 	property Projectiles: wpn_projectiles;
 	property BulletSize: wpn_bulletsize;
 	property PlayerSpeed: plr_speed;
+	property ComboDrain: plr_combodrainbonus;
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
@@ -205,6 +206,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_speed_fire = Default.wpn_speed_fire;
 		wpn_speed_reload = Default.wpn_speed_reload;
 		plr_speed = Default.plr_speed;
+		plr_combodrainbonus = Default.plr_combodrainbonus;
 		
 		for (int i = 0; i < plr.knownpassives.Size(); ++i)
 		{
@@ -237,6 +239,7 @@ Class DI_Weapon : Weapon abstract
 				wpn_speed_fire += curinv.GiveFirerate();
 				wpn_speed_reload += curinv.GiveReloadSpeed();
 				plr_speed += curinv.GivePlayerSpeed();
+				plr_combodrainbonus += curinv.GiveComboDrain();
 			}
 		}
 		maxammouse = CalculateAmmoCost();

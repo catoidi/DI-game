@@ -67,3 +67,4 @@ DI_Minigun;
 FingerGun;
 DI_SwagShells;
 DI_FruitTape;
+DI_CreditFreeze;
