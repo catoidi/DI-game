@@ -19,7 +19,7 @@ Class DI_CarbonatedDrink : DIPassiveInventory
 			{
 				int failure = 400 - (400 * ((1.0 * (plr.DIMaxHealth() - plr.health - plr.CountInv("DI_Regen"))) / plr.DIMaxHealth()));
 				failure -= drinks * 40;
-				console.printf("%d", failure);
+				//console.printf("%d", failure);
 				if (failure > 256) {failure = 256;}
 				
 				
