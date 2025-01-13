@@ -385,12 +385,23 @@ Class DIUnlockHandler : EventHandler
 	
 	virtual void CloverTracker()
 	{
-		cvar clovercvar = cvar.getcvar("di_unlock_item_9leafclover");
-		if (diplr && (clovercvar.GetBool() == false))
+		if (diplr)
 		{
-			if (diplr.GetCombo() == 9)
+			cvar cfreezecvar = cvar.getcvar("di_unlock_item_creditfreeze");
+			if (cfreezecvar.GetBool() == false)
 			{
-				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
+				if (diplr.GetCombo() >= 5)
+				{
+					SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_creditfreeze");
+				}
+			}
+			cvar clovercvar = cvar.getcvar("di_unlock_item_9leafclover");
+			if (clovercvar.GetBool() == false)
+			{
+				if (diplr.GetCombo() == 9)
+				{
+					SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
+				}
 			}
 		}
 	}

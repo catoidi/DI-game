@@ -21,7 +21,6 @@
 !di_unlock_item_leadswitch DI_LeadSwitch 2;
 !di_unlock_item_peerpressure DI_PeerPressure 2;
 !di_unlock_item_fruittape DI_FruitTape 2;
-!di_unlock_item_creditfreeze DI_CreditFreeze 2;
 !di_unlock_item_turret DITurret 3;
 !di_unlock_item_tomahawk DI_Tomahawk 3;
 !di_unlock_item_ammosatchel DI_AmmoSatchel 3;
@@ -68,6 +67,7 @@ di_unlock_item_acidblood DI_AcidBlood 2 di_deathcounter 666;
 di_unlock_item_painstar DI_PainStar 2 di_deathcounter 666;
 di_unlock_item_rewardsprogram DI_RewardsProgram 2 di_debtwaves 667;
 di_unlock_item_creditfraud DI_CreditFraud 2 di_debtwaves 667;
+di_unlock_item_creditfreeze DI_CreditFreeze 2  777;
 di_unlock_item_9leafclover DI_9LeafClover 3  777;
 di_unlock_item_glassgem DI_GlassGem 2  777;
 di_unlock_item_bloodyheart DI_BloodyHeart 2 di_tomahawkcount 50000;
