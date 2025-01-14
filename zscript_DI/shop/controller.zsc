@@ -235,8 +235,11 @@ Class DIShopController_Debuff : DIShopController
 		for (int j = 0; j < diplr.knownpassives.Size(); ++j)
 		{
 			DI_QuestDebuff debuff = DI_QuestDebuff(plr.FindInventory(diplr.knownpassives[j], true));
-			if (debuff && (debuff.GetClassName() != questdebuff)) {alldebuffs.push(debuff.GetClassName());}
-			else if (plr.CountInv(debuff.GetClassName()) > 1) {alldebuffs.push(debuff.GetClassName());}
+			if (debuff)
+			{
+				if (debuff.GetClassName() != questdebuff) {alldebuffs.push(debuff.GetClassName());}
+				else if (plr.CountInv(debuff.GetClassName()) > 1) {alldebuffs.push(debuff.GetClassName());}
+			}
 		}
 		if (alldebuffs.Size() > 0) {return true;}
 		else {return false;}
