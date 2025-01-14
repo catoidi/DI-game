@@ -72,6 +72,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	string currentevent;
 	
 	DIHandler thebrain;
+	DIPopupHandler popuphandler;
 	
 	ui DI_HUD thehud;
 	
