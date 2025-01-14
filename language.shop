@@ -238,6 +238,14 @@ SHOPITEM_DI_BANANA = "Banana";
 SHOPDESC_DI_BANANA = "Upon use, gives +15 HP and +15 Regen,\nand spawns a banana peel.";
 SHOPDESC2_DI_BANANA = "\cbThe banana peel will deal 30 DMG to the enemy, and send them flying into the air.";
 SHOPTYPE_DI_BANANA = "\ct[Consumable] \cl[Max: 4]";
+SHOPITEM_DI_QUESTBOOK = "Quest Book";
+SHOPDESC_DI_QUESTBOOK = "Use this before the wave starts to get a\nrandom Side Quest, if you don't have one already.";
+SHOPDESC2_DI_QUESTBOOK = "\cbThe chosen objective and debuff are completely random. If you fail the quest, you are stuck with the debuff forever. The reward for clearing quests varies between each level.";
+SHOPTYPE_DI_QUESTBOOK = "\ct[Consumable] \cl[Max: 1]";
+SHOPITEM_DI_QUESTBOOK_REMOVER = "(Cancel Side Quest?)";
+SHOPDESC_DI_QUESTBOOK_REMOVER = "Use this before the wave to remove your current Side Quest.";
+SHOPDESC2_DI_QUESTBOOK_REMOVER = "\cbThis item will be automatically removed once the wave starts.";
+SHOPTYPE_DI_QUESTBOOK_REMOVER = "\ct[Consumable] \cl[Max: 1]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";

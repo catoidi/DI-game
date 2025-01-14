@@ -93,6 +93,7 @@ DIPOPUP_di_unlock_item_banana = "Banana";
 DIPOPUP_di_unlock_item_directdeposit = "Direct Deposit";
 DIPOPUP_di_unlock_item_swagshells = "Swag Shells";
 DIPOPUP_di_unlock_item_creditfreeze = "Credit Freeze";
+DIPOPUP_di_unlock_item_questbook = "Quest Book";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -103,6 +104,7 @@ SHOPLOCK_SLEDGEHAMMER = "\cbReach 10k score as \cvHamill \cbon \cfLVL 2 \cbto un
 SHOPLOCK_DI_WHOPPEECUSHION = "\cbReach 10k score as \cvHamill \cbon \cfLVL 1 \cbto unlock this item.";
 SHOPLOCK_PARTYSHOTTY = "\cbComplete 3 side quests in \cvLevel 2 \cbto unlock this weapon.";
 SHOPLOCK_POPCORNGUN = "\cbComplete 10 side quests in \cvLevel 2 \cbto unlock this weapon.";
+SHOPLOCK_DI_QUESTBOOK = "\cbComplete 25 side quests in \cvLevel 2 \cbto unlock this item.";
 SHOPLOCK_DI_MELON = "\cbKill 100 Fruit Puncher's to unlock this health item.";
 SHOPLOCK_DI_DICE = "\cbReroll the shop 25 times to unlock this item.";
 SHOPLOCK_DI_CREDITFREEZE = "\cbReach a combo of 5 or higher to unlock this item.";

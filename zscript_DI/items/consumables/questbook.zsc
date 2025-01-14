@@ -1,0 +1,134 @@
+//zscript_DI/items/consumables/questbook.zsc
+
+Class DI_QuestBook : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	Default
+	{
+		Tag "Quest Book";
+		Inventory.MaxAmount 1;
+		Inventory.Icon "BOOKA0";
+		Inventory.PickupMessage "Got the Quest Book. Use it while in the shop to get a random Side Quest.";
+		+INVENTORY.INVBAR;
+	}
+	
+	string objective, debuff;
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == true) 
+		{
+			console.printf("%s", "\cgCannot use this while a wave is in progress!");
+			return false; //can't be used if a wave is in progress.
+		}
+		else if (owner is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(owner);
+			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+			if (plr.popuphandler)
+			{
+				[debuff, objective] = plr.popuphandler.ChooseQuestAlt();
+			}
+			//if (plrquest || (objective != "") || (debuff != "")) {CantQuest(plr);}
+			if (plrquest) {console.printf("%s", "You already have a quest!");}
+			else if (objective == "") {console.printf("%s", "Quest Book is missing an objective!");}
+			else if (debuff == "") {console.printf("%s", "Quest Book is missing a debuff!");}
+			else 
+			{
+				GiveQuest(plr);
+				return DIUsed();
+			}
+			//returnvalue = true;
+		}
+		return false;
+	}
+	
+	virtual void CantQuest(DI_PlayerBase plr)
+	{
+		A_StartSound("player/noway");
+		console.printf("%s", "You are unable to accept new quests at this time.");
+	}
+	
+	virtual void GiveQuest(DI_PlayerBase plr)
+	{
+		//A_StartSound("switches/normbutn");
+		console.printf("Side Quest Activated: %s", objective);
+		bool spawned;
+		actor newactor;
+		[spawned, newactor] = plr.A_SpawnItemEX("DI_MainQuest", zofs: 16, flags: SXF_NOCHECKPOSITION);
+		if (newactor is "DI_MainQuest")
+		{
+			let newquest = DI_MainQuest(newactor);
+			newquest.objective_name = objective;
+			newquest.debuff_name = debuff;
+		}
+		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
+		plr.GiveInventory("DI_QuestBook_Remover", 1);
+		//A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+		//cangivequest = false;
+	}
+	
+	States
+	{
+		Spawn:
+			BOOK A -1;
+			Stop;
+	}
+}
+
+Class DI_QuestBook_Remover : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	Default
+	{
+		Tag "(Cancel Side Quest?)";
+		Inventory.MaxAmount 1;
+		Inventory.Icon "BOOKB0";
+		Inventory.PickupMessage "Using this item will cancel the current quest.";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == true) 
+		{
+			console.printf("%s", "\cgCannot use this while a wave is in progress!");
+			return false; //can't be used if a wave is in progress.
+		}
+		else if (owner is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(owner);
+			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+			if (plrquest)
+			{
+				string curobjective = plrquest.objective_name;
+				string curdebuff = plrquest.debuff_name;
+				plr.TakeInventory(plrquest.GetClassName(), 1);
+				plr.TakeInventory(curobjective, 1);
+				plr.TakeInventory(curdebuff, 1);
+				plr.ACS_ScriptCall("QuestBookCancel");
+				console.printf("%s", "Side Quest has been cancelled.");
+				return DIUsed();
+			}
+		}
+		return false;
+	}
+	
+	override void DoEffect()
+	{
+		if (owner is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(owner);
+			if (plr.inwave) {plr.TakeInventory(self.GetClassName(), 1);}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			BOOK B -1;
+			Stop;
+	}
+}
