@@ -494,7 +494,15 @@ class DI_HUD : BaseStatusBar
 		if (CPlayer.mo.InvSel != null && !Level.NoInventoryBar && isInventoryBarVisible() == false)
 		{
 			DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED);
-			DrawString(SmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), GlobalOffset + (-149, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			string invnum = FormatNumber(CPlayer.mo.InvSel.Amount);
+			int permnum = diplayer.GetPermaItemAmount(CPlayer.mo.InvSel.GetClassName());
+			int invx = -149;
+			if (permnum > 0) 
+			{
+				invnum.AppendFormat("\cu/\c-%d", permnum);
+				//invx += 4;
+			}
+			DrawString(SmallFont, invnum, GlobalOffset + (invx, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		}
 		if (isInventoryBarVisible())
 		{
