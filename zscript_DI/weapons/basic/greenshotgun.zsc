@@ -82,9 +82,9 @@ CLASS GreenShotgun : DI_Weapon
 			Goto Ready;
 		Pump_Barrel:
 			SHOT F 1;
-			SHOT FFFFFF 1 A_OverlayOffset(2, -2, 0.67, WOF_ADD);
+			SHOT FFFFFF 1 A_OverlayOffset(2, -2, 1, WOF_ADD);
 			SHOT F 3;
-			SHOT FFFFFF 1 A_OverlayOffset(2, 2, -0.67, WOF_ADD);
+			SHOT FFFFFF 1 A_OverlayOffset(2, 2, -1, WOF_ADD);
 			SHOT F 4;
 			Stop;
 		Reload:
