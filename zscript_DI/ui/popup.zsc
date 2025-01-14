@@ -73,7 +73,7 @@ Class DIPopupHandler : EventHandler
 		if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
 		let return1 = debuffs[random(0, debuffs.Size() - 1)];
 		let return2 = objectives[random(0, objectives.Size() - 1)];
-		console.printf("%s, %s", return1, return2);
+		//console.printf("%s, %s", return1, return2);
 		return return1, return2;
 	}
 
