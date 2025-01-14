@@ -68,3 +68,4 @@ FingerGun;
 DI_SwagShells;
 DI_FruitTape;
 DI_CreditFreeze;
+DI_Trickshot;

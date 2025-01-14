@@ -1,0 +1,29 @@
+//zscript_DI/items/passives/trickshot.zsc
+
+Class DI_TrickShot : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Trickshot";
+		Inventory.Icon "POW2I0";
+		Inventory.PickupMessage "Acquired Trickshot! (Enemies killed by anything but a weapon will drop +2 coins.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	override string, int, int GiveEnemyDrop(DI_Monster mon) 
+	{
+		if (!plr) {return "", 0, 0;}
+		else
+		{
+			if (mon.di_notweapon == false) {return "", 0, 0;}
+			else {return mon.coindrop, 2 * plr.CountInv(self.GetClassName()), 0;}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 I -1;
+			Stop;
+	}
+}

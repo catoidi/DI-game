@@ -428,6 +428,10 @@ SHOPITEM_DI_CREDITFREEZE = "Credit Freeze";
 SHOPDESC_DI_CREDITFREEZE = "Killing enemies grants up to 1 second\nof 50% slower combo drain.";
 SHOPDESC2_DI_CREDITFREEZE = "\cbItem stacks extends the length of the combo drain buff. The length of the buff does not stack with multiple kills.";
 SHOPTYPE_DI_CREDITFREEZE = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_TRICKSHOT = "Trickshot";
+SHOPDESC_DI_TRICKSHOT = "Enemies killed with anything other than\na weapon will drop +2 coins.";
+SHOPDESC2_DI_TRICKSHOT = "\cbThis counts both kills with consumables and kills with specific passives. Item stacks increase the number of coins dropped.";
+SHOPTYPE_DI_TRICKSHOT = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

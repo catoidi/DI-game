@@ -21,6 +21,7 @@
 !di_unlock_item_leadswitch DI_LeadSwitch 2;
 !di_unlock_item_peerpressure DI_PeerPressure 2;
 !di_unlock_item_fruittape DI_FruitTape 2;
+!di_unlock_item_trickshot DI_Trickshot 2;
 !di_unlock_item_turret DITurret 3;
 !di_unlock_item_tomahawk DI_Tomahawk 3;
 !di_unlock_item_ammosatchel DI_AmmoSatchel 3;
