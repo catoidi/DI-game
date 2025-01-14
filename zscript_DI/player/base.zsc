@@ -443,7 +443,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if (player.readyweapon is "DI_Weapon")
 		{
 			let wpn = DI_Weapon(player.readyweapon);
-			double drainmult = 1.0 + wpn.plr_combodrainbonus;
+			double drainmult = wpn.plr_combodrainbonus;
 			if (drainmult < 0.1) {drainmult = 0.1;}
 			
 			cdrain *= drainmult;

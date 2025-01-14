@@ -86,6 +86,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.AutoOffset true;
 		DI_Weapon.Projectiles 1;
 		DI_Weapon.BulletSize 1.0;
+		DI_Weapon.ComboDrain 1.0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.RestoreAmmo1 0; //a value of 0 will mean the ammo restore amount will be set automatically.
@@ -239,7 +240,7 @@ Class DI_Weapon : Weapon abstract
 				wpn_speed_fire += curinv.GiveFirerate();
 				wpn_speed_reload += curinv.GiveReloadSpeed();
 				plr_speed += curinv.GivePlayerSpeed();
-				plr_combodrainbonus += curinv.GiveComboDrain();
+				plr_combodrainbonus *= curinv.GiveComboDrain();
 			}
 		}
 		maxammouse = CalculateAmmoCost();

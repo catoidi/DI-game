@@ -44,7 +44,7 @@ Class DI_CreditFreeze_Powerup : DIPowerup
 
 	override double GiveComboDrain()
 	{
-		if (!plr) {return 0.0;}
-		return -0.5;
+		if (!plr) {return 1.0;}
+		return 0.5;
 	}
 }
