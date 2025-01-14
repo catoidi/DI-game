@@ -70,7 +70,7 @@ Consumable DI_FastForward POW1O 10;
 Consumable DI_CheeseArtifact ARTIA 20 256 di_unlock_item_cheeseartifact;
 Consumable DI_Tomato_Bundle POW1Z 5 256 di_unlock_item_tomato;
 Consumable DI_Banana_Bundle BANAC 25 256 di_unlock_item_banana;
-Consumable DI_QuestBook BOOKA 10 256 di_unlock_item_questbook;
+Consumable DI_QuestBook BOOKA 20 192 di_unlock_item_questbook;
 >>Permanent Consumables...
 PermaConsumable DI_ThrowBomb_Bundle GRENG 5 256 di_unlock_item_bombbundle;
 PermaConsumable DI_Pizza HEALB 6 256;
@@ -85,7 +85,7 @@ PermaConsumable DI_FastForward POW1O 10;
 PermaConsumable DI_CheeseArtifact ARTIA 20 256 di_unlock_item_cheeseartifact;
 PermaConsumable DI_Tomato_Bundle POW1Z 5 256 di_unlock_item_tomato;
 PermaConsumable DI_Banana_Bundle BANAC 25 256 di_unlock_item_banana;
-PermaConsumable DI_QuestBook BOOKA 10 256 di_unlock_item_questbook;
+PermaConsumable DI_QuestBook BOOKA 20 192 di_unlock_item_questbook;
 >>Passive Grouping... (Split between rentals/permanents, in case you want specific items to not show up as a rental/permanent.)
 [Passive] DamagePassive;
 [Passive] DefensePassive;
