@@ -160,10 +160,10 @@ SHOPTYPE_DI_BOWTIE = "\cq[Armor]";
 
 //Health
 SHOPITEM_DI_FULLHEAL = "Burger";
-SHOPDESC_DI_FULLHEAL = "Looks delicious!\nGives 100 health.";
+SHOPDESC_DI_FULLHEAL = "Looks delicious!\nRestores up to 100 health.";
 SHOPTYPE_DI_FULLHEAL = "[Instant Use]";
 SHOPITEM_DI_MELON = "Melon";
-SHOPDESC_DI_MELON = "Seeds included. Gives 80 Health.\n\cnCan go up to 200 Health.";
+SHOPDESC_DI_MELON = "Seeds included. Gives 60 Health.\n\cnCan go up to 200% Health.";
 SHOPTYPE_DI_MELON = "[Instant Use]";
 SHOPITEM_DI_PIZZA = "Pizza Slice";
 SHOPDESC_DI_PIZZA = "Conveniently fits in your pockets.\nGives 20 health.";
