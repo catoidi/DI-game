@@ -251,7 +251,6 @@ Level DI02;
 {
 	Wave 1;
 	{
-		>>8 total
 		Cap 3;
 		Rate 3;
 		Time 1;
@@ -263,7 +262,6 @@ Level DI02;
 	}
 	Wave 2;
 	{
-		>>16 total
 		Cap 6;
 		Rate 5;
 		Time 1;
@@ -280,7 +278,6 @@ Level DI02;
 	}
 	Wave 3;
 	{
-		>>24 total
 		Cap 8;
 		Rate 2;
 		Time 45;
@@ -292,7 +289,6 @@ Level DI02;
 	}
 	Wave 4;
 	{
-		>>29 total
 		Cap 3;
 		Rate 9;
 		Time 1;
@@ -315,7 +311,6 @@ Level DI02;
 	}
 	Wave 5;
 	{
-		>>31 total
 		Cap 11;
 		Rate 2;
 		Time 70;
@@ -335,7 +330,6 @@ Level DI02;
 	}
 	Wave 6;
 	{
-		>>34 total
 		Cap 3;
 		Rate 3;
 		Time 1;
@@ -359,7 +353,6 @@ Level DI02;
 	}
 	Wave 7;
 	{
-		>>36 total
 		Cap 6;
 		Rate 1;
 		Time 35;
@@ -380,7 +373,6 @@ Level DI02;
 	}
 	Wave 8;
 	{
-		>>42 total
 		Cap 10;
 		Rate 10;
 		Time 35;
@@ -406,7 +398,6 @@ Level DI02;
 	}
 	Wave 9;
 	{
-		>>53 total
 		Cap 20;
 		Rate 1;
 		Time 30;
@@ -423,7 +414,6 @@ Level DI02;
 	}
 	Wave 10;
 	{
-		>>58 total
 		Cap 20;
 		Rate 1;
 		Time 35;
@@ -451,7 +441,6 @@ Level DI02;
 	}
 	Wave 12;
 	{
-		>>75 total + 25 slices
 		Cap 25;
 		Rate 5;
 		Time 15;
