@@ -21,7 +21,7 @@ Class DI_QuestObjective_Audit : DI_QuestObjective
 			{
 				maxcoins = ACS_ScriptCall("DICheckWave");
 			}
-			else if (lostcoins >= 5)
+			else if (lostcoins >= maxcoins)
             {
                 ObjectiveFailed();
 			}
