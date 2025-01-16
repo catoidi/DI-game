@@ -6,6 +6,8 @@ Class DI_QuestObjective_SleightOfHand : DI_QuestObjective
 	//getting multiple kills with the same weapon in a single frame will not fail the objective.
 	weapon curweapon, prevweapon;
 	bool queststarted;
+	int coyotetime;
+	int mistakes;
 	
 	override void doeffect()
 	{
@@ -23,8 +25,26 @@ Class DI_QuestObjective_SleightOfHand : DI_QuestObjective
 			if (plr.killtic > 0)
 			{
 				curweapon = plr.player.readyweapon;
-				if (curweapon == prevweapon) {ObjectiveFailed();}
-				else {prevweapon = curweapon;}
+				if (curweapon == prevweapon) 
+				{
+					if (coyotetime > 35) 
+					{
+						++mistakes;
+						plr.A_StartSound("piebomb", slot: CHAN_AUTO, volume: 0.5, pitch: 0.75 - (0.05 * mistakes) + (0.05 * plr.thebrain.wavenum));
+						if (mistakes >= plr.thebrain.wavenum) {ObjectiveFailed();}
+						coyotetime = 0;
+					}
+				}
+				else 
+				{
+					prevweapon = curweapon;
+					coyotetime = 0;
+				}
+			}
+			
+			if (queststarted)
+			{
+				++coyotetime;
 			}
 		}
 	}
@@ -32,7 +52,12 @@ Class DI_QuestObjective_SleightOfHand : DI_QuestObjective
 	override string QuestName() {return "Sleight Of Hand";}
 	override string QuestProgress()
 	{
-		if (prevweapon) {return string.format("Prev. Weapon: \cf%s", prevweapon.gettag());}
+		if (prevweapon) 
+		{
+			string returncolor = "\cf";
+			if (coyotetime <= 35) {returncolor = "\cu";}
+			return string.format("Prev. Weapon: %s%s\n\c-Mistakes: %d/%d", returncolor, prevweapon.gettag(), mistakes, plr.thebrain.wavenum);
+		}
 		else {return "N/A";}
 	}
 }
