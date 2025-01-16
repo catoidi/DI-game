@@ -9,6 +9,8 @@ Class DIPopupHandler : EventHandler
 	
 	DIHandler link;
 	
+	int curwave;
+	
 	override void WorldLoaded(WorldEvent e)
 	{
 		int ThisLump = Wads.FindLump("DIQUEST", 0, Wads.ANYNAMESPACE);
@@ -29,15 +31,35 @@ Class DIPopupHandler : EventHandler
 			
 			Array<String> currentline;
 			filedata[i].Split(currentline, " ");
-			if (currentline.Size() != 3) {ThrowAbortException("DIQUEST Error: Tried to add a debuff/objective with less/more than 3 arguments.\nLine: '%s'\nArguments: %d", filedata[i], currentline.Size());}
+			if (currentline.Size() < 3) {ThrowAbortException("DIQUEST Error: Tried to add a debuff/objective with less than 3 arguments.\nLine: '%s'\nArguments: %d", filedata[i], currentline.Size());}
 			
 			bool correctlevel = false;
 			if (currentline[0] == "*") {correctlevel = true;}
 			else if (currentline[0] ~== level.MapName) {correctlevel = true;}
 			
 			if (!correctlevel) {continue;}
-			if (currentline[1] ~== "Debuff") {debuffs.push(currentline[2]);}
-			else if (currentline[1] ~== "Objective") {objectives.push(currentline[2]);}
+			if (currentline[1] ~== "Debuff") 
+			{
+				string pusher = currentline[2];
+				if (currentline.Size() >= 4) {pusher.AppendFormat(",%s", currentline[3]);}
+				else {pusher.AppendFormat("%s", ",256");}
+				
+				if (currentline.Size() == 5) {pusher.AppendFormat(",%s", currentline[4]);}
+				else {pusher.AppendFormat("%s", ",0");}
+			
+				debuffs.push(pusher);
+			}
+			else if (currentline[1] ~== "Objective") 
+			{
+				string pusher = currentline[2];
+				if (currentline.Size() >= 4) {pusher.AppendFormat(",%s", currentline[3]);}
+				else {pusher.AppendFormat("%s", ",256");}
+				
+				if (currentline.Size() == 5) {pusher.AppendFormat(",%s", currentline[4]);}
+				else {pusher.AppendFormat("%s", ",0");}
+				
+				objectives.push(pusher);
+			}
 			else {ThrowAbortException("DIQUEST Error: Expected a debuff or objective, got '%s' instead.\nLine: '%s'", currentline[i], filedata[i]);}
 		}
 	}
@@ -57,23 +79,66 @@ Class DIPopupHandler : EventHandler
 		}
 	}
 	
+	override void WorldTick()
+	{
+		if (link) {curwave = link.wavenum;}
+	}
+	
+	virtual string, string CreateValidQuest()
+	{
+		if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
+		
+		array<string> valid_objectives;
+		array<string> valid_debuffs;
+		
+		for (int i = 0; i < objectives.Size(); ++i)
+		{
+			array<string> currentline;
+			
+			objectives[i].Split(currentline, ",");
+			
+			if (currentline.Size() != 3) {ThrowAbortException("DIQUEST Error: Incorrect data found while generating valid Side Quests.\nCaused by: '%s'", objectives[i]);}
+			
+			if (currentline[2].ToInt(10) > curwave) {continue;}
+			if (random(1, 256) <= (256 - currentline[1].ToInt(10))) {continue;}
+			
+			valid_objectives.Push(currentline[0]);
+			//console.printf("%s", currentline[0]);
+		}
+		
+		for (int i = 0; i < debuffs.Size(); ++i)
+		{
+			array<string> currentline;
+			
+			debuffs[i].Split(currentline, ",");
+			
+			if (currentline.Size() != 3) {ThrowAbortException("DIQUEST Error: Incorrect data found while generating valid Side Quests.\nCaused by: '%s'", debuffs[i]);}
+			
+			if (currentline[2].ToInt(10) > curwave) {continue;}
+			if (random(1, 256) <= (256 - currentline[1].ToInt(10))) {continue;}
+			
+			valid_debuffs.Push(currentline[0]);
+			//console.printf("%s", currentline[0]);
+		}
+		
+		if ((valid_debuffs.Size() == 0) || (valid_objectives.Size() == 0)) {ThrowAbortException("%s", "DIQUEST Error: Failed to generate a valid side quest!");}
+		
+		return valid_debuffs[random(0, valid_debuffs.Size() - 1)], valid_objectives[random(0, valid_objectives.Size() - 1)];
+	}
+	
 	virtual void ChooseQuest(DI_QuestGiver curquest)
 	{
 		//activated by quest givers.
 		//assign a random debuff and objective to quest givers.
-		if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
-		curquest.debuff = debuffs[random(0, debuffs.Size() - 1)];
-		curquest.objective = objectives[random(0, objectives.Size() - 1)];
+		[curquest.debuff, curquest.objective] = CreateValidQuest();
 		curquest.handler = self;
 	}
 	
 	virtual string, string ChooseQuestAlt()
 	{
 		//allows you to give a random objective and debuff to any actor or script.
-		if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
-		let return1 = debuffs[random(0, debuffs.Size() - 1)];
-		let return2 = objectives[random(0, objectives.Size() - 1)];
-		//console.printf("%s, %s", return1, return2);
+		string return1, return2;
+		[return1, return2] = CreateValidQuest();
 		return return1, return2;
 	}
 
@@ -88,7 +153,7 @@ Class DIPopupHandler : EventHandler
 	ui string curevent, curevent_desc;
 	
 	ui bool dowavestart, dowaveend;
-	ui int waveuitimer, curwave, waveteleporttimer;
+	ui int waveuitimer, waveteleporttimer;
 	ui float wavemove, newmove;
 	
 	override void InterfaceProcess(ConsoleEvent e)
@@ -99,7 +164,7 @@ Class DIPopupHandler : EventHandler
 			dowaveend = false;
 			waveuitimer = 0;
 			wavemove = 0.0;
-			curwave = e.Args[0];
+			//curwave = e.Args[0];
 		}
 		else if (e.Name == "DI_WaveEndUI")
 		{
