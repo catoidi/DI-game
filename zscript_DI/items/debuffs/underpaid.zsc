@@ -1,0 +1,14 @@
+//zscript_DI/items/debuffs/underpaid.zsc
+
+Class DI_QuestDebuff_Underpaid : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Underpaid)";
+	}
+	override double GiveComboDrain() 
+	{
+		if (!plr) {return 1.0;}
+		else {return 1.5 * plr.CountInv(self.GetClassName());}
+	}
+}
