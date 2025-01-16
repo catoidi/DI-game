@@ -251,6 +251,7 @@ Level DI02;
 {
 	Wave 1;
 	{
+		>>8 total
 		Cap 3;
 		Rate 3;
 		Time 1;
@@ -262,6 +263,7 @@ Level DI02;
 	}
 	Wave 2;
 	{
+		>>16 total
 		Cap 6;
 		Rate 5;
 		Time 1;
@@ -278,6 +280,7 @@ Level DI02;
 	}
 	Wave 3;
 	{
+		>>24 total
 		Cap 8;
 		Rate 2;
 		Time 45;
@@ -289,6 +292,7 @@ Level DI02;
 	}
 	Wave 4;
 	{
+		>>29 total
 		Cap 3;
 		Rate 9;
 		Time 1;
@@ -311,6 +315,7 @@ Level DI02;
 	}
 	Wave 5;
 	{
+		>>31 total
 		Cap 11;
 		Rate 2;
 		Time 70;
@@ -330,6 +335,7 @@ Level DI02;
 	}
 	Wave 6;
 	{
+		>>34 total
 		Cap 3;
 		Rate 3;
 		Time 1;
@@ -353,36 +359,45 @@ Level DI02;
 	}
 	Wave 7;
 	{
+		>>36 total
 		Cap 6;
 		Rate 1;
 		Time 35;
 		Spawn Pepper, 6;
 		Wait 2;
-		Spawn FruitPuncher, 6;
-		Wait 4;
-		Spawn FruitPuncher, 3;
+		Cap 12;
+		Spawn FruitPuncher, 12;
 		Spawn Lemon, 3;
 		Wait 6;
+		Spawn FruitPuncher, 3;
+		Spawn Lemon, 4;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 8;
+		Cap 14;
 		Spawn Pepper, 2;
 		Spawn FruitPuncher, 2;
 		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
 	}
 	Wave 8;
 	{
+		>>42 total
 		Cap 10;
 		Rate 10;
 		Time 35;
-		Spawn FruitPuncher, 10;
-		Wait 2;
+		Spawn Pepper, 2, DISpawnerSpot_Big;
+		Spawn FruitPuncher, 15;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 5;
 		Rate 1;
 		Time 70;
 		Cap 12;
-		Spawn FruitPuncher, 2;
-		Spawn THEHAMMER, 3, DISpawnerSpot_Big;
+		Spawn THEHAMMER, 4, DISpawnerSpot_Big;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
 		Wait 4;
 		Cap 14;
-		Spawn FruitPuncher, 2;
-		Spawn RedOnion, 4, DISpawnerSpot_Turret;
+		Spawn Lemon, 4;
+		Spawn Pepper, 5, DISpawnerSpot_Big;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
 		Wait 6;
 		Rate 2;
 		Cap 16;
@@ -391,6 +406,7 @@ Level DI02;
 	}
 	Wave 9;
 	{
+		>>53 total
 		Cap 20;
 		Rate 1;
 		Time 30;
@@ -403,36 +419,28 @@ Level DI02;
 		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
 		Wait 15;
 		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
-		Wait 5;
 		Spawn OnionTurret, 3, DISpawnerSpot_Turret;
 	}
-	>>Still using the old waves.
 	Wave 10;
 	{
+		>>58 total
 		Cap 20;
 		Rate 1;
 		Time 35;
 		Spawn FruitPuncher, 25;
-		Spawn Lemon, 15;
 		Spawn Pepper, 10, DISpawnerSpot_Big;
-		Spawn THEHAMMER, 10, DISpawnerSpot_Big;
-		Wait 25;
-		Spawn PizzaSlicer, 3, DISpawnerSpot_Flying;
-		Spawn RedOnion, 1, DISpawnerSpot_Turret;
 		Wait 15;
-		Spawn PizzaSlicer, 5, DISpawnerSpot_Flying;
-		Spawn RedOnion, 2, DISpawnerSpot_Turret;
-		Wait 15;
-		Spawn PizzaSlicer, 5, DISpawnerSpot_Flying;
-		Spawn RedOnion, 2, DISpawnerSpot_Turret;
-		Spawn OnionTurret, 1, DISpawnerSpot_Turret;
-		Wait 10;
-		Spawn PizzaSlicer, 1, DISpawnerSpot_Flying;
-		Spawn Pizzaulter, 1, DISpawnerSpot_Flying;
 		Spawn RedOnion, 1, DISpawnerSpot_Turret;
 		Spawn OnionTurret, 2, DISpawnerSpot_Turret;
+		Wait 15;
+		Spawn Lemon, 5;
+		Spawn OnionTurret, 2, DISpawnerSpot_Turret;
 		Wait 10;
-		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
+		Spawn Pizzaulter, 3, DISpawnerSpot_Flying;
+		Spawn OnionTurret, 2, DISpawnerSpot_Turret;
+		Wait 10;
+		Spawn Pizzaulter, 3, DISpawnerSpot_Flying;
+		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
 	}
 	Wave 11;
 	{
@@ -443,23 +451,24 @@ Level DI02;
 	}
 	Wave 12;
 	{
+		>>75 total + 25 slices
 		Cap 25;
 		Rate 5;
 		Time 15;
 		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
 		Spawn Pepper, 3;
-		Spawn RedOnion, 5, DISpawnerSpot_Turret;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
 		Wait 3;
-		Spawn PizzaSlicer, 25, DISpawnerSpot_Flying;
-		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
-		Wait 18;
 		Spawn FruitPuncher, 10;
-		Spawn Lemon, 10;
+		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
 		Wait 15;
-		Spawn THEHAMMER, 10, DISpawnerSpot_Big;
-		Spawn Pepper, 10;
-		Spawn FruitPuncher, 20;
-		Spawn Lemon, 10;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
+		Wait 15;
+		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
+		Spawn Pepper, 5;
+		Spawn FruitPuncher, 15;
+		Spawn Lemon, 5;
 		Spawn Pizzaulter, 10, DISpawnerSpot_Flying;
 		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
 		Wait 40;
@@ -467,13 +476,14 @@ Level DI02;
 	}
 	Endless Restart;
 	{
-		Spawn THEHAMMER, 4;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
 		MultCap 1;
 		MultRate 1;
 		MultSpawn 1;
-		MultHealth 0.25;
-		MultDamage 0.25;
-		MultSpeed 0.1;
+		MultHealth 1;
+		MultDamage 1;
+		MultSpeed 0.2;
 		MultPrice 1;
+		EndScript endless_dejavu, 0, 0, 0, 0;
 	}
 }
