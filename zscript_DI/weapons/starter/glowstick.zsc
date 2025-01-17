@@ -56,6 +56,11 @@ CLASS Glowstick : DI_Weapon //20010
 	
 	di_playerbase diowner;
 	
+	override void DetachFromOwner()
+	{
+		if (owner) {owner.A_RemoveLight("Glower");}
+	}
+	
 	States
 	{	
 		Ready:
