@@ -32,6 +32,7 @@ extend class DIHandler
 	
 	private ui void ShowSupporters(RenderEvent e)
 	{
+		/*
 		string txt;
 		cvar scalefactor = cvar.getcvar("hud_scalefactor");
 		
@@ -59,5 +60,6 @@ extend class DIHandler
 			DTA_ScaleY, sizey * 0.6,
 			DTA_Alpha, supportalpha
 		);
+		*/
 	}
 }
