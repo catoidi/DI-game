@@ -54,7 +54,6 @@ Health DI_FullHeal HEALA 12;
 Health DI_Melon HEALE 16 256 di_unlock_item_melon;
 Health DI_Pizza HEALB 4 96;
 Health DI_JuiceBox HEALD 6 96;
-Health DI_HeartBomb GRENF 4 64 di_unlock_item_heartbomb;
 >>Consumables...
 Consumable DI_ThrowBomb_Bundle GRENG 5 256 di_unlock_item_bombbundle;
 Consumable DI_Pizza HEALB 6 128;
@@ -62,7 +61,7 @@ Consumable DITurret TURRC 10;
 Consumable DI_Dice DICEA 4 256 di_unlock_item_dice;
 Consumable DI_JuiceBox HEALD 10 128;
 Consumable DI_Tomahawk HAWKA 2;
-Consumable DI_HeartBomb GRENF 8 192 di_unlock_item_heartbomb;
+Consumable DI_HeartBomb GRENF 4 128 di_unlock_item_heartbomb;
 Consumable DI_AmmoSatchel SACKA 6;
 Consumable DI_Brick BRIKA 5;
 Consumable DI_9LeafClover LEAFA 36 256 di_unlock_item_9leafclover;
