@@ -65,6 +65,8 @@ Class DI_QuestBook : Inventory
 		}
 		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		plr.GiveInventory("DI_QuestBook_Remover", 1);
+		DI_QuestBook_Remover remover = DI_QuestBook_Remover(plr.FindInventory("DI_QuestBook_Remover"));
+		if (remover) {plr.InvSel = remover;} //highlight the new remover item in inventory hotbar
 		//A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		//cangivequest = false;
 	}
