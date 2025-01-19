@@ -119,7 +119,7 @@ Class SwagHandler : EventHandler
 				msgrng = random[die](0, 100);
 			}
 			
-			if (DeathTimer == 0)
+			if ((DeathTimer == 0) && (di_musicloaded == true))
 			{
 				SendNetworkEvent("DI_ChangeMusic deathsong", 1);
 			}
