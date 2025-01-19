@@ -8,9 +8,8 @@ This repository alone is not enough to play DI. What's included here is mostly z
 The game is planned to be released in 2024.
 
 ### Here's some other repos designed to work with DI:
-- **DI-assets:** Not available for public consumption.
-- [DI-bonus:](https://github.com/catoidi/DI-bonus) An example addon meant to help modders add custom content to the game.
-- [DI-hdfont:](https://github.com/catoidi/DI-hdfont) Optional addon that adds higher resolution fonts to DI. Can aid making text easier to read.
+- **DI-content:** Contains assets for DI that do not fall under an open source license. Included with a retail copy of the game.
+- **DI-music:** Addon that contains the music files for DI. Included with a retail copy of the game.
 - [gearbox:](https://github.com/catoidi/gearbox) A modified version of the "gearbox" mod intended to work with DI.
 
 ### This code also contains (modified!) versions of the following repos:
