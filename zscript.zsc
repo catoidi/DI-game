@@ -41,6 +41,7 @@ version "4.13"
 #include "zscript_DI/ui/unlock/menu.zsc"
 #include "zscript_DI/ui/unlock/handler.zsc"
 #include "zscript_DI/ui/unused/MainMenu.zsc"
+#include "zscript_DI/ui/credits.zsc"
 
 //decoration
 #include "zscript_DI/decoration/painting.zsc"

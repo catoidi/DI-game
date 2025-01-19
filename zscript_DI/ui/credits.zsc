@@ -1,0 +1,312 @@
+//zscript_DI/ui/credits.zsc
+
+//This menu is based on the ReadThis! menu from the gzdoom.pk3.
+//This copyright stuff below is copy/pasted directly from that file.
+
+/*
+**---------------------------------------------------------------------------
+** Copyright 2001-2010 Randy Heit
+** Copyright 2010 Christoph Oelckers
+** All rights reserved.
+**
+** Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions
+** are met:
+**
+** 1. Redistributions of source code must retain the above copyright
+**    notice, this list of conditions and the following disclaimer.
+** 2. Redistributions in binary form must reproduce the above copyright
+**    notice, this list of conditions and the following disclaimer in the
+**    documentation and/or other materials provided with the distribution.
+** 3. The name of the author may not be used to endorse or promote products
+**    derived from this software without specific prior written permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+** IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+** OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+** IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+** INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+** NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+** THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+**---------------------------------------------------------------------------
+*/
+
+Class DI_CreditsMenu : GenericMenu
+{
+	mixin DI_UIMixin;
+	
+	int mScreen;
+	int mInfoTic;
+	TextureID tex, prevpic;
+	
+	ui bool initui;
+	ui vector2 baseresolution;
+	ui array<string> filedata, pagedata, prevpagedata;
+	ui int maxpages;
+	
+	override void Init(Menu parent)
+	{
+		Super.Init(parent);
+		mScreen = 1;
+		mInfoTic = gametic;
+	}
+	
+	ui double ResScale()
+	{
+		double scalex = Screen.GetWidth() / baseresolution.x;
+		double scaley = Screen.GetHeight() / baseresolution.y;
+		
+		double returnvalue = scalex;
+		if (scaley < scalex) {returnvalue = scaley;}
+		
+		return returnvalue;
+	}
+	
+	ui double ScaledX(double input = 0.0)
+	{
+		let startx = (Screen.GetWidth() / 2) - (480 * ResScale());
+		startx += input * ResScale();
+		return startx;
+	}
+	
+	ui double ScaledY(double input = 0.0)
+	{
+		let starty = (Screen.GetHeight() / 2) - (360 * ResScale());
+		starty += input * ResScale();
+		return starty;
+	}
+	
+	ui void CreditInit()
+	{
+		if (baseresolution == (0, 0)) {baseresolution = (960, 720);}
+		
+		int ThisLump = Wads.FindLump("DICREDIT", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DICREDIT", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DICREDIT", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			//if (filedata[i].Length() < 3) {continue;}
+			filedata[i].Replace("	", "");
+			filedata[i].Replace(" ", "");
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+		}
+		
+		LoadPageData(1);
+		
+		initui = true;
+	}
+	
+	ui void LoadPageData(int page = 0)
+	{
+		if (pagedata.Size() > 0) {prevpagedata.Copy(pagedata);}
+		pagedata.Clear();
+	
+		string pagestring = "sorry nothing";
+		int pageint = 0;
+		int bracketnum;
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(4) == "Page")
+			{
+				pagestring = filedata[i];
+				pagestring.Replace("Page", "");
+				pagestring = pagestring.Left(pagestring.IndexOf(";"));
+				pageint = pagestring.ToInt(10);
+				if (pageint > maxpages) {maxpages = pageint;}
+			}
+			else if (pagestring == "sorry nothing") {continue;}
+			else if (pageint == page)
+			{
+				if (filedata[i].Left(1) == "}") {--bracketnum;}
+				if (bracketnum > 0) {pagedata.Push(filedata[i]);}
+				if (filedata[i].Left(1) == "{") {++bracketnum;}
+			}
+		}
+	}
+	
+	ui void DrawPage(array<string> curpage, double alpha)
+	{
+		int listnum;
+		//vector2 listpos;
+		
+		string pagetitle = "";
+		string pagetitle2 = string.format("Page: %d/%d", mScreen, maxpages);
+		
+		for (int i = 0; i < curpage.Size(); ++i)
+		{
+			if (curpage[i].Left(5) ~== "Title")
+			{
+				string curline = curpage[i].Mid(5);
+				pagetitle = curline;
+			}
+			else if (curpage[i].Left(8) ~== "Subtitle")
+			{
+				string curline = curpage[i].Mid(8);
+				DrawSubtitle(curline, 180 + (40 * listnum), alpha);
+				++listnum;
+			}
+			else if (curpage[i].Left(6) ~== "Credit")
+			{
+				string curline = curpage[i].Mid(6);
+				array<string> linedata;
+				curline.Split(linedata, ",");
+				if (linedata.Size() != 3) {ThrowAbortException("Credits Page Error: Line %d of Page %d is invalid.", i, mScreen);}
+				DrawCredit(linedata[0], linedata[1], linedata[2], 180 + (40 * listnum), alpha);
+				if ((linedata[0] ~== "") || (linedata[0] ~== "null")) {++listnum;}
+				else {listnum += 2;}
+			}
+			else if (curpage[i].Left(5) ~== "Image")
+			{
+				string curline = curpage[i].Mid(5);
+				array<string> linedata;
+				curline.Split(linedata, ",");
+				if (linedata.Size() != 4) {ThrowAbortException("Credits Page Error: Line %d of Page %d is invalid.", i, mScreen);}
+				DrawScaledImage(linedata[0], (linedata[1].ToInt(10), linedata[2].ToInt(10)), linedata[3].ToDouble(), alpha);
+			}
+			else if (curpage[i].Left(4) ~== "Text")
+			{
+				bool largefont = false;
+				string curline = curpage[i].Mid(4);
+				if (curline.Left(3) ~== "Big")
+				{
+					largefont = true;
+					curline = curline.Mid(3);
+				}
+				array<string> linedata;
+				curline.Split(linedata, ",");
+				if (linedata.Size() != 5) {ThrowAbortException("Credits Page Error: Line %d of Page %d is invalid.", i, mScreen);}
+				DrawScaledText(linedata[0], linedata[1].ToInt(10), (linedata[2].ToInt(10), linedata[3].ToInt(10)), linedata[4].ToDouble(), alpha, largefont);
+			}
+		}
+		
+		DrawTitle(pagetitle, alpha);
+		DrawSubtitle(pagetitle2, 108, alpha);
+		
+		
+		//DrawCredit("catoidi.png", "fake person", "lotsofwords", 240, alpha);
+		//DrawCredit("catoidi.png", "person 1", "insert data here", 320, alpha);
+		//DrawCredit("catoidi.png", "not real", "this one has\nmultiple lines", 400, alpha);
+	}
+	
+	ui void DrawTitle(string text, double alpha)
+	{
+		//large text located at the top of the screen.
+		DrawScaledText(text, 1, (480, 60), 3, alpha, true);
+	}
+	
+	ui void DrawSubtitle(string text, double posy, double alpha)
+	{
+		DrawScaledText(text, 1, (480, posy), 3, alpha, false);
+	}
+	
+	ui void DrawCredit(string image, string textleft, string textright, int posy, double alpha)
+	{
+		int leftx = 192;
+		if ((image ~== "") || (image ~== "null")) {leftx = 120;}
+		DrawScaledImage(image, (120, posy - 16), 64.0, alpha);
+		DrawScaledText(textleft, 0, (leftx, posy), 3, alpha);
+		DrawScaledText(textright, 2, (840, posy), 3, alpha);
+	}
+	
+	ui void DrawScaledImage(string imagename, vector2 pos, double boxsize, double alpha)
+	{
+		//draw a texture at the specific location relative to the size of the credits bounding box.
+		let newimage = texman.checkfortexture(string.format("graphics/credits/%s", imagename));
+		if (newimage)
+		{
+			int sizex, sizey;
+			[sizex, sizey] = texman.GetSize(newimage);
+			int maxsize = sizex;
+			if (sizey > sizex) {maxsize = sizey;}
+			if (maxsize > 0)
+			{
+				double imagescale = boxsize / maxsize;
+				screen.drawtexture(newimage, true, ScaledX(pos.x), ScaledY(pos.y), DTA_ScaleX, ResScale() * imagescale, DTA_ScaleY, ResScale() * imagescale, DTA_Alpha, alpha);
+			}
+		}
+	}
+	
+	ui void DrawScaledText(string text, int align, vector2 pos, double size, double alpha, bool largefont = false)
+	{
+		let curfont = smallfont;
+		if (largefont) {curfont = bigfont;}
+	
+		//alignment.
+		//0 = left aligned.
+		//1 = center aligned.
+		//2 = right aligned.
+		string localtext = StringTable.Localize(text, true);
+		double alignpos = curfont.stringwidth(localtext) * (0.5 * size * align);
+		
+		screen.DrawText(curfont, Font.CR_UNTRANSLATED, ScaledX(pos.x - alignpos), ScaledY(pos.y), localtext, DTA_ScaleX, ResScale() * size, DTA_ScaleY, ResScale() * size, DTA_Alpha, alpha);
+	}
+
+	override void Drawer()
+	{
+		double alpha;
+		if (!initui) {CreditInit();}
+		
+		if (!tex.IsValid())
+		{
+			tex = TexMan.CheckForTexture(string.format("graphics/credits/creditback%d.png", mScreen % 3));
+		}
+
+		if (mScreen > 1)
+		{
+			prevpic = tex;
+			tex = TexMan.CheckForTexture(string.format("graphics/credits/creditback%d.png", mScreen % 3));
+		}
+
+		DrawStars();
+		alpha = MIN((gametic - mInfoTic) * (3. / GameTicRate), 1.);
+		if (alpha < 1. && prevpic.IsValid())
+		{
+			screen.DrawTexture (prevpic, false, ScaledX(), ScaledY(), DTA_ScaleX, ResScale(), DTA_ScaleY, ResScale(), DTA_Alpha, 1.0);
+			DrawPage(prevpagedata, 1.0);
+		}
+		else alpha = 1;
+		screen.DrawTexture (tex, false, ScaledX(), ScaledY(), DTA_ScaleX, ResScale(), DTA_ScaleY, ResScale(), DTA_Alpha, alpha);
+		DrawPage(pagedata, alpha);
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == MKEY_Enter)
+		{
+			MenuSound("menu/choose");
+			mScreen++;
+			mInfoTic = gametic;
+			if (mScreen > maxpages)
+			{
+				Close();
+			}
+			else
+			{
+				LoadPageData(mScreen);
+			}
+			return true;
+		}
+		else return Super.MenuEvent(mkey, fromcontroller);
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (type == MOUSE_Click)
+		{
+			return MenuEvent(MKEY_Enter, true);
+		}
+		return false;
+	}
+}
