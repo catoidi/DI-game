@@ -15,8 +15,6 @@ extend class DIHandler
 		ParseDIWAVE(e);
 		//GetWaveData(e);
 		//ParseWaveData(e);
-		
-		GetSupporters(); //make list of supporters to show on title screen.
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -144,13 +142,6 @@ extend class DIHandler
 	override void WorldTick()
 	{
 		ammogivetick = false;
-		
-		if (Level.MapName ~== "titlemap") {TitlemapTick();}
-	}
-	
-	override void RenderUnderlay(RenderEvent e)
-	{
-		if (supportwait >= 190) {ShowSupporters(e);}
 	}
 	
 	override void NetworkProcess(ConsoleEvent e)

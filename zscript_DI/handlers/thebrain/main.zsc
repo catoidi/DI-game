@@ -52,6 +52,4 @@ class DIHandler : EventHandler
 	int floortic;
 	
 	DI_WaveSpawnTimer wavetimeractor;
-	
-	private Array<String> supporters;
 }
