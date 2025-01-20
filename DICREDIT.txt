@@ -5,13 +5,14 @@ Page 1;
 	StartY 40;
 	Credit catoidi.png, $DI_CREDIT_CATOIDI_1, $DI_CREDIT_CATOIDI_2;
 	Credit foreverhome.png, $DI_CREDIT_FOREVERHOME_1, $DI_CREDIT_FOREVERHOME_2;
-	Credit , fakename1, placeholder;
-	Credit , fakename2, placeholder;
-	Credit , fakename3, placeholder;
-	Credit , fakename4, placeholder;
+>>	Image creditimage2.png, 0, 0, 960;
 	Subtitle ;
 	Subtitle ;
+	Subtitle $DI_CREDIT_GZDOOM;
 	Subtitle ;
+	Subtitle $DI_CREDIT_SLADE;
+	Subtitle ;
+	Subtitle $DI_CREDIT_UDB;
 	Subtitle ;
 	Subtitle $DI_CREDIT_PRESSANYKEY;
 }
@@ -29,6 +30,7 @@ Page 2;
 	Credit , $DI_CREDIT_MINIMAP_1, $DI_CREDIT_MINIMAP_2;
 	Credit , $DI_CREDIT_CROSSHAIR_1, $DI_CREDIT_CROSSHAIR_2;
 	Credit , $DI_CREDIT_GEARBOX_1, $DI_CREDIT_GEARBOX_2;
+	Image creditimage3.png, 0, 0, 960;
 }
 
 Page 3;
@@ -41,6 +43,7 @@ Page 3;
 	Credit , $DI_CREDIT_BLENDER_1, $DI_CREDIT_BLENDER_2;
 	Credit , $DI_CREDIT_RELOAD_1, $DI_CREDIT_RELOAD_2;
 	Credit , $DI_CREDIT_WOW_1, $DI_CREDIT_WOW_2;
+	Image creditimage4.png, 0, 0, 960;
 }
 
 Page 4;
@@ -50,5 +53,7 @@ Page 4;
 	Subtitle ;
 	Credit , Glace, Muffins;
 	Credit , TheatreHeathen20, mr.casual;
-	Credit , Nuts, ;
+	Credit , Nuts, Merci;
+	Credit , Gabriel, Tayette;
+	Image creditimage1.png, 0, 0, 960;
 }
