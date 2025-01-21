@@ -237,10 +237,15 @@ Class SwagHandler : EventHandler
 		}
 	}
 	
-	ui virtual int GetHighScore()
+	ui virtual int GetHighScore(string cvarstring = "di_highscore")
 	{
 		if (!plr) {return 999999999;}
-		cvar highscores = cvar.findcvar("di_highscore");
+		cvar highscores = cvar.findcvar(cvarstring);
+		if (!highscores) 
+		{
+			console.printf("%s", "\cginvalid cvar used in GetHighscore.");
+			return 999999998;
+		}
 		string fullscores = highscores.getstring();
 		array<string> scorelines;
 		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
@@ -277,10 +282,15 @@ Class SwagHandler : EventHandler
 		return currentscore;
 	}
 	
-	ui virtual void UpdateHighScore(int newscore, bool iseasy)
+	ui virtual void UpdateHighScore(int newscore, bool iseasy, string cvarstring = "di_highscore")
 	{
 		if (!plr) {return;}
-		cvar highscores = cvar.findcvar("di_highscore");
+		cvar highscores = cvar.findcvar(cvarstring);
+		if (!highscores) 
+		{
+			console.printf("%s", "\cginvalid cvar used in UpdateHighscore.");
+			return;
+		}
 		string fullscores = highscores.getstring();
 		array<string> scorelines;
 		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
@@ -475,12 +485,15 @@ Class SwagHandler : EventHandler
 			{
 				prevscore = GetHighScore();
 				finalscore = plr.GetScore();
+				int prevdeaths = GetHighScore("di_playerdeaths");
+				++prevdeaths;
 				if (finalscore > prevscore)
 				{
 					bool iseasy = false;
 					if (skill == 0) {iseasy = true;}
 					UpdateHighScore(finalscore, iseasy);
 				}
+				UpdateHighScore(prevdeaths, false, "di_playerdeaths");
 				UpdateSwag(finalscore);
 				eventhandler.sendnetworkevent("swagcheck", lvl2);
 				scoredone = true;

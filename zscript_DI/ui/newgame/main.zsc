@@ -360,10 +360,11 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		}
 	}
 	
-	virtual int GetHighScore(name findplayer = '*', name findlevel = '*')
+	virtual int GetHighScore(name findplayer = '*', name findlevel = '*', string cvarstring = "di_highscore")
 	{
 		//also used in death screen (getscorebonus)
-		cvar highscores = cvar.findcvar("di_highscore");
+		cvar highscores = cvar.findcvar(cvarstring);
+		if (!highscores) {return 0;}
 		string fullscores = highscores.getstring();
 		array<string> scorelines;
 		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);

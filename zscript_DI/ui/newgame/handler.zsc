@@ -75,7 +75,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			link.playername = link.playerpool[plrnum];
 			string infopic = String.Format("%s%s.png", "graphics/info_", plrclass);
 			//console.printf("%s", infopic);
-			string scoreline = string.format("\cbTotal Score: %d", link.GetHighScore(link.playerpool[plrnum]));
+			string scoreline = string.format("\cbTotal Score: %d\nTotal Deaths: %d", link.GetHighScore(link.playerpool[plrnum]), link.GetHighScore(link.playerpool[plrnum], cvarstring: "di_playerdeaths"));
 			link.plrinfo.SetImage(infopic);
 			link.UpdateTopLabel(String.Format("\cnselected: %s", plrclass), scoreline); 
 			if (currentclass == plrnum) {link.pagenum = 1;}
@@ -101,7 +101,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			let lvlnum = lvlstr.ToInt(10);
 			string lvlclass = link.lvllabels[lvlnum].GetText();
 			link.levelname = link.levelpool[lvlnum];
-			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass), string.format("\cbBest Player Score: %d", link.GetHighScore(link.playername, link.levelpool[lvlnum]))); 
+			link.UpdateTopLabel(String.Format("\cnselected: %s", lvlclass), string.format("\cbBest Player Score: %d\nTotal Deaths: %d", link.GetHighScore(link.playername, link.levelpool[lvlnum]), link.GetHighScore(link.playername, link.levelpool[lvlnum], cvarstring: "di_playerdeaths"))); 
 			//console.printf("%s", lvlclass);
 			curlvl_cvar.setint(lvlnum);
 			if (currentlvl == lvlnum) {link.pagenum = 2;}
