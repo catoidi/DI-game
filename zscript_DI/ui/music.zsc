@@ -39,7 +39,7 @@ Class DIMusicHandler : EventHandler
 			case 1:
 				if (mvolume < 1.0)
 				{
-					mvolume += 0.1;
+					mvolume = 1.0;
 					SetMusicVolume(mvolume);
 				}
 				else
