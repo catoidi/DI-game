@@ -102,7 +102,7 @@ Class DI_DI01Canvas : DI_Actor
 			string curwave2 = string.format("* %s%d *", "Shop Level: ", shoplvl);
 			int xtwo = (w - bigFont.StringWidth(curwave2)) / 2;
 			int ytwo = (h - bigFont.GetHeight()) / 2;
-			string curwave3 = string.format("%s%d/%d", "Next Level: ", shopprogress, shoplvl * 3);
+			string curwave3 = string.format("%s%d/%d", "Next Level: ", shopprogress, shoplvl * 2);
 			int xthree = (w - bigFont.StringWidth(curwave3)) / 2;
 			int ythree = h - (bigFont.GetHeight() * 2.5);
 
