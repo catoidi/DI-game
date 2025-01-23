@@ -1,0 +1,168 @@
+//zscript_DI/items/objectives/defender.zsc
+
+//player must protect a new npc from bodily harm for the entire wave.
+//npc is not immune to friendly fire.
+//npc behaves exactly like the mini freds, but cannot attack.
+
+Class DI_QuestObjective_Defender : DI_QuestObjective
+{
+	bool queststarted; //checks when the player first enters the next wave.
+	bool youfuckedup;
+	
+	DI_QuestObjective_Defender_NPC npc;
+
+	override void doeffect()
+	{
+		super.doeffect();
+		ObjectiveTick();
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if ((plr) && (plr.inwave))
+		{
+			if (!queststarted)
+			{
+				bool spawned;
+				actor thing;
+				[spawned, thing] = A_SpawnItemEX("DI_QuestObjective_Defender_NPC", plr.radius + 10);
+				if (spawned && thing)
+				{
+					npc = DI_QuestObjective_Defender_NPC(thing);
+					npc.tracker = self;
+					npc.plr = plr;
+					queststarted = true;
+				}
+			}
+			else if (youfuckedup) {ObjectiveFailed();}
+		}
+		else if ((queststarted) && (!plr.inwave)) 
+		{
+			ObjectiveComplete();
+			if (npc) 
+			{
+				npc.A_Die();
+				npc = null;
+			}
+		}
+	}
+	
+	virtual void NPCDied()
+	{
+		youfuckedup = true;
+	}
+	
+	override string QuestName() {return "Defender";}
+	override string QuestProgress()
+	{
+		if (!npc) {return "NPC hasn't spawned yet!";}
+		return string.format("Health: %d/%d", npc.health, npc.StartHealth);
+	}
+}
+
+Class DI_QuestObjective_Defender_NPC : DI_Actor
+{
+	
+	Default
+	{
+		Speed 3;
+		Health 20;
+		Radius 9;
+		Height 20;
+		Scale 0.5;
+		PainSound "dipain2";
+		DeathSound "dipain";
+		Tag "Mini Box";
+		DI_Actor.NoDrops true;
+		+SHOOTABLE;
+		+FRIENDLY;
+		+NOBLOOD;
+		+NOBLOODDECALS;
+	}
+	
+	DI_QuestObjective_Defender tracker;
+	DI_PlayerBase plr;
+	bool trackfail;
+	int teletime;
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (plr == DI_PlayerBase(other)) {return false;}
+		if (other.bFRIENDLY == true) {return false;}
+		else if (other is "DI_Monster")
+		{
+			other.target = self; 
+			return true;
+		}
+		
+		return Super.CanCollideWith(other, passive);
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		A_AttachLightDef("glower", "GLOWWHITE");
+		
+		if (!tracker) {trackfail = true;}
+		
+		int newhp = 50 * ACS_ScriptCall("DICheckWave");
+		health = newhp;
+		starthealth = newhp;
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (!tracker && !trackfail)
+		{
+			A_Die();
+			trackfail = true;
+		}
+		
+		if (level.IsFrozen() == false)
+		{
+			++teletime;
+			if (teletime >= 35)
+			{	
+				if (Distance3D(Actor(plr)) >= 512)
+				{
+					SetOrigin(plr.Pos, false);
+					A_ClearTarget();
+				}
+				
+				if ((health < starthealth) && (health > 0))
+				{
+					GiveBody(1, starthealth);
+				}
+				
+				teletime = 0;
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			PBOX A 0 NoDelay A_FadeOut(0.9);
+			#### ######## 1 A_FadeIn(0.1);
+		Wander:
+			#### AB 10 A_Wander;
+			Loop;
+		Pain:
+			#### # 10 A_Pain();
+			Goto See;
+		Death:
+			#### # 0
+			{
+				if (invoker.tracker) {invoker.tracker.NPCDied();}
+				A_DIDie();
+			}
+			#### # 1 
+			{
+				A_DIScale(1.01, 0.95, true);
+				A_FadeOut(0.03);
+			}
+			Wait;
+	}
+}

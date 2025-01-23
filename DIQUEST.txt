@@ -6,20 +6,21 @@
 >>Arg 5: (Optional) Minimum wave required to add this debuff/objective. Default is 0, which is every wave.
 * Debuff DI_QuestDebuff_Slow 256 0;
 * Debuff DI_QuestDebuff_Defenseless 256 0;
-* Debuff DI_QuestDebuff_TornPockets 128 0;
-* Debuff DI_QuestDebuff_Encumbered 128 0;
+* Debuff DI_QuestDebuff_TornPockets 192 0;
+* Debuff DI_QuestDebuff_Encumbered 192 0;
 * Debuff DI_QuestDebuff_MotionBlur 256 0;
 * Debuff DI_QuestDebuff_SpeedyFoes 256 0;
 * Debuff DI_QuestDebuff_BulletSponge 256 0;
 * Debuff DI_QuestDebuff_Underpaid 192 0;
-* Debuff DI_QuestDebuff_Rotten 256 0;
+* Debuff DI_QuestDebuff_Rotten 128 0;
 DI02 Debuff DI_QuestDebuff_MoreOnions 128 4;
 >>DI02 Debuff DI_QuestDebuff_MoreLemons;
-* Objective DI_QuestObjective_Fresh 128 2;
+* Objective DI_QuestObjective_Fresh 192 2;
 * Objective DI_QuestObjective_BloodDrive 256 0;
 * Objective DI_QuestObjective_SleightOfHand 256 2;
 * Objective DI_QuestObjective_Overconsumption 256 2;
 * Objective DI_QuestObjective_Audit 256 0;
-* Objective DI_QuestObjective_Favoritism 128 2;
+* Objective DI_QuestObjective_Favoritism 192 2;
+* Objective DI_QuestObjective_Defender 192 0;
 DI02 Objective DI_QuestObjective_Kill_BigMelon 128 8;
 >>DI02 Objective DI_QuestObjective_Kill_Onions;
