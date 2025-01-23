@@ -329,9 +329,11 @@ Class DI_PlayerBase : PlayerPawn abstract
 		A_StartSound("combord", 0);
 		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
 		int diwep_fresh = diwep.wpn_freshbonus;
+		string plussign = "+";
 		ACS_ScriptCall("dofreshflash");
 		eventhandler.sendnetworkevent("diplayerfreshbonus");
-		console.printf("\cnfresh weapon bonus! (+%d)", diwep_fresh);
+		if (diwep_fresh < 0) {plussign = "";}
+		console.printf("\cnfresh weapon bonus! (%s%d)", plussign, diwep_fresh);
 	}
 	
 	virtual int FreshKillCount()

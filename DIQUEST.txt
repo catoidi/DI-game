@@ -12,6 +12,7 @@
 * Debuff DI_QuestDebuff_SpeedyFoes 256 0;
 * Debuff DI_QuestDebuff_BulletSponge 256 0;
 * Debuff DI_QuestDebuff_Underpaid 192 0;
+* Debuff DI_QuestDebuff_Rotten 256 0;
 DI02 Debuff DI_QuestDebuff_MoreOnions 128 4;
 >>DI02 Debuff DI_QuestDebuff_MoreLemons;
 * Objective DI_QuestObjective_Fresh 128 2;

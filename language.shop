@@ -48,6 +48,10 @@ SHOPITEM_DI_QUESTDEBUFF_UNDERPAID = "\cgCurse of Underpaid";
 SHOPDESC_DI_QUESTDEBUFF_UNDERPAID = "Your combo drains 30% faster.";
 SHOPDESC2_DI_QUESTDEBUFF_UNDERPAID = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_UNDERPAID = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_ROTTEN = "\cgCurse of Rotten Weapons";
+SHOPDESC_DI_QUESTDEBUFF_ROTTEN = "Fresh Weapon Bonus is reduced by 2.";
+SHOPDESC2_DI_QUESTDEBUFF_ROTTEN = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_ROTTEN = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

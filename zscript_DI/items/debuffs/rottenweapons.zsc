@@ -1,0 +1,16 @@
+//zscript_DI/items/debuffs/rottenweapons.zsc
+
+class DI_QuestDebuff_Rotten : DI_QuestDebuff
+{
+	//reduces your fresh weapon bonus by 2.
+	
+	default 
+	{
+		Tag "\cgCurse (Rotten Weapons)";
+	}
+	override int GiveFreshBonus() 
+	{
+		if (!plr) {return 0;}
+		else {return -2 * plr.CountInv(self.GetClassName());}
+	}
+}
