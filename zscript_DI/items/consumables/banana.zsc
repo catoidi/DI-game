@@ -7,7 +7,7 @@ Class DI_Banana : DI_ThrowBomb
 		Tag "Banana";
 		Inventory.MaxAmount 4;
 		Inventory.Icon "BANAA0";
-		Inventory.PickupMessage "Got a banana. (Gives +15 HP and +15 Regen. Drops a banana peel on the ground.)";
+		Inventory.PickupMessage "Got a banana. (Gives +15 HP. Can go up to 200% Max Health. Drops a banana peel on the ground.)";
 		+INVENTORY.INVBAR;
 	}
 	
@@ -19,10 +19,10 @@ Class DI_Banana : DI_ThrowBomb
 		Use:
 			BANA A 0
 			{
-				if (invoker.owner)
+				if (invoker.owner is "DI_PlayerBase")
 				{
-					invoker.owner.GiveBody(15);
-					invoker.owner.A_GiveInventory("DI_Regen", 15);
+					let plr = DI_PlayerBase(invoker.owner);
+					plr.DI_HealSelf(15, 2.0);
 					A_FireProjectile("DI_Banana_Projectile", 0, false);
 				}
 			}
