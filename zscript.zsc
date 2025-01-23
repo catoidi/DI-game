@@ -109,6 +109,7 @@ version "4.13"
 #include "zscript_DI/items/objectives/overconsumption.zsc"
 #include "zscript_DI/items/objectives/kill_bigmelon.zsc"
 #include "zscript_DI/items/objectives/audit.zsc"
+#include "zscript_DI/items/objectives/favoritism.zsc"
 //random event items
 #include "zscript_DI/items/event/brokenglasses.zsc"
 #include "zscript_DI/items/event/oldmagazine.zsc"

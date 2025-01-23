@@ -11,6 +11,7 @@ DIQUEST_DI_QUESTOBJECTIVE_SLEIGHTOFHAND = "Every weapon kill this wave must be\n
 DIQUEST_DI_QUESTOBJECTIVE_OVERCONSUMPTION = "Complete the wave while using\na consumable every 25 seconds.";
 DIQUEST_DI_QUESTOBJECTIVE_KILL_BIGMELON = "You must defeat a new boss in this wave.";
 DIQUEST_DI_QUESTOBJECTIVE_AUDIT = "Don't let any coins despawn, or else!";
+DIQUEST_DI_QUESTOBJECTIVE_FAVORITISM = "Do not get any Fresh Weapon Kills this wave!";
 //Quest Debuffs.
 SHOPITEM_DI_QUESTDEBUFF_SLOW = "\cgCurse of Food Coma";
 SHOPDESC_DI_QUESTDEBUFF_SLOW = "The closer you are to max health,\nthe slower you move. (up to 20% slower)";
