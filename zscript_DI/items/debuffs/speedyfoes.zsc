@@ -27,7 +27,7 @@ Class DI_SpeedyFoes_Buff : Inventory
         if (owner is "DI_Monster")
         {
             let mon = DI_Monster(owner);
-            mon.speedmult *= 1.0 + (0.4 * mon.CountInv(self.GetClassName()));
+            mon.speedmult *= 1.0 + (0.3 * mon.CountInv(self.GetClassName()));
         }
         return false;
     }

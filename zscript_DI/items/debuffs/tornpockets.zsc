@@ -17,7 +17,7 @@ Class DI_QuestDebuff_TornPockets : DI_QuestDebuff
 	{
 		if ((damage > 0) && (source != owner) && (passive == true) && (cooldown == 0))
 		{
-			int moneyloss = damage * owner.countinv(self.getclassname());
+			int moneyloss = random(0, damage * owner.countinv(self.getclassname()));
 			if (moneyloss > owner.score) {moneyloss = owner.score;}
 			if (moneyloss > 0)
 			{

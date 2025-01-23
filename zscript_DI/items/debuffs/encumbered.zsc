@@ -6,7 +6,7 @@ Class DI_QuestDebuff_Encumbered : DI_QuestDebuff
 
 	override double GiveWeaponSpeed()
 	{
-		if (plr) {return 0.1 * plr.weaponnum * plr.countinv(self.getclassname());}
+		if (plr) {return 0.08 * plr.weaponnum * plr.countinv(self.getclassname());}
 		else {return 0.0;}
 	}
 }
