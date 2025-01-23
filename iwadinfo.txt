@@ -15,6 +15,6 @@ IWad
     BannerColors = "FFFFFF", "000000"
 	//StartupType = "Hexen"
 	DiscordAppID = "1073483426872709191"
-	//SteamAppID = ""
+	SteamAppID = "2318300"
 	NoKeyboardCheats
 }
