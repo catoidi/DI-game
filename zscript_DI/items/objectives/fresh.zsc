@@ -21,10 +21,11 @@ Class DI_QuestObjective_Fresh : DI_QuestObjective
 			queststarted = true;
 			if (plr.JustKilled == true) 
 			{
-				float overtime = 1.0;
-				if ((default.timer > 0) && (timer > default.timer)) {overtime = timer / default.timer;}
+				float overtime = 0.5;
+				if (timer > 0) {overtime *= (0.0 + default.timer) / (0.0 + timer);}
 				
-				timer += default.timer / overtime; //reduce time given if player is doing too well
+				timer += default.timer * overtime; //reduce time given if player is doing too well
+				if (timer > (default.timer * 2)) {timer = default.timer * 2;} //hard cap timer to double the starting time
 			}
 			if (!chillout)
 			{
