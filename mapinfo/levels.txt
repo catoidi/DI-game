@@ -34,6 +34,11 @@ Episode di02
 	Name = "Where the boxes go party"
 }
 
+Episode di03
+{
+
+}
+
 //Levels:
 Map "titlemap" "Title Screen"
 {
@@ -50,6 +55,11 @@ Map "di02" "The afterparty"
 {
 	//Music = "music02"
 	Sky1 = "textures/boxsky1.png"
+}
+
+Map "di03" "castlephobia"
+{
+	Sky1 = "textures/sky1.png"
 }
 
 Map "bonus01" "My first death"

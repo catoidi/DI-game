@@ -476,3 +476,14 @@ Level DI02;
 		EndScript endless_dejavu, 0, 0, 0, 0;
 	}
 }
+
+Level DI03;
+{
+	Wave 1;
+	{
+		Cap 1;
+		Rate 1;
+		Time 1;
+		Spawn Fred, 1;
+	}
+}
