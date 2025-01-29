@@ -17,6 +17,8 @@ Class DIShopController : DIShop_Base
 	
 	Default
 	{
+		DIShop_Base.AllowDebt true;
+		DIShop_Base.DebtHP 1;
 		DIShopController.ReducePriceRound 2;
 		DIShopController.ReducePriceBase 5;
 		DIShopController.ReducePriceMult 0.95;
@@ -25,6 +27,8 @@ Class DIShopController : DIShop_Base
 	
 	override void PostBeginPlay()
 	{
+		if (user_itemstock == 0) {user_itemstock = 1;}
+	
 		shop_currentsprite = user_currentsprite;
 		shop_itemstock = user_itemstock;
 		SpawnShopExtras();
