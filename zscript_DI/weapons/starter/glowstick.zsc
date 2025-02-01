@@ -196,7 +196,7 @@ CLASS GlowstickAmmoDrop : GlowstickAmmo
 	}
 }
 
-Class GlowstickHealthDrop : Health
+Class GlowstickHealthDrop : Inventory
 {
 	Default
 	{
