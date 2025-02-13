@@ -72,3 +72,4 @@ DI_Trickshot;
 DI_CompactGunpowder;
 DI_ShellSling;
 DI_BottomlessClip;
+DI_SprayNPray;

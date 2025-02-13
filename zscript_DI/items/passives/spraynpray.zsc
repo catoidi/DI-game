@@ -1,0 +1,34 @@
+//zscript_DI/items/passives/spraynpray.zsc
+
+Class DI_SprayNPray : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Spray n' Pray";
+		Inventory.Icon "POW2O0";
+		Inventory.PickupMessage "Spray n' Pray acquired! (Accuracy is reduced. Gain up to 15% Firerate as your accuracy worsens.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0.0;}
+		return 3.0 * plr.CountInv(self.GetClassName());
+	}
+	
+	override double GiveFirerate()
+	{
+		if (!plr || !wpn) {return 0.0;}
+		double returnvalue = 0.01 * plr.CountInv(self.GetClassName()) * (wpn.wpn_accuracy + wpn.current_recoil);
+		double maxvalue = 0.15 * plr.CountInv(self.GetClassName());
+		if (returnvalue > maxvalue) {returnvalue = maxvalue;}
+		return -returnvalue;
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 O -1;
+			Loop;
+	}
+}

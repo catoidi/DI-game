@@ -466,6 +466,10 @@ SHOPITEM_DI_BOTTOMLESSCLIP = "Bottomless Clip";
 SHOPDESC_DI_BOTTOMLESSCLIP = "+15% chance to not consume ammo.\n\caReduces Base DMG by 2.";
 SHOPDESC2_DI_BOTTOMLESSCLIP = "\cbItem stacks increase both chance of no ammo consumption and the damage reduction. Best utilized on weapons with high base damage and large magazines.";
 SHOPTYPE_DI_BOTTOMLESSCLIP = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_SPRAYNPRAY = "Spray n' Pray";
+SHOPDESC_DI_SPRAYNPRAY = "Gain up to 15% Firerate as accuracy decreases.\n\caSubstantially reduces accuracy.";
+SHOPDESC2_DI_SPRAYNPRAY = "\cbItem stacks will give a greater Firerate buff but with even worse accuracy.";
+SHOPTYPE_DI_SPRAYNPRAY = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
