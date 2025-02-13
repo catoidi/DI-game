@@ -167,6 +167,7 @@ version "4.13"
 #include "zscript_DI/items/consumables/tomato.zsc"
 #include "zscript_DI/items/consumables/banana.zsc"
 #include "zscript_DI/items/consumables/questbook.zsc"
+#include "zscript_DI/items/consumables/raspberry.zsc"
 
 //weapons
 #include "zscript_DI/weapons/base.zsc" //not a weapon

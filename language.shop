@@ -256,6 +256,10 @@ SHOPITEM_DI_QUESTBOOK_REMOVER = "(Cancel Side Quest?)";
 SHOPDESC_DI_QUESTBOOK_REMOVER = "Use this before the wave to remove your current Side Quest.";
 SHOPDESC2_DI_QUESTBOOK_REMOVER = "\cbThis item will be automatically removed once the wave starts.";
 SHOPTYPE_DI_QUESTBOOK_REMOVER = "\ct[Consumable] \cl[Max: 1]";
+SHOPITEM_DI_RASPBERRY = "Raspberry";
+SHOPDESC_DI_RASPBERRY = "Grants +3 coins per Fresh Weapon Bonus for 30 seconds.";
+SHOPDESC2_DI_RASPBERRY = "\cbWorks best if you have at least 3 weapons, to minimize the fresh cooldown. Powerup Timer does not stack.";
+SHOPTYPE_DI_RASPBERRY = "\ct[Consumable] \cl[Max: 3]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";
@@ -488,3 +492,7 @@ SHOPITEM_DI_CREDITFREEZE_POWERUP = "\cvCredit Freeze (Active)";
 SHOPDESC_DI_CREDITFREEZE_POWERUP = "Grants a temporary 50% slower combo drain.";
 SHOPDESC2_DI_CREDITFREEZE_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_CREDITFREEZE_POWERUP = "\cv[Powerup] \cl[Max Timer: 4]";
+SHOPITEM_DI_RASPBERRY_POWERUP = "\cvRaspberry (Active)";
+SHOPDESC_DI_RASPBERRY_POWERUP = "Fresh Weapon Bonuses drop +3 coins for 30 seconds.";
+SHOPDESC2_DI_RASPBERRY_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_RASPBERRY_POWERUP = "\cv[Powerup] \cl[Max Timer: 30]";

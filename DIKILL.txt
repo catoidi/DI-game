@@ -1,4 +1,4 @@
 >>1: Weapon Class Name.
 >>2: Number of kills required.
 >>3: The boolean CVAR to enable upon reaching the goal.
->>StarPistol 10 di_unlock_item_raspberry;
+StarPistol 256 di_unlock_item_raspberry;
