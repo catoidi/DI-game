@@ -454,6 +454,10 @@ SHOPITEM_DI_TRICKSHOT = "Trickshot";
 SHOPDESC_DI_TRICKSHOT = "Enemies killed with anything other than\na weapon will drop +2 coins.";
 SHOPDESC2_DI_TRICKSHOT = "\cbThis counts both kills with consumables and kills with specific passives. Item stacks increase the number of coins dropped.";
 SHOPTYPE_DI_TRICKSHOT = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_COMPACTGUNPOWDER = "Compact Gunpowder";
+SHOPDESC_DI_COMPACTGUNPOWDER = "Weapons with 4+ projectiles deal +25% DMG.\n\caAnything else deals -25% DMG.";
+SHOPDESC2_DI_COMPACTGUNPOWDER = "\cbMeant for use with shotguns. Item stacks increase amount of DMG gained/lost. Items that increase projectile amount work well with this item.";
+SHOPTYPE_DI_COMPACTGUNPOWDER = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

@@ -1,0 +1,28 @@
+//zscript_DI/items/passives/compactgunpowder.zsc
+
+Class DI_CompactGunpowder : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Compact Gunpowder";
+		Inventory.Icon "POW2L0";
+		Inventory.PickupMessage "Compact Gunpowder Acquired! (+25% DMG to all weapons with at least 4 projectiles. -25% to ones that don't.)";
+		Inventory.MaxAmount 3;
+	}
+
+	override int ItemPriority() {return 1;} //make sure this item is ran after all default items.
+	
+	override double GiveDamageMult()
+	{
+		if (!plr || !wpn) {return 0.0;}
+		if (wpn.wpn_projectiles >= 4) {return 0.25 * plr.CountInv(self.GetClassName());}
+		else {return -0.25 * plr.CountInv(self.GetClassName());}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 L -1;
+			Stop;
+	}
+}
