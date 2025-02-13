@@ -1,0 +1,132 @@
+//zscript_DI/handlers/killtracker.zsc
+
+Class DIKillTracker : EventHandler
+{
+	array<string> currentkills, queuedkills, cvarunlocks;
+	transient cvar killcvar;
+	
+	//Kills are stored in the CVAR in the following format: "Weapon1Name,Weapon1Kills,Weapon2Name,Weapon2Kills"
+	//Weapon Names are always odd and Weapon Kills are always even.
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		killcvar = cvar.getcvar("di_playerkills");
+		string cvarstring = killcvar.GetString();
+		cvarstring.Split(currentkills, ",");
+		
+		array<string> filedata;
+		
+		int ThisLump = Wads.FindLump("DIKILL", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIKILL", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIKILL", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i].Split(currentline, " ");
+			if (currentline.Size() != 3) {continue;} //this is not a valid kill cvar.
+			let currentcvar = cvar.getcvar(currentline[2]);
+			if (!currentcvar) {continue;} //dont bother adding invalid cvars.
+			else if (currentcvar.GetBool()) {continue;} //dont bother adding CVARs that are already unlocked.
+			
+			//Weapon Name
+			cvarunlocks.Push(currentline[0]);
+			//Number of Kills
+			cvarunlocks.Push(currentline[1]);
+			//Item Unlock CVAR
+			cvarunlocks.Push(currentline[2]);
+		}
+	}
+	
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing is "DI_Monster")
+		{
+			let mon = DI_Monster(e.Thing);
+			if ((mon.di_notweapon == false) && (mon.plrwpn))
+			{
+				//console.printf("%s", mon.plrwpn.GetClassName());
+				queuedkills.Push(mon.plrwpn.GetClassName());
+			}
+		}
+	}
+	
+	override void WorldTick()
+	{
+		if (queuedkills.Size() > 0)
+		{
+			UpdateKills();
+		}
+	}
+	
+	virtual void UpdateKills()
+	{
+		//adds the queuedkills to the currentkills pool, and then updates the CVAR to match.
+		
+		for (int i = 0; i < queuedkills.Size(); ++i)
+		{
+			//Find the weapon in the list of current known kills.
+			int pos = currentkills.Find(queuedkills[i]);
+			if (pos == currentkills.Size())
+			{
+				//Add the new weapon to the list.
+				currentkills.Push(queuedkills[i]);
+				//Set the weapon's kills to 1.
+				currentkills.Push("1");
+				
+				FindKillCVARs(queuedkills[i], 1);
+			}
+			else
+			{
+				//Get the weapon's current amount of kills.
+				int weaponkills = currentkills[pos + 1].ToInt(10);
+				//Add 1 to that number.
+				++weaponkills;
+				//Return that number back into the array.
+				currentkills[pos + 1] = string.format("%d", weaponkills);
+				
+				FindKillCVARs(queuedkills[i], weaponkills);
+			}
+		}
+		
+		//Compile kills into a single string
+		string returncvar;
+		for (int i = 0; i < currentkills.Size(); ++i)
+		{
+			if (i == 0) {returncvar = currentkills[i];}
+			else
+			{
+				returncvar.AppendFormat(",%s", currentkills[i]);
+			}
+		}
+		//Finally, update the CVAR.
+		killcvar.SetString(returncvar);
+		
+		queuedkills.Clear();
+	}
+
+	virtual void FindKillCVARs(string curwpn, int curkills)
+	{
+		//check a weapon to see if it's current amount of kills meets the requirements to unlock any items, and if so, unlock that item.
+		//this will only unlock 1 item at a time, by the way. this is intentional.
+		int pos = cvarunlocks.Find(curwpn);
+		if (pos != cvarunlocks.Size())
+		{
+			if (curkills >= cvarunlocks[pos + 1].ToInt(10))
+			{
+				SendInterfaceEvent(consoleplayer, string.format("diunlock_%s", cvarunlocks[pos + 2]));
+				cvarunlocks.Delete(pos, 3);
+			}
+		}
+	}
+}

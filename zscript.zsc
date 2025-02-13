@@ -17,6 +17,7 @@ version "4.13"
 #include "zscript_DI/handlers/unlocker.zsc"
 #include "zscript_DI/handlers/painter.zsc"
 #include "zscript_DI/handlers/janitor.zsc"
+#include "zscript_DI/handlers/killtracker.zsc"
 
 //ZForms (uses MIT License)
 #include "zscript_libraries/ZForms/Include.zsc"

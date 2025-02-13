@@ -26,6 +26,7 @@ GameInfo
 		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.
 		"SwagHandler", //Controls swag level things, and player death screen.
 		"DIUnlockHandler", //For controlling unlocks and stuff.
+		"DIKillTracker", //Track weapon-related kills, do weapon mastery unlocks.
 		"PaintHandler", //controls the paintings.
 		"DIJanitor", //cleans up blood, gibs, and bullets.
 		"NashHPBarHandler", //HP bar + Shop UI combo.
