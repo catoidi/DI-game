@@ -203,11 +203,19 @@ Class DI_Monster : DI_Actor abstract
 		//this code is a necessary evil to ensure players get awarded fresh bonuses if an enemy is killed by a status effect inflicted by their weapon.
 		if ((source is "DI_PlayerBase") && (inflictor is "DI_Actor"))
 		{
-			DI_PlayerBase dicheck = DI_PlayerBase(source);
-			DI_Actor dicheck2 = DI_Actor(inflictor);
-			if ((dicheck) && (dicheck2.di_notweapon == false))
+			if (inflictor is "DI_Projectile")
 			{
-				plrwpn = DI_Weapon(dicheck.player.readyweapon);
+				DI_Projectile proj = DI_Projectile(inflictor);
+				if (proj.plrwpn && !proj.di_notweapon) {plrwpn = proj.plrwpn;}
+			}
+			else
+			{
+				DI_PlayerBase dicheck = DI_PlayerBase(source);
+				DI_Actor dicheck2 = DI_Actor(inflictor);
+				if ((dicheck) && (dicheck2.di_notweapon == false))
+				{
+					plrwpn = DI_Weapon(dicheck.player.readyweapon);
+				}
 			}
 		}
 		

@@ -185,6 +185,8 @@ Class DI_Projectile : DI_Actor
 	bool flatbullet;
 
 	property FlatBullet : flatbullet; //combine with +FLATSPRITE to create fake 3d bullets.
+	
+	DI_Weapon plrwpn;
 
 	Default
 	{
@@ -199,9 +201,24 @@ Class DI_Projectile : DI_Actor
 	{
 		Super.PostBeginPlay();
 
+		if (!di_notweapon) {TrackBulletSource();}
 		CheckStatusChange();
 		UpdateSize();
 		if (flatbullet) {DI_SideBullet();}
+	}
+	
+	void TrackBulletSource()
+	{
+		//lets projectiles remember what weapon that it originated from.
+		if (target is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(target);
+			if (plr.player.readyweapon is "DI_Weapon") 
+			{
+				plrwpn = DI_Weapon(plr.player.readyweapon);
+				wpn = plrwpn; //oopsie :)
+			}
+		}
 	}
 
 	void DI_SideBullet()

@@ -305,21 +305,22 @@ Class DI_PlayerBase : PlayerPawn abstract
 		EventHandler.SendInterfaceEvent(plrnum, uncvar);
 	}
 	
-	clearscope virtual bool CanFreshKill(void)
+	clearscope virtual bool CanFreshKill(string freshweapon = "")
 	{
 		if (!player.ReadyWeapon) {return false;}
-		if ((LastWeaponKill != player.ReadyWeapon.GetClassName()) && (LastKillTimer < 1)) {return true;}
+		if (freshweapon == "") {freshweapon = player.ReadyWeapon.GetClassName();}
+		if ((LastWeaponKill != freshweapon) && (LastKillTimer < 1)) {return true;}
 		else if (JustKilled == true) {return true;}
 		else {return false;}
 	}
 	
-	virtual void IsFreshKill(void)
+	virtual void IsFreshKill(DI_Weapon curwpn)
 	{
 		int LastKillTimer_Count = 0;
-		freshlist.Push(player.ReadyWeapon.GetClassName());
+		freshlist.Push(curwpn.GetClassName());
 		for (int i = 0; i < freshlist.Size(); ++i)
 		{
-			if (freshlist[i] == player.ReadyWeapon.GetClassName()) {++LastKillTimer_Count;}
+			if (freshlist[i] == curwpn.GetClassName()) {++LastKillTimer_Count;}
 		}
 		LastWeaponKill = CurrentWeaponKill;
 		LastKillTimer = 35 * (1 + LastKillTimer_Count);
@@ -327,8 +328,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		LastKillTimer_Max = LastKillTimer;
 		JustKilled = true;
 		A_StartSound("combord", 0);
-		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
-		int diwep_fresh = diwep.wpn_freshbonus;
+		int diwep_fresh = curwpn.wpn_freshbonus;
 		string plussign = "+";
 		ACS_ScriptCall("dofreshflash");
 		eventhandler.sendnetworkevent("diplayerfreshbonus");
@@ -349,10 +349,19 @@ Class DI_PlayerBase : PlayerPawn abstract
 		int freshcharge = 1;
 		int islastweapon = 1;
 		
+		DI_Weapon curwpn;
 		if (player.ReadyWeapon)
 		{
-			CurrentWeaponKill = player.ReadyWeapon.GetClassName();
-			DI_Weapon curwpn = DI_Weapon(player.ReadyWeapon);
+			if (mon.plrwpn)
+			{
+				curwpn = mon.plrwpn;
+				CurrentWeaponKill = mon.plrwpn.GetClassName();
+			}
+			else
+			{
+				CurrentWeaponKill = player.ReadyWeapon.GetClassName();
+				curwpn = DI_Weapon(player.ReadyWeapon);
+			}
 			
 			if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
 			if (notweapon == true) {freshnum = 0;}
@@ -368,9 +377,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 		LastKillTimer -= killbonus;
 		if (LastKillTimer < 1) {LastKillTimer = 0;}
 
-		if (CanFreshKill() && !notweapon) 
+		if (curwpn && CanFreshKill(CurrentWeaponKill) && !notweapon) 
 		{
-			IsFreshKill();
+			IsFreshKill(curwpn);
 			mon.wasfreshkilled = true;
 		}
 	}

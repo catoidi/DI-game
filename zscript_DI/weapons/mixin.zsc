@@ -5,7 +5,11 @@ mixin class DI_ProjectileMixin
 
 	virtual void GetDIPlayer()
 	{
-		if (target is "DI_PlayerBase") {plr = DI_PlayerBase(target); wpn = DI_Weapon(plr.player.ReadyWeapon);}
+		if (target is "DI_PlayerBase") 
+		{
+			if (!plr) {plr = DI_PlayerBase(target);}
+			if (!wpn) {wpn = DI_Weapon(plr.player.ReadyWeapon);}
+		}
 	}
 
 	virtual int GetWeaponDamage()
