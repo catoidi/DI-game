@@ -4,3 +4,4 @@
 StarPistol 256 di_unlock_item_raspberry;
 GreenShotgun 256 di_unlock_item_compactgunpowder;
 DoubleShotgun 256 di_unlock_item_shellsling;
+BlueSMG 256 di_unlock_item_bottomlessclip;

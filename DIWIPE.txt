@@ -71,3 +71,4 @@ DI_CreditFreeze;
 DI_Trickshot;
 DI_CompactGunpowder;
 DI_ShellSling;
+DI_BottomlessClip;

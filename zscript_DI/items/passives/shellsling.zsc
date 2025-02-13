@@ -39,7 +39,7 @@ Class DI_ShellSling : DIPassiveInventory
 	States
 	{
 		Spawn:
-			POW1 B -1;
+			POW2 M -1;
 			Stop;
 	}
 }

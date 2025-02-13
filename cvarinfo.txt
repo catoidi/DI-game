@@ -109,6 +109,7 @@ server cheat bool di_unlock_item_questbook = false; //25 side quests in level 2.
 server cheat bool di_unlock_item_raspberry = false; //star pistol mastery.
 server cheat bool di_unlock_item_compactgunpowder = false; //green shotgun.
 server cheat bool di_unlock_item_shellsling = false; //double shotgun.
+server cheat bool di_unlock_item_bottomlessclip = false; //blue smg.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.
