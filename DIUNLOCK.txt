@@ -76,6 +76,9 @@ di_unlock_item_bloodyheart DI_BloodyHeart 2 di_tomahawkcount 50000;
 di_unlock_item_heartbomb DI_HeartBomb 3 di_heartcount 50000;
 di_unlock_item_consumer DI_Consumer 2  50000;
 di_unlock_item_dice DI_Dice 3 di_rerollshop 50000;
+>>Weapon Mastery
+di_unlock_item_raspberry DI_Raspberry 2 di_playerkills 66666;
+>>15x Unlock Reward
 di_unlock_item_bulletmitosis DI_BulletMitosis 2  999999;
 di_unlock_item_toomanybullets DI_TooManyBullets 2  999999;
 di_unlock_item_starfruit DI_Starfruit 2  999999;

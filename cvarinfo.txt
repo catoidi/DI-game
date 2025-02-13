@@ -105,6 +105,8 @@ server cheat bool di_unlock_item_partyshotty2 = false; //not used ingame.
 server cheat bool di_unlock_item_tomato = false; //defeat the big melon boss.
 server cheat bool di_unlock_item_trailblazer = false; //max out level 2's shop.
 server cheat bool di_unlock_item_questbook = false; //25 side quests in level 2.
+//weapon mastery unlocks
+server cheat bool di_unlock_item_raspberry = false; //star pistol mastery.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.
