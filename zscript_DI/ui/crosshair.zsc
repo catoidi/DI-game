@@ -116,7 +116,8 @@ class DIXHairHandler : EventHandler
 			if (fracspread > curspread) {fracspread += ((curspread - xspread) / 3.0) * e.FracTic;}
 			else if (curspread < fracspread) {fracspread -= ((xspread - curspread) / 3.0) * e.FracTic;}
 			double xalpha = ((1.0 - (wep_rec / ((pfov / 2) - wep_acc))) * xhair_alpha.GetFloat()) * xhair_startalpha; //calculate xhair alpha
-			if (showwheel) {xalpha *= 0.25;} //hide xhair when weapon wheel is open
+			if (showwheel) {xalpha *= 0.05;} //hide xhair when weapon wheel is open
+			if (diplayer.thehud && diplayer.thehud.drawAutomap) {xalpha = 0.0;}
 			let xcolor = Translation.GetID("DamWhite");
 			if (diplayer.CanFreshKill()) {xcolor = Translation.GetID("IsFresh");} //change xhair color to blue when fresh is ready
 			else if ((diplayer.LastKillTimer >= 1) && (diplayer.LastWeaponKill == diwep.GetClassName())) {xcolor = Translation.GetID("DamDarkGrey");}
@@ -132,7 +133,7 @@ class DIXHairHandler : EventHandler
 			Screen.DrawTexture(xhair_tex, false, cenx, ceny + fracspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //down
 			Screen.DrawTexture(xhair_tex, false, cenx, ceny - fracspread, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //up
 			
-			if ((diplayer.LastKillTimer > 0) && (fresh_toggle.GetBool() == true))
+			if ((diplayer.LastKillTimer > 0) && (fresh_toggle.GetBool() == true) && (xalpha > 0.0))
 			{
 				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + fracspread + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, yscale, DTA_CenterOffset, true);
 			}
