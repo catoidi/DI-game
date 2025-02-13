@@ -87,8 +87,87 @@ class DI_UnlockMenuHandler : boxparty_ZF_Handler
 			if (progressname != "")
 			{
 				//console.printf("%s", "yea");
+				
 				cvar progresscvar = cvar.findcvar(progressname);
-				labelcommand.appendformat(" \cn(Progress: %d)", progresscvar.getint());
+				if (progressname != "di_playerkills") {labelcommand.appendformat(" \cn(Progress: %d)", progresscvar.getint());}
+				else
+				{
+					array<string> currentkills, filedata, cvarunlocks;
+		
+					int ThisLump = Wads.FindLump("DIKILL", 0, Wads.ANYNAMESPACE);
+					int NextLump = Wads.FindLump("DIKILL", ThisLump + 1, Wads.ANYNAMESPACE);
+					
+					while (ThisLump != -1)
+					{
+						Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+						ThisLump = NextLump;
+						NextLump = Wads.FindLump("DIKILL", ThisLump + 1, 1);
+					}
+					
+					for (int i = 0; i < filedata.Size(); i++)
+					{
+						//console.printf("reading: '%s'", filedata[i]);
+						if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+						if (filedata[i].Length() < 3) {continue;}
+						filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+						
+						Array<String> currentline;
+						filedata[i].Split(currentline, " ");
+						if (currentline.Size() != 3) {continue;} //this is not a valid kill cvar.
+						let currentcvar = cvar.getcvar(currentline[2]);
+						if (!currentcvar) {continue;} //dont bother adding invalid cvars.
+						//else if (currentcvar.GetBool()) {continue;} //dont bother adding CVARs that are already unlocked.
+						
+						//console.printf("adding: '%s' to cvarunlocks", filedata[i]); 
+						//Weapon Name
+						cvarunlocks.Push(currentline[0]);
+						//Number of Kills
+						cvarunlocks.Push(currentline[1]);
+						//Item Unlock CVAR
+						cvarunlocks.Push(currentline[2]);
+					}
+					
+					string masteryitem = "";
+					string masteryweapon = "";
+					
+					for (int i = 0; i < link.unlocklist.Size(); i++)
+					{
+						if (masteryitem != "") {continue;}
+						array<string> curline;
+						link.unlocklist[i].Split(curline, " ");
+						if (curline[1] ~== commandstring)
+						{
+							masteryitem = curline[0];
+						}
+					}
+					
+					if (masteryitem == "") {console.printf("failed to find %s in link.unlocklist", commandstring);}
+					string cvarstring = progresscvar.GetString();
+					cvarstring.Split(currentkills, ",");
+					int pos = cvarunlocks.Find(masteryitem);
+					int pos2 = currentkills.Size();
+					
+					for (int i = 0; i < cvarunlocks.Size(); ++i)
+					{
+						//console.printf(cvarunlocks[i]);
+					}
+					if (pos != cvarunlocks.Size())
+					{
+						masteryweapon = cvarunlocks[pos - 2];
+						pos2 = currentkills.Find(masteryweapon);
+						//console.printf("%s", masteryweapon);  
+					}
+					else {console.printf("failed to find %s in cvarunlocks", masteryitem);}
+					
+					if (pos2 != currentkills.Size())
+					{
+						labelcommand.appendformat(" \cn(Progress: %d)", currentkills[pos2 + 1].ToInt(10));
+					}
+					else 
+					{
+						labelcommand.appendformat(" \cn(Progress: %d)", 0);
+					}
+				}
 			}
 			link.UpdateInfoLabel(labelcommand);
 		}
