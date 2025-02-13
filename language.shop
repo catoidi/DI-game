@@ -458,6 +458,10 @@ SHOPITEM_DI_COMPACTGUNPOWDER = "Compact Gunpowder";
 SHOPDESC_DI_COMPACTGUNPOWDER = "Weapons with 4+ projectiles deal +25% DMG.\n\caAnything else deals -25% DMG.";
 SHOPDESC2_DI_COMPACTGUNPOWDER = "\cbMeant for use with shotguns. Item stacks increase amount of DMG gained/lost. Items that increase projectile amount work well with this item.";
 SHOPTYPE_DI_COMPACTGUNPOWDER = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_SHELLSLING = "Shell Sling";
+SHOPDESC_DI_SHELLSLING = "Get +25% Reload Speed if you have at least\n75% ammo remaining.";
+SHOPDESC2_DI_SHELLSLING = "\cbRequires a weapon with at least 4 max ammo to make use of. Item stacks increase the reload speed buff.";
+SHOPTYPE_DI_SHELLSLING = "\cd[Passive] \cl[Max: 5]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

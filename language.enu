@@ -141,6 +141,7 @@ DIPOPUP_di_unlock_item_creditfreeze = "Credit Freeze";
 DIPOPUP_di_unlock_item_questbook = "Quest Book";
 DIPOPUP_di_unlock_item_raspberry = "Raspberry";
 DIPOPUP_di_unlock_item_compactgunpowder = "Compact Gunpowder";
+DIPOPUP_di_unlock_item_shellsling = "Shell Sling";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -201,6 +202,7 @@ SHOPLOCK_DI_TRAILBLAZER = "\cbFully upgrade Level 2's Shop to unlock this item."
 SHOPLOCK_DI_BANANA_BUNDLE = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 1 \cbto unlock this item.";
 SHOPLOCK_DI_RASPBERRY = "\cbGet 256 kills with the \cvStar Pistol \cbto unlock this consumable.";
 SHOPLOCK_DI_COMPACTGUNPOWDER = "\cbGet 256 kills with the \cvGreen Shotgun \cbto unlock this item.";
+SHOPLOCK_DI_SHELLSLING = "\cbGet 256 kills with the \cvDouble Shotgun \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

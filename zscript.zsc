@@ -153,6 +153,7 @@ version "4.13"
 #include "zscript_DI/items/passives/creditfreeze.zsc"
 #include "zscript_DI/items/passives/trickshot.zsc"
 #include "zscript_DI/items/passives/compactgunpowder.zsc"
+#include "zscript_DI/items/passives/shellsling.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"
