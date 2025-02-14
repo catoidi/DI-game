@@ -15,15 +15,42 @@ CLASS DIParticle : Actor
 		+MOVEWITHSECTOR;
 		+NOINTERACTION;
 	}
+	
+	bool stopparticle;
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		if (!(SpawnFlags & MTF_DORMANT))
+		{
+			Activate(self);
+		}
+	}
+	
+	override void Activate(Actor activator)
+	{
+		bDormant = false;
+		stopparticle = false;
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		bDormant = true;
+		stopparticle = true;
+	}
 
 	States
 	{
 		Spawn:
 			TNT1 A 4 BRIGHT
 			{
-				if ((random(0, 1) == 1) && (CheckRange(1024) == false))
+				if (!invoker.stopparticle)
 				{
-					A_SpawnParticle(invoker.particlecolor, SPF_ROLL, 25, 8, 0, frandom(-invoker.radius, invoker.radius), frandom(-invoker.radius, invoker.radius), 0, frandom(-1, 1), frandom(-1, 1), frandom(2, 6));
+					if ((random(0, 1) == 1) && (CheckRange(1024) == false))
+					{
+						A_SpawnParticle(invoker.particlecolor, SPF_ROLL, 25, 8, 0, frandom(-invoker.radius, invoker.radius), frandom(-invoker.radius, invoker.radius), 0, frandom(-1, 1), frandom(-1, 1), frandom(2, 6));
+					}
 				}
 			}
 			Loop;
