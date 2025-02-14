@@ -470,6 +470,10 @@ SHOPITEM_DI_SPRAYNPRAY = "Spray n' Pray";
 SHOPDESC_DI_SPRAYNPRAY = "Gain up to 15% Firerate as accuracy decreases.\n\caSubstantially reduces accuracy.";
 SHOPDESC2_DI_SPRAYNPRAY = "\cbItem stacks will give a greater Firerate buff but with even worse accuracy.";
 SHOPTYPE_DI_SPRAYNPRAY = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_JUMPSHOT = "Jump Shot";
+SHOPDESC_DI_JUMPSHOT = "While jumping, improve Accuracy by 2.";
+SHOPDESC2_DI_JUMPSHOT = "\cbBest used on low accuracy builds.";
+SHOPTYPE_DI_JUMPSHOT = "\cd[Passive] \cl[Max: 5]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

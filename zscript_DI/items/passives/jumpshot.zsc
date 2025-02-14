@@ -1,0 +1,43 @@
+//zscript_DI/items/passives/jumpshot.zsc
+
+Class DI_Jumpshot : DIPassiveInventory
+{
+	bool givedmg;
+
+	Default
+	{
+		Tag "Jump Shot";
+		Inventory.Icon "POW2P0";
+		Inventory.PickupMessage "Jump Shot acquired! (While jumping, gain 2 Accuracy.)";
+		Inventory.MaxAmount 5;
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			bool onground = ((plr.Pos.Z ~== plr.FloorZ) || (plr.bOnMobj));
+			if (!onground) {givedmg = true;}
+			else {givedmg = false;}
+		}
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0.0;}
+		if (!givedmg) {return 0.0;}
+		else
+		{
+			return -2.0 * plr.CountInv(self.GetClassName());
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 P -1;
+			Loop;
+	}
+}

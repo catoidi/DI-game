@@ -82,6 +82,7 @@ di_unlock_item_bottomlessclip DI_BottomlessClip 2 di_playerkills 66666;
 di_unlock_item_spraynpray DI_SprayNPray 2 di_playerkills 66666;
 di_unlock_item_raspberry DI_Raspberry 3 di_playerkills 66666;
 di_unlock_item_shellsling DI_ShellSling 2 di_playerkills 66666;
+di_unlock_item_jumpshot DI_JumpShot 2 di_playerkills 66666;
 >>15x Unlock Reward
 di_unlock_item_bulletmitosis DI_BulletMitosis 2  999999;
 di_unlock_item_toomanybullets DI_TooManyBullets 2  999999;
