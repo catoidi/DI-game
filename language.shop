@@ -478,6 +478,10 @@ SHOPITEM_DI_FONDUEBLOOD = "Fondue Blood";
 SHOPDESC_DI_FONDUEBLOOD = "Enemies fire 4 burning cheese projectiles on death.";
 SHOPDESC2_DI_FONDUEBLOOD = "\cbEach projectile does 10 fire damage to enemies. Item stacks increases how many projectiles spawn from enemies.";
 SHOPTYPE_DI_FONDUEBLOOD = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_OVERWHELMINGFIREPOWER = "Overwhelming Firepower";
+SHOPDESC_DI_OVERWHELMINGFIREPOWER = "Gain a stacking +1% Firerate for 2 seconds\nevery time you damage an enemy.";
+SHOPDESC2_DI_OVERWHELMINGFIREPOWER = "\cbCaps at +100% Firerate. Dealing damage also resets the powerup timer. Item stacks increases firerate gained per damage dealt, but does not raise the cap.";
+SHOPTYPE_DI_OVERWHELMINGFIREPOWER = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
@@ -520,3 +524,7 @@ SHOPITEM_DI_RASPBERRY_POWERUP = "\cvRaspberry (Active)";
 SHOPDESC_DI_RASPBERRY_POWERUP = "Fresh Weapon Bonuses drop +3 coins for 30 seconds.";
 SHOPDESC2_DI_RASPBERRY_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_RASPBERRY_POWERUP = "\cv[Powerup] \cl[Max Timer: 30]";
+SHOPITEM_DI_OVERWHELMINGFIREPOWER_POWERUP = "\cvOverwhelming Firepower (Active)";
+SHOPDESC_DI_OVERWHELMINGFIREPOWER_POWERUP = "Grants a stacking +1% Firerate for 2 seconds.";
+SHOPDESC2_DI_OVERWHELMINGFIREPOWER_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_OVERWHELMINGFIREPOWER_POWERUP = "\cv[Powerup] \cl[Max Timer: 2]";

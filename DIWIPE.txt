@@ -74,3 +74,4 @@ DI_ShellSling;
 DI_BottomlessClip;
 DI_SprayNPray;
 DI_FondueBlood;
+DI_OverwhelmingFirepower;

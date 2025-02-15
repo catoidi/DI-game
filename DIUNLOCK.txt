@@ -80,6 +80,7 @@ di_unlock_item_dice DI_Dice 3 di_rerollshop 50000;
 di_unlock_item_compactgunpowder DI_CompactGunpowder 2 di_playerkills 66666;
 di_unlock_item_bottomlessclip DI_BottomlessClip 2 di_playerkills 66666;
 di_unlock_item_spraynpray DI_SprayNPray 2 di_playerkills 66666;
+di_unlock_item_overwhelmingfirepower DI_OverwhelmingFirepower 2 di_playerkills 66666;
 di_unlock_item_raspberry DI_Raspberry 3 di_playerkills 66666;
 di_unlock_item_fondueblood DI_FondueBlood 2 di_playerkills 66666;
 di_unlock_item_shellsling DI_ShellSling 2 di_playerkills 66666;

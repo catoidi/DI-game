@@ -113,6 +113,7 @@ server cheat bool di_unlock_item_bottomlessclip = false; //blue smg.
 server cheat bool di_unlock_item_spraynpray = false; //pink rifle.
 server cheat bool di_unlock_item_jumpshot = false; //grenade launcher.
 server cheat bool di_unlock_item_fondueblood = false; //cheese cannon.
+server cheat bool di_unlock_item_overwhelmingfirepower = false; //minigun.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.

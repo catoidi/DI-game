@@ -123,6 +123,7 @@ DamagePassive DI_CompactGunpowder POW2L 28 192 di_unlock_item_compactgunpowder;
 DamagePassive DI_BottomlessClip POW2N 7 192 di_unlock_item_bottomlessclip;
 DamagePassive DI_SprayNPray POW2O 7 192 di_unlock_item_spraynpray;
 DamagePassive DI_JumpShot POW2P 7 192 di_unlock_item_jumpshot;
+DamagePassive DI_OverwhelmingFirepower POW2R 14 192 di_unlock_item_overwhelmingfirepower;
 >>Defense Passives...
 DefensePassive DI_BloodyHeart POWRD 7 256 di_unlock_item_bloodyheart;
 DefensePassive DI_BonusArmor POWRE 7 256 di_unlock_item_fred1;
@@ -185,3 +186,4 @@ FakeShopItem DI_SuperGlue_Powerup POW2C 1;
 FakeShopItem DI_Brick2 BRIKB 1;
 FakeShopItem DI_CreditFreeze_Powerup POW2H 1;
 FakeShopItem DI_Raspberry_Powerup POW2K 1;
+FakeShopItem DI_OverwhelmingFirepower_Powerup POW2S 1;

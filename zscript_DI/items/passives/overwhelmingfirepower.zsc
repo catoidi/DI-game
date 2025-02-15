@@ -1,0 +1,66 @@
+//zscript_DI/items/passives/overwhelmingfirepower.zsc
+
+Class DI_OverwhelmingFirepower : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Overwhelming Firepower";
+		Inventory.Icon "POW2R0";
+		Inventory.PickupMessage "Acquired Overwhelming Firepower! (Gain a stacking +1% Firerate for 2 seconds every time you deal damage to an enemy.)";
+		Inventory.MaxAmount 4;
+	}
+
+	bool givepower;
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (owner)
+		{
+			if (!passive && !givepower && (damage > 0))
+			{
+				owner.GiveInventory("DI_OverwhelmingFirepower_Powerup", owner.CountInv(self.GetClassName()));
+				givepower = true;
+			}
+		}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (givepower) {givepower = false;}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 R -1;
+			Stop;
+	}
+}
+
+Class DI_OverwhelmingFirepower_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvOverwhelming Firepower (Powerup)";
+		Inventory.Icon "POW2R0";
+		Inventory.MaxAmount 100;
+		DIPowerup.PowerupDrain 100;
+		DIPowerup.MaxTimer 70;
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (owner)
+		{
+			if (!passive && (damage > 0)) {poweruptimer = 0;}
+		}
+	}
+
+	override double GiveFirerate()
+	{
+		if (!plr) {return 0.0;}
+		return -0.01 * plr.CountInv(self.GetClassName());
+	}
+}

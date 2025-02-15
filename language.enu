@@ -146,6 +146,7 @@ DIPOPUP_di_unlock_item_bottomlessclip = "Bottomless Clip";
 DIPOPUP_di_unlock_item_spraynpray = "Spray n' Pray";
 DIPOPUP_di_unlock_item_jumpshot = "Jump Shot";
 DIPOPUP_di_unlock_item_fondueblood = "Fondue Blood";
+DIPOPUP_di_unlock_item_overwhelmingfirepower = "Overwhelming Firepower";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -211,6 +212,7 @@ SHOPLOCK_DI_BOTTOMLESSCLIP = "\cbGet 256 kills with the \cvBlue SMG \cbto unlock
 SHOPLOCK_DI_SPRAYNPRAY = "\cbGet 256 kills with the \cvPink Rifle \cbto unlock this item.";
 SHOPLOCK_DI_JUMPSHOT = "\cbGet 256 kills with the \cvGrenade Launcher \cbto unlock this item.";
 SHOPLOCK_DI_FONDUEBLOOD = "\cbGet 256 kills with the \cvCheese Cannon \cbto unlock this item.";
+SHOPLOCK_DI_OVERWHELMINGFIREPOWER = "\cbGet 256 kills with the \cvMinigun \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
