@@ -7,3 +7,4 @@ DoubleShotgun 256 di_unlock_item_shellsling;
 BlueSMG 256 di_unlock_item_bottomlessclip;
 PinkRifle 256 di_unlock_item_spraynpray;
 GrenadeLauncher 256 di_unlock_item_jumpshot;
+CheeseGun 256 di_unlock_item_fondueblood;

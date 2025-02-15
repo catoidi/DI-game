@@ -474,6 +474,10 @@ SHOPITEM_DI_JUMPSHOT = "Jump Shot";
 SHOPDESC_DI_JUMPSHOT = "While jumping, improve Accuracy by 2.";
 SHOPDESC2_DI_JUMPSHOT = "\cbBest used on low accuracy builds.";
 SHOPTYPE_DI_JUMPSHOT = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_FONDUEBLOOD = "Fondue Blood";
+SHOPDESC_DI_FONDUEBLOOD = "Enemies fire 4 burning cheese projectiles on death.";
+SHOPDESC2_DI_FONDUEBLOOD = "\cbEach projectile does 10 fire damage to enemies. Item stacks increases how many projectiles spawn from enemies.";
+SHOPTYPE_DI_FONDUEBLOOD = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

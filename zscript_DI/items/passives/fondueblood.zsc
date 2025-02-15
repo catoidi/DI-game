@@ -1,0 +1,95 @@
+//zscript_DI/items/passives/fondueblood.zsc
+
+Class DI_FondueBlood : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Fondue Blood";
+		Inventory.Icon "POW2Q0";
+		Inventory.PickupMessage "Fondue Blood acquired! (Enemies shoot flaming cheese projectiles on death.)";
+		Inventory.MaxAmount 4;
+	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			return "DI_FondueBlood_Enemy", owner.CountInv(self.GetClassName());
+		}
+
+		return "", 0;
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 Q -1;
+			Stop;
+	}
+}
+
+Class DI_FondueBlood_Enemy : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+		BloodColor "f8cc3b";
+	}
+	
+	bool isdead;
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && owner.target)
+		{
+			if (owner.bloodcolor != self.bloodcolor) {owner.CopyBloodColor(self);}
+			if (owner.health <= 0)
+			{
+				if (!isdead)
+				{
+					SpawnCheese();
+					isdead = true;
+				}
+			}
+			else {isdead = false;}
+		}
+	}
+	
+	virtual void SpawnCheese()
+	{
+		for (int i = 0; i < (4 * owner.CountInv(self.GetClassName())); ++i)
+		{
+			bool spawned;
+			actor cheese;
+			[spawned, cheese] = owner.A_SpawnItemEX("DI_FondueBlood_Bullet", 0, 0, random(owner.height / 3, owner.height), random(2, 10), 0, random(0, 8), random(0, 359), SXF_NOCHECKPOSITION);
+			if (cheese)
+			{
+				let realcheese = DI_FondueBlood_Bullet(cheese);
+				realcheese.target = owner.target;
+				realcheese.oldtarget = owner;
+			}
+		}
+	}
+}
+
+Class DI_FondueBlood_Bullet : CheeseGunBullet
+{
+	actor oldtarget;
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		damagetype = "Fire";
+		damnum = 10;
+		di_notweapon = true;
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other == oldtarget) {return false;}
+		else return Super.CanCollideWith(other, passive);
+	}
+}
