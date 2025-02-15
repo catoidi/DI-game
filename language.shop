@@ -482,6 +482,10 @@ SHOPITEM_DI_OVERWHELMINGFIREPOWER = "Overwhelming Firepower";
 SHOPDESC_DI_OVERWHELMINGFIREPOWER = "Gain a stacking +1% Firerate for 2 seconds\nevery time you damage an enemy.";
 SHOPDESC2_DI_OVERWHELMINGFIREPOWER = "\cbCaps at +100% Firerate. Dealing damage also resets the powerup timer. Item stacks increases firerate gained per damage dealt, but does not raise the cap.";
 SHOPTYPE_DI_OVERWHELMINGFIREPOWER = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_CHUNKOFMEAT = "Chunk of Meat";
+SHOPDESC_DI_CHUNKOFMEAT = "Gibbed enemies drop +1 coin.";
+SHOPDESC2_DI_CHUNKOFMEAT = "\cbDoes nothing if you don't have a way to deal extreme amounts of damage to enemies.";
+SHOPTYPE_DI_CHUNKOFMEAT = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

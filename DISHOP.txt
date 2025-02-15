@@ -149,6 +149,7 @@ ComboPassive DI_CreditFreeze POW2G 18 256 di_unlock_item_creditfreeze;
 ComboPassive DI_TrickShot POW2I 18;
 ComboPassive DI_ShellSling POW2M 14 256 di_unlock_item_shellsling;
 ComboPassive DI_FondueBlood POW2Q 7 192 di_unlock_item_fondueblood;
+ComboPassive DI_ChunkofMeat POW2T 7 192 di_unlock_item_chunkofmeat;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 7 128 di_unlock_item_icebullet;
 StatusPassive DI_StatusGiver_Fire POWRO 7 128 di_unlock_item_firebullet;

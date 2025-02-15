@@ -422,7 +422,7 @@ Class DI_Monster : DI_Actor abstract
 	{
 		if (invoker.nocoins == false)
 		{
-			for (int i = 0; i < 2; ++i)
+			for (int i = 0; i < (2 + invoker.CountInv("DI_ExtraBloodCoin")); ++i)
 			{
 				bool fakebool;
 				actor bcoin;
