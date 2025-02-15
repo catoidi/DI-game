@@ -106,21 +106,33 @@ class DIPassiveInventory : Inventory
 class DIPowerup : DIPassiveInventory
 {
 	//behaves exactly like a passive, but removes 1 of itself every second.
-
+	
+	int maxtimer, powerupdrain;
+	Property MaxTimer : maxtimer;
+	Property PowerupDrain : powerupdrain;
+	
 	int poweruptimer;
+	
+	Default
+	{
+		DIPowerup.MaxTimer 35;
+		DIPowerup.PowerupDrain 1;
+	}
 
 	override void DoEffect()
 	{
 		Super.DoEffect();
 		
-		if (plr && (plr.isFrozen() == false))
+		if (plr && (plr.isFrozen() == false)) {PowerupTick();}
+	}
+	
+	virtual void PowerupTick()
+	{
+		++poweruptimer;
+		if (poweruptimer >= maxtimer)
 		{
-			++poweruptimer;
-			if (poweruptimer >= 35)
-			{
-				plr.A_TakeInventory(GetClassName(), 1);
-				poweruptimer = 0;
-			}
+			plr.A_TakeInventory(GetClassName(), powerupdrain);
+			poweruptimer = 0;
 		}
 	}
 }
