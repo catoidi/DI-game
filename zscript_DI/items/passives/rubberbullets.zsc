@@ -1,0 +1,43 @@
+//zscript_DI/items/passives/rubberbullets.zsc
+
+Class DI_RubberBullets : DIPassiveInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 5;
+	}
+
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_RubberBullets_Item", plr.CountInv(self.GetClassName());
+	}
+}
+
+Class DI_RubberBullets_Item : DIProjectileInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 5;
+	}
+	
+	//projectile inventory items cant count themselves for some reason. 
+	//maybe the function is called too early in advance?
+	//regardless, we can get a more reliable number from just checking the player's inventory instead.
+	override double GiveBounceFactor(DI_PlayerBase plr)
+	{
+		return 0.2 * plr.CountInv("DI_RubberBullets");
+	}
+	override double GiveWallBounceFactor(DI_PlayerBase plr)
+	{
+		return 0.2 * plr.CountInv("DI_RubberBullets");
+	}
+	
+	
+	States
+	{
+		Spawn:
+			POW1 C -1;
+			Stop;
+	}
+}
