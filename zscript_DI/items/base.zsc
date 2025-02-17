@@ -98,6 +98,9 @@ class DIPassiveInventory : Inventory
 	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item and its quantity to make enemies spawn with.
 	virtual string, int, int GiveEnemyDrop(DI_Monster mon) {return "", 0, 0;} //Add new drops to killed enemies. Outputs item name, quantity, and failchance (like A_SpawnItemEX).
 	
+	//Called by thebrain handler as well.
+	virtual string, int GiveProjectileItem() {return "", 0;} //Specify an inventory item and its quantity to make player projectiles spawn with. Only works on projectiles that explicitly mark the player as it's target.
+	
 	//Functions activated by scripts or events. Returns true if item is activated.
 	virtual bool EnterWave() {return false;} //called once a new wave is started.
 	virtual bool EnterShop() {return false;} //called once the player returns to the shop. this is called right before rental items are removed. if you wish for your code to run after rentals are returned, have this function call your code after 1 tic.

@@ -64,6 +64,10 @@ extend class DIHandler
 			{
 				DIBossHandler(e);
 			}
+			if (e.thing is "DI_Projectile" && (e.thing.target is "DI_PlayerBase"))
+			{
+				DIProjectileHandler(e);
+			}
 			if (e.Thing is "DIShop")
 			{
 				shoparray.Push(DIShop(e.Thing));

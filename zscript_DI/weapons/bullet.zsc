@@ -182,19 +182,28 @@ Class DI_Projectile : DI_Actor
 {
 	mixin DI_ProjectileMixin;
 
-	bool flatbullet;
+	bool flatbullet, dobounce;
 
 	property FlatBullet : flatbullet; //combine with +FLATSPRITE to create fake 3d bullets.
+	property DoBounce : dobounce;
 	
 	DI_Weapon plrwpn;
+	
+	array<DIProjectileInventory> items;
 
 	Default
 	{
 		DamageFunction GetWeaponDamage();
 		Projectile;
+		BounceType "Doom";
+		BounceFactor 0.0;
+		WallBounceFactor 0.0;
+		BounceCount 10;
+		DI_Projectile.DoBounce true;
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FORCEXYBILLBOARD;
+		+BOUNCEONACTORS;
 	}
 
 	override void PostBeginPlay()
@@ -205,6 +214,79 @@ Class DI_Projectile : DI_Actor
 		CheckStatusChange();
 		UpdateSize();
 		if (flatbullet) {DI_SideBullet();}
+		
+		CheckItemStats();
+		
+		if (dobounce)
+		{
+			if (BounceFactor ~== 0.0) 
+			{
+				bBOUNCEONFLOORS = false;
+				bBOUNCEONCEILINGS = false;
+				bBOUNCEONACTORS = false;
+			}
+			if (WallBounceFactor ~== 0.0)
+			{
+				bBOUNCEONWALLS = false;
+			}
+		}
+	}
+	
+	override int SpecialBounceHit(Actor bounceMobj, Line bounceLine, readonly<SecPlane> bouncePlane)
+	{
+		int returnvalue = Super.SpecialBounceHit(bounceMobj, bounceLine, bouncePlane);
+		if (dobounce)
+		{
+			if (bounceMobj) 
+			{
+				DoImpactActor(bBOUNCEONACTORS, bounceMobj);
+				if (BounceFactor == 0.0) {returnvalue = 0;}
+			}
+			if (bounceLine) 
+			{
+				DoImpactWall(bBOUNCEONWALLS, bounceLine);
+				if (WallBounceFactor == 0.0) {returnvalue = 0;}
+			}
+			if (bouncePlane) 
+			{
+				DoImpactFloor((bBOUNCEONFLOORS || bBOUNCEONCEILINGS), bouncePlane);
+				if (BounceFactor == 0.0) {returnvalue = 0;}
+			}
+		}
+		return returnvalue;
+	}
+	
+	void CheckItemStats()
+	{
+		foreach(mo : items) 
+		{
+			if (mo)
+			{
+				if (dobounce)
+				{
+					BounceFactor += mo.GiveBounceFactor();
+					WallBounceFactor += mo.GiveWallBounceFactor();
+				}
+			}
+		}
+	}
+	
+	void DoImpactActor(bool bounced, Actor bounceMobj)
+	{
+		foreach(mo : items) {if (mo) {mo.ImpactActor(bounced, bounceMobj);}}
+		//console.printf("hit actor");
+	}
+	
+	void DoImpactWall(bool bounced, Line bounceLine)
+	{
+		foreach(mo : items) {if (mo) {mo.ImpactWall(bounced, bounceLine);}}
+		//console.printf("hit wall");
+	}
+	
+	void DoImpactFloor(bool bounced, readonly<SecPlane> bouncePlane)
+	{
+		foreach(mo : items) {if (mo) {mo.ImpactFloor(bounced, bouncePlane);}}
+		//console.printf("hit floor");
 	}
 	
 	void TrackBulletSource()
@@ -315,4 +397,26 @@ Class DI_Tracer_Side : DI_Actor
 			TNT1 A 1 {bINVISIBLE = true;}
 			Stop;
 	}
+}
+
+Class DIProjectileInventory : Inventory
+{
+	override void AttachToOwner(Actor other)
+	{
+		if (other is "DI_Projectile")
+		{
+			let proj = DI_Projectile(other);
+			if (proj.items.Find(self) == proj.items.Size())
+			{
+				//keep list of all projectile inventory items here.
+				proj.items.Push(self);
+			}
+		}
+	}
+	
+	virtual double GiveBounceFactor() {return 0.0;}
+	virtual double GiveWallBounceFactor() {return 0.0;}
+	virtual void ImpactActor(bool bounced, Actor victim) {}
+	virtual void ImpactWall(bool bounced, Line wall) {}
+	virtual void ImpactFloor(bool bounced, readonly<SecPlane> ground) {}
 }
