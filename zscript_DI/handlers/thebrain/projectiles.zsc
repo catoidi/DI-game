@@ -22,5 +22,7 @@ extend class DIHandler
 				}
 			}
 		}
+		
+		proj.CheckItemStats();
 	}
 }

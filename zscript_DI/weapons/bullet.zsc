@@ -215,21 +215,7 @@ Class DI_Projectile : DI_Actor
 		UpdateSize();
 		if (flatbullet) {DI_SideBullet();}
 		
-		CheckItemStats();
-		
-		if (dobounce)
-		{
-			if (BounceFactor ~== 0.0) 
-			{
-				bBOUNCEONFLOORS = false;
-				bBOUNCEONCEILINGS = false;
-				bBOUNCEONACTORS = false;
-			}
-			if (WallBounceFactor ~== 0.0)
-			{
-				bBOUNCEONWALLS = false;
-			}
-		}
+		//CheckItemStats(); //called by thebrain handler.
 	}
 	
 	override int SpecialBounceHit(Actor bounceMobj, Line bounceLine, readonly<SecPlane> bouncePlane)
@@ -258,34 +244,53 @@ Class DI_Projectile : DI_Actor
 	
 	void CheckItemStats()
 	{
-		foreach(mo : items) 
+		//console.printf("checking for items...");
+		for (int i = 0; i < items.Size(); ++i)
 		{
-			if (mo)
+			if (items[i])
 			{
+				//console.printf("\cqFound: %s", items[i].GetClassName());
 				if (dobounce)
 				{
-					BounceFactor += mo.GiveBounceFactor();
-					WallBounceFactor += mo.GiveWallBounceFactor();
+					//console.printf("\cqReading Bounce Stats...");
+					BounceFactor += items[i].GiveBounceFactor(plr);
+					WallBounceFactor += items[i].GiveWallBounceFactor(plr);
 				}
+			}
+		}
+		
+		//console.printf("bounce: %.2f", BounceFactor);
+		
+		if (dobounce)
+		{
+			if (BounceFactor == 0.0) 
+			{
+				bBOUNCEONFLOORS = false;
+				bBOUNCEONCEILINGS = false;
+				bBOUNCEONACTORS = false;
+			}
+			if (WallBounceFactor == 0.0)
+			{
+				bBOUNCEONWALLS = false;
 			}
 		}
 	}
 	
 	void DoImpactActor(bool bounced, Actor bounceMobj)
 	{
-		foreach(mo : items) {if (mo) {mo.ImpactActor(bounced, bounceMobj);}}
+		foreach(mo : items) {if (mo) {mo.ImpactActor(plr, bounced, bounceMobj);}}
 		//console.printf("hit actor");
 	}
 	
 	void DoImpactWall(bool bounced, Line bounceLine)
 	{
-		foreach(mo : items) {if (mo) {mo.ImpactWall(bounced, bounceLine);}}
+		foreach(mo : items) {if (mo) {mo.ImpactWall(plr, bounced, bounceLine);}}
 		//console.printf("hit wall");
 	}
 	
 	void DoImpactFloor(bool bounced, readonly<SecPlane> bouncePlane)
 	{
-		foreach(mo : items) {if (mo) {mo.ImpactFloor(bounced, bouncePlane);}}
+		foreach(mo : items) {if (mo) {mo.ImpactFloor(plr, bounced, bouncePlane);}}
 		//console.printf("hit floor");
 	}
 	
@@ -410,13 +415,15 @@ Class DIProjectileInventory : Inventory
 			{
 				//keep list of all projectile inventory items here.
 				proj.items.Push(self);
+				self.owner = proj;
+				//console.printf("adding item to projectile");
 			}
 		}
 	}
 	
-	virtual double GiveBounceFactor() {return 0.0;}
-	virtual double GiveWallBounceFactor() {return 0.0;}
-	virtual void ImpactActor(bool bounced, Actor victim) {}
-	virtual void ImpactWall(bool bounced, Line wall) {}
-	virtual void ImpactFloor(bool bounced, readonly<SecPlane> ground) {}
+	virtual double GiveBounceFactor(DI_PlayerBase plr) {return 0.0;}
+	virtual double GiveWallBounceFactor(DI_PlayerBase plr) {return 0.0;}
+	virtual void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim) {}
+	virtual void ImpactWall(DI_PlayerBase plr, bool bounced, Line wall) {}
+	virtual void ImpactFloor(DI_PlayerBase plr, bool bounced, readonly<SecPlane> ground) {}
 }
