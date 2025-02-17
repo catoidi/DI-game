@@ -182,6 +182,7 @@ version "4.13"
 //weapons
 #include "zscript_DI/weapons/base.zsc" //not a weapon
 #include "zscript_DI/weapons/bullet.zsc" //not a weapon
+#include "zscript_DI/weapons/puff.zsc" //believe it or not, also not a weapon
 #include "zscript_DI/weapons/mixin.zsc" //not a weapon
 //starting weapons
 #include "zscript_DI/weapons/starter/starpistol.zsc"
