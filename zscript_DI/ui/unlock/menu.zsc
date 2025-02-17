@@ -71,7 +71,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		keypos = -1;
 		curkey = -1;
 		//create info label
-		UpdateInfoLabel("Select an item to add/remove them from the shop pool.\n\n\cfChanges don't take effect until a new game is started.");
+		UpdateInfoLabel("Select an unlocked item to add/remove them from the shop pool.\n\cfOr, select a locked item to learn how to unlock it.\n\caChanges don't take effect until a new game is started.");
 		//parse DIUNLOCK data
 		ParseDIUNLOCK();
 		ParseBlacklistCVAR();
