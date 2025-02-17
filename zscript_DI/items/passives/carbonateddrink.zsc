@@ -47,6 +47,13 @@ Class DI_CarbonatedDrink_Pickup : Inventory
 		+FLOATBOB;
 		+Inventory.AUTOACTIVATE;
 	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
+	}
 
 	override bool Use(bool pickup)
 	{

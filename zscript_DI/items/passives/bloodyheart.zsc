@@ -70,6 +70,13 @@ Class DI_BloodyHeart_Pickup : Inventory
 		+BRIGHT;
 	}
 	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
+	}
+	
 	override void DoPickupSpecial(Actor toucher)
 	{
 		if (toucher is "DI_PlayerBase")

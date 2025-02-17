@@ -37,6 +37,13 @@ Class DI_BonusArmorPickup : BasicArmorBonus
 		+FLOATBOB;
 	}
 	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
+	}
+	
 	States
 	{
 		Spawn:

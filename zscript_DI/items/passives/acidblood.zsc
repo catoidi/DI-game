@@ -120,6 +120,7 @@ Class DI_AcidBlood_Pool : DI_Actor
 		}
 		
 		A_DIScale(0.1, 0.1, true);
+		ChangeTID(7499);
 	}
 
 	States

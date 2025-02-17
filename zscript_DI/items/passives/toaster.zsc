@@ -28,6 +28,13 @@ Class DI_Toast : Inventory
 {
 	mixin DI_ConsumableMixin;
 	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
+	}
+	
 	override bool Use(bool pickup)
 	{
 		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
