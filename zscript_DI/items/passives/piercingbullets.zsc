@@ -1,0 +1,39 @@
+//zscript_DI/items/passives/piercingbullets.zsc
+
+Class DI_PiercingBullets : DIPassiveInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+	}
+
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_PiercingBullets_Item", plr.CountInv(self.GetClassName());
+	}
+}
+
+Class DI_PiercingBullets_Item : DIProjectileInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+	}
+	
+	//projectile inventory items cant count themselves for some reason. 
+	//maybe the function is called too early in advance?
+	//regardless, we can get a more reliable number from just checking the player's inventory instead.
+	override double GivePiercing(DI_PlayerBase plr)
+	{
+		return 0.25 * plr.CountInv("DI_PiercingBullets");
+	}
+	
+	
+	States
+	{
+		Spawn:
+			POW1 C -1;
+			Stop;
+	}
+}
