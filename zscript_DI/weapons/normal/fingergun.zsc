@@ -40,7 +40,7 @@ Class FingerGun : DI_Weapon
 			FING A 2 BRIGHT 
 			{
 				A_Overlay(-2, "Flash");
-				DI_Shoot();
+				DI_FireProjectile("DI_Tracer_FingerGun", spawnofs_xy: -4);
 				A_StartSound("pistpow");
 			}
 			#### # 0 DI_BulletCasing(2);
@@ -72,5 +72,17 @@ Class FingerGunAmmo : Ammo
 	{
 		Inventory.Amount 5;
 		Inventory.MaxAmount 5;
+	}
+}
+
+Class DI_Tracer_FingerGun : DI_Tracer
+{
+	Default
+	{
+		Radius 6;
+		Height 12;
+		Scale 0.6;
+		DI_Projectile.PierceAmount 2.0;
+		//Translation "DamPurple";
 	}
 }

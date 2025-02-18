@@ -140,9 +140,9 @@ SHOPTYPE_DI_OREDRILL = "\cb[Weapon]";
 SHOPITEM_FINGERGUN = "Finger Gun";
 DIPOPUP_DI_UNLOCK_ITEM_FINGERGUN = "Finger Gun";
 //The short description that appears in the shop UI. Be mindful of the character limit.
-SHOPDESC_FINGERGUN = "Does big damage, has\neven bigger recoil.";
+SHOPDESC_FINGERGUN = "Shoots big bullets that can\npierce through 1 enemy.\nAlso has big recoil.";
 //A secondary description that only appears in the Catalogue Menu.
-SHOPDESC2_FINGERGUN = "\cbIt is currently unknown how the hand is able to fire the bullets. X-ray scans have revealed that this is for all intents and purposes, just a regular severed hand.";
+SHOPDESC2_FINGERGUN = "\cbEach bullet does 30 DMG. Bullets are also slightly larger than normal. According to research, this is, for all intents and purposes, just a regular hand. How it is able to fire bullets remains an anomaly.";
 //This is shown at the bottom of the shop UI. Also displays other important info, like whether or not the player already owns this item.
 SHOPTYPE_FINGERGUN = "\cb[Weapon]";
 //This is shown when viewing the locked item in the unlocks menu.
