@@ -4,6 +4,9 @@ Class DI_RubberBullets : DIPassiveInventory
 {
 	Default
 	{
+		Tag "Rubber Bullets";
+		Inventory.Icon "POW2X0";
+		Inventory.PickupMessage "Rubber Bullets acquired! (Bullets bounce off walls and objects at +20% Speed.)";
 		Inventory.MaxAmount 5;
 	}
 
@@ -37,7 +40,7 @@ Class DI_RubberBullets_Item : DIProjectileInventory
 	States
 	{
 		Spawn:
-			POW1 C -1;
+			POW2 X -1;
 			Stop;
 	}
 }

@@ -11,3 +11,4 @@ CheeseGun 256 di_unlock_item_fondueblood;
 DI_Minigun 256 di_unlock_item_overwhelmingfirepower;
 Sledgehammer 256 di_unlock_item_organdonor;
 Glowstick 256 di_unlock_item_freshspray;
+LaserPointer 256 di_unlock_item_rubberbullets;

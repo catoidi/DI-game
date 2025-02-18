@@ -126,6 +126,7 @@ DamagePassive DI_JumpShot POW2P 7 192 di_unlock_item_jumpshot;
 DamagePassive DI_OverwhelmingFirepower POW2R 21 192 di_unlock_item_overwhelmingfirepower;
 DamagePassive DI_PiercingBullets POW2U 14;
 DamagePassive DI_FreshSpray POW2V 21 192 di_unlock_item_freshspray;
+DamagePassive DI_RubberBullets POW2X 192 di_unlock_item_rubberbullets;
 >>Defense Passives...
 DefensePassive DI_BloodyHeart POWRD 7 256 di_unlock_item_bloodyheart;
 DefensePassive DI_BonusArmor POWRE 7 256 di_unlock_item_fred1;

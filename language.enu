@@ -149,6 +149,7 @@ DIPOPUP_di_unlock_item_fondueblood = "Fondue Blood";
 DIPOPUP_di_unlock_item_overwhelmingfirepower = "Overwhelming Firepower";
 DIPOPUP_di_unlock_item_organdonor = "Organ Donor";
 DIPOPUP_di_unlock_item_freshspray = "Fresh Spray";
+DIPOPUP_di_unlock_item_rubberbullets = "Rubber Bullets";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -217,6 +218,7 @@ SHOPLOCK_DI_FONDUEBLOOD = "\cbGet 256 kills with the \cvCheese Cannon \cbto unlo
 SHOPLOCK_DI_OVERWHELMINGFIREPOWER = "\cbGet 256 kills with the \cvMinigun \cbto unlock this item.";
 SHOPLOCK_DI_ORGANDONOR = "\cbGet 256 kills with the \cvSledgehammer \cbto unlock this item.";
 SHOPLOCK_DI_FRESHSPRAY = "\cbGet 256 kills with the \cvGlowstick \cbto unlock this item.";
+SHOPLOCK_DI_RUBBERBULLETS = "\cbGet 256 kills with the \cvLaser Pointer \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

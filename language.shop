@@ -494,6 +494,10 @@ SHOPITEM_DI_FRESHSPRAY = "Fresh Spray";
 SHOPDESC_DI_FRESHSPRAY = "On Fresh Kill, gain +15% Firerate.\nBuff is removed upon switching weapons.";
 SHOPDESC2_DI_FRESHSPRAY = "\cbBuff will stay permanently if you never switch weapons. Item stacks increase the firerate buff.";
 SHOPTYPE_DI_FRESHSPRAY = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_RUBBERBULLETS = "Rubber Bullets";
+SHOPDESC_DI_RUBBERBULLETS = "Bullets will bounce off walls/objects\nat 20% of their original velocity.";
+SHOPDESC2_DI_RUBBERBULLETS = "\cbItem stacks increases the bounce velocity. Bullets continue to bounce until their velocity gets too low. Despite being made of rubber, they're still just as lethal as regular bullets.";
+SHOPTYPE_DI_RUBBERBULLETS = "\cd[Passive] \cl[Max: 5]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
