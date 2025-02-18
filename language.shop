@@ -490,6 +490,10 @@ SHOPITEM_DI_PIERCINGBULLETS = "Armor-Piercing Bullets";
 SHOPDESC_DI_PIERCINGBULLETS = "Bullets gain +0.2 piercing, but -1 Base DMG.\nThis will allow bullets to hit multiple enemies.";
 SHOPDESC2_DI_PIERCINGBULLETS = "\cbBullets will pass through enemies, capped at the bullet's Piercing stat. Each enemy hit reduces the bullet's Piercing by 1. While Piercing is below 1, damage will be reduced to match. Item stacks further improve Piercing and reduce Base DMG.";
 SHOPTYPE_DI_PIERCINGBULLETS = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_FRESHSPRAY = "Fresh Spray";
+SHOPDESC_DI_FRESHSPRAY = "On Fresh Kill, gain +15% Firerate.\nBuff is removed upon switching weapons.";
+SHOPDESC2_DI_FRESHSPRAY = "\cbBuff will stay permanently if you never switch weapons. Item stacks increase the firerate buff.";
+SHOPTYPE_DI_FRESHSPRAY = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
@@ -536,3 +540,7 @@ SHOPITEM_DI_OVERWHELMINGFIREPOWER_POWERUP = "\cvOverwhelming Firepower (Active)"
 SHOPDESC_DI_OVERWHELMINGFIREPOWER_POWERUP = "Grants a stacking +1% Firerate for 2 seconds.";
 SHOPDESC2_DI_OVERWHELMINGFIREPOWER_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_OVERWHELMINGFIREPOWER_POWERUP = "\cv[Powerup] \cl[Max Timer: 2]";
+SHOPITEM_DI_FRESHSPRAY_POWERUP = "\cvFresh Spray (Active)";
+SHOPDESC_DI_FRESHSPRAY_POWERUP = "Grants a +15% Firerate buff until you swap weapons or lose the Fresh Spray item.";
+SHOPDESC2_DI_FRESHSPRAY_POWERUP = "\cfThis is a powerup. Unlike other powerups, this will last forever until manually removed from your inventory.";
+SHOPTYPE_DI_FRESHSPRAY_POWERUP = "\cv[Powerup] \cl[Max: 15]";

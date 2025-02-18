@@ -77,3 +77,5 @@ DI_FondueBlood;
 DI_OverwhelmingFirepower;
 DI_OrganDonor;
 DI_PiercingBullets;
+DI_FreshSpray;
+DI_FreshSpray_Powerup;
