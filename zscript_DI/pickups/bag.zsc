@@ -5,13 +5,14 @@ class DI_CoinBag : DI_Actor
 	Default
 	{
 		Health 10;
-		Height 16;
-		Radius 8;
+		Height 24;
+		Radius 16;
 		+SOLID;
 		+SHOOTABLE;
 		+BRIGHT;
 		+NOBLOOD;
 		+NOBLOODDECALS;
+		+PUSHABLE;
 	}
 	
 	States
