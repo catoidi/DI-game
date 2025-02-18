@@ -1,0 +1,37 @@
+//zscript_DI/items/passives/bigbullets.zsc
+
+Class DI_BigBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Big Bullets";
+		Inventory.Icon "POWRR0";
+		Inventory.PickupMessage "Acquired Big Bullets! (Increases DMG Mult, Bullet Size, and Recoil.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0.0;}
+		return 0.15 * plr.countinv(GetClassName());
+	}
+
+	override double GiveBulletSize()
+	{
+		if (!plr) {return 0.0;}
+		return 0.3 * plr.countinv(GetClassName());
+	}
+
+	override double GiveRecoil()
+	{
+		if (!plr) {return 0.0;}
+		return 2 * plr.countinv(GetClassName());
+	}
+	
+	States
+	{
+		Spawn:
+			POWR R -1;
+			Stop;
+	}
+}

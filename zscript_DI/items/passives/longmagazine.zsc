@@ -1,0 +1,46 @@
+//zscript_DI/items/passives/longmagazine.zsc
+
+Class DI_LongMagazine : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Long Magazine";
+		Inventory.Icon "POWRI0";
+		Inventory.PickupMessage "Long Magazine Acquired! (+50% Max Ammo, but reduces reload speed.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	override int GiveMaxAmmo1()
+	{
+		if (!wpn || !plr) {return 0;}
+		if (!wpn.Ammo1) {return 0;}
+		int itemnum = plr.CountInv(GetClassName());
+		int returnvalue = itemnum * (wpn.Ammo1.Default.MaxAmount / 2);
+		if (returnvalue < itemnum) {returnvalue = itemnum;}
+		return returnvalue;
+	}
+	
+	override int GiveMaxAmmo2()
+	{
+		if (!wpn || !plr) {return 0;}
+		if (!wpn.Ammo2) {return 0;}
+		int itemnum = plr.CountInv(GetClassName());
+		int returnvalue = itemnum * (wpn.Ammo2.Default.MaxAmount / 2);
+		if (returnvalue < itemnum) {returnvalue = itemnum;}
+		return returnvalue;
+	}
+	
+	override double GiveReloadSpeed()
+	{
+		if (!wpn || !plr) {return 0;}
+		if (!wpn.Ammo1 && !wpn.Ammo2) {return 0;}
+		else return plr.CountInv(GetClassName()) * 0.25;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR I -1;
+			Stop;
+	}
+}

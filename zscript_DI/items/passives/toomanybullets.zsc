@@ -1,0 +1,43 @@
+//zscript_DI/items/passives/toomanybullets.zsc
+
+Class DI_TooManyBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "TooManyBullets";
+		Inventory.Icon "POWRH0";
+		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -35% Reload and DMG)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveProjectiles()
+	{
+		if (!wpn || !plr) {return 0;}
+		return (plr.CountInv(GetClassName()) * wpn.default.wpn_projectiles);
+	}
+	
+	override double GiveReloadSpeed()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * 0.35;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * -0.35;
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName()) * 3;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR H -1;
+			Stop;
+	}
+}

@@ -1,0 +1,29 @@
+//zscript_DI/items/passives/starfruit.zsc
+
+Class DI_Starfruit : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Starfruit";
+		Inventory.Icon "POWRF0";
+		Inventory.PickupMessage "Starfruit Acquired! (Combo-based chance to gain +20% DMG.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0;}
+		if (random(plr.combonum, 9) == 9)
+		{
+			return 0.2 * plr.CountInv(GetClassName());
+		}
+		else {return 0;}
+	}
+	
+	States
+	{
+		Spawn:
+			POWR F -1;
+			Stop;
+	}
+}

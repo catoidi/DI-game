@@ -1,0 +1,28 @@
+//zscript_DI/items/passives/rewardsprogram.zsc
+
+Class DI_RewardsProgram : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Rewards Program";
+		Inventory.Icon "POWRW0";
+		Inventory.PickupMessage "Acquired Rewards Program! (Up to +3 coins per enemy, but only while in lots of debt.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveExtraCoin()
+	{
+		if (!plr) {return 0;}
+		int addcoin = plr.countinv("DI_RewardsProgram");
+		if (plr.score <= -2000) {addcoin *= 3;}
+		else if (plr.score <= -1000) {addcoin *= 2;}
+		return addcoin;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR W -1;
+			Stop;
+	}
+}

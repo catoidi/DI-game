@@ -1,0 +1,26 @@
+//zscript_DI/items/passives/9dollarbill.zsc
+
+Class DI_ExtraCoinGiver : DIPassiveInventory
+{
+	Default
+	{
+		Tag "9 Dollar Bill";
+		Inventory.Icon "POWRB0";
+		Inventory.PickupMessage "9 Dollar Bill acquired! (Combo-based chance to make enemies drop +1 coin.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveExtraCoin()
+	{
+		if (!plr) {return 0;}
+		if (random(plr.GetCombo(), 9) != 9) {return 0;}
+		return plr.CountInv(GetClassName());
+	}
+	
+	States
+	{
+		Spawn:
+			POWR B -1;
+			Stop;
+	}
+}

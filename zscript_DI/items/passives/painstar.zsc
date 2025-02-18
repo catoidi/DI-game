@@ -1,0 +1,28 @@
+//zscript_DI/items/passives/painstar.zsc
+
+Class DI_PainStar : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Pain Star";
+		Inventory.Icon "POWRJ0";
+		Inventory.PickupMessage "Pain Star Acquired! (+5 DMG, decreases with high combos.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		int painstarnum = plr.CountInv("DI_PainStar") * 6;
+		painstarnum -= plr.CountInv("DI_PainStar") * plr.combonum;
+		if (painstarnum < 0) {painstarnum = 0;}
+		return painstarnum;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR J -1;
+			Stop;
+	}
+}

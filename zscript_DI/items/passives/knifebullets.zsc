@@ -1,0 +1,31 @@
+//zscript_DI/items/passives/knifebullets.zsc
+
+Class DI_KnifeBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Knife Bullets";
+		Inventory.Icon "POWRA0";
+		Inventory.PickupMessage "Knife Bullets Acquired! (+2 Base DMG, -15% Firerate)";
+		Inventory.MaxAmount 5;
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return plr.countinv(GetClassName()) * 2;
+	}
+
+	override double GiveFirerate()
+	{
+		if (!plr) {return 0;}
+		return plr.countinv(GetClassName()) * 0.15;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR A -1;
+			Stop;
+	}
+}

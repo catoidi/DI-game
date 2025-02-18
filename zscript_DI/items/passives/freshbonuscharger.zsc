@@ -1,0 +1,25 @@
+//zscript_DI/items/passives/freshbonuscharger.zsc
+
+Class DI_FreshBonusCharger : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Fast Fresh";
+		Inventory.Icon "POWRL0";
+		Inventory.PickupMessage "Fast Fresh Acquired! (Shortens Fresh Weapon Cooldown)";
+		Inventory.MaxAmount 5;
+	}
+	
+	override int GiveFreshCharge()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(GetClassName());
+	}
+	
+	States
+	{
+		Spawn:
+			POWR L -1;
+			Stop;
+	}
+}
