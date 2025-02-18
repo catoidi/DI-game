@@ -137,7 +137,7 @@ DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
 DefensePassive DI_WhoppeeCushion POW1Y 7 di_unlock_item_whoppeecushion;
 DefensePassive DI_FruitTape POW2F 7;
 >>Combo Passives...
-ComboPassive DI_ExtraCoinGiver POWRB 18;
+ComboPassive DI_ExtraCoinGiver POWRB 9;
 ComboPassive DI_FreshBonusGiver POWRC 14;
 ComboPassive DI_FreshBonusCharger POWRL 14 256 di_unlock_item_freshcharger;
 ComboPassive DI_WealthJar POWRZ 35 128 di_unlock_item_wealthjar;

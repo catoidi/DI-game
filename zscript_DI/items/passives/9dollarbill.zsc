@@ -10,10 +10,37 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 		Inventory.MaxAmount 3;
 	}
 	
+	bool active;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+	
+		if (plr && !Level.IsFrozen())
+		{
+			if (random(plr.combonum, 9) == 9) {active = true;}
+			else {active = false;}
+		}
+	}
+	
+	override string, int, int GiveEnemyDrop(DI_Monster mon)
+	{
+		if (!plr) {return "", 0, 0;}
+		if (!active) {return "", 0, 0;}
+		switch(plr.CountInv(self.GetClassName()))
+		{
+			default: return "", 0, 0; break;
+			case 1: return "DI_9DollarBill_Drop1", 1, 0; break;
+			case 2: return "DI_9DollarBill_Drop2", 1, 0; break;
+			case 3: return "DI_9DollarBill_Drop3", 1, 0; break;
+		}
+		return "", 0, 0;
+	}
+	
 	override int GiveExtraCoin()
 	{
 		if (!plr) {return 0;}
-		if (random(plr.GetCombo(), 9) != 9) {return 0;}
+		if (!active) {return 0;}
 		return plr.CountInv(GetClassName());
 	}
 	
@@ -22,5 +49,59 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 		Spawn:
 			POWR B -1;
 			Stop;
+	}
+}
+
+Class DI_9DollarBill_Drop1 : DI_Actor
+{
+	Default
+	{
+		+BRIGHT;
+		+NOINTERACTION;
+	}
+	
+	bool novel;
+	
+	override void Tick()
+	{
+		Super.Tick();
+		if (!Level.IsFrozen())
+		{
+			if (!novel) 
+			{
+				Vel.X = 0.0;
+				Vel.Y = 0.0;
+				Vel.Z = 0.0;
+				novel = true;
+			}
+			else {Vel.Z += 0.25;}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			COIN E 1 A_FadeOut(0.025);
+			Loop;
+	}
+}
+
+Class DI_9DollarBill_Drop2 : DI_9DollarBill_Drop1
+{
+	States
+	{
+		Spawn:
+			COIN F 1 A_FadeOut(0.025);
+			Loop;
+	}
+}
+
+Class DI_9DollarBill_Drop3 : DI_9DollarBill_Drop1
+{
+	States
+	{
+		Spawn:
+			COIN G 1 A_FadeOut(0.025);
+			Loop;
 	}
 }
