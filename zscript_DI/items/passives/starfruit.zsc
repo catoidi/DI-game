@@ -10,14 +10,31 @@ Class DI_Starfruit : DIPassiveInventory
 		Inventory.MaxAmount 10;
 	}
 	
+	bool active;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+	
+		if (plr && !Level.IsFrozen())
+		{
+			if (random(plr.combonum, 9) == 9) {active = true;}
+			else {active = false;}
+		}
+	}
+	
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		if (!active) {return "", 0;}
+		return "DI_Starfruit_Projectile", plr.CountInv(self.GetClassName());
+	}
+	
 	override double GiveDamageMult()
 	{
 		if (!plr) {return 0;}
-		if (random(plr.combonum, 9) == 9)
-		{
-			return 0.2 * plr.CountInv(GetClassName());
-		}
-		else {return 0;}
+		if (!active) {return 0;}
+		return 0.2 * plr.CountInv(GetClassName());
 	}
 	
 	States
@@ -25,5 +42,13 @@ Class DI_Starfruit : DIPassiveInventory
 		Spawn:
 			POWR F -1;
 			Stop;
+	}
+}
+
+Class DI_Starfruit_Projectile : DIProjectileInventory
+{
+	override void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim)
+	{
+		owner.A_SpawnParticleEX("White", TexMan.CheckForTexture("POWRF0"), STYLE_None, SPF_FULLBRIGHT, 35, 16, 180, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 1, -1, 1);
 	}
 }
