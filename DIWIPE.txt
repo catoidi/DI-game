@@ -76,3 +76,4 @@ DI_SprayNPray;
 DI_FondueBlood;
 DI_OverwhelmingFirepower;
 DI_OrganDonor;
+DI_PiercingBullets;

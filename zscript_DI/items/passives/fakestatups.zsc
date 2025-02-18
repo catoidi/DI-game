@@ -182,7 +182,7 @@ Class DI_LongMagazine : DIPassiveInventory
 	{
 		Tag "Long Magazine";
 		Inventory.Icon "POWRI0";
-		Inventory.PickupMessage "Long Magazine Acquired! (+50% Max Ammo, but reduces reload and movement speed.)";
+		Inventory.PickupMessage "Long Magazine Acquired! (+50% Max Ammo, but reduces reload speed.)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -204,13 +204,6 @@ Class DI_LongMagazine : DIPassiveInventory
 		int returnvalue = itemnum * (wpn.Ammo2.Default.MaxAmount / 2);
 		if (returnvalue < itemnum) {returnvalue = itemnum;}
 		return returnvalue;
-	}
-
-	override double GivePlayerSpeed()
-	{
-		if (!wpn || !plr) {return 0;}
-		if (!wpn.Ammo1 && !wpn.Ammo2) {return 0;}
-		else return plr.CountInv(GetClassName()) * -0.05;
 	}
 	
 	override double GiveReloadSpeed()

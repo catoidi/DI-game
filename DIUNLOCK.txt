@@ -12,6 +12,7 @@
 !di_unlock_item_minigun DI_Minigun 1;
 !di_unlock_item_knifebullets DI_KnifeBullets 2;
 !di_unlock_item_longmagazine DI_LongMagazine 2;
+!di_unlock_item_piercingbullets DI_PiercingBullets 2;
 !di_unlock_item_superglue DI_SuperGlue 2;
 !di_unlock_item_hathat DI_HatHat 2;
 !di_unlock_item_carbonateddrink DI_CarbonatedDrink 2;

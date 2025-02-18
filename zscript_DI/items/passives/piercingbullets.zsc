@@ -4,13 +4,29 @@ Class DI_PiercingBullets : DIPassiveInventory
 {
 	Default
 	{
-		Inventory.MaxAmount 4;
+		Tag "Armor-Piercing Bullets";
+		Inventory.Icon "POW2U0";
+		Inventory.PickupMessage "Armor-Piercing Bullets acquired! (Bullets gain +0.2 Piercing, but Base DMG is reduced by 1.)";
+		Inventory.MaxAmount 5;
 	}
 
 	override string, int GiveProjectileItem()
 	{
 		if (!plr) {return "", 0;}
 		return "DI_PiercingBullets_Item", plr.CountInv(self.GetClassName());
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return -plr.countinv(self.getclassname());
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 U -1;
+			Stop;
 	}
 }
 
@@ -33,7 +49,7 @@ Class DI_PiercingBullets_Item : DIProjectileInventory
 	States
 	{
 		Spawn:
-			POW1 C -1;
+			POW2 U -1;
 			Stop;
 	}
 }
