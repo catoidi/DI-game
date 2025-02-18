@@ -48,6 +48,7 @@ Class DI_OverwhelmingFirepower_Powerup : DIPowerup
 		Inventory.MaxAmount 100;
 		DIPowerup.PowerupDrain 100;
 		DIPowerup.MaxTimer 70;
+		DIPowerup.PauseInShops false;
 	}
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)

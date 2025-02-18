@@ -60,6 +60,7 @@ Class DI_SuperGlue_Powerup : DIPowerup
 		Tag "\cgSuper Glue (Active)";
 		Inventory.Icon "POW2C0";
 		Inventory.MaxAmount 4;
+		DIPowerup.PauseInShops false;
 	}
 	
 	override double GiveWeaponSpeed()

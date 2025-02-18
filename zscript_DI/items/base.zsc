@@ -110,9 +110,11 @@ class DIPowerup : DIPassiveInventory
 {
 	//behaves exactly like a passive, but removes 1 of itself every second.
 	
+	bool pauseinshops;
 	int maxtimer, powerupdrain;
 	Property MaxTimer : maxtimer;
 	Property PowerupDrain : powerupdrain;
+	Property PauseInShops : pauseinshops;
 	
 	int poweruptimer;
 	
@@ -120,13 +122,17 @@ class DIPowerup : DIPassiveInventory
 	{
 		DIPowerup.MaxTimer 35;
 		DIPowerup.PowerupDrain 1;
+		DIPowerup.PauseInShops true;
 	}
 
 	override void DoEffect()
 	{
 		Super.DoEffect();
 		
-		if (plr && (plr.isFrozen() == false)) {PowerupTick();}
+		if (plr && (plr.isFrozen() == false)) 
+		{
+			if (!pauseinshops || plr.inwave) {PowerupTick();}
+		}
 	}
 	
 	virtual void PowerupTick()
