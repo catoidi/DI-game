@@ -1,0 +1,18 @@
+version 12.0;
+gb_time_freeze;
+gb_wheel_scale;
+gb_multiwheel_limit;
+di_xhair_toggle;
+di_xhair_scale;
+di_xhair_alpha;
+di_xhair_color;
+di_xhair_fresh_toggle;
+di_xhair_fresh_scale;
+di_xhair_fresh_alpha;
+di_xhair_precise;
+di_xhair_dot;
+di_itemhud_toggle;
+di_itemhud_scale;
+di_itemhud_alpha;
+di_questscale;
+di_questalpha;

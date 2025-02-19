@@ -1,0 +1,49 @@
+//zscript_DI/handlers/updater.zsc
+
+Class DIUpdater : EventHandler
+{
+	override void OnRegister()
+	{
+		cvar prevversion = cvar.getcvar("di_version");
+		array<string> filedata;
+		int curversion;
+		
+		int ThisLump = Wads.FindLump("DIUPDATE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIUPDATE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIUPDATE", ThisLump + 1, 1);
+		}
+		
+		bool doupdates = false;
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			if (filedata[i].Left(8) ~== "version ")
+			{
+				curversion = filedata[i].Mid(8).ToInt(10);
+				
+				if (curversion > prevversion.GetInt()) {doupdates = true;}
+				else {doupdates = false;}
+			}
+			else if (doupdates)
+			{
+				cvar curcvar = cvar.findcvar(filedata[i]);
+				if (curcvar)
+				{
+					curcvar.ResetToDefault();
+					console.printf("\cvDI Update Script: Reset '%s' to default value.", filedata[i]);
+				}
+			}
+		}
+		
+		prevversion.SetInt(curversion);
+	}
+}

@@ -19,6 +19,7 @@ version "4.14"
 #include "zscript_DI/handlers/painter.zsc"
 #include "zscript_DI/handlers/janitor.zsc"
 #include "zscript_DI/handlers/killtracker.zsc"
+#include "zscript_DI/handlers/updater.zsc"
 
 //ZForms (uses MIT License)
 #include "zscript_libraries/ZForms/Include.zsc"
