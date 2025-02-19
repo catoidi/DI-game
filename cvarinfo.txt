@@ -116,7 +116,8 @@ server cheat bool di_unlock_item_jumpshot = false; //grenade launcher.
 server cheat bool di_unlock_item_fondueblood = false; //cheese cannon.
 server cheat bool di_unlock_item_overwhelmingfirepower = false; //minigun.
 server cheat bool di_unlock_item_organdonor = false; //sledgehammer.
-server cheat bool di_unlock_item_freshspray = false; //glowstick.
+server cheat bool di_unlock_item_nugget = false; //glowstick.
+server cheat bool di_unlock_item_freshspray = false; //popcorngun.
 server cheat bool di_unlock_item_rubberbullets = false; //laser pointer.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.

@@ -260,6 +260,10 @@ SHOPITEM_DI_RASPBERRY = "Raspberry";
 SHOPDESC_DI_RASPBERRY = "Grants +3 coins per Fresh Weapon Bonus for 30 seconds.";
 SHOPDESC2_DI_RASPBERRY = "\cbWorks best if you have at least 3 weapons, to minimize the fresh cooldown. Powerup Timer does not stack.";
 SHOPTYPE_DI_RASPBERRY = "\ct[Consumable] \cl[Max: 3]";
+SHOPITEM_DI_NUGGET = "chicken nugget";
+SHOPDESC_DI_NUGGET = "For 45 seconds, gain +2 HP instantly (up to 200%)\nevery time you kill an enemy.";
+SHOPDESC2_DI_NUGGET = "\cbyou only get one nugget.";
+SHOPTYPE_DI_NUGGET = "\ct[Consumable] \cl[Max: 3]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";
@@ -548,3 +552,7 @@ SHOPITEM_DI_FRESHSPRAY_POWERUP = "\cvFresh Spray (Active)";
 SHOPDESC_DI_FRESHSPRAY_POWERUP = "Grants a +15% Firerate buff until you swap weapons or lose the Fresh Spray item.";
 SHOPDESC2_DI_FRESHSPRAY_POWERUP = "\cfThis is a powerup. Unlike other powerups, this will last forever until manually removed from your inventory.";
 SHOPTYPE_DI_FRESHSPRAY_POWERUP = "\cv[Powerup] \cl[Max: 15]";
+SHOPITEM_DI_NUGGET_POWERUP = "\cvchicken nugget (Active)";
+SHOPDESC_DI_NUGGET_POWERUP = "Gain +2 HP instantly upon killing an enemy. (up to 200% HP)";
+SHOPDESC2_DI_NUGGET_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_NUGGET_POWERUP = "\cv[Powerup] \cl[Max: 45]";

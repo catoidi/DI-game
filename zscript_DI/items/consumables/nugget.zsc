@@ -1,0 +1,86 @@
+//zscript_DI/items/consumables/nugget.zsc
+
+Class DI_Nugget : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	Default
+	{
+		Tag "chicken nugget";
+		Inventory.MaxAmount 3;
+		Inventory.Icon "POW2Y0";
+		Inventory.PickupMessage "got a chicken nugget. (upon use, every enemy killed instantly gives you +2 HP for 45 seconds, up to 200% Health.)";
+		+INVENTORY.INVBAR;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
+		{
+			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
+			return false;
+		}
+		else 
+		{
+			if (owner is "DI_PlayerBase")
+			{	
+				let plr = DI_PlayerBase(owner);
+				plr.ACS_NamedExecuteAlways("DoLeafFlash");
+				plr.A_GiveInventory("DI_Nugget_Powerup", 45);
+			
+				DIUsed(); 
+				Super.Use(pickup); 
+				return true;
+			}
+			else {return false;}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 Y -1;
+			Stop;
+	}
+}
+
+Class DI_Nugget_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvchicken nugget (Active)";
+		Inventory.MaxAmount 45;
+		Inventory.Icon "POW2Z0";
+	}
+	
+	bool started;
+	int prevmon;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			if (!started) 
+			{
+				prevmon = Level.Killed_Monsters;
+				started = true;
+			}
+			
+			int newkills = Level.Killed_Monsters - prevmon;
+			if (newkills > 0)
+			{
+				plr.DI_HealSelf(newkills * 2, 2.0);
+				prevmon = Level.Killed_Monsters;
+			}
+		}
+	}
+
+	States
+	{
+		Spawn:
+			POW2 Z -1;
+			Stop;
+	}
+}

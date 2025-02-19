@@ -191,6 +191,7 @@ version "4.14"
 #include "zscript_DI/items/consumables/banana.zsc"
 #include "zscript_DI/items/consumables/questbook.zsc"
 #include "zscript_DI/items/consumables/raspberry.zsc"
+#include "zscript_DI/items/consumables/nugget.zsc"
 
 //weapons
 #include "zscript_DI/weapons/base.zsc" //not a weapon
