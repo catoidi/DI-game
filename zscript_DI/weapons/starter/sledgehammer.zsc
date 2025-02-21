@@ -99,7 +99,7 @@ class Sledgehammer : DI_Weapon
 		A_SpawnItemEX("HammerSlamPuff", swingrange, 0, 0, 0, 0, 0, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
 		A_Recoil(9);
 		ThrustThingZ(0, 30, 0, 1);
-		A_StartSound("slam2");
+		DI_GunSound("slam2");
 	}
 
 	action void HammerOffset(double newx, double newy)
@@ -171,7 +171,7 @@ class Sledgehammer : DI_Weapon
 				else {return ResolveState(null);}
 			}
 			HAMR DDDD 1 HammerOffset(2.4, 1.2);
-			#### # 0 A_StartSound("whiff2");
+			#### # 0 DI_StartSound("whiff2");
 			HAMR EEEE 1 HammerOffset(4.8, 2.4);
 			HAMR FFFF 1 HammerOffset(7.2, 3.6);
 			#### # 0 HammerSwing();
@@ -246,7 +246,7 @@ class Sledgehammer : DI_Weapon
 				A_SetPitch(invoker.owner.pitch / 2, SPF_INTERPOLATE);
 				HammerOffset(2.4, 4.8);
 			}
-			#### # 0 A_StartSound("whiff2");
+			#### # 0 DI_StartSound("whiff2");
 			HAMR MMMM 1 
 			{
 				A_SetPitch(invoker.owner.pitch / 2, SPF_INTERPOLATE);

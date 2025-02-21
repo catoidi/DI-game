@@ -41,7 +41,7 @@ CLASS BlueSMG : DI_Weapon
 		//if (invoker.recnum < 6) ++invoker.recnum;
 		float powpitch = 1.05;
 		if (flashnum == 1) {powpitch = 1.0;}
-		DI_StartSound("gunpow4", pitch: powpitch);
+		DI_GunSound("gunpow4", pitch: powpitch);
 	}
 	
 	States

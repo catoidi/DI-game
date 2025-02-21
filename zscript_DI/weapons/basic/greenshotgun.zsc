@@ -56,7 +56,7 @@ CLASS GreenShotgun : DI_Weapon
 				A_Overlay(2, "Fire_Barrel");
 				A_SetPitch(pitch - 1.6);
 				DI_Shoot(useammo: false);
-				DI_StartSound("lushot1", pitch: 1.2);
+				DI_GunSound("lushot1", pitch: 1.2);
 				A_TakeInventory("GreenShotgunPump", 1);
 			}
 			SHOT B 8;

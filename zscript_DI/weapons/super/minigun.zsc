@@ -43,7 +43,7 @@ Class DI_Minigun : DI_Weapon
 				mpitch = 0.725;
 			}
 			DI_Shoot();
-			DI_StartSound("gunpow2", pitch: mpitch, volume: 0.8);
+			DI_GunSound("gunpow2", pitch: mpitch, volume: 0.8);
 			DI_BulletCasing(2);
 			invoker.bBRIGHT = true;
 		}

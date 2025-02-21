@@ -105,7 +105,7 @@ CLASS Glowstick : DI_Weapon //20010
 				A_GiveInventory("GlowstickPower", 35);
 			}
 			GLOW B 1 BRIGHT A_WeaponOffset(-60, -40, WOF_INTERPOLATE);
-			GLOW B 0 BRIGHT A_StartSound("weapons/glowstick/glowswsh");
+			GLOW B 0 BRIGHT DI_GunSound("weapons/glowstick/glowswsh");
 			GLOW BBB 1 BRIGHT A_WeaponOffset(30, 20, WOF_ADD | WOF_INTERPOLATE);
 			GLOW N 1 BRIGHT {
 				A_WeaponOffset(60, 40, WOF_INTERPOLATE);

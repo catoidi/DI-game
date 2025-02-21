@@ -19,6 +19,7 @@ Class DI_Weapon : Weapon abstract
 	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
 	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
 	int maxammouse; //the max amount inventory items can increase ammo.
+	string gunsound; //replacement gun sound from inventory items.
 	
 	double plr_speed, plr_combodrainbonus;
 	
@@ -208,6 +209,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_speed_reload = Default.wpn_speed_reload;
 		plr_speed = Default.plr_speed;
 		plr_combodrainbonus = Default.plr_combodrainbonus;
+		gunsound = Default.gunsound;
 		
 		for (int i = 0; i < plr.knownpassives.Size(); ++i)
 		{
@@ -241,6 +243,8 @@ Class DI_Weapon : Weapon abstract
 				wpn_speed_reload += curinv.GiveReloadSpeed();
 				plr_speed += curinv.GivePlayerSpeed();
 				plr_combodrainbonus *= curinv.GiveComboDrain();
+				string replacesound = curinv.ReplaceGunSound();
+				if (replacesound != "") {gunsound = replacesound;}
 			}
 		}
 		maxammouse = CalculateAmmoCost();
@@ -538,6 +542,14 @@ Class DI_Weapon : Weapon abstract
 		//same as A_StartSound, but automatically changes pitch to match current weapon speed.
 		pitch *= invoker.CheckWeaponSpeed();
 		A_StartSound(whattoplay, slot, flags, volume, attenuation, pitch, startTime);
+	}
+	
+	action void DI_GunSound(sound whattoplay, int slot = CHAN_BODY, int flags = CHANF_DEFAULT, double volume = 1.0, double attenuation = ATTN_NORM, double pitch = 0, double startTime = 0)
+	{
+		//same as DI_StartSound, but can be replaced by items.
+		if (invoker.gunsound != "") {DI_StartSound(invoker.gunsound, slot, flags, volume, attenuation, pitch, startTime);}
+		else {DI_StartSound(whattoplay, slot, flags, volume, attenuation, pitch, startTime);}
+		
 	}
 	
 	States
