@@ -504,7 +504,7 @@ SHOPDESC2_DI_RUBBERBULLETS = "\cbItem stacks increases the bounce velocity. Bull
 SHOPTYPE_DI_RUBBERBULLETS = "\cd[Passive] \cl[Max: 5]";
 SHOPITEM_DI_POW = "POW!";
 SHOPDESC_DI_POW = "While magazine is full,\ngain +3 Base DMG and +0.5 Piercing.";
-SHOPDESC2_DI_POW = "\cbItem stacks increases the damage buff. If the current weapon is the Finger Gun, this buff is always active.";
+SHOPDESC2_DI_POW = "\cbWhile active, gun sounds are replaced with 'POW!'. Item stacks increases the damage buff. If the current weapon is the Finger Gun, this buff is always active.";
 SHOPTYPE_DI_POW = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
