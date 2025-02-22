@@ -49,7 +49,8 @@ CLASS StunCrossbow : DI_Weapon
 			SBOW B 2 BRIGHT 
 			{
 				DI_FireProjectile("StunCrossbowBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE);
-				DI_GunSound("pistpow");
+				DI_GunSound("gunpow4", pitch: 0.8);
+				DI_StartSound("gunmov1", CHAN_AUTO);
 			}
 			SBOW CCDDDD 1;
 			SBOW D 0 A_Refire;
@@ -58,6 +59,7 @@ CLASS StunCrossbow : DI_Weapon
 		Reload:
 			SBOW # 0 DI_ReloadCheck();
 			SBOW # 0 A_JumpIfInventory("StunCrossbowReload", 1, "ReloadStart");
+			#### # 0 DI_StartSound("hpnmov1", startTime: 0.15);
 			SBOW ## 1 A_OverlayOffset(PSP_WEAPON, 3.0, -0.5, WOF_ADD);
 			SBOW DDDDDD 1 A_OverlayOffset(PSP_WEAPON, 9, -2, WOF_ADD);
 			Goto ReloadStart+2;
@@ -75,12 +77,17 @@ CLASS StunCrossbow : DI_Weapon
 		Reload_Arrow:
 			TNT1 A 0 A_OverlayOffset(-2, 36, 78, WOF_ADD);
 			SBOW EEEEEEEEEEEE 1 A_OverlayOffset(-2, 1, -8, WOF_ADD);
+			#### # 0 DI_StartSound("gunrel1", pitch: 1.0);
 			SBOW EEEE 1 A_OverlayOffset(-2, -7, 2, WOF_ADD);
 			SBOW E 4;
+			#### # 0 DI_StartSound("gunrel1", pitch: 1.0);
 			SBOW EEEE 1 A_OverlayOffset(-2, -3, 1.5, WOF_ADD);
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, pitch: 0.8, startTime: 0.1);
+			#### # 0 DI_StartSound("gunrel2", pitch: 0.8);
 			Stop;
 		ReloadEnd:
 			#### # 0 A_TakeInventory("StunCrossbowReload");
+			#### # 0 DI_StartSound("hpnmov1", pitch: 1.2, startTime: 0.4);
 			SBOW AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -9, 2, WOF_ADD);
 			Goto Ready;
 		Spawn:

@@ -51,9 +51,11 @@ CLASS GrenadeLauncher : DI_Weapon
 			{
 				A_SetPitch(pitch - 3);
 				DI_FireProjectile("GrenadeLauncherBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE, isRecoil: true);
-				A_StartSound("pistpow");
+				DI_GunSound("gunpow2", CHAN_AUTO, volume: 0.7, pitch: 0.7);
+				DI_StartSound("weapons/popcorn/poppop", CHAN_AUTO, volume: 0.5, pitch: 0.8);
 				A_Overlay(-10, "PuffSmoke");
 			}
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, volume: 0.5, pitch: 0.8, startTime: 0.15);
 			GLAN # 0 A_JumpIfInventory("GrenadeLauncherAmmo", 2, 2);
 			GLAN # 0 A_Jump(256, "Fire_LowAmmo");
 			GLAN CCDDDD 1;
@@ -75,7 +77,9 @@ CLASS GrenadeLauncher : DI_Weapon
 			Goto ReloadStart;
 		ReloadStart:
 			GLAN # 10 A_Overlay(2, "Reload_Shell");
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.5);
 			GLAN D 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.7);
 			GLAN A 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			#### # 0 A_GiveInventory("GrenadeLauncherAmmo", 1);
 			GLAN A 0 A_GiveInventory("GrenadeLauncherReload", 1);
