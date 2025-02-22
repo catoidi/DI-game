@@ -1,0 +1,84 @@
+//zscript_DI/items/passives/POW.zsc
+
+Class DI_POW : DIPassiveInventory
+{
+	Default
+	{
+		Tag "POW!";
+		Inventory.Icon "POW3A0";
+		Inventory.PickupMessage "Acquired POW! (While ammo is full, gain +3 Base DMG, +0.5 Piercing, and replace gun sounds with 'POW!'.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	bool dopow, prevpow;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && wpn)
+		{
+			prevpow = dopow;
+			if (wpn is "FingerGun") {dopow = true;}
+			else if (wpn.Ammo1 || wpn.Ammo2)
+			{
+				dopow = true;
+				if (wpn.Ammo1 && !wpn.wpn_dontgiveammo1)
+				{
+					if (plr.CountInv(wpn.Ammo1.GetClassName()) < wpn.Ammo1.MaxAmount)
+					{
+						dopow = false;
+					}
+				}
+				if (wpn.Ammo2 && !wpn.wpn_dontgiveammo2)
+				{
+					if (plr.CountInv(wpn.Ammo2.GetClassName()) < wpn.Ammo2.MaxAmount)
+					{
+						dopow = false;
+					}
+				}
+			}
+			else {dopow = false;} //do not apply to weapons with no ammo.
+		}
+	}
+	
+	override int ItemPriority() {return 1;}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		if (!prevpow) {return 0;} //projectile spawning has a 1 tic delay.
+		return 3 * plr.CountInv(self.GetClassName());
+	}
+	
+	
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		if (!prevpow) {return "", 0;} //projectile spawning has a 1 tic delay.
+		return "DI_POW_Item", 1;
+	}
+	
+	override string ReplaceGunSound()
+	{
+		if (!plr) {return "";}
+		if (!dopow) {return "";}
+		return "pistpow";
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 A -1;
+			Stop;
+	}
+}
+
+Class DI_POW_Item : DIProjectileInventory
+{
+	override double GivePiercing(DI_PlayerBase plr)
+	{
+		if (!plr) {return 0.0;}
+		return 0.5 * plr.CountInv("DI_POW");
+	}
+}

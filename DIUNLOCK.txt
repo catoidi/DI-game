@@ -90,6 +90,7 @@ di_unlock_item_freshspray DI_FreshSpray 2 di_playerkills 66666;
 di_unlock_item_shellsling DI_ShellSling 2 di_playerkills 66666;
 di_unlock_item_jumpshot DI_JumpShot 2 di_playerkills 66666;
 di_unlock_item_rubberbullets DI_RubberBullets 2 di_playerkills 66666;
+di_unlock_item_pow DI_POW 2 di_playerkills 66666;
 >>15x Unlock Reward
 di_unlock_item_bulletmitosis DI_BulletMitosis 2  999999;
 di_unlock_item_toomanybullets DI_TooManyBullets 2  999999;

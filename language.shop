@@ -502,6 +502,10 @@ SHOPITEM_DI_RUBBERBULLETS = "Rubber Bullets";
 SHOPDESC_DI_RUBBERBULLETS = "Bullets will bounce off walls/objects\nat 20% of their original velocity.";
 SHOPDESC2_DI_RUBBERBULLETS = "\cbItem stacks increases the bounce velocity. Bullets continue to bounce until their velocity gets too low. Despite being made of rubber, they're still just as lethal as regular bullets.";
 SHOPTYPE_DI_RUBBERBULLETS = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_POW = "POW!";
+SHOPDESC_DI_POW = "While magazine is full,\ngain +3 Base DMG and +0.5 Piercing.";
+SHOPDESC2_DI_POW = "\cbItem stacks increases the damage buff. If the current weapon is the Finger Gun, this buff is always active.";
+SHOPTYPE_DI_POW = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
