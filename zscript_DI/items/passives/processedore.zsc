@@ -1,0 +1,31 @@
+//zscript_DI/items/passives/processedore.zsc
+
+Class DI_ProcessedOre : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Processed Ore";
+		Inventory.Icon "POW3B0";
+		Inventory.PickupMessage "Acquired Processed Ore! (Enemies drop +1 coin. Combo drains +30% faster.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveExtraCoin()
+	{
+		if (!plr) {return 0;}
+		return plr.CountInv(self.getclassname());
+	}
+	
+	override double GiveComboDrain()
+	{
+		if (!plr) {return 0;}
+		return 1.0 + (0.3 * plr.CountInv(self.getclassname()));
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 B -1;
+			Stop;
+	}
+}

@@ -506,6 +506,10 @@ SHOPITEM_DI_POW = "POW!";
 SHOPDESC_DI_POW = "While magazine is full,\ngain +3 Base DMG and +0.5 Piercing.";
 SHOPDESC2_DI_POW = "\cbWhile active, gun sounds are replaced with 'POW!'. Item stacks increases the damage buff. If the current weapon is the Finger Gun, this buff is always active.";
 SHOPTYPE_DI_POW = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_PROCESSEDORE = "Processed Ore";
+SHOPDESC_DI_PROCESSEDORE = "Enemies drop +1 coin on death,\nbut you lose combo 30% faster.";
+SHOPDESC2_DI_PROCESSEDORE = "\cbA large chunk of space metal recently mined from an exoplanet. Item stacks increase both coin drops and combo drain.";
+SHOPTYPE_DI_PROCESSEDORE = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

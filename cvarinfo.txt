@@ -120,6 +120,7 @@ server cheat bool di_unlock_item_nugget = false; //glowstick.
 server cheat bool di_unlock_item_freshspray = false; //popcorngun.
 server cheat bool di_unlock_item_rubberbullets = false; //laser pointer.
 server cheat bool di_unlock_item_pow = false; //fingergun.
+server cheat bool di_unlock_item_processedore = false; //ore drill.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.

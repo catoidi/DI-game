@@ -81,3 +81,4 @@ DI_FreshSpray;
 DI_FreshSpray_Powerup;
 DI_RubberBullets;
 DI_POW;
+DI_ProcessedOre;
