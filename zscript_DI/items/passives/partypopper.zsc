@@ -1,0 +1,100 @@
+//zscript_DI/items/passives/partypopper.zsc
+
+Class DI_PartyPopper : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Party Popper";
+		Inventory.Icon "POW3C0";
+		Inventory.PickupMessage "Acquired Party Popper! (Deal +20% DMG to undamaged foes.)";
+		Inventory.MaxAmount 5;
+	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_PartyPopper_Item", plr.CountInv(self.GetClassName());
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 C -1;
+			Stop;
+	}
+}
+
+Class DI_PartyPopper_Item : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 5;
+	}
+
+	bool hasdamaged;
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (owner && passive && source && (source != owner)) 
+		{
+			newdamage *= 1.0 + (0.2 * owner.CountInv(self.GetClassName()));
+			hasdamaged = true;
+		}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!Level.IsFrozen() && owner)
+		{
+			if (hasdamaged)
+			{
+				SpawnConfetti(5 * owner.countinv(self.getclassname()));
+				owner.TakeInventory(self.GetClassName(), 999999);
+			}
+		}
+	}
+	
+	virtual void SpawnConfetti(int connum)
+	{
+		for (int i = 0; i < connum; ++i)
+		{
+			int con1, con2, con3;
+			switch(random(0, 5))
+			{
+				case 0:
+					con1 = 256;
+					con2 = 0;
+					con3 = 0;
+					break;
+				case 1:
+					con1 = 0;
+					con2 = 256;
+					con3 = 0;
+					break;
+				case 2:
+					con1 = 0;
+					con2 = 0;
+					con3 = 256;
+					break;
+				case 3:
+					con1 = 256;
+					con2 = 256;
+					con3 = 0;
+					break;
+				case 4:
+					con1 = 256;
+					con2 = 0;
+					con3 = 256;
+					break;
+				case 5:
+					con1 = 0;
+					con2 = 256;
+					con3 = 256;
+					break;
+			}
+			owner.A_SpawnParticle(Color(con1, con2, con3), 0, 35, 12, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(owner.height / 2, owner.height), random(-4, 4), random(-4, 4), random(0, 4), 0, 0, -0.33);
+		}
+	}
+}

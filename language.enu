@@ -153,6 +153,7 @@ DIPOPUP_di_unlock_item_rubberbullets = "Rubber Bullets";
 DIPOPUP_di_unlock_item_nugget = "Nugget";
 DIPOPUP_di_unlock_item_pow = "POW!";
 DIPOPUP_di_unlock_item_processedore = "Processed Ore";
+DIPOPUP_di_unlock_item_partypopper = "Party Popper";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -225,6 +226,7 @@ SHOPLOCK_DI_RUBBERBULLETS = "\cbGet 256 kills with the \cvLaser Pointer \cbto un
 SHOPLOCK_DI_NUGGET = "\cbGet 256 kills with the \cvGlowstick \cbto unlock this item.";
 SHOPLOCK_DI_POW = "\cbGet 256 kills with the \cvFinger Gun \cbto unlock this item.";
 SHOPLOCK_DI_PROCESSEDORE = "\cbGet 256 kills with the \cvOre Drill \cbto unlock this item.";
+SHOPLOCK_DI_PARTYPOPPER = "\cbGet 256 kills with the \cvParty Shotgun \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

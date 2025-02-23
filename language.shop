@@ -510,6 +510,10 @@ SHOPITEM_DI_PROCESSEDORE = "Processed Ore";
 SHOPDESC_DI_PROCESSEDORE = "Enemies drop +1 coin on death,\nbut you lose combo 30% faster.";
 SHOPDESC2_DI_PROCESSEDORE = "\cbA large chunk of space metal recently mined from an exoplanet. Item stacks increase both coin drops and combo drain.";
 SHOPTYPE_DI_PROCESSEDORE = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_PARTYPOPPER = "Party Popper";
+SHOPDESC_DI_PARTYPOPPER = "Deal +20% DMG to undamaged foes.";
+SHOPDESC2_DI_PARTYPOPPER = "\cbThis DMG buff is applied separately from other DMG buffs. Item stacks increases the DMG received. Also spawns confetti particles when activated.";
+SHOPTYPE_DI_PARTYPOPPER = "\cd[Passive] \cl[Max: 5]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
