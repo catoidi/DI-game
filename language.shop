@@ -514,6 +514,10 @@ SHOPITEM_DI_PARTYPOPPER = "Party Popper";
 SHOPDESC_DI_PARTYPOPPER = "Deal +20% DMG to undamaged foes.";
 SHOPDESC2_DI_PARTYPOPPER = "\cbThis DMG buff is applied separately from other DMG buffs. Item stacks increases the DMG received. Also spawns confetti particles when activated.";
 SHOPTYPE_DI_PARTYPOPPER = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_ONIONRING = "Onion Ring";
+SHOPDESC_DI_ONIONRING = "While near enemies, gain up to +30% Reload Speed.";
+SHOPDESC2_DI_ONIONRING = "\cbQuickly decays over time while no longer near enemies. Item stacks increase the reload speed buff and the radius of the ring.";
+SHOPTYPE_DI_ONIONRING = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
@@ -567,4 +571,8 @@ SHOPTYPE_DI_FRESHSPRAY_POWERUP = "\cv[Powerup] \cl[Max: 15]";
 SHOPITEM_DI_NUGGET_POWERUP = "\cvchicken nugget (Active)";
 SHOPDESC_DI_NUGGET_POWERUP = "Gain +2 HP instantly upon killing an enemy. (up to 200% HP)";
 SHOPDESC2_DI_NUGGET_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
-SHOPTYPE_DI_NUGGET_POWERUP = "\cv[Powerup] \cl[Max: 45]";
+SHOPTYPE_DI_NUGGET_POWERUP = "\cv[Powerup] \cl[Max Timer: 45]";
+SHOPITEM_DI_ONIONRING_POWERUP = "\cvOnion Ring (Active)";
+SHOPDESC_DI_ONIONRING_POWERUP = "Grants up to +30% Reload Speed while active.";
+SHOPDESC2_DI_ONIONRING_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_ONIONRING_POWERUP = "\cv[Powerup] \cl[Max Timer: 39]";

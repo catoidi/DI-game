@@ -1,0 +1,156 @@
+//zscript_DI/items/passives/onionring.zsc
+
+Class DI_OnionRing : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Onion Ring";
+		Inventory.Icon "POW1G0";
+		Inventory.PickupMessage "Acquired Onion Ring! (Gain up to +30% reload speed while enemies are nearby.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	DI_OnionRing_Effect space;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && !Level.IsFrozen())
+		{
+			if (!space)
+			{
+				bool spawned;
+				actor creature;
+				[spawned, creature] = owner.A_SpawnItemEX("DI_OnionRing_Effect", flags: SXF_NOCHECKPOSITION);
+				
+				if (creature)
+				{
+					space = DI_OnionRing_Effect(creature);
+					space.creator = self;
+					space.master = owner;
+				}
+			}
+			else
+			{
+				 if (space.touchtimer > 0) {owner.SetInventory("DI_OnionRing_Powerup", space.touchtimer);}
+				 else {owner.TakeInventory("DI_OnionRing_Powerup", 999);}
+			}
+		}
+	}
+	
+	override double GiveReloadSpeed()
+	{
+		if (!plr || !space) {return 0.0;}
+		if (space.touchtimer <= 0) {return 0.0;}
+		return (-0.1 + (-0.005 * space.touchtimer)) * plr.countinv(self.getclassname());
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 G -1;
+			Stop;
+	}
+}
+
+Class DI_OnionRing_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvOnion Ring (Powerup)";
+		Inventory.Icon "POW3E0";
+		Inventory.MaxAmount 39;
+		DIPowerup.PowerupDrain 39;
+		DIPowerup.MaxTimer 70;
+		DIPowerup.PauseInShops false;
+	}
+	
+	//just an extra indicator for when the onion ring is active.
+}
+
+Class DI_OnionRing_Effect : DI_Actor
+{
+	DI_OnionRing creator;
+	bool wastouched;
+	int touchtimer;
+	
+	Default
+	{
+		FloatBobPhase 0;
+		RenderStyle "Translucent";
+		Translation "DamBrown";
+		+SOLID;
+		-SHOOTABLE;
+		+NOGRAVITY;
+		+MOVEWITHSECTOR;
+		+FLATSPRITE;
+		+NOTONAUTOMAP;
+		//+NOBLOCKMAP;
+		//+NOINTERACTION;
+		+INTERPOLATEANGLES;
+		+DONTSPLASH;
+		+BRIGHT;
+		//+CANPASS;
+		//-BLOCKEDBYSOLIDACTORS;
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if ((other is "DI_Monster") && (other.health > 0))
+		{
+			//console.printf("MONSTER DETECTED");
+			wastouched = true;
+		}
+		
+		return false;
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (!Level.IsFrozen())
+		{
+			if (master && creator)
+			{
+				if (wastouched) {touchtimer = 40;}
+				else if (touchtimer > 0) {--touchtimer;}
+				
+				int spacenum = master.countinv(creator.getclassname());
+				double newrad = master.radius + (80.0 + (20.0 * spacenum));
+				A_SetSize(newrad, master.height, false);
+				//copy pasted from shadow code.
+				Vector3 sPos = (
+					master.Pos.X + cos(players[consoleplayer].camera.Angle) * 0.01, 
+					master.Pos.Y + sin(players[consoleplayer].camera.Angle) * 0.01, 
+					master.Pos.Z + 0.01
+				); 
+				SetOrigin(sPos, true);
+				A_SetAngle(angle + 1, SPF_INTERPOLATE);
+				Alpha = master.Alpha * (0.0025 * touchtimer);
+				
+				double Scaler = 1.0 * (Radius / 32.0);
+				scale.X = Scaler;
+				scale.Y = Scaler;
+				
+				if (touchtimer > 0)
+				{
+					master.A_SpawnParticle(Color(153, 102, 51), SPF_FULLBRIGHT, 120, 6, 0, random(-radius, radius), random(-radius, radius), 16, 0, 0, 0, 0, 0, 0.33, Alpha);
+					//A_AttachLightDef("effect", "GLOWYELLOW");
+				}
+				//else {A_RemoveLight("effect");}
+				
+				wastouched = false;
+			}
+			else {Destroy();}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			SLAM B -1;
+			Stop;
+	}
+}

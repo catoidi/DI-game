@@ -83,3 +83,4 @@ DI_RubberBullets;
 DI_POW;
 DI_ProcessedOre;
 DI_PartyPopper;
+DI_OnionRing;
