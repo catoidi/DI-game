@@ -49,6 +49,8 @@ Class DI_Shoe_Throw : DI_Projectile
 		+ROLLSPRITE;
 		+SPRITEANGLE;
 		+INTERPOLATEANGLES;
+		BounceFactor 0.2;
+		WallBounceFactor 0.2;
 	}
 
 	string shoepart;
