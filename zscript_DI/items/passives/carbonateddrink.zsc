@@ -42,7 +42,6 @@ Class DI_CarbonatedDrink_Pickup : Inventory
 {
 	Default
 	{
-		Health 10;
 		+BRIGHT;
 		+FLOATBOB;
 		+Inventory.AUTOACTIVATE;
