@@ -55,7 +55,7 @@ Class DoubleShotgun : GreenShotgun
 				A_Overlay(2, "Fire_Barrel");
 				A_SetPitch(pitch - 1.6);
 				DI_Shoot(useammo: false);
-				DI_StartSound("lushot3");
+				DI_GunSound("lushot3");
 				A_TakeInventory("DoubleShotgunPump", 2);
 			}
 			PUSG B 8;

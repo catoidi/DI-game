@@ -25,14 +25,14 @@ Class DI_POW : DIPassiveInventory
 				dopow = true;
 				if (wpn.Ammo1 && !wpn.wpn_dontgiveammo1)
 				{
-					if (plr.CountInv(wpn.Ammo1.GetClassName()) < wpn.Ammo1.MaxAmount)
+					if (plr.CountInv(wpn.Ammo1.GetClassName()) + plr.CountInv(self.GetClassName()) <= wpn.Ammo1.MaxAmount)
 					{
 						dopow = false;
 					}
 				}
 				if (wpn.Ammo2 && !wpn.wpn_dontgiveammo2)
 				{
-					if (plr.CountInv(wpn.Ammo2.GetClassName()) < wpn.Ammo2.MaxAmount)
+					if (plr.CountInv(wpn.Ammo2.GetClassName()) + plr.CountInv(self.GetClassName()) <= wpn.Ammo2.MaxAmount)
 					{
 						dopow = false;
 					}
