@@ -116,7 +116,6 @@ DamagePassive DI_Farsight POW1M 14 256 di_unlock_item_fred4;
 DamagePassive DI_Starfruit POWRF 14 256 di_unlock_item_starfruit;
 >>DamagePassive DI_ComboDamageMult POWRT 56 128 di_unlock_item_combomult;
 DamagePassive DI_CreditFraud POW1H 7 256 di_unlock_item_creditfraud;
-DamagePassive DI_Toaster POW1P 14 256 di_unlock_item_toaster;
 DamagePassive DI_DepletedMag POW1W 14 256 di_unlock_item_depletedmag;
 DamagePassive DI_MiniFred POW1N 7 256 di_unlock_item_minifred;
 DamagePassive DI_Trailblazer POW2A 14 256 di_unlock_item_trailblazer;
@@ -141,6 +140,7 @@ DefensePassive DI_Consumer POW1A 7 256 di_unlock_item_consumer;
 DefensePassive DI_LastStand POW1G 7 256 di_unlock_item_fred3;
 DefensePassive DI_WhoppeeCushion POW1Y 7 di_unlock_item_whoppeecushion;
 DefensePassive DI_FruitTape POW2F 7;
+DefensePassive DI_Toaster POW1P 7 256 di_unlock_item_toaster;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 9;
 ComboPassive DI_FreshBonusGiver POWRC 14;
