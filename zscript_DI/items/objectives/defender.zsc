@@ -70,6 +70,7 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 		Radius 9;
 		Height 20;
 		Scale 0.5;
+		PainChance 256;
 		PainSound "dipain2";
 		DeathSound "dipain";
 		Tag "Mini Box";
@@ -125,12 +126,8 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 			++teletime;
 			if (teletime >= 35)
 			{	
-				if (Distance3D(Actor(plr)) >= 512)
-				{
-					SetOrigin(plr.Pos, false);
-					A_ClearTarget();
-				}
-				
+				NPCDistanceCheck();
+			
 				if ((health < starthealth) && (health > 0))
 				{
 					GiveBody(1, starthealth);
@@ -141,6 +138,36 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 		}
 	}
 	
+	action state NPCDistanceCheck()
+	{
+		int dist = Distance3D(Actor(invoker.plr));
+		if (dist >= 512)
+		{
+			SetOrigin(invoker.plr.Pos, false);
+			A_ClearTarget();
+			A_SpawnItemEX("TeleportFog", flags: SXF_NOCHECKPOSITION);
+		}
+		else if (dist >= 256)
+		{
+			Speed = 15;
+			if (InStateSequence(invoker.curstate, ResolveState("Wander")))
+			{
+				invoker.target = invoker.plr;
+				return ResolveState("Chase");
+			}
+		}
+		else
+		{
+			Speed = 5;
+			if (InStateSequence(invoker.curstate, ResolveState("Chase")))
+			{
+				A_ClearTarget();
+				return ResolveState("Wander");
+			}
+		}
+		return ResolveState(null);
+	}
+	
 	States
 	{
 		Spawn:
@@ -149,9 +176,12 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 		Wander:
 			#### AB 10 A_Wander;
 			Loop;
+		Chase:
+			#### AB 4 A_Chase(null, null);
+			Loop;
 		Pain:
-			#### # 10 A_Pain();
-			Goto See;
+			#### D 10 A_Pain();
+			Goto Wander;
 		Death:
 			#### # 0
 			{
