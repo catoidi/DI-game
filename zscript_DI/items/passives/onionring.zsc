@@ -5,7 +5,7 @@ Class DI_OnionRing : DIPassiveInventory
 	Default
 	{
 		Tag "Onion Ring";
-		Inventory.Icon "POW1G0";
+		Inventory.Icon "POW3D0";
 		Inventory.PickupMessage "Acquired Onion Ring! (Gain up to +30% reload speed while enemies are nearby.)";
 		Inventory.MaxAmount 4;
 	}
@@ -49,7 +49,7 @@ Class DI_OnionRing : DIPassiveInventory
 	States
 	{
 		Spawn:
-			POW1 G -1;
+			POW3 D -1;
 			Stop;
 	}
 }
