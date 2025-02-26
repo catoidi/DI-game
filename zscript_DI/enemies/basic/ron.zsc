@@ -88,7 +88,11 @@ Class Ron2 : Ron
 			#### FFGG 2 A_Chase();
 			Loop;
 		Missile:
-			#### HHH 5 A_DIScale(-0.05, 0.05);
+			#### HHH 5 
+			{
+				A_FaceTarget();
+				A_DIScale(-0.05, 0.05);
+			}
 			#### I 3 BRIGHT A_DIRon2Bullet();
 			#### H 4 A_DIScale(-0.075, 0.075);
 			#### I 3 BRIGHT A_DIRon2Bullet();
