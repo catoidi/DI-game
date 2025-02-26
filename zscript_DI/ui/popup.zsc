@@ -148,7 +148,7 @@ Class DIPopupHandler : EventHandler
 	ui string curquest, curdesc, curdebuff, curprogress;
 	ui bool doquest;
 	ui float questalpha, scalenum, eventalpha, finalalpha;
-	transient ui cvar scalefactor, questscale, cvaralpha;
+	transient ui cvar scalefactor, questscale, cvaralpha, photomode;
 	
 	ui string curevent, curevent_desc;
 	
@@ -198,8 +198,10 @@ Class DIPopupHandler : EventHandler
 		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
 		questscale = cvar.getcvar("di_questscale", players[consoleplayer]);
 		cvaralpha = cvar.getcvar("di_questalpha", players[consoleplayer]);
+		photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
 		scalenum = scalefactor.getfloat() * questscale.getfloat();
 		finalalpha = cvaralpha.getfloat();
+		if (photomode.getbool()) {finalalpha = 0.0;}
 		plr = DI_PlayerBase(players[consoleplayer].mo);
 		if (plr && (plr.health > 0)) 
 		{
