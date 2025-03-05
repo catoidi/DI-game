@@ -257,6 +257,7 @@ version "4.14"
 #include "zscript_DI/enemies/box/bigpizza.zsc"
 #include "zscript_DI/enemies/box/smallpizza.zsc"
 #include "zscript_DI/enemies/box/lemon.zsc"
+#include "zscript_DI/enemies/fantasy/spearcat.zsc"
 #include "zscript_DI/enemies/special/debtcollector.zsc"
 #include "zscript_DI/enemies/special/bigmelon.zsc"
 

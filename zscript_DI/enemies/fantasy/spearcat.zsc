@@ -1,0 +1,11 @@
+//zscript_DI/enemies/fantasy/spearcat.zsc
+
+Class DI_SpearCat : DI_Monster
+{
+	States
+	{
+		Spawn:
+			CATS A -1;
+			Stop;
+	}
+}
