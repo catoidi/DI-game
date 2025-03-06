@@ -2,10 +2,73 @@
 
 Class DI_SpearCat : DI_Monster
 {
+	Default
+	{
+		Speed 17;
+		Health 108;
+		Radius 18;
+		Height 60;
+		Mass 500;
+		Tag "Spear Cat";
+		DI_Monster.DIDrop "DI_Money";
+		MeleeRange 88;
+		+FLOORCLIP;
+		+JUMPDOWN;
+	}
+	
 	States
 	{
 		Spawn:
-			CATS A -1;
-			Stop;
+			CATS A 10 A_Look;
+			Loop;
+		See:
+			CATS AABB 3 A_Chase;
+			Loop;
+		Melee:
+			#### C 0 A_FaceTarget;
+			#### CCCC 4 A_DIScale(-0.0125, 0.025);
+			#### D 0 A_Recoil(-10);
+			#### D 0 
+			{
+				A_CustomMeleeAttack(12, "melee", "whiff", "Melee", false);
+				for (int i = 0; i < 3; ++i)
+				{
+					int offsetx = 23 * (i + 1);
+					int offsety = 0;
+					if (target)
+					{
+						if (target.Pos.Z != invoker.Pos.Z)
+						{
+							offsety = target.Pos.Z - invoker.Pos.Z;
+							if ((offsety > 0) && (offsety > offsetx / 2)) {offsety = offsetx / 2;}
+							else if ((offsety < 0) && (offsety < -offsetx / 2)) {offsety = -offsetx / 2;}
+						}
+					}
+					A_SpawnItemEX("SpearPuff", offsetx, 0, 32 + offsety, flags: SXF_NOCHECKPOSITION);
+				}
+			}
+			#### D 16 A_DIScale(0.05, -0.1);
+			Goto See;
+	}
+}
+
+Class SpearPuff : SledgePuff
+{
+	Default
+	{
+		RenderStyle "Translucent";
+		Alpha 0.75;
+		Scale 0.125;
+	}
+
+	States
+	{
+		Spawn:
+			SLAM B 1
+			{
+				A_DIScale(1.1, 1.1, true);
+				A_FadeOut(0.075);
+			}
+			Wait;
 	}
 }

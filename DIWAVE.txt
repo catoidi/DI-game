@@ -484,6 +484,12 @@ Level DI03;
 		Cap 1;
 		Rate 1;
 		Time 1;
-		Spawn Fred, 1;
+		Spawn DI_SpearCat, 10;
+		Wait 2;
+		Cap 2;
+		Wait 1;
+		Cap 3;
+		Wait 1;
+		Cap 4;
 	}
 }
