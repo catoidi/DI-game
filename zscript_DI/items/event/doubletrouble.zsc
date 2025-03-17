@@ -1,0 +1,49 @@
+//zscript_DI/items/event/doubletrouble.zsc
+
+Class DI_EnemyDoubler : DIPassiveInventory
+{
+	//a simple passive item that doubles all enemies.
+	//used by the "Double Trouble" Difficulty, but can be used by anything.
+	Default
+	{
+		Inventory.MaxAmount 999;
+	}
+	
+	override uint MultiplyEnemies()
+	{
+		if (!plr) {return 0;}
+		uint returnvalue = plr.CountInv(self.GetClassName());
+		return returnvalue;
+	}
+	
+	override uint MultiplySpawnCap()
+	{
+		if (!plr) {return 0;}
+		uint returnvalue = plr.CountInv(self.GetClassName());
+		return returnvalue;
+	}
+	
+	override uint MultiplySpawnRate()
+	{
+		if (!plr) {return 0;}
+		uint returnvalue = plr.CountInv(self.GetClassName());
+		return returnvalue;
+	}
+}
+
+
+Class DI_PriceDoubler : DIPassiveInventory
+{
+	//doubles the prices of all shop items.
+	//used by the "Double Trouble" Difficulty, but can be used by anything.
+	Default
+	{
+		Inventory.MaxAmount 999;
+	}
+	
+	override double MultiplyShopPrices(DIShop_Base shop)
+	{
+		if (!plr || !shop) {return 1.0;}
+		return 1.0 * plr.countinv(self.getclassname());
+	}
+}

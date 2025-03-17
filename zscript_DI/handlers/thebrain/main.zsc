@@ -29,9 +29,9 @@ class DIHandler : EventHandler
 	int fakewavenum; //the current wave number, minus any endless shenanigans.
 	int finalwave; //the final wave, before endless stuff.
 	int endlessnum; //how many times the final wave has been completed.
-	int endless_capmult; //multiply the spawn cap by this number.
-	int endless_ratemult; //multiply the spawn rate by this number.
-	int endless_spawnmult; //multiply the enemies by this number.
+	int endless_capmult, item_capmult; //multiply the spawn cap by this number.
+	int endless_ratemult, item_ratemult; //multiply the spawn rate by this number.
+	int endless_spawnmult, item_spawnmult; //multiply the enemies by this number.
 	double endless_healthmult; //multiply the enemy's health by this number.
 	double endless_damagemult; //multiply the enemy's damage by this number.
 	double endless_speedmult; //multiply the enemy's speed by this number.

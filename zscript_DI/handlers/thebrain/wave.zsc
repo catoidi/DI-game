@@ -66,10 +66,36 @@ extend class DIHandler
 		waitnum = 0;
 		finalwave = 0;
 		
+		item_capmult = 0;
+		item_ratemult = 0;
+		item_spawnmult = 0;
+		
 		enemycount = 0;
 		enemycounted = false;
 		
 		bool getendless;
+		
+		for (int i = 0; i < 8; ++i)
+		{
+			let p = players[i].mo;
+			if ((p is "DI_PlayerBase") && (playeringame[i]))
+			{
+				DI_PlayerBase plr = DI_PlayerBase(p);
+				if (plr.knownpassives.Size() > 0)
+				{
+					foreach(mo : plr.knownpassives)
+					{
+						DIPassiveInventory passive = DIPassiveInventory(plr.FindInventory(mo));
+						if (passive)
+						{
+							item_capmult += passive.MultiplySpawnCap();
+							item_ratemult += passive.MultiplySpawnRate();
+							item_spawnmult += passive.MultiplyEnemies();
+						}
+					}
+				}
+			}
+		}
 		
 		//the endless wave data gets added to the array everytime the final wave is completed.
 		for (int i = 0; i < leveldata.Size(); i++)
@@ -267,7 +293,7 @@ extend class DIHandler
 				if (batchdata != batchnum + 1) {continue;}
 				string batch_string = wavedata[i].Mid(4);
 				int batch_int = batch_string.ToInt(10);
-				waitnum = batch_int * endless_spawnmult;
+				waitnum = batch_int * (endless_spawnmult + item_spawnmult);
 				continue;
 			}
 			else if (batchdata != batchnum) {continue;}
@@ -275,14 +301,14 @@ extend class DIHandler
 			{
 				string cap_string = wavedata[i].Mid(3);
 				int cap_int = cap_string.ToInt(10);
-				enemymax = cap_int * endless_capmult;
+				enemymax = cap_int * (endless_capmult + item_capmult);
 				continue;
 			}
 			else if (wavedata[i].Left(4) == "Rate") 
 			{
 				string rate_string = wavedata[i].Mid(4);
 				int rate_int = rate_string.ToInt(10);
-				spawnamount = rate_int * endless_ratemult;
+				spawnamount = rate_int * (endless_ratemult + item_capmult);
 				continue;
 			}
 			else if (wavedata[i].Left(4) == "Time") 
@@ -306,7 +332,7 @@ extend class DIHandler
 				else if ((spawn_array.Size() < 2) || (spawn_array.Size() > 3)) {ThrowAbortException("\crDIWAVE ERROR: \clInvalid Spawn Command '\ck%s\cl' at Line %d.", spawn_string, i);}
 				
 				int spawn_array_int = spawn_array[1].ToInt(10);
-				spawn_array_int *= endless_spawnmult;
+				spawn_array_int *= (endless_spawnmult + item_spawnmult);
 				
 				for (int j = 0; j < spawn_array_int; j++) 
 				{
@@ -353,7 +379,7 @@ extend class DIHandler
 				if (spawn_array.size() < 2) {ThrowAbortException("\crDIWAVE ERROR: \clInvalid Spawn Command '\ck%s\cl' at Line %d.", spawn_string, i);}
 			
 				int spawn_array_int = spawn_array[1].ToInt(10);
-				spawn_array_int *= endless_spawnmult;
+				spawn_array_int *= (endless_spawnmult + item_spawnmult);
 			
 				for (int j = 0; j < spawn_array_int; j++) {++returnvalue;}
 				continue;
