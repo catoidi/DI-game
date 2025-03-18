@@ -118,7 +118,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			let sklstr = cmd.Mid(5);
 			let sklnum = sklstr.ToInt(10);
 			string sklclass = link.skllabels[sklnum].GetText();
-			link.UpdateTopLabel(String.Format("\cnselected: %s", sklclass)); 
+			link.UpdateTopLabel(String.Format("\cnselected Difficulty: %s", sklclass)); 
 			//console.printf("%s", lvlclass);
 			curskl_cvar.setint(sklnum);
 			if (currentskill == sklnum) 
@@ -128,6 +128,40 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			} //{link.pagenum = 2;}
 			else {link.SetKeyPos(sklnum);}
 			currentskill = sklnum;
+			//link.UpdateKeySelect();
+		}
+		else if (cmd.Left(3) == "mod")
+		{
+			let modstr = cmd.Mid(3);
+			let modnum = modstr.ToInt(10);
+			string modclass = stringtable.localize(link.modpool[modnum], false);
+			//link.levelname = link.levelpool[lvlnum];
+			link.UpdateTopLabel(String.Format("\cnselected Modifier: %s", modclass)); 
+			//console.printf("%s", lvlclass);
+			//curlvl_cvar.setint(lvlnum);
+			if (currentskill == modnum + 2) 
+			{
+				cvar curmod = cvar.findcvar(link.modpool[modnum]);
+				if (curmod.GetBool()) {curmod.SetBool(false);}
+				else {curmod.SetBool(true);}
+				
+				string labeltxt = stringtable.localize(link.modpool[modnum], false);
+				if (!curmod.GetBool()) {labeltxt.AppendFormat("%s", ": \cd[ON]");}
+				else {labeltxt.AppendFormat("%s", ": \ca[OFF]");}
+				link.skllabels[modnum + 2].SetText(labeltxt);
+			}
+			link.SetKeyPos(modnum + 2);
+			currentskill = modnum + 2;
+			//link.UpdateKeySelect();
+		}
+		else if (cmd.Left(9) == "lockedmod")
+		{
+			let modstr = cmd.Mid(9);
+			let modnum = modstr.ToInt(10);
+			string modlocked = Stringtable.Localize(link.modlock[modnum], false);
+			link.UpdateTopLabel(String.Format("%s", "\cgthis modifier is locked."), modlocked);
+			currentskill = -1;
+			link.SetKeyPos(modnum + 2);
 			//link.UpdateKeySelect();
 		}
 		else {console.printf("%s'%s'", "epic line failure: ", cmd);}
@@ -225,7 +259,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 				{
 					case dimenu_key_up:
 						--link.keypos;
-						if (link.keypos < 0) {link.keypos = 1;}
+						if (link.keypos < 0) {link.keypos = link.sklbuttons.Size() - 1;}
 						stayonpage = true;
 						buttonClickCommand(link.sklbuttons[link.keypos], link.sklbuttons[link.keypos].getcommand());
 						//link.UpdateKeySelect();
@@ -233,7 +267,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 						break;
 					case dimenu_key_down:
 						++link.keypos;
-						if (link.keypos > 1) {link.keypos = 0;}
+						if (link.keypos > link.sklbuttons.Size() - 1) {link.keypos = 0;}
 						stayonpage = true;
 						buttonClickCommand(link.sklbuttons[link.keypos], link.sklbuttons[link.keypos].getcommand());
 						//link.UpdateKeySelect();

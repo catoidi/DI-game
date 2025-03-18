@@ -35,7 +35,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	boxparty_ZF_BoxImage keyboardselect;
 	
 	Array<String> filedata; //all the lines from DIGAME.
-	Array<String> playerpool, playerlock, levelpool, levellock; //all available players. does not include players that are locked.
+	Array<String> playerpool, playerlock, levelpool, levellock, modpool, modlock; //all available players. does not include players that are locked.
 	
 	transient cvar currentcvar;
 	
@@ -123,7 +123,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		{
 			float barscale = mainFrame.GetScale();
 			
-			int startx3 = (Screen.GetWidth() / 2) - (80 * barscale);
+			int startx3 = (Screen.GetWidth() / 3.5) - (80 * barscale);
 			int starty = 346 * barscale;
 			string fill1 = "9999ea";
 			string fill2 = "000073";
@@ -350,6 +350,12 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 					if (currentline.Size() == 4) {levellock.Push(currentline[3]);}
 					else {levellock.Push("u");}
 					//console.printf("%s", currentline[2]);
+				}
+				else if ((currentline[1] == "modifier") && (currentline[2]))
+				{
+					modpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {modlock.push(currentline[3]);}
+					else {modlock.push("u");}
 				}
 			}
 			else if (currentline[0] == "delete")

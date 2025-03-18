@@ -5,6 +5,7 @@
 >>#2: Type
 >>	[Player]: this line is referring to a player class. MUST match the order of players added in MAPINFO's "gameinfo" section.
 >>	[Level]: this line is referring to an episode. MUST match the order the episodes are added in MAPINFO.
+>>  [Modifier]: this is is referring to a difficulty modifier.
 >>#3: Item
 >>	(tells the menu which player/level's info to display. purely cosmetic.)
 >>#4: CVAR
@@ -30,3 +31,7 @@ Add, Level, di01;
 Add, Level, di02, di_unlock_lvl_di02;
 >>Castle Level.
 Add, Level, di03, di_unlock_lvl_di03;
+>>
+>>[MODIFIERS]
+>>Double Trouble.
+Add, Modifier, di_mod_doubletrouble, di_unlock_mod_doubletrouble;
