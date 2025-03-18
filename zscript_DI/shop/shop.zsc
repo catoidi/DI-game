@@ -515,7 +515,8 @@ Class DIShop : DIShop_Base
 				DIPassiveInventory passive = DIPassiveInventory(diplr.FindInventory(mo));
 				if (passive)
 				{
-					item_pricemult += passive.MultiplyShopPrices(self);
+					item_pricemult *= passive.MultiplyShopPrices(self);
+					//console.printf("%s is adding %.1f to the shop", passive.getclassname(), passive.multiplyshopprices(self));
 				}
 			}
 		}
@@ -523,7 +524,7 @@ Class DIShop : DIShop_Base
 		if (extra_pricemult < 1) {extra_pricemult = 1;}
 		extra_pricemult += addmult;
 		user_pricemult = default_pricemult * extra_pricemult * item_pricemult;
-		//console.printf("%d", user_pricemult);
+		//console.printf("%.1f", user_pricemult);
 	}
 }
 

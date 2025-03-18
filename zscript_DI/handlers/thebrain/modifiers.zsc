@@ -1,0 +1,14 @@
+//zscript_DI/handlers/thebrain/modifiers.zsc
+
+extend class DIHandler
+{
+	virtual void DIModifierHandler(DI_PlayerBase plr)
+	{
+		if (di_mod_doubletrouble)
+		{
+			plr.GiveInventory("di_enemydoubler", 1);
+			plr.GiveInventory("di_pricedoubler", 1);
+			plr.GiveInventory("di_doubletroubleswag", 1);
+		}
+	}
+}

@@ -17,6 +17,9 @@ user noarchive int di_menu_current_lvl = 0; //same as above, but for level.
 user noarchive int di_menu_current_skl = 0; //same as above, but for skill.
 user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (not implemented yet.)
 
+//Difficulty Modifiers
+server noarchive bool di_mod_doubletrouble = false; //Enables the "Double Trouble" mode.
+
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
 server cheat bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.

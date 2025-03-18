@@ -6,6 +6,7 @@ Class DI_EnemyDoubler : DIPassiveInventory
 	//used by the "Double Trouble" Difficulty, but can be used by anything.
 	Default
 	{
+		DIPassiveInventory.DIHidden true;
 		Inventory.MaxAmount 999;
 	}
 	
@@ -38,13 +39,14 @@ Class DI_PriceDoubler : DIPassiveInventory
 	//used by the "Double Trouble" Difficulty, but can be used by anything.
 	Default
 	{
+		DIPassiveInventory.DIHidden true;
 		Inventory.MaxAmount 999;
 	}
 	
 	override double MultiplyShopPrices(DIShop_Base shop)
 	{
 		if (!plr || !shop) {return 1.0;}
-		return 1.0 * plr.countinv(self.getclassname());
+		return 1.0 + plr.countinv(self.getclassname());
 	}
 }
 
@@ -53,6 +55,7 @@ Class DI_DoubleTroubleSwag : DIPassiveInventory
 	//reduces your final score by 40%.
 	Default
 	{
+		DIPassiveInventory.DIHidden true;
 		Inventory.MaxAmount 1;
 	}
 	
