@@ -2,7 +2,7 @@
 
 IWad 
 {
-    Name = "DI - Beta v0.12"
+    Name = "DI - Beta v0.12.1"
     Autoname = "DI"
     Game = "Doom"
     Config = "DI"
