@@ -47,3 +47,17 @@ Class DI_PriceDoubler : DIPassiveInventory
 		return 1.0 * plr.countinv(self.getclassname());
 	}
 }
+
+Class DI_DoubleTroubleSwag : DIPassiveInventory
+{
+	//reduces your final score by 40%.
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+	
+	override double MultiplyFinalScore()
+	{
+		return 0.6;
+	}
+}
