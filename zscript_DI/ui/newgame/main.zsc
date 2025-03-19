@@ -354,8 +354,25 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				else if ((currentline[1] == "modifier") && (currentline[2]))
 				{
 					modpool.Push(currentline[2]);
-					if (currentline.Size() == 4) {modlock.push(currentline[3]);}
+					if (currentline.Size() == 4) 
+					{
+						modlock.push(currentline[3]);
+						
+						if (!cheatcvar.GetBool())
+						{
+							//prevent locked modifiers from being active while cheat mode is off.
+							let tempcvar1 = cvar.findcvar(currentline[2]);
+							let tempcvar2 = cvar.findcvar(currentline[3]);
+							
+							if (!tempcvar2.GetBool() && tempcvar1.GetBool())
+							{
+								//mod is not unlocked yet, disable this mod.
+								tempcvar1.SetBool(false);
+							}
+						}
+					}
 					else {modlock.push("u");}
+					
 				}
 			}
 			else if (currentline[0] == "delete")
