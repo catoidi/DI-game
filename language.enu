@@ -32,6 +32,7 @@ DI_MOD_DOUBLETROUBLE = "Double Trouble";
 
 //Modifiers
 DI_UNLOCK_MOD_DOUBLETROUBLE = "\ccunlocked by reaching \cfSwag Level 5\cc.";
+DIMODDESC_DI_MOD_DOUBLETROUBLE = "\cbDoubles enemies + shop prices.\n\caReduces swag by 40%.\n";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DOUBLETROUBLE = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DOUBLETROUBLE = "Double Trouble";
 

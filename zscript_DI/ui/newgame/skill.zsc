@@ -143,7 +143,11 @@ extend class DINewGameMenu
             // Get the player's name.
             string labeltxt = stringtable.localize(modpool[i], false);
 			if (!modunlockcvar.GetBool() && !cheatcvar.GetBool()) {labeltxt = "\ca[LOCKED]";}
-			else if (modcvar.GetBool()) {labeltxt.AppendFormat("%s", ": \cd[ON]");}
+			else if (modcvar.GetBool()) 
+			{
+				labeltxt.AppendFormat("%s", ": \cd[ON]");
+				++modsactive;
+			}
 			else {labeltxt.AppendFormat("%s", ": \ca[OFF]");}
 			
             // Add a label.
@@ -215,6 +219,13 @@ extend class DINewGameMenu
 			sklbuttons.Push(aButton);
 		}
 		
+		//Modifier Description and Image
+		let modtexture = boxparty_ZF_BoxTextures.CreateTexturePixels("", (0, 0), (64, 64), true, true);
+		modselect = boxparty_ZF_BoxImage.Create((348, 100), (64, 64), modtexture);
+		modselect.Pack(mainFrame);		
+		string activestring = string.format("\cf%d mod(s) active.", modsactive);
+		modlabel = boxparty_ZF_Label.Create((412, 108), (240, 56), text: string.format("Select Modifier:\n\n\n%s", activestring),  fnt: smallFont, wrap: true, autoSize: false, textscale: 1.5, textcolor: Font.CR_WHITE);
+		modlabel.Pack(mainFrame);
 		
 		//FRED APPROVED
 		// Create the box image's textures.
@@ -386,6 +397,16 @@ extend class DINewGameMenu
 		{
 			unlocklabel.Unpack();
 			unlocklabel.Destroy();
+		}
+		if (modlabel)
+		{
+			modlabel.Unpack();
+			modlabel.Destroy();
+		}
+		if (modselect)
+		{
+			modselect.Unpack();
+			modselect.Destroy();
 		}
 	}
 	

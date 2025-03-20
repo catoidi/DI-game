@@ -142,14 +142,27 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			if (currentskill == modnum + 2) 
 			{
 				cvar curmod = cvar.findcvar(link.modpool[modnum]);
-				if (curmod.GetBool()) {curmod.SetBool(false);}
-				else {curmod.SetBool(true);}
+				if (curmod.GetBool()) 
+				{
+					curmod.SetBool(false);
+					--link.modsactive;
+				}
+				else 
+				{
+					curmod.SetBool(true);
+					++link.modsactive;
+				}
 				
 				string labeltxt = stringtable.localize(link.modpool[modnum], false);
 				if (!curmod.GetBool()) {labeltxt.AppendFormat("%s", ": \cd[ON]");}
 				else {labeltxt.AppendFormat("%s", ": \ca[OFF]");}
 				link.skllabels[modnum + 2].SetText(labeltxt);
 			}
+			string newmodtex = string.format("graphics/unlocks/%s.png", link.modlock[modnum]);
+			link.modselect.SetBoxTex(boxparty_ZF_BoxTextures.CreateTexturePixels(newmodtex, (0, 0), (64, 64), true, true));
+			string newmodlabel = stringtable.localize(string.format("$DIMODDESC_%s", link.modpool[modnum]));
+			newmodlabel.AppendFormat("\n\cf%d mod(s) active.", link.modsactive);
+			link.modlabel.SetText(newmodlabel);
 			link.SetKeyPos(modnum + 2);
 			currentskill = modnum + 2;
 			//link.UpdateKeySelect();

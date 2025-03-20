@@ -21,18 +21,18 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	string playername, levelname; //for finding high scores with.
 	double heartalpha;
-	int hearttimer;
+	int hearttimer, modsactive;
 	
 	Font bigFont, smallFont;
 	boxparty_ZF_Image background, plrinfo;
 	string TopLabel_text, TopLabel2_text;
-	boxparty_ZF_Label TopLabel, TopLabel2, swaglevel, explabel, unlocklabel;
+	boxparty_ZF_Label TopLabel, TopLabel2, swaglevel, explabel, unlocklabel, modlabel;
 	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
 	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, heartboximages, sklboximages;
 	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels, skllabels;
     Array<boxparty_ZF_Button> tutbuttons, plrbuttons, lvlbuttons, sklbuttons;
 	
-	boxparty_ZF_BoxImage keyboardselect;
+	boxparty_ZF_BoxImage keyboardselect, modselect;
 	
 	Array<String> filedata; //all the lines from DIGAME.
 	Array<String> playerpool, playerlock, levelpool, levellock, modpool, modlock; //all available players. does not include players that are locked.
