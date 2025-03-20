@@ -183,21 +183,28 @@ Class DIUnlockHandler : EventHandler
 		//console.printf("%s", listunlock);
 		
 		//different modes for different unlocks
-		string unlocktxt = "NEW UNLOCK:";
-		string unlockback_string = "graphics/UNLOCKBOX1.png";
-		if (listunlock.Left(14) == "di_unlock_item")
+		string unlocktxt, unlockback_string;
+		if (listunlock.Left(14) ~== "di_unlock_item")
 		{
 			unlocktxt = "NEW SHOP ITEM:";
+			unlockback_string = "graphics/UNLOCKBOX1.png";
+			console.printf("yeppers");
 		}
-		if (listunlock.Left(13) == "di_unlock_lvl") 
+		else if (listunlock.Left(13) ~== "di_unlock_lvl") 
 		{
 			unlocktxt = "NEW LEVEL:";
 			unlockback_string = "graphics/UNLOCKBOX2.png";
 		}
-		else if (listunlock.Left(13) == "di_unlock_plr") 
+		else if (listunlock.Left(13) ~== "di_unlock_plr") 
 		{
 			unlocktxt = "NEW CHARACTER:";
 			unlockback_string = "graphics/UNLOCKBOX3.png";
+		}
+		else
+		{
+			//support for custom unlock types
+			unlocktxt = stringtable.localize(string.format("$DIUNLOCKTYPE_%s", listunlock));
+			unlockback_string = "graphics/UNLOCKBOX4.png";
 		}
 		
 		//drawing the background texture

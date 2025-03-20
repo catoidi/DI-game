@@ -29,7 +29,11 @@ DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by completing 5 Side Quests in a row i
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 DIMENU_LOCKED_LEVEL_DI03 = "\ccthis level will be added in a future update.";
 DI_MOD_DOUBLETROUBLE = "Double Trouble";
+
+//Modifiers
 DI_UNLOCK_MOD_DOUBLETROUBLE = "\ccunlocked by reaching \cfSwag Level 5\cc.";
+DIUNLOCKTYPE_DI_UNLOCK_MOD_DOUBLETROUBLE = "NEW MODIFIER:";
+DIPOPUP_DI_UNLOCK_MOD_DOUBLETROUBLE = "Double Trouble";
 
 //Credits
 DI_CREDIT_TITLE = "\cbCredits:";

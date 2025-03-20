@@ -11,7 +11,7 @@ Class SwagHandler : EventHandler
 	ui float diedmove;
 	ui int wavenum;
 	ui int msgrng;
-	ui bool unlockedscore;
+	ui bool unlockedscore, unlockedextras;
 	ui bool scoredone;
 	ui int prevscore;
 	ui int finalscore; //prevent extra score from being calculated after death.
@@ -141,6 +141,11 @@ Class SwagHandler : EventHandler
 				DoScoreUnlocks();
 				unlockedscore = true;
 			}
+			else if (scoredone && unlockedscore && !unlockedextras)
+			{
+				DoExtraUnlocks();
+				unlockedextras = true;
+			}
 		}
 		else
 		{
@@ -182,6 +187,25 @@ Class SwagHandler : EventHandler
 			
 			EventHandler.SendInterfaceEvent(consoleplayer, string.format("diunlock_%s", currentline[3]));
 		}
+	}
+	
+	ui virtual void DoExtraUnlocks()
+	{
+		//hard-coded here for ease of use, but can easily be replicated by modders by simply doing this a single tic after the player is dead.
+		if (!di_unlock_mod_doubletrouble && di_swaglevel >= 5)
+		{
+			console.printf("%s", "DOING DOUBLE TROUBLE UNLOCK NOW");
+			EventHandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_doubletrouble");
+		}
+		else if (di_unlock_mod_doubletrouble)
+		{
+			console.printf("%s", "DOUBLE TROUBLE ALREADY UNLOCKED");
+		}
+		else if (di_swaglevel < 5)
+		{
+			console.printf("%s", "NOT HIGH ENOUGH LEVEL TO UNLOCK DOUBLE TROUBLE");
+		}
+		else {console.printf("%s", "GIRL WhAT THE HELL IS WRONG WITH YOU");}
 	}
 	
 	ui virtual void GetDIGAMEData()
