@@ -188,7 +188,7 @@ Class DIUnlockHandler : EventHandler
 		{
 			unlocktxt = "NEW SHOP ITEM:";
 			unlockback_string = "graphics/UNLOCKBOX1.png";
-			console.printf("yeppers");
+			//console.printf("yeppers");
 		}
 		else if (listunlock.Left(13) ~== "di_unlock_lvl") 
 		{

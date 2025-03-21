@@ -194,18 +194,9 @@ Class SwagHandler : EventHandler
 		//hard-coded here for ease of use, but can easily be replicated by modders by simply doing this a single tic after the player is dead.
 		if (!di_unlock_mod_doubletrouble && di_swaglevel >= 5)
 		{
-			console.printf("%s", "DOING DOUBLE TROUBLE UNLOCK NOW");
+			//console.printf("%s", "DOING DOUBLE TROUBLE UNLOCK NOW");
 			EventHandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_doubletrouble");
 		}
-		else if (di_unlock_mod_doubletrouble)
-		{
-			console.printf("%s", "DOUBLE TROUBLE ALREADY UNLOCKED");
-		}
-		else if (di_swaglevel < 5)
-		{
-			console.printf("%s", "NOT HIGH ENOUGH LEVEL TO UNLOCK DOUBLE TROUBLE");
-		}
-		else {console.printf("%s", "GIRL WhAT THE HELL IS WRONG WITH YOU");}
 	}
 	
 	ui virtual void GetDIGAMEData()
