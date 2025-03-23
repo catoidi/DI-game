@@ -10,6 +10,7 @@ Class DI_Debilitated : DIPassiveInventory
 	
 	int prevwave;
 	string newdebuff, newdebuff_name, newdebuff_desc;
+	int debuffnum;
 	
 	virtual void SpawnDebuff()
 	{
@@ -28,6 +29,7 @@ Class DI_Debilitated : DIPassiveInventory
 		
 		plr.GiveInventory(debuff, 1);
 		ACS_ScriptCall("DI_Debilitated", plr.tid);
+		++debuffnum;
 		prevwave = plr.thebrain.wavenum;
 	}
 	
@@ -43,5 +45,10 @@ Class DI_Debilitated : DIPassiveInventory
 		if (!plr || !plr.thebrain || !plr.popuphandler) {return false;}
 		if (prevwave != 0) {SpawnDebuff();} //after Wave 1, grants the debuff upon entering the shop.
 		return true;
+	}
+	
+	override double MultiplyFinalScore()
+	{
+		return 1.0 + (0.03 * debuffnum);
 	}
 }
