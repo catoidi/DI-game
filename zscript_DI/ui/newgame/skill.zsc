@@ -126,7 +126,7 @@ extend class DINewGameMenu
 				// Position
 				(
 					// Horizontal position.
-                    348,
+                    332,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
                     160 + (21 * i)
@@ -156,7 +156,7 @@ extend class DINewGameMenu
                 // Position.
                 (
                     // Horizontal position.
-                    348 + 126 - (bigFont.StringWidth(labeltxt) / 2),
+                    332 + 126 - (bigFont.StringWidth(labeltxt) / 2),
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
                     164 + (21 * i)
@@ -198,7 +198,7 @@ extend class DINewGameMenu
 				// Position
 				(
 					// Horizontal position.
-                    348,
+                    332,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
                     160 + (21 * i)
@@ -221,10 +221,10 @@ extend class DINewGameMenu
 		
 		//Modifier Description and Image
 		let modtexture = boxparty_ZF_BoxTextures.CreateTexturePixels("", (0, 0), (64, 64), true, true);
-		modselect = boxparty_ZF_BoxImage.Create((348, 100), (64, 64), modtexture);
+		modselect = boxparty_ZF_BoxImage.Create((332, 100), (64, 64), modtexture);
 		modselect.Pack(mainFrame);		
 		string activestring = string.format("\cf%d mod(s) active.", modsactive);
-		modlabel = boxparty_ZF_Label.Create((412, 108), (240, 56), text: string.format("Select Modifier:\n\n\n%s", activestring),  fnt: smallFont, wrap: true, autoSize: false, textscale: 1.5, textcolor: Font.CR_WHITE);
+		modlabel = boxparty_ZF_Label.Create((396, 108), (240, 56), text: string.format("Select Modifier:\n\n\n%s", activestring),  fnt: smallFont, wrap: true, autoSize: false, textscale: 1.5, textcolor: Font.CR_WHITE);
 		modlabel.Pack(mainFrame);
 		
 		//FRED APPROVED
@@ -408,6 +408,7 @@ extend class DINewGameMenu
 			modselect.Unpack();
 			modselect.Destroy();
 		}
+		modsactive = 0;
 	}
 	
 	clearscope virtual int GetMaxSwag()
