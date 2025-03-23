@@ -116,6 +116,18 @@ class DIPassiveInventory : Inventory
 	
 	//Ran once upon the player dying, to calculate Final Score with.
 	clearscope virtual double MultiplyFinalScore() {return 1.0;}
+	
+	//Allows any passive item to get a random Side Quest Objective and Debuff, without calling the rest of the Side Quest code in the process.
+	virtual string, string GetSideQuest()
+	{
+		if (plr && plr.popuphandler)
+		{
+			string objective, debuff;
+			[objective, debuff] = plr.popuphandler.ChooseQuestAlt();
+			return objective, debuff;
+		}
+		else {return "", "";}
+	}
 }
 
 class DIPowerup : DIPassiveInventory

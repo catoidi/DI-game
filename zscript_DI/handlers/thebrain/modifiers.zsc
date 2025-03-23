@@ -10,5 +10,9 @@ extend class DIHandler
 			plr.GiveInventory("di_pricedoubler", 1);
 			plr.GiveInventory("di_doubletroubleswag", 1);
 		}
+		if (di_mod_debilitated)
+		{
+			plr.GiveInventory("DI_Debilitated", 1);
+		}
 	}
 }

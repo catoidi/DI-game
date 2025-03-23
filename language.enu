@@ -28,13 +28,18 @@ DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
 DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by completing 5 Side Quests in a row in Level 2.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 DIMENU_LOCKED_LEVEL_DI03 = "\ccthis level will be added in a future update.";
-DI_MOD_DOUBLETROUBLE = "Double Trouble";
 
 //Modifiers
+DI_MOD_DOUBLETROUBLE = "Double Trouble";
 DI_UNLOCK_MOD_DOUBLETROUBLE = "\ccunlocked by reaching \cfSwag Level 5\cc.";
 DIMODDESC_DI_MOD_DOUBLETROUBLE = "\cbDoubles enemies + shop prices.\n\caReduces swag by 40%.\n";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DOUBLETROUBLE = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DOUBLETROUBLE = "Double Trouble";
+DI_MOD_DEBILITATED = "Debilitated";
+DI_UNLOCK_MOD_DEBILITATED = "\ccunlocked by failing 3 \cfSide Quests \ccin a single run.";
+DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave.\nImproves swag by 3% per debuff.\n";
+DIUNLOCKTYPE_DI_UNLOCK_MOD_DEBILITATED = "NEW MODIFIER:";
+DIPOPUP_DI_UNLOCK_MOD_DEBILITATED = "Debilitated";
 
 //Credits
 DI_CREDIT_TITLE = "\cbCredits:";

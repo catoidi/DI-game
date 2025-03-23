@@ -19,6 +19,9 @@ user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (no
 
 //Difficulty Modifiers
 server noarchive bool di_mod_doubletrouble = false; //Enables the "Double Trouble" mode.
+server cheat bool di_unlock_mod_doubletrouble = false; //grants the player access to the Double Trouble difficulty modifier.
+server noarchive bool di_mod_debilitated = false; //yea.
+server cheat bool di_unlock_mod_debilitated = false; //yea.
 
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
@@ -33,7 +36,6 @@ server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked 
 server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player.
 server noarchive cheat int di_burgercount = 0; //you must consume 5 burger in 1 game to unlock burger.
 server cheat bool di_unlock_plr_hammer = false;
-server cheat bool di_unlock_mod_doubletrouble = false; //grants the player access to the Double Trouble difficulty modifier.
 server cheat string di_highscore = ""; //stores every high score for every level for every character.
 server cheat string di_playerdeaths = ""; //stores total number of deaths for every character.
 server cheat string di_playerkills = ""; //stores every kill the player got with every weapon.

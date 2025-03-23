@@ -1,4 +1,4 @@
-//zscript_DI/items/event/doubletrouble.zsc
+//zscript_DI/items/modifiers/doubletrouble.zsc
 
 Class DI_EnemyDoubler : DIPassiveInventory
 {
