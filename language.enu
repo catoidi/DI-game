@@ -32,12 +32,12 @@ DIMENU_LOCKED_LEVEL_DI03 = "\ccthis level will be added in a future update.";
 //Modifiers
 DI_MOD_DOUBLETROUBLE = "Double Trouble";
 DI_UNLOCK_MOD_DOUBLETROUBLE = "\ccunlocked by reaching \cfSwag Level 5\cc.";
-DIMODDESC_DI_MOD_DOUBLETROUBLE = "\cbDoubles enemies + shop prices.\n\caReduces swag by 40%.\n";
+DIMODDESC_DI_MOD_DOUBLETROUBLE = "\cbDoubles enemies + shop prices.\n\caReduces EXP by 40%.\n";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DOUBLETROUBLE = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DOUBLETROUBLE = "Double Trouble";
 DI_MOD_DEBILITATED = "Debilitated";
 DI_UNLOCK_MOD_DEBILITATED = "\ccunlocked by failing 5 \cfSide Quests \ccon \cfLevel 2 \ccin a single run.";
-DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave.\nImproves swag by 3% per debuff.\n";
+DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave.\n\cnImproves EXP by 3% per debuff.\n";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DEBILITATED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DEBILITATED = "Debilitated";
 
