@@ -107,6 +107,7 @@ version "4.14"
 #include "zscript_DI/items/debuffs/underpaid.zsc"
 #include "zscript_DI/items/debuffs/rottenweapons.zsc"
 #include "zscript_DI/items/debuffs/yielding.zsc"
+#include "zscript_DI/items/debuffs/fakebullets.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
 #include "zscript_DI/items/objectives/blooddrive.zsc"

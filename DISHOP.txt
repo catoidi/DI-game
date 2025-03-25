@@ -203,3 +203,4 @@ FakeShopItem DI_Nugget_Powerup POW2Z 1;
 FakeShopItem DI_OnionRing_Powerup POW3E 1;
 FakeShopItem DI_QuestDebuff_Yielding BOOKB 1;
 FakeShopItem DI_QuestDebuff_Yielding_Powerup BOOKB 1;
+FakeShopItem DI_QuestDebuff_FakeBullets BOOKB 1;

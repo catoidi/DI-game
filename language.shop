@@ -58,6 +58,10 @@ SHOPITEM_DI_QUESTDEBUFF_YIELDING = "\cgCurse of Yielding";
 SHOPDESC_DI_QUESTDEBUFF_YIELDING = "Taking damage grants a stacking\n-35% movement speed debuff.";
 SHOPDESC2_DI_QUESTDEBUFF_YIELDING = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_YIELDING = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_FAKEBULLETS = "\cgCurse of Fake Bullets";
+SHOPDESC_DI_QUESTDEBUFF_FAKEBULLETS = "10% chance for your bullets\nto only deal 1 DMG.";
+SHOPDESC2_DI_QUESTDEBUFF_FAKEBULLETS = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_FAKEBULLETS = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";
