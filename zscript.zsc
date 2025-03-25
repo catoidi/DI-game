@@ -106,6 +106,7 @@ version "4.14"
 #include "zscript_DI/items/debuffs/moreonions.zsc"
 #include "zscript_DI/items/debuffs/underpaid.zsc"
 #include "zscript_DI/items/debuffs/rottenweapons.zsc"
+#include "zscript_DI/items/debuffs/yielding.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
 #include "zscript_DI/items/objectives/blooddrive.zsc"

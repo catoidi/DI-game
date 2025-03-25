@@ -1,0 +1,42 @@
+//zscript_DI/items/debuffs/yielding.zsc
+
+Class DI_QuestDebuff_Yielding : DI_QuestDebuff
+{
+	default {tag "\cgCurse (Yielding)";}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		Super.AbsorbDamage(damage, damageType, newdamage, inflictor, source, flags);
+		
+		if (plr && (newdamage > 0))
+		{
+			plr.GiveInventory("DI_QuestDebuff_Yielding_Powerup", plr.CountInv(self.getclassname()) * newdamage * 8);
+		}
+	}
+}
+
+Class DI_QuestDebuff_Yielding_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cgCurse of Yielding \cv(Active)";
+		Inventory.Icon "BOOKB0";
+		Inventory.MaxAmount 999999;
+		DIPowerup.MaxTimer 1;
+		DIPowerup.PowerupDrain 1;
+		DIPowerup.PauseInShops false;
+	}
+	
+	override double GivePlayerSpeed()
+	{
+		if (!plr) {return 0;}
+		return -0.35;
+	}
+	
+	States
+	{
+		Spawn:
+			BOOK B -1;
+			Stop;
+	}
+}

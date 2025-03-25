@@ -54,6 +54,10 @@ SHOPITEM_DI_QUESTDEBUFF_ROTTEN = "\cgCurse of Rotten Weapons";
 SHOPDESC_DI_QUESTDEBUFF_ROTTEN = "Fresh Weapon Bonus is reduced by 2.";
 SHOPDESC2_DI_QUESTDEBUFF_ROTTEN = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_ROTTEN = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_YIELDING = "\cgCurse of Yielding";
+SHOPDESC_DI_QUESTDEBUFF_YIELDING = "Taking damage grants a stacking\n-35% movement speed debuff.";
+SHOPDESC2_DI_QUESTDEBUFF_YIELDING = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_YIELDING = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";
@@ -572,3 +576,7 @@ SHOPITEM_DI_ONIONRING_POWERUP = "\cvOnion Ring (Active)";
 SHOPDESC_DI_ONIONRING_POWERUP = "Grants up to +30% Reload Speed while active.";
 SHOPDESC2_DI_ONIONRING_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_ONIONRING_POWERUP = "\cv[Powerup] \cl[Max Timer: 39]";
+SHOPITEM_DI_QUESTDEBUFF_YIELDING_POWERUP = "\cgCurse of Yielding \cv(Active)";
+SHOPDESC_DI_QUESTDEBUFF_YIELDING_POWERUP = "Reduces movement speed by 35% while active.";
+SHOPDESC2_DI_QUESTDEBUFF_YIELDING_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_QUESTDEBUFF_YIELDING_POWERUP = "\cg[Cursed Powerup] \cl[Max Timer: 999999]";
