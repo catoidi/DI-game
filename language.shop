@@ -62,6 +62,14 @@ SHOPITEM_DI_QUESTDEBUFF_FAKEBULLETS = "\cgCurse of Fake Bullets";
 SHOPDESC_DI_QUESTDEBUFF_FAKEBULLETS = "10% chance for your bullets\nto only deal 1 DMG.";
 SHOPDESC2_DI_QUESTDEBUFF_FAKEBULLETS = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
 SHOPTYPE_DI_QUESTDEBUFF_FAKEBULLETS = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_LOOSEGRIP = "\cgCurse of Loose Grip";
+SHOPDESC_DI_QUESTDEBUFF_LOOSEGRIP = "Worsens weapon recoil by 2.";
+SHOPDESC2_DI_QUESTDEBUFF_LOOSEGRIP = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_LOOSEGRIP = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_SLOWNSTEADY = "\cgCurse of Slow 'n Steady";
+SHOPDESC_DI_QUESTDEBUFF_SLOWNSTEADY = "Reduces projectile speed by 50%.";
+SHOPDESC2_DI_QUESTDEBUFF_SLOWNSTEADY = "This curse was applied by a Side Quest. Completing the quest will remove the curse. Failing the quest will force you to keep this forever.";
+SHOPTYPE_DI_QUESTDEBUFF_SLOWNSTEADY = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

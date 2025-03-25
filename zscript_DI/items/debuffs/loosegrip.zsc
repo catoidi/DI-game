@@ -1,0 +1,14 @@
+//zscript_DI/items/debuffs/loosegrip.zsc
+
+Class DI_QuestDebuff_LooseGrip : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Loose Grip)";
+	}
+	override double GiveRecoil() 
+	{
+		if (!plr) {return 0.0;}
+		return 2.0 * plr.countinv(self.getclassname());
+	}
+}

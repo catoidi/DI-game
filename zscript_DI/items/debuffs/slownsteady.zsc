@@ -1,0 +1,32 @@
+//zscript_DI/items/debuffs/slownsteady.zsc
+
+Class DI_QuestDebuff_SlowNSteady : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Slow 'n Steady)";
+	}
+	
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_QuestDebuff_SlowNSteady_Item", plr.countinv(self.getclassname());
+	}
+}
+
+Class DI_QuestDebuff_SlowNSteady_Item : Inventory
+{
+	bool doneeffect;
+	override void DoEffect()
+	{
+		if (owner && owner.target && !doneeffect)
+		{
+			int itemnum = owner.target.countinv("DI_QuestDebuff_SlowNSteady");
+			double newspeed = 1.0 - ((0.0 + itemnum) / (1.0 + itemnum));
+			owner.vel.x *= newspeed;
+			owner.vel.y *= newspeed;
+			owner.vel.z *= newspeed;
+			doneeffect = true;
+		}
+	}
+}
