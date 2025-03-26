@@ -63,6 +63,6 @@ Class DI_Debilitated : DIPassiveInventory
 	
 	override double MultiplyFinalScore()
 	{
-		return 1.0 + (0.03 * debuffnum);
+		return 1.0 + (0.05 * debuffnum);
 	}
 }
