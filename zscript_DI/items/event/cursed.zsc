@@ -11,7 +11,9 @@ Class DI_Cursed : DIPassiveInventory
 	}
 	
 	string newdebuff, newdebuff_name, newdebuff_desc, newdebuff2, newdebuff2_name, newdebuff2_desc;
-	bool debuffsgiven;
+	bool debuffsgiven, updatedesc;
+	
+	DI_QuestDebuff realdebuff, realdebuff2;
 	
 	virtual void SpawnDebuff()
 	{
@@ -35,10 +37,20 @@ Class DI_Cursed : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if (plr && !debuffsgiven)
+		if (plr)
 		{
-			SpawnDebuff();
-			debuffsgiven = true;
+			if (!debuffsgiven)
+			{
+				SpawnDebuff();
+				debuffsgiven = true;
+			}
+			else if (!updatedesc)
+			{
+				realdebuff = DI_QuestDebuff(plr.FindInventory(newdebuff));
+				realdebuff2 = DI_QuestDebuff(plr.FindInventory(newdebuff2));
+				if (realdebuff) {realdebuff.itemdesc = "$SHOPDESC2_EVENTDEBUFF";}
+				if (realdebuff2) {realdebuff2.itemdesc = "$SHOPDESC2_EVENTDEBUFF";}
+			}
 		}
 	}
 	
@@ -46,6 +58,8 @@ Class DI_Cursed : DIPassiveInventory
 	{
 		if (plr && debuffsgiven)
 		{
+			if (realdebuff) {realdebuff.itemdesc = "";}
+			if (realdebuff2) {realdebuff2.itemdesc = "";}
 			plr.TakeInventory(newdebuff, 1);
 			plr.TakeInventory(newdebuff2, 1);
 		}

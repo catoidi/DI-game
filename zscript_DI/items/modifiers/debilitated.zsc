@@ -10,7 +10,7 @@ Class DI_Debilitated : DIPassiveInventory
 	
 	int prevwave;
 	string newdebuff, newdebuff_name, newdebuff_desc;
-	int debuffnum;
+	int debuffnum, prevdebuffnum;
 	
 	virtual void SpawnDebuff()
 	{
@@ -31,6 +31,20 @@ Class DI_Debilitated : DIPassiveInventory
 		ACS_ScriptCall("DI_Debilitated", plr.tid);
 		++debuffnum;
 		prevwave = plr.thebrain.wavenum;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (plr && (prevdebuffnum != debuffnum))
+		{
+			let realdebuff = DI_QuestDebuff(plr.FindInventory(newdebuff));
+			if (realdebuff)
+			{
+				realdebuff.itemdesc = "$SHOPDESC2_MODIFIERDEBUFF";
+				prevdebuffnum = debuffnum;
+			}
+		}
 	}
 	
 	override bool EnterWave()

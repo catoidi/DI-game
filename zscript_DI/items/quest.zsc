@@ -72,6 +72,7 @@ Class DI_MainQuest : DI_QuestItem
 		plr.GiveInventory(debuff_name, 1);
 		debuff = DI_QuestDebuff(plr.FindInventory(debuff_name));
 		if (!debuff) {ThrowAbortException("\caSide Quest Error: Tried to give '%s', an invalid debuff, to the player!", debuff_name);}
+		debuff.itemdesc = "$shopdesc2_sidequestdebuff";
 	}
 	
 	virtual void GiveObjective(DI_PlayerBase plr)
@@ -113,6 +114,12 @@ Class DI_QuestDebuff : DIPassiveInventory abstract
 		Inventory.Icon "BOOKB0";
 		Inventory.MaxAmount 999999;
 		//DIPassiveInventory.DIHidden true;
+	}
+	
+	override string CatalogueDescription()
+	{
+		if (itemdesc ~== "") {return "$SHOPDESC2_GENERICDEBUFF";}
+		else return Super.CatalogueDescription();
 	}
 }
 
