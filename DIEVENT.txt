@@ -15,6 +15,7 @@ DI01, Event, dievent_pepperparty, 25, 1;
 DI01, Event, dievent_fiendfolio, 25, 1;
 DI01, Event, dievent_oldmagazine, 50, 1;
 DI01, Event, dievent_hyperfocusing, 50, 1;
+DI01, Event, dievent_cursed, 50, 1;
 DI01, Event, dievent_payday, 100, 1;
 >>LEVEL TWO EVENTS:
 DI02, Event, dievent_bulletdeath, 60, 1;
@@ -25,4 +26,5 @@ DI02, Event, dievent_addron, 60, 2;
 DI02, Event, dievent_pizzahorde, 120, 6;
 DI02, Event, dievent_oldmagazine, 120, 1;
 DI02, Event, dievent_hyperfocusing, 60, 1;
+DI02, Event, dievent_cursed, 60, 1;
 DI02, Event, dievent_payday, 120, 1;

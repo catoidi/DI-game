@@ -239,7 +239,25 @@ SCRIPT "DI_Debilitated" (int plr)
 	SetActivator(plr);
 	SetFont("BIGFONT");
 	SetHudSize(640, 400, false);
-	HudMessage(s:"New Debuff: ", s:currentdebuff; HUDMSG_FADEINOUT, -901, CR_ORANGE, 320.4, 272.0, 5.0, 0.25, 0.25);
+	HudMessage(s:"New Debuff: ", s:currentdebuff; HUDMSG_FADEINOUT, -1901, CR_ORANGE, 320.4, 272.0, 5.0, 0.25, 0.25);
 	SetFont("SMALLFONT");
-	HudMessage(s:currentdebuff_desc; HUDMSG_FADEINOUT, -902, CR_BRICK, 320.4, 288.0, 5.0, 0.25, 0.25);
+	HudMessage(s:currentdebuff_desc; HUDMSG_FADEINOUT, -1902, CR_BRICK, 320.4, 288.0, 5.0, 0.25, 0.25);
+}
+
+SCRIPT "DI_Cursed" (int plr)
+{
+	str currentdebuff = GetUserVariable(0, "newdebuff_name");
+	str currentdebuff_desc = GetUserVariable(0, "newdebuff_desc");
+	str currentdebuff2 = GetUserVariable(0, "newdebuff2_name");
+	str currentdebuff2_desc = GetUserVariable(0, "newdebuff2_desc");
+	SetActivator(plr);
+	SetHudSize(640, 400, false);
+	SetFont("BIGFONT");
+	HudMessage(s:"New Debuff: ", s:currentdebuff; HUDMSG_FADEINOUT, -1903, CR_ORANGE, 320.4, 260.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:currentdebuff_desc; HUDMSG_FADEINOUT, -1904, CR_BRICK, 320.4, 276.0, 5.0, 0.25, 0.25);
+	SetFont("BIGFONT");
+	HudMessage(s:"New Debuff: ", s:currentdebuff2; HUDMSG_FADEINOUT, -1905, CR_ORANGE, 320.4, 294.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:currentdebuff2_desc; HUDMSG_FADEINOUT, -1906, CR_BRICK, 320.4, 310.0, 5.0, 0.25, 0.25);
 }

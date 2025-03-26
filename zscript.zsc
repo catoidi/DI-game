@@ -124,6 +124,7 @@ version "4.14"
 #include "zscript_DI/items/event/oldmagazine.zsc"
 #include "zscript_DI/items/event/hyperfocusing.zsc"
 #include "zscript_DI/items/event/payday.zsc"
+#include "zscript_DI/items/event/cursed.zsc"
 //modifiers
 #include "zscript_DI/items/modifiers/doubletrouble.zsc"
 #include "zscript_DI/items/modifiers/debilitated.zsc"

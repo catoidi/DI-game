@@ -1,0 +1,54 @@
+//zscript_DI/items/modifiers/cursed.zsc
+
+//copy/pasted the debilitated code lmao
+
+Class DI_Cursed : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+		Inventory.MaxAmount 1;
+	}
+	
+	string newdebuff, newdebuff_name, newdebuff_desc, newdebuff2, newdebuff2_name, newdebuff2_desc;
+	bool debuffsgiven;
+	
+	virtual void SpawnDebuff()
+	{
+		string objective, debuff;
+		[debuff, objective] = GetSideQuest();
+		newdebuff = debuff;
+		newdebuff_name = stringtable.localize(string.format("$SHOPITEM_%s", debuff));
+		newdebuff_desc = stringtable.localize(string.format("$SHOPDESC_%s", debuff));
+		plr.GiveInventory(debuff, 1);
+		
+		[debuff, objective] = GetSideQuest();
+		newdebuff2 = debuff;
+		newdebuff2_name = stringtable.localize(string.format("$SHOPITEM_%s", debuff));
+		newdebuff2_desc = stringtable.localize(string.format("$SHOPDESC_%s", debuff));
+		plr.GiveInventory(debuff, 1);
+		
+		ACS_ScriptCall("DI_Cursed", plr.tid);
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !debuffsgiven)
+		{
+			SpawnDebuff();
+			debuffsgiven = true;
+		}
+	}
+	
+	override void DetachFromOwner()
+	{
+		if (plr && debuffsgiven)
+		{
+			plr.TakeInventory(newdebuff, 1);
+			plr.TakeInventory(newdebuff2, 1);
+		}
+		Super.DetachFromOwner();
+	}
+}

@@ -303,3 +303,5 @@ dievent_hyperfocusing = "\cgHyperfocusing";
 dievent_hyperfocusing_desc = "\caMovement speed is massively reduced\nwhile reloading a weapon.";
 dievent_payday = "\cfPayday";
 dievent_payday_desc = "\cbEnemies drop +2 coins on death.";
+dievent_cursed = "\cgCursed!";
+dievent_cursed_desc = "\caGet 2 random debuffs. Use the Catalogue\nMenu to see what the debuffs are.";
