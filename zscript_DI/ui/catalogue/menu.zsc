@@ -496,7 +496,7 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 		
 		curtxt = string.format("$shopdesc_%s", curitem);
 		curtxt = stringtable.localize(curtxt);
-		curtxt.Replace("\n", " ");
+		//curtxt.Replace("\n", " ");
         itemdesc = boxparty_ZF_Label.Create
         (
             (startx - 180, 220),
@@ -505,10 +505,15 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
         );
         itemdesc.Pack (mainFrame);
 		
-		curtxt = string.format("$shopdesc2_%s", curitem);
+		if (realitem is "DIPassiveInventory") 
+		{
+			let realpassive = DIPassiveInventory(realitem);
+			curtxt = realpassive.CatalogueDescription(); //custom description support for passive items.
+		}
+		else {curtxt = string.format("$shopdesc2_%s", curitem);}
 		curtxt = stringtable.localize(curtxt);
 		curtxt.Replace("\n", " ");
-		if (curtxt == string.format("shopdesc2_%s", curitem)) {curtxt = "";}
+		if (curtxt == string.format("shopdesc2_%s", curitem)) {curtxt = "";} //prevent blank descriptions from being displayed
         itemdesc2 = boxparty_ZF_Label.Create
         (
             (startx - 180, 284),

@@ -8,6 +8,8 @@ class DIPassiveInventory : Inventory
 	DI_PlayerBase plr;
 	DI_Weapon wpn;
 	
+	string itemdesc; //default item description. blank by default. allows scripts to overwrite item descriptions in the Catalogue Menu.
+	
 	property DIHidden: dipassive_hidden;
 	
 	default
@@ -127,6 +129,17 @@ class DIPassiveInventory : Inventory
 			return objective, debuff;
 		}
 		else {return "", "";}
+	}
+	
+	//the text description given to the player when viewing this item in the Catalogue Menu.
+	//if using LANGUAGE lumps, do not localize it here, it will be done within the menu itself.
+	clearscope virtual string CatalogueDescription()
+	{
+		if (itemdesc ~== "")
+		{
+			return string.format("$SHOPDESC2_%s", self.getclassname());
+		}
+		else {return itemdesc;}
 	}
 }
 
