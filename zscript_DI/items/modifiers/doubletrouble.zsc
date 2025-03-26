@@ -46,7 +46,7 @@ Class DI_PriceDoubler : DIPassiveInventory
 	override double MultiplyShopPrices(DIShop_Base shop)
 	{
 		if (!plr || !shop) {return 1.0;}
-		return 1.0 + plr.countinv(self.getclassname());
+		return 1.0 + (0.7 * plr.countinv(self.getclassname()));
 	}
 }
 
