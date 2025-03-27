@@ -15,7 +15,7 @@ Class DI_QuestDebuff_MoreOnions : DI_QuestDebuff
 	default
 	{
 		Tag "\cgCurse (More Onions)";
-		DI_QuestDebuff_MoreOnions.MaxMonsters 12;
+		DI_QuestDebuff_MoreOnions.MaxMonsters 6;
 		DI_QuestDebuff_MoreOnions.MonsterDelay 105;
 	}
 
