@@ -5,7 +5,7 @@ This only includes the data that falls under the "GPLv3" License. See "LICENSE" 
 
 This repository alone is not enough to play DI. What's included here is mostly zscript/acs code, and does not include the graphics/audio/levels required for the game to function.
 
-The game is planned to be released in 2024.
+The game is planned to be released in 2025.
 
 ### Here's some other repos designed to work with DI:
 - **DI-content:** Contains assets for DI that do not fall under an open source license. Included with a retail copy of the game.
