@@ -158,6 +158,7 @@ CLASS PopcornBullet : DI_Projectile
 		+DONTBOUNCEONSHOOTABLES;
 		+DONTBOUNCEONSKY;
 		+EXPLODEONWATER;
+		-NOGRAVITY;
 	}
 	
 	bool isbombed;

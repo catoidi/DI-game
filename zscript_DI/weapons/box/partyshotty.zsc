@@ -142,6 +142,7 @@ CLASS PartyShottyBullet : DI_Projectile
 		Projectile;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
+		-NOGRAVITY;
 	}
 	
 	action void FakeShottyCrumb()
