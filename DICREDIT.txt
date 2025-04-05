@@ -53,8 +53,9 @@ Page 4;
 	Subtitle ;
 	Credit , Glace, Muffins;
 	Credit , TheNancho, Veldt;
-	Credit , TheatreHeathen20, mr.casual;
-	Credit , Nuts, Merci;
-	Credit , Gabriel, Tayette;
+	Credit , Baehemoth, TheatreHeathen20;
+	Credit , mr.casual, Nuts;
+	Credit , Merci, Gabriel;
+	Credit , Tayette, ;
 	Image creditimage1.png, 0, 0, 960;
 }
