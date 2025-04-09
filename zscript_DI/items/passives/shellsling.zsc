@@ -6,7 +6,7 @@ Class DI_ShellSling : DIPassiveInventory
 	{
 		Tag "Shell Sling";
 		Inventory.Icon "POW2M0";
-		Inventory.PickupMessage "Shell Sling acquired! (Reloading is 25% faster if you have at least 75% ammo remaining.)";
+		Inventory.PickupMessage "Shell Sling acquired! (Reloading is 30% faster if you have at least 60% ammo remaining.)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -20,19 +20,19 @@ Class DI_ShellSling : DIPassiveInventory
 		if (wpn.wpn_dontgiveammo1 && wpn.wpn_dontgiveammo2) {givespeed = false;}
 		if (wpn.Ammo1)
 		{
-			if ((plr.CountInv(wpn.Ammo1.GetClassName()) < 0.75 * wpn.Ammo1.MaxAmount) && (!wpn.wpn_dontgiveammo1))
+			if ((plr.CountInv(wpn.Ammo1.GetClassName()) < 0.6 * wpn.Ammo1.MaxAmount) && (!wpn.wpn_dontgiveammo1))
 			{
 				givespeed = false;
 			}
 		}
 		if (wpn.Ammo2)
 		{
-			if ((plr.CountInv(wpn.Ammo2.GetClassName()) < 0.75 * wpn.Ammo2.MaxAmount) && (!wpn.wpn_dontgiveammo2))
+			if ((plr.CountInv(wpn.Ammo2.GetClassName()) < 0.6 * wpn.Ammo2.MaxAmount) && (!wpn.wpn_dontgiveammo2))
 			{
 				givespeed = false;
 			}
 		}
-		if (givespeed) {return -0.25 * plr.CountInv(self.GetClassName());}
+		if (givespeed) {return -0.3 * plr.CountInv(self.GetClassName());}
 		else {return  0.0;}
 	}
 	
