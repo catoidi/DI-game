@@ -1,13 +1,13 @@
 Class DI_LeadSwitch : DIPassiveInventory
 {	
-	name oldwpn;
-	name prevwpn;
+	DI_Weapon oldwpn;
+	int ammogive;
 	
 	Default
 	{
 		Tag "Lead Switch";
 		Inventory.Icon "POW1I0";
-		Inventory.PickupMessage "Lead Switch acquired! (Switching to a fresh weapon will give you +1 ammo and faster reloading.)";
+		Inventory.PickupMessage "Lead Switch acquired! (Firing has a 20% chance to give your next weapon +1 ammo.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -15,39 +15,41 @@ Class DI_LeadSwitch : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr && wpn && !plr.IsFrozen())
 		{
-			let plr = DI_PlayerBase(owner);
-			if ((plr.player.ReadyWeapon.GetClassName() != oldwpn) && (plr.FreshKillCount() > 0))
+			if ((wpn != oldwpn))
 			{
-				DIGiveAmmo(plr);
-				oldwpn = plr.player.ReadyWeapon.GetClassName();
+				//console.printf("giving %d ammo to %s", ammogive, wpn.getclassname());
+				DIGiveAmmo();
+				oldwpn = wpn;
 			}
+			else if (plr.justfired)
+			{
+				if (random(1, 5) <= plr.countinv(self.getclassname()))
+				{
+					++ammogive;
+					//console.printf("+1 ammo for next weapon");
+				}
+			}
+			plr.setinventory("DI_LeadSwitch_Powerup", ammogive, true);
 		}
 	}
 	
-	virtual void DIGiveAmmo(DI_PlayerBase plr)
+	virtual void DIGiveAmmo()
 	{
-		let ammogivenum = plr.CountInv("DI_LeadSwitch");
-		if (ammogivenum > 0)
+		if (ammogive > 0)
 		{
-			let curwpn = DI_Weapon(plr.player.ReadyWeapon);
-			let curammo1 = curwpn.AmmoType1;
-			let curammo2 = curwpn.AmmoType2;
-			if ((curwpn.GetClassName() != plr.LastWeaponKill) && (curwpn.GetClassName() != prevwpn))
+			let curammo1 = wpn.AmmoType1;
+			let curammo2 = wpn.AmmoType2;
+			if (curammo1 && (wpn.wpn_dontgiveammo1 == false))
 			{
-				plr.GiveInventory("DI_LeadSwitch_Powerup", ammogivenum * 5);
-				if (curammo1 && (curwpn.wpn_dontgiveammo1 == false))
-				{
-					plr.GiveInventory(curammo1, ammogivenum);
-					prevwpn = curwpn.GetClassName();
-				}
-				if (curammo2 && (curwpn.wpn_dontgiveammo2 == false))
-				{
-					plr.GiveInventory(curammo2, ammogivenum);
-					prevwpn = curwpn.GetClassName();
-				}
+				plr.GiveInventory(curammo1, ammogive);
 			}
+			if (curammo2 && (wpn.wpn_dontgiveammo2 == false))
+			{
+				plr.GiveInventory(curammo2, ammogive);
+			}
+			ammogive = 0;
 		}
 	}
 	
@@ -59,14 +61,15 @@ Class DI_LeadSwitch : DIPassiveInventory
 	}
 }
 
+
 Class DI_LeadSwitch_Powerup : DIPowerup
 {
 	Default
 	{
 		Tag "\cvLead Switch (Powerup)";
 		Inventory.Icon "POW1R0";
-		Inventory.MaxAmount 30;
+		Inventory.MaxAmount 999999;
 	}
 	
-	override double GiveReloadSpeed() {return -0.5;}
+	override void PowerupTick() {} //remove timer code
 }

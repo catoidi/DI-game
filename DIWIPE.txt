@@ -46,6 +46,7 @@ DI_Firestarter;
 DI_LastStand;
 DI_CreditFraud;
 DI_LeadSwitch;
+DI_LeadSwitch_Powerup;
 DI_DeathMark;
 DI_CoinMagnet;
 DI_Farsight;

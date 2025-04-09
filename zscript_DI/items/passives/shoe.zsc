@@ -1,6 +1,6 @@
 //zscript_DI/items/passives/shoe.zsc
 
-//shooting has a 1% chance to heal you 1 HP.
+//shooting has a 12.5% chance to fire a shoe projectile. projectile DMG and spawn chance scales based on item stacks.
 
 Class DI_Shoe : DIPassiveInventory
 {
