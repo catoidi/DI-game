@@ -6,8 +6,8 @@ Class DI_PiercingBullets : DIPassiveInventory
 	{
 		Tag "Armor-Piercing Bullets";
 		Inventory.Icon "POW2U0";
-		Inventory.PickupMessage "Armor-Piercing Bullets acquired! (Bullets gain +0.2 Piercing, but Base DMG is reduced by 1.)";
-		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Armor-Piercing Bullets acquired! (Bullets gain +0.25 Piercing, but Base DMG is reduced by 1.)";
+		Inventory.MaxAmount 10;
 	}
 
 	override string, int GiveProjectileItem()
@@ -34,7 +34,7 @@ Class DI_PiercingBullets_Item : DIProjectileInventory
 {
 	Default
 	{
-		Inventory.MaxAmount 4;
+		Inventory.MaxAmount 999999;
 	}
 	
 	//projectile inventory items cant count themselves for some reason. 
