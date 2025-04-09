@@ -122,7 +122,7 @@ Class DoubleShotgun : GreenShotgun
 			#### # 0 A_GiveInventory("DoubleShotgunAmmo", 1);
 			PUSG A 0 A_GiveInventory("DoubleShotgunReload", 1);
 			PUSG A 2 A_JumpIfInventory("DoubleShotgunAmmo", invoker.Ammo1.MaxAmount, "ReloadEnd");
-			PUSG A 2 DI_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD);
+			PUSG A 2 DI_ContinueReload();
 			Goto ReloadEnd;
 		Reload_Barrel:
 			PUSG F 27;

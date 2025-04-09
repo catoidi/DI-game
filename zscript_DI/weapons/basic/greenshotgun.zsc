@@ -99,7 +99,7 @@ CLASS GreenShotgun : DI_Weapon
 			#### # 0 A_GiveInventory("GreenShotgunAmmo", 1);
 			SHOT A 0 A_GiveInventory("GreenShotgunReload", 1);
 			SHOT A 2 A_JumpIfInventory("GreenShotgunAmmo", invoker.Ammo1.MaxAmount, "ReloadEnd");
-			SHOT A 2 DI_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD);
+			SHOT A 2 DI_ContinueReload();
 			Goto ReloadEnd;
 		Reload_Barrel:
 			SHOT F 16;

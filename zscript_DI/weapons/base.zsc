@@ -384,11 +384,30 @@ Class DI_Weapon : Weapon abstract
 		autooffset_prev = 0.0;
 	}
 	
-	action void DI_WeaponReady(int flags = 0)
+	action void DI_WeaponReady(int flags = 0, bool updatemode = true)
 	{
 		flags += WRF_NOBOB; //always disable vanilla weapon bobbing
-		WeaponMode(0);
+		if (updatemode) {WeaponMode(0);}
 		A_WeaponReady(flags);
+	}
+	
+	action state DI_ContinueReload(int flags = 0)
+	{
+		//meant for weapons with individual shell reloading.
+		//if the current tic is less than 1, this will automatically go to the reload state.
+		//otherwise, it will only jump if the player is holding down the reload key.
+		
+		//IMPORTANT: If you want manual reloading to work correctly, you'll need the frame this function is called in to be at least 1 tic.
+		
+		if (invoker.wpn_speed_current < 1.0)
+		{
+			double ticmult = 1.0 / (1.0 - invoker.wpn_speed_current);
+			if (ticmult * invoker.plr.player.psprites.Tics < 1.0) {return ResolveState("Reload");}
+		}
+		
+		flags += WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD;
+		DI_WeaponReady(flags, false);
+		return ResolveState(null);
 	}
 	
 	action state DI_FireCheck(bool altmode = false)
