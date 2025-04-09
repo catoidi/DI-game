@@ -16,6 +16,7 @@ Class DI_Weapon : Weapon abstract
 	double wpn_bulletsize; //projectile size.
 	bool wpn_dontgiveammo1; //tells items to NOT give this weapon it's first ammo type.
 	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
+	bool wpn_noprojectiles; //tells items that this weapon does NOT spawn regular projectiles.
 	int wpn_ammo1restore; //influences how ammo 1 is restored on wave end.
 	int wpn_ammo2restore; //influences how ammo 2 is restored on wave end.
 	int maxammouse; //the max amount inventory items can increase ammo.
@@ -56,6 +57,7 @@ Class DI_Weapon : Weapon abstract
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
+	property NoProjectiles: wpn_noprojectiles;
 	
 	property RestoreAmmo1: wpn_ammo1restore;
 	property RestoreAmmo2: wpn_ammo2restore;
@@ -90,6 +92,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.ComboDrain 1.0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
+		DI_Weapon.NoProjectiles false;
 		DI_Weapon.RestoreAmmo1 0; //a value of 0 will mean the ammo restore amount will be set automatically.
 		DI_Weapon.RestoreAmmo2 0; //you may want to change this value if the ammo for your weapon is shared with another weapon.
 		DI_Weapon.Ammo1HUD 0;
