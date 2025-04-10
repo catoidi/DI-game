@@ -528,6 +528,10 @@ SHOPITEM_DI_SPRING = "Industrial Sized Spring";
 SHOPDESC_DI_SPRING = "Grants you the ability to double jump.";
 SHOPDESC2_DI_SPRING = "\cbStacking this item grants you even more jumps. Comes packaged with duct tape and a remote switch for easy activation.";
 SHOPTYPE_DI_SPRING = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_BLOODMONEY = "Blood Money";
+SHOPDESC_DI_BLOODMONEY = "Very small health-based chance to\ngain Regen upon picking up money.";
+SHOPDESC2_DI_BLOODMONEY = "\cbStacking this item increases the chance of activation exponentially. Losing health and failing to activate the effect increases the chance, and successfully activating the effect will lower the chance again.";
+SHOPTYPE_DI_BLOODMONEY = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

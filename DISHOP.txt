@@ -142,6 +142,7 @@ DefensePassive DI_WhoppeeCushion POW1Y 7 256 di_unlock_item_whoppeecushion;
 DefensePassive DI_Spring POW3H 7 256 di_unlock_item_spring;
 DefensePassive DI_FruitTape POW2F 7;
 DefensePassive DI_Toaster POW1P 7 256 di_unlock_item_toaster;
+DefensePassive DI_BloodMoney POW3I 7 256 di_unlock_item_bloodmoney;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 9;
 ComboPassive DI_FreshBonusGiver POWRC 14;

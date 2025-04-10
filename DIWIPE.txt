@@ -87,3 +87,4 @@ DI_PartyPopper;
 DI_OnionRing;
 DI_QuestDebuff_Yielding_Powerup;
 DI_Spring;
+DI_BloodMoney;

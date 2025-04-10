@@ -168,6 +168,7 @@ DIPOPUP_di_unlock_item_processedore = "Processed Ore";
 DIPOPUP_di_unlock_item_partypopper = "Party Popper";
 DIPOPUP_di_unlock_item_onionring = "Onion Ring";
 DIPOPUP_di_unlock_item_spring = "Spring";
+DIPOPUP_di_unlock_item_bloodmoney = "Blood Money";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -176,6 +177,7 @@ SHOPLOCK_DI_CHEESEARTIFACT = "\cbReach 10k score as \cvCheeseburger \cbon \cfLVL
 SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 2 \cbto unlock this weapon.";
 SHOPLOCK_SLEDGEHAMMER = "\cbReach 10k score as \cvHamill \cbon \cfLVL 2 \cbto unlock this weapon.";
 SHOPLOCK_DI_WHOPPEECUSHION = "\cbReach 10k score as \cvHamill \cbon \cfLVL 1 \cbto unlock this item.";
+SHOPLOCK_DI_BLOODMONEY = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_DI_SPRING = "\cbReach 10k score as \cvHamill \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_PARTYSHOTTY = "\cbComplete 3 side quests in \cvLevel 2 \cbto unlock this weapon.";
 SHOPLOCK_POPCORNGUN = "\cbComplete 10 side quests in \cvLevel 2 \cbto unlock this weapon.";

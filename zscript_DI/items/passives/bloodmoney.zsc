@@ -5,8 +5,60 @@ Class DI_BloodMoney : DIPassiveInventory
 	Default
 	{
 		Tag "Blood Money";
-		Inventory.Icon "POWRD0";
+		Inventory.Icon "POW3I0";
 		Inventory.MaxAmount 3;
-		Inventory.PickupMessage "Bloody Heart Acquired! (Drop HP Pickups upon taking damage. You take +1 DMG from all sources.)";
+		Inventory.PickupMessage "Bloody Money Acquired! (Get a small chance to gain regen upon picking up money.)";
+	}
+	
+	int prevmoney;
+	int success;
+	int bonus;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.isfrozen())
+		{
+			if (prevmoney > plr.score)
+			{
+				prevmoney = plr.score;
+			}
+			else if (prevmoney < plr.score)
+			{
+				int diff = plr.score - prevmoney;
+				for (int i = 0; i < diff; ++i)
+				{
+					int chance = plr.DIMaxHealth() - plr.health - plr.countinv("DI_Regen");
+					int fail = (plr.DIMaxHealth() + success - bonus) * (4 - plr.countinv(self.getclassname()));
+					if (random(1, fail) <= chance) 
+					{
+						plr.GiveInventory("DI_Regen", 1);
+						++success;
+						bonus = 0;
+					}
+					else if (plr.DIMaxHealth() > (plr.health + plr.countinv("DI_Regen")))
+					{
+						++bonus;
+					}
+				}
+				prevmoney = plr.score;
+			}
+		}
+	}
+	
+	override bool EnterWave()
+	{
+		success = 0;
+		bonus = 0;
+		if (plr) {prevmoney = plr.score;}
+		return true;
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 I -1;
+			Stop;
 	}
 }
