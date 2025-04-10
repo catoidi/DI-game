@@ -1,0 +1,12 @@
+//zscript_di/items/passives/bloodmoney.zsc
+
+Class DI_BloodMoney : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Blood Money";
+		Inventory.Icon "POWRD0";
+		Inventory.MaxAmount 3;
+		Inventory.PickupMessage "Bloody Heart Acquired! (Drop HP Pickups upon taking damage. You take +1 DMG from all sources.)";
+	}
+}

@@ -189,6 +189,7 @@ version "4.14"
 #include "zscript_DI/items/passives/partypopper.zsc"
 #include "zscript_DI/items/passives/onionring.zsc"
 #include "zscript_DI/items/passives/spring.zsc"
+#include "zscript_DI/items/passives/bloodmoney.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"

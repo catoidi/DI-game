@@ -54,6 +54,7 @@ server cheat bool di_unlock_item_cheeseartifact = false; //LVL 2 Burger 10k poin
 server cheat bool di_unlock_item_sledgehammer = false; //10k points as Hamill on Level 2.
 server cheat bool di_unlock_item_whoppeecushion = false; //10k points as Hamill on Level 1.
 server cheat bool di_unlock_item_banana = false; //10k points, box, level 1.
+server cheat bool di_unlock_item_bloodmoney = false; //10k points, fred, level 3.
 server cheat bool di_unlock_item_spring = false; //10k points, hamill, level 3.
 //DI shop item unlocks (LEVEL 1)
 user bool di_unlock_tutorial = false; //do a menu tutorial the first time you open it.
