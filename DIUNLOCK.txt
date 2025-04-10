@@ -34,6 +34,7 @@
 !di_unlock_item_tophat2 DI_TopHat2 3;
 !di_unlock_item_partyhat DI_PartyHat 3;
 >>These ones are just regular items though.
+>>LEVEL ONE ITEMS:
 di_unlock_item_starpistol StarPistol 1  1;
 di_unlock_item_cheesegun CheeseGun 1  1;
 di_unlock_item_banana DI_Banana_Bundle 3  1;
@@ -45,6 +46,7 @@ di_unlock_item_fred4 DI_Farsight 2 di_fredcount 1;
 di_unlock_item_shoe DI_Shoe 2 di_roncount 1;
 di_unlock_item_coinmagnet DI_CoinMagnet 2 di_coinbags 1;
 di_unlock_item_wealthjar DI_WealthJar 2  1;
+>>LEVEL TWO ITEMS:
 di_unlock_item_minifred DI_MiniFred 2  2;
 di_unlock_item_cheeseartifact DI_CheeseArtifact 3  2;
 di_unlock_item_glowstick Glowstick 1  2;
@@ -52,17 +54,18 @@ di_unlock_item_sledgehammer Sledgehammer 1  2;
 di_unlock_item_partyshotty PartyShotty 1 di_sidequests 2;
 di_unlock_item_popcorngun PopcornGun 1 di_sidequests 2;
 di_unlock_item_questbook DI_QuestBook 3 di_sidequests 2;
->>Will be removing this item in a future update.
->>di_unlock_item_partyshotty2 PartyShotty2 1  2;
 di_unlock_item_melon DI_Melon 3 di_meloncount 2;
 di_unlock_item_toaster DI_Toaster 2 di_hammercount 2;
 di_unlock_item_tomato DI_Tomato 3  2;
 di_unlock_item_trailblazer DI_Trailblazer 2  2;
+>>LEVEL THREE ITEMS:
+di_unlock_item_spring DI_Spring 2  3;
 di_unlock_item_icebullet DI_StatusGiver_Ice 2 di_icekills 3;
 di_unlock_item_firebullet DI_StatusGiver_Fire 2 di_firekills 3;
 di_unlock_item_shockbullet DI_StatusGiver_Lightning 2 di_shockkills 3;
 di_unlock_item_poisonbullet DI_StatusGiver_Poison 2 di_poisonkills 3;
 di_unlock_item_rainbowbullet DI_StatusGiver_Rainbow 2 di_statuskills 3;
+>>MISCELLANEOUS ITEMS:
 di_unlock_item_freshcharger DI_FreshBonusCharger 2  333;
 di_unlock_item_freshbullets DI_FreshBullets 2  333;
 di_unlock_item_deathmark DI_DeathMark 2 di_deathcounter 666;

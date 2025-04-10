@@ -1,0 +1,74 @@
+Class DI_Spring : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Spring";
+		Inventory.Icon "POW3H0";
+		Inventory.PickupMessage "Spring Acquired! (Allows you to jump multiple times.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	int jumped;
+	int maxjumps;
+	int jumphold;
+	
+	virtual void DoDoubleJump()
+	{
+		if (jumped < maxjumps)
+		{
+			++jumped;
+			plr.Vel.Z = plr.jumpz;
+			plr.A_StartSound("jumppad", CHAN_AUTO, pitch: 1.2);
+		}
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen())
+		{
+			bool onground = ((plr.Pos.Z ~== plr.FloorZ) || (plr.bOnMobj));
+			maxjumps = 1 + plr.countinv(self.getclassname());
+			
+			if (onground)
+			{
+				jumped = 0;
+			}
+			
+			if (jumped > 0)
+			{
+				if ((plr.Player.Buttons & BT_JUMP) && (jumphold < 1))
+				{
+					DoDoubleJump();
+				}
+			}
+			
+			if (plr.Player.Buttons & BT_JUMP) 
+			{
+				if (jumped == 0)
+				{
+					//plr.A_StartSound("jumppad", CHAN_BODY, CHANF_NOSTOP);
+					jumped = 1;
+				}
+				++jumphold;
+			}
+			else if ((!onground) && (jumped == 0)) 
+			{
+				jumped = 1;
+			}
+			else 
+			{
+				jumphold = 0;
+			}
+			//console.printf("\nJumps: %d\nMax Jumps: %d\nHold: %d\nOnGround: %d", jumped, maxjumps, jumphold, onground);
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 H -1;
+			Stop;
+	}
+}

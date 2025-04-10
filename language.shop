@@ -524,6 +524,10 @@ SHOPITEM_DI_ONIONRING = "Onion Ring";
 SHOPDESC_DI_ONIONRING = "While near enemies, gain up to +30% Reload Speed.";
 SHOPDESC2_DI_ONIONRING = "\cbQuickly decays over time while no longer near enemies. Item stacks increase the reload speed buff and the radius of the ring.";
 SHOPTYPE_DI_ONIONRING = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_SPRING = "Industrial Sized Spring";
+SHOPDESC_DI_SPRING = "Grants you the ability to double jump.";
+SHOPDESC2_DI_SPRING = "\cbStacking this item grants you even more jumps. Comes packaged with duct tape and a remote switch for easy activation.";
+SHOPTYPE_DI_SPRING = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
