@@ -10,7 +10,6 @@ Class DI_BeachBall : Inventory
 		Inventory.MaxAmount 5;
 		Inventory.Icon "POW3J0";
 		Inventory.PickupMessage "Got a Beach Ball. Once placed, can be smacked around to deal ridiculous damage to enemies.";
-		DI_Actor.IgnoreWeapon true;
 		+INVENTORY.INVBAR;
 	}
 	
@@ -71,6 +70,7 @@ Class DI_BeachBall_Actor : DI_Actor
 		DamageFunction (100);
 		DamageType "Melee";
 		BloodType "ProjectileSmoke";
+		DI_Actor.IgnoreWeapon true;
 		+SOLID;
 		+SHOOTABLE;
 		+PUSHABLE;
