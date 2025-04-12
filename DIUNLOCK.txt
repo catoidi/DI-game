@@ -60,6 +60,7 @@ di_unlock_item_tomato DI_Tomato 3  2;
 di_unlock_item_trailblazer DI_Trailblazer 2  2;
 >>LEVEL THREE ITEMS:
 di_unlock_item_bloodmoney DI_BloodMoney 2  3;
+di_unlock_item_beachball DI_BeachBall 3  3;
 di_unlock_item_spring DI_Spring 2  3;
 di_unlock_item_icebullet DI_StatusGiver_Ice 2 di_icekills 3;
 di_unlock_item_firebullet DI_StatusGiver_Fire 2 di_firekills 3;

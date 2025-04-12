@@ -10,7 +10,14 @@ Class DI_BeachBall : Inventory
 		Inventory.MaxAmount 5;
 		Inventory.Icon "POW3J0";
 		Inventory.PickupMessage "Got a Beach Ball. Once placed, can be smacked around to deal ridiculous damage to enemies.";
+		DI_Actor.IgnoreWeapon true;
 		+INVENTORY.INVBAR;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		ChangeTID(7499); //removed on wave completion
 	}
 	
 	override bool Use(bool pickup)
@@ -24,9 +31,9 @@ Class DI_BeachBall : Inventory
 		bool spawned = false;
 		if (owner) 
 		{
-			if (owner.A_SpawnItemEX("DI_BeachBall_Actor", 24, 0, 16))
+			if (owner.A_SpawnItemEX("DI_BeachBall_Actor", 32, 0, 16))
 			{
-				owner.A_SpawnItemEX("DI_Teleport", 24);
+				owner.A_SpawnItemEX("DI_Teleport", 32);
 				spawned = true;
 				DIUsed();
 			}
@@ -63,6 +70,7 @@ Class DI_BeachBall_Actor : DI_Actor
 		PushFactor 0.85;
 		DamageFunction (100);
 		DamageType "Melee";
+		BloodType "ProjectileSmoke";
 		+SOLID;
 		+SHOOTABLE;
 		+PUSHABLE;

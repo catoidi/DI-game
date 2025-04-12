@@ -13,4 +13,5 @@ DI02 DI_PlayerBurger 10000 di_unlock_item_cheeseartifact;
 DI02 DI_PlayerBox 10000 di_unlock_item_glowstick;
 DI02 DI_PlayerHam 10000 di_unlock_item_sledgehammer;
 DI03 DI_PlayerFredrick 10000 di_unlock_item_bloodmoney;
+DI03 DI_PlayerBox 10000 di_unlock_item_beachball;
 DI03 DI_PlayerHam 10000 di_unlock_item_spring;

@@ -270,6 +270,10 @@ SHOPITEM_DI_NUGGET = "chicken nugget";
 SHOPDESC_DI_NUGGET = "For 45 seconds, gain +2 HP instantly (up to 200%)\nevery time you kill an enemy.";
 SHOPDESC2_DI_NUGGET = "\cbyou only get one nugget.";
 SHOPTYPE_DI_NUGGET = "\ct[Consumable] \cl[Max: 3]";
+SHOPITEM_DI_BEACHBALL = "Beach Ball";
+SHOPDESC_DI_BEACHBALL = "Spawns a ball. Smack the ball to deal extreme damage\nto any enemy that makes contact with it.";
+SHOPDESC2_DI_BEACHBALL = "Once mobile, the ball will bounce around everywhere and deal 100 DMG to any non-player actor it touches. The ball despawns at the end of a wave.";
+SHOPTYPE_DI_BEACHBALL = "\ct[Consumable] \cl[Max: 5]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";
