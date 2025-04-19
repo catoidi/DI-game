@@ -5,8 +5,8 @@ Class PoisonGun : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
-		DI_Weapon.BaseDamage 50;
-		DI_Weapon.Recoil 12.0;
+		DI_Weapon.BaseDamage 10;
+		DI_Weapon.Recoil 2.0;
 		DI_Weapon.RecoilRecover 1.0;
 		DI_Weapon.RecoilOffset 2.0;
 		DI_Weapon.BaseAccuracy 2;
@@ -15,10 +15,10 @@ Class PoisonGun : DI_Weapon
 		Weapon.SlotNumber 1;
 		Weapon.SlotPriority 1;
 		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 3;
+		Weapon.AmmoGive 8;
 		Weapon.AmmoType "PoisonGunAmmo";
 		DamageType "Poison";
-		Inventory.Icon "FINGZ0";
+		Inventory.Icon "PPISZ0";
 		Inventory.Pickupmessage "Picked up the P.P.D.S.! (Precise Poison Distribution System)";
 		Tag "P.P.D.S.";
 	}
@@ -26,7 +26,12 @@ Class PoisonGun : DI_Weapon
 	States
 	{
 		Ready:
-			PPIS A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			PPIS # 1 
+			{
+				if (invoker.countinv("PoisonGunAmmo") == 0) {frame = 0;}
+				else {frame = 3;}
+				DI_WeaponReady(WRF_ALLOWRELOAD);
+			}
 			Loop;
 		Deselect:
 			PPIS A 0 A_Lower;
@@ -37,27 +42,45 @@ Class PoisonGun : DI_Weapon
 			Loop;
 		Fire:
 			PPIS A 0 DI_FireCheck();
-			PPIS A 2 BRIGHT 
+			PPIS AAAA 2 BRIGHT 
 			{
 				A_Overlay(-2, "Flash");
 				DI_Shoot();
 				A_StartSound("pistpow");
 			}
 			#### # 0 DI_BulletCasing(2);
-			PPIS B 20;
+			PPIS B 10;
+			#### # 0
+			{
+				if (countinv("PoisonGunAmmo") == 0) {return ResolveState("FireEmpty");}
+				return ResolveState(null);
+			}
+			PPIS E 10;
 			PPIS A 0 A_Refire;
 			PPIS AA 1;
 			Goto Ready;
-		Reload:
-			PPIS A 0 DI_ReloadCheck();
-			PPIS BBBBBBBBBBBBBBBB 1 A_WeaponOffset(0, 10, WOF_ADD | WOF_INTERPOLATE);
-			#### # 0 A_GiveInventory(invoker.Ammo1.GetClassName(), invoker.Ammo1.MaxAmount);
-			PPIS BBBBBBBBBBBBBBBB 1 A_WeaponOffset(0, -10, WOF_ADD | WOF_INTERPOLATE);
+		FireEmpty:
+			PPIS C 10;
+			PPIS D 0 A_Refire;
+			PPIS DD 1;
 			Goto Ready;
-		Flash:
-			#### # 0 A_OverlayOffset(-2, 22.0, -36.0);
-			PPIS C 2 BRIGHT DI_MuzzleFlash();
-			#### # 0 DI_ClearFlash();
+		Reload:
+			PPIS # 0 DI_ReloadCheck();
+			PPIS ###### 1 A_OverlayOffset(PSP_WEAPON, 10, -2, WOF_ADD);
+			PPIS F 10 A_Overlay(2, "Reload_Shell");
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.5);
+			PPIS F 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.7);
+			PPIS G 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
+			#### # 0 A_GiveInventory("PoisonGunAmmo", 9999);
+			PPIS A 4;
+			PPIS AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, 2, WOF_ADD);
+			Goto Ready;
+		Reload_Shell:
+			TNT1 A 0 A_OverlayOffset(2, 6, 36, WOF_ADD);
+			PPIS IIIIII 1 A_OverlayOffset(2, -2, -6, WOF_ADD);
+			PPIS IIII 1 A_OverlayOffset(2, 1.5, 0, WOF_ADD);
+			PPIS I 4;
 			Stop;
 		Spawn:
 			PPIS Z -1;
@@ -70,7 +93,7 @@ Class PoisonGunAmmo : Ammo
 	//it sure is ammo.
 	Default
 	{
-		Inventory.Amount 3;
-		Inventory.MaxAmount 3;
+		Inventory.Amount 8;
+		Inventory.MaxAmount 8;
 	}
 }
