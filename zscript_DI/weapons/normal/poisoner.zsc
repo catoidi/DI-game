@@ -1,0 +1,76 @@
+//zscript_DI/weapons/normal/poisoner.zsc
+
+Class PoisonGun : DI_Weapon
+{
+	Default
+	{
+		DI_Weapon.FreshBonus 4;
+		DI_Weapon.BaseDamage 50;
+		DI_Weapon.Recoil 12.0;
+		DI_Weapon.RecoilRecover 1.0;
+		DI_Weapon.RecoilOffset 2.0;
+		DI_Weapon.BaseAccuracy 2;
+		Weapon.Kickback 500;
+		Weapon.SelectionOrder 10000;
+		Weapon.SlotNumber 1;
+		Weapon.SlotPriority 1;
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 3;
+		Weapon.AmmoType "PoisonGunAmmo";
+		DamageType "Poison";
+		Inventory.Icon "FINGZ0";
+		Inventory.Pickupmessage "Picked up the P.P.D.S.! (Precise Poison Distribution System)";
+		Tag "P.P.D.S.";
+	}
+	
+	States
+	{
+		Ready:
+			PPIS A 1 DI_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Deselect:
+			PPIS A 0 A_Lower;
+			Loop;
+		Select:
+			PPIS AAA 0 A_Raise;
+			PPIS A 1 A_Raise;
+			Loop;
+		Fire:
+			PPIS A 0 DI_FireCheck();
+			PPIS A 2 BRIGHT 
+			{
+				A_Overlay(-2, "Flash");
+				DI_Shoot();
+				A_StartSound("pistpow");
+			}
+			#### # 0 DI_BulletCasing(2);
+			PPIS B 20;
+			PPIS A 0 A_Refire;
+			PPIS AA 1;
+			Goto Ready;
+		Reload:
+			PPIS A 0 DI_ReloadCheck();
+			PPIS BBBBBBBBBBBBBBBB 1 A_WeaponOffset(0, 10, WOF_ADD | WOF_INTERPOLATE);
+			#### # 0 A_GiveInventory(invoker.Ammo1.GetClassName(), invoker.Ammo1.MaxAmount);
+			PPIS BBBBBBBBBBBBBBBB 1 A_WeaponOffset(0, -10, WOF_ADD | WOF_INTERPOLATE);
+			Goto Ready;
+		Flash:
+			#### # 0 A_OverlayOffset(-2, 22.0, -36.0);
+			PPIS C 2 BRIGHT DI_MuzzleFlash();
+			#### # 0 DI_ClearFlash();
+			Stop;
+		Spawn:
+			PPIS Z -1;
+			Stop;
+	}
+}
+
+Class PoisonGunAmmo : Ammo
+{
+	//it sure is ammo.
+	Default
+	{
+		Inventory.Amount 3;
+		Inventory.MaxAmount 3;
+	}
+}
