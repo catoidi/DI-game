@@ -32,6 +32,7 @@ NormalWeapon GrenadeLauncher GLANZ 30 256 di_unlock_item_grenadelauncher;
 NormalWeapon DoubleShotgun PUSGZ 25 256 di_unlock_item_doubleshotgun;
 NormalWeapon CheeseGun CHESZ 10 192 di_unlock_item_cheesegun;
 NormalWeapon FingerGun FINGZ 15 256 di_unlock_item_fingergun;
+NormalWeapon PoisonGun PPISZ 15 256 di_unlock_item_poisongun;
 >>Fantasy Weapons...
 FantasyWeapon StunCrossbow SBOWZ 20 192 di_unlock_item_stunbow;
 >>Scifi Weapons...
