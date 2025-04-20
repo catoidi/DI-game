@@ -6,16 +6,16 @@ Class PoisonGun : DI_Weapon
 	{
 		DI_Weapon.FreshBonus 4;
 		DI_Weapon.BaseDamage 10;
-		DI_Weapon.Recoil 2.0;
-		DI_Weapon.RecoilRecover 1.0;
-		DI_Weapon.RecoilOffset 2.0;
-		DI_Weapon.BaseAccuracy 2;
+		DI_Weapon.Recoil 1.5;
+		DI_Weapon.RecoilRecover 1.25;
+		DI_Weapon.RecoilOffset 1.5;
+		DI_Weapon.BaseAccuracy 3;
 		Weapon.Kickback 500;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 1;
 		Weapon.SlotPriority 1;
 		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 8;
+		Weapon.AmmoGive 12;
 		Weapon.AmmoType "PoisonGunAmmo";
 		DamageType "Poison";
 		Inventory.Icon "PPISZ0";
@@ -42,45 +42,63 @@ Class PoisonGun : DI_Weapon
 			Loop;
 		Fire:
 			PPIS A 0 DI_FireCheck();
-			PPIS AAAA 2 BRIGHT 
+			PPIS BBBB 2 BRIGHT 
 			{
 				A_Overlay(-2, "Flash");
-				DI_Shoot();
+				DI_FireProjectile("DI_Tracer_PoisonGun", spawnofs_xy: -4);
 				A_StartSound("pistpow");
 			}
-			#### # 0 DI_BulletCasing(2);
-			PPIS B 10;
+			PPIS B 5 BRIGHT;
 			#### # 0
 			{
 				if (countinv("PoisonGunAmmo") == 0) {return ResolveState("FireEmpty");}
 				return ResolveState(null);
 			}
-			PPIS E 10;
+			PPIS E 5;
 			PPIS A 0 A_Refire;
 			PPIS AA 1;
 			Goto Ready;
 		FireEmpty:
-			PPIS C 10;
+			PPIS C 5;
 			PPIS D 0 A_Refire;
 			PPIS DD 1;
 			Goto Ready;
 		Reload:
 			PPIS # 0 DI_ReloadCheck();
-			PPIS ###### 1 A_OverlayOffset(PSP_WEAPON, 10, -2, WOF_ADD);
-			PPIS F 10 A_Overlay(2, "Reload_Shell");
-			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.5);
-			PPIS F 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
-			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.7);
+			PPIS #### 1 A_OverlayOffset(PSP_WEAPON, -5, -7, WOF_ADD);
+			PPIS #### 1 A_OverlayOffset(PSP_WEAPON, -2.5, -3.5, WOF_ADD);
+			PPIS # 1;
+			PPIS ######## 1 A_OverlayOffset(PSP_WEAPON, 10, 5, WOF_ADD);
+			PPIS F 2 
+			{
+				if (invoker.countinv("PoisonGunAmmo") == 0) {frame = 7;}
+			}
+			PPIS F 10 A_Overlay(2, "Reload_Eject");
+			PPIS # 16 A_Overlay(3, "Reload_Shell");
+			PPIS # 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
 			PPIS G 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			#### # 0 A_GiveInventory("PoisonGunAmmo", 9999);
-			PPIS A 4;
-			PPIS AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, 2, WOF_ADD);
+			PPIS G 4;
+			PPIS ######## 1 A_OverlayOffset(PSP_WEAPON, -10, -5, WOF_ADD);
+			PPIS K 1;
+			PPIS #### 1 A_OverlayOffset(PSP_WEAPON, 2.5, 3.5, WOF_ADD);
+			PPIS ###A 1 A_OverlayOffset(PSP_WEAPON, 5, 7, WOF_ADD);
 			Goto Ready;
 		Reload_Shell:
-			TNT1 A 0 A_OverlayOffset(2, 6, 36, WOF_ADD);
-			PPIS IIIIII 1 A_OverlayOffset(2, -2, -6, WOF_ADD);
-			PPIS IIII 1 A_OverlayOffset(2, 1.5, 0, WOF_ADD);
+			TNT1 A 0 A_OverlayOffset(3, 18, 72, WOF_ADD);
+			PPIS IIIIIIIIIIII 1 A_OverlayOffset(3, -2, -6, WOF_ADD);
+			PPIS IIII 1 A_OverlayOffset(3, 1.5, 0, WOF_ADD);
 			PPIS I 4;
+			Stop;
+		Reload_Eject:
+			TNT1 A 0;
+			TNT1 A 0 A_JumpIfInventory("PoisonGunAmmo", 1, 2);
+			PPIS J 0 A_Jump(256, 2);
+			PPIS I 0;
+			#### ########## 1 
+			{
+				A_OverlayOffset(2, 6, 8, WOF_ADD);
+			}
 			Stop;
 		Spawn:
 			PPIS Z -1;
@@ -93,7 +111,58 @@ Class PoisonGunAmmo : Ammo
 	//it sure is ammo.
 	Default
 	{
-		Inventory.Amount 8;
-		Inventory.MaxAmount 8;
+		Inventory.Amount 12;
+		Inventory.MaxAmount 12;
+	}
+}
+
+
+
+Class DI_Tracer_PoisonGun : DI_Tracer
+{
+	Default
+	{
+		Translation "DamGreen";
+		DamageType "Poison";
+	}
+	
+	States
+	{
+		Spawn:
+			TRAC A -1;
+			Loop;
+		Bounce.Floor:
+		Bounce.Ceiling:
+		Bounce.Wall:
+			#### # 1 
+			{
+				A_SpawnItemEX("DI_PoisonPuff", flags: SXF_NOCHECKPOSITION);
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
+			}
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+		Bounce.Actor:
+			#### # 1
+			{
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
+			}
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+		Crash:
+		Death.Sky:
+		Death:
+			TNT1 A 1 
+			{
+				A_SpawnItemEX("DI_PoisonPuff", flags: SXF_NOCHECKPOSITION);
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
+			}
+			Stop;
+		XDeath:
+			TNT1 A 1 
+			{
+				A_SpawnParticleEX("fff59e", TexMan.CheckForTexture("PUFFA0"), STYLE_NONE, SPF_ROLL, 10, 8 + sqrt(invoker.GetWeaponDamage()), startroll: random(0, 359));
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
+			}
+			Stop;
 	}
 }
