@@ -5,7 +5,7 @@ Class PoisonGun : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
-		DI_Weapon.BaseDamage 10;
+		DI_Weapon.BaseDamage 15;
 		DI_Weapon.Recoil 1.5;
 		DI_Weapon.RecoilRecover 1.25;
 		DI_Weapon.RecoilOffset 1.5;
@@ -21,6 +21,25 @@ Class PoisonGun : DI_Weapon
 		Inventory.Icon "PPISZ0";
 		Inventory.Pickupmessage "Picked up the P.P.D.S.! (Precise Poison Distribution System)";
 		Tag "P.P.D.S.";
+	}
+	
+	int shootcount;
+	int layertimer[4];
+	
+	action void PoisonFlashInit(int layer)
+	{
+		invoker.layertimer[-layer - 2] = 0;
+		A_OverlayFlags(layer, PSPF_FORCEALPHA, true);
+		A_OverlayAlpha(layer, 1.0);
+		A_OverlayPivotAlign(layer, PSPA_CENTER, PSPA_CENTER);
+		A_OverlayRotate(layer, random(0, 359));
+	}
+	
+	action void PoisonFlashTick(int layer)
+	{
+		invoker.layertimer[-layer - 2] += 1;
+		A_OverlayAlpha(layer, 1.0 - (0.25 * invoker.layertimer[-layer - 2]));
+		A_OverlayScale(layer, 0.2, 0.2, WOF_ADD);
 	}
 	
 	States
@@ -41,12 +60,20 @@ Class PoisonGun : DI_Weapon
 			PPIS A 1 A_Raise;
 			Loop;
 		Fire:
-			PPIS A 0 DI_FireCheck();
+			#### # 0 DI_FireCheck();
+			#### # 0 {invoker.shootcount = 0;}
 			PPIS BBBB 2 BRIGHT 
 			{
-				A_Overlay(-2, "Flash");
+				switch(invoker.shootcount)
+				{
+					case 0: A_Overlay(-2, "Flash0"); break;
+					case 1: A_Overlay(-3, "Flash1"); break;
+					case 2: A_Overlay(-4, "Flash2"); break;
+					case 3: A_Overlay(-5, "Flash3"); break;
+				}
 				DI_FireProjectile("DI_Tracer_PoisonGun", spawnofs_xy: -4);
 				A_StartSound("pistpow");
+				++invoker.shootcount;
 			}
 			PPIS B 5 BRIGHT;
 			#### # 0
@@ -63,6 +90,22 @@ Class PoisonGun : DI_Weapon
 			PPIS D 0 A_Refire;
 			PPIS DD 1;
 			Goto Ready;
+		Flash0:
+			TNT1 A 0 PoisonFlashInit(-2);
+			PPIS LLL 1 BRIGHT PoisonFlashTick(-2);
+			Stop;
+		Flash1:
+			TNT1 A 0 PoisonFlashInit(-3);
+			PPIS LLL 1 BRIGHT PoisonFlashTick(-3);
+			Stop;
+		Flash2:
+			TNT1 A 0 PoisonFlashInit(-4);
+			PPIS LLL 1 BRIGHT PoisonFlashTick(-4);
+			Stop;
+		Flash3:
+			TNT1 A 0 PoisonFlashInit(-5);
+			PPIS LLL 1 BRIGHT PoisonFlashTick(-5);
+			Stop;
 		Reload:
 			PPIS # 0 DI_ReloadCheck();
 			PPIS #### 1 A_OverlayOffset(PSP_WEAPON, -5, -7, WOF_ADD);
