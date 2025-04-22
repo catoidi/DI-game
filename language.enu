@@ -171,6 +171,7 @@ DIPOPUP_di_unlock_item_spring = "Spring";
 DIPOPUP_di_unlock_item_bloodmoney = "Blood Money";
 DIPOPUP_di_unlock_item_beachball = "Beach Ball";
 DIPOPUP_di_unlock_item_poisongun = "P.P.D.S.";
+DIPOPUP_di_unlock_item_ruinedhat = "Ruined Hat";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -249,6 +250,7 @@ SHOPLOCK_DI_POW = "\cbGet 256 kills with the \cvFinger Gun \cbto unlock this ite
 SHOPLOCK_DI_PROCESSEDORE = "\cbGet 256 kills with the \cvOre Drill \cbto unlock this item.";
 SHOPLOCK_DI_PARTYPOPPER = "\cbGet 256 kills with the \cvParty Shotgun \cbto unlock this item.";
 SHOPLOCK_DI_ONIONRING = "\cbGet 256 kills with the \cvStun Crossbow \cbto unlock this item.";
+SHOPLOCK_DI_RUINEDHAT = "\cbGet 256 kills with the \cvP.P.D.S. \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

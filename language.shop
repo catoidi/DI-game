@@ -540,6 +540,10 @@ SHOPITEM_DI_BLOODMONEY = "Blood Money";
 SHOPDESC_DI_BLOODMONEY = "Very small health-based chance to\ngain Regen upon picking up money.";
 SHOPDESC2_DI_BLOODMONEY = "\cbStacking this item increases the chance of activation exponentially. Losing health and failing to activate the effect increases the chance, and successfully activating the effect will lower the chance again.";
 SHOPTYPE_DI_BLOODMONEY = "\cd[Passive] \cl[Max: 3]";
+SHOPITEM_DI_RUINEDHAT = "Ruined Hat";
+SHOPDESC_DI_RUINEDHAT = "Dealing damage to an enemy grants a stacking\n+10% DMG debuff to the enemy for 1 second.\nCapped at 5 stacks.";
+SHOPDESC2_DI_RUINEDHAT = "\cbDebuff stacks only increase once per frame, making this item almost useless on shotgun-type weapons. Debuff is unique for each enemy, and applied independently of your DMG Mult stat. Item stacks increase the effectiveness of each debuff stack. Going 1 second without dealing DMG to the enemy will deplete all debuff stacks.";
+SHOPTYPE_DI_RUINEDHAT = "\cd[Passive] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

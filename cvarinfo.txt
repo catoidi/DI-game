@@ -131,7 +131,8 @@ server cheat bool di_unlock_item_rubberbullets = false; //laser pointer.
 server cheat bool di_unlock_item_pow = false; //fingergun.
 server cheat bool di_unlock_item_processedore = false; //ore drill.
 server cheat bool di_unlock_item_partypopper = false; //party shotty.
-server cheat bool di_unlock_item_onionring = false; //onion ring.
+server cheat bool di_unlock_item_onionring = false; //stun bow.
+server cheat bool di_unlock_item_ruinedhat = false; //poison gun.
 //swag level unlocks
 server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
 server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.

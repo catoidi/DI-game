@@ -17,3 +17,4 @@ FingerGun 256 di_unlock_item_pow;
 OreDrill 256 di_unlock_item_processedore;
 PartyShotty 256 di_unlock_item_partypopper;
 StunCrossbow 256 di_unlock_item_onionring;
+PoisonGun 256 di_unlock_item_ruinedhat;

@@ -1,0 +1,74 @@
+//zscript_DI/items/passives/ruinedhat.zsc
+
+Class DI_RuinedHat : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Ruined Hat";
+		Inventory.Icon "POW3K0";
+		Inventory.PickupMessage "Ruined Hat acquired! (Dealing damage to a target makes the target receive 10% more DMG for 1 second, capped at +50%.)";
+		Inventory.MaxAmount 3;
+	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			return "DI_RuinedHat_Enemy", owner.CountInv(self.GetClassName());
+		}
+
+		return "", 0;
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 K -1;
+			Stop;
+	}
+}
+
+class DI_RuinedHat_Enemy: Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 3;
+	}
+	
+	int dmgtimer;
+	int dmgstacks;
+	bool dmgdealt;
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == true) && (owner) && (owner.target))
+		{
+			int dmgmod = owner.CountInv("DI_RuinedHat_Enemy");
+			double dmgmult = 1.0 + (0.1 * dmgstacks * dmgmod);
+			newdamage = damage * dmgmult;
+			dmgdealt = true;
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && !owner.IsFrozen())
+		{
+			if (dmgdealt)
+			{
+				if (dmgstacks < 5) {++dmgstacks;}
+				dmgtimer = 0;
+				dmgdealt = false;
+			}
+		
+			++dmgtimer;
+			if (dmgtimer > 35)
+			{
+				dmgstacks = 0;
+			}
+		}
+	}
+}

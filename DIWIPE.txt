@@ -89,3 +89,4 @@ DI_QuestDebuff_Yielding_Powerup;
 DI_Spring;
 DI_BloodMoney;
 PoisonGun;
+DI_RuinedHat;
