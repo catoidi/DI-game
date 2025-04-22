@@ -17,6 +17,7 @@ Class DI_Projectile : DI_Actor
 	array<DIProjectileInventory> items;
 	
 	int initdamage, justpierced;
+	bool justbounced;
 	
 	Default
 	{
@@ -79,17 +80,20 @@ Class DI_Projectile : DI_Actor
 			{
 				DoImpactActor(bBOUNCEONACTORS, bounceMobj);
 				if (BounceFactor == 0.0) {returnvalue = 0;}
+				justbounced = true;
 			}
 			if (bounceLine) 
 			{
 				impacted.Clear();
 				DoImpactWall(bBOUNCEONWALLS, bounceLine);
 				if (WallBounceFactor == 0.0) {returnvalue = 0;}
+				//justbounced = true;
 			}
 			if (bouncePlane) 
 			{
 				DoImpactFloor((bBOUNCEONFLOORS || bBOUNCEONCEILINGS), bouncePlane);
 				if (BounceFactor == 0.0) {returnvalue = 0;}
+				//justbounced = true;
 			}
 		}
 		return returnvalue;
@@ -207,6 +211,16 @@ Class DI_Projectile : DI_Actor
 		{
 			if (justpierced > 0) 
 			{
+				//impactactor pierce check
+				if (!justbounced) //dont run if we already bounced this tic.
+				{
+					for (int i = justpierced - 1; i < impacted.Size(); ++i)
+					{
+						//console.printf("pierce impacted %s", impacted[i].getclassname());
+						DoImpactActor(false, impacted[i]);
+					}
+				}
+			
 				pierceamount -= justpierced;
 				justpierced = 0;
 			}
@@ -235,6 +249,10 @@ Class DI_Projectile : DI_Actor
 			{
 				bRIPPER = false;
 			}
+		}
+		if (dobounce)
+		{
+			if (justbounced) {justbounced = false;}
 		}
 	}
 }
