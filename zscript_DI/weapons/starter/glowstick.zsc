@@ -276,6 +276,12 @@ CLASS GlowstickThrow : DI_Projectile
 		else if (damagetype == "Poison") {throwstring = "DI_PoisonPuff";}
 	}
 	
+	override void DoImpactActor(bool bounced, Actor bounceMobj)
+	{
+		Super.DoImpactActor(bounced, bounceMobj);
+		A_StartSound("weapons/glowstick/glowwack");
+	}
+	
 	States
 	{
 		Spawn:

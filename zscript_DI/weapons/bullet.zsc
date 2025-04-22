@@ -156,19 +156,19 @@ Class DI_Projectile : DI_Actor
 		return returnvalue;
 	}
 	
-	void DoImpactActor(bool bounced, Actor bounceMobj)
+	virtual void DoImpactActor(bool bounced, Actor bounceMobj)
 	{
 		foreach(mo : items) {if (mo) {mo.ImpactActor(plr, bounced, bounceMobj);}}
 		//console.printf("hit actor");
 	}
 	
-	void DoImpactWall(bool bounced, Line bounceLine)
+	virtual void DoImpactWall(bool bounced, Line bounceLine)
 	{
 		foreach(mo : items) {if (mo) {mo.ImpactWall(plr, bounced, bounceLine);}}
 		//console.printf("hit wall");
 	}
 	
-	void DoImpactFloor(bool bounced, readonly<SecPlane> bouncePlane)
+	virtual void DoImpactFloor(bool bounced, readonly<SecPlane> bouncePlane)
 	{
 		foreach(mo : items) {if (mo) {mo.ImpactFloor(plr, bounced, bouncePlane);}}
 		//console.printf("hit floor");
