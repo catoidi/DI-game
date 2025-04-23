@@ -143,7 +143,7 @@ SHOPDESC2_DI_OREDRILL = "\cbCrossover item from the hit indie game, \cv'Exoplane
 SHOPTYPE_DI_OREDRILL = "\cb[Weapon]";
 SHOPITEM_POISONGUN = "P.P.D.S.";
 SHOPDESC_POISONGUN = "Burst-fire poison pistol. Also called the\n'Portable Poison Distribution System'.";
-SHOPDESC2_POISONGUN = "\cbFires 4 shots of 10 Poison DMG, up to 3 times. It's poison effect makes this a viable tool against larger enemies and large crowds alike.";
+SHOPDESC2_POISONGUN = "\cbFires 4 shots of 15 Poison DMG, up to 3 times. It's poison effect makes this a viable tool against larger enemies and large crowds alike.";
 SHOPTYPE_POISONGUN = "\cb[Weapon]";
 
 //The name of the item that appears in the shop, and the unlock popup respectively.
