@@ -194,14 +194,14 @@ Class DI_Tracer_PoisonGun : DI_Tracer
 		Crash:
 		Death.Sky:
 		Death:
-			TNT1 A 1 
+			TNT1 A 5 
 			{
 				A_SpawnItemEX("DI_PoisonPuff", flags: SXF_NOCHECKPOSITION);
 				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
 			}
 			Stop;
 		XDeath:
-			TNT1 A 1 
+			TNT1 A 5 
 			{
 				A_SpawnParticleEX("fff59e", TexMan.CheckForTexture("PUFFA0"), STYLE_NONE, SPF_ROLL, 10, 8 + sqrt(invoker.GetWeaponDamage()), startroll: random(0, 359));
 				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}

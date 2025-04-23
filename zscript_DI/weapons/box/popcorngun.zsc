@@ -151,6 +151,7 @@ CLASS PopcornBullet : DI_Projectile
 		Height 4;
 		Gravity 0.2;
 		Mass 1;
+		DI_Projectile.AutoImpact false;
 	
 		+INTERPOLATEANGLES;
 		+ROLLSPRITE;
@@ -161,7 +162,7 @@ CLASS PopcornBullet : DI_Projectile
 		-NOGRAVITY;
 	}
 	
-	bool isbombed;
+	bool isbombed, crashed;
 
 	override void CheckStatusChange()
 	{
@@ -186,10 +187,14 @@ CLASS PopcornBullet : DI_Projectile
 			Loop;
 		XDeath:
 		Crash:
-			TNT1 A 0 A_StartSound("weapons/popcorn/pophit");
+			TNT1 A 0 
+			{
+				A_StartSound("weapons/popcorn/pophit");
+				invoker.crashed = true;
+			}
 		Death.Sky:
 		Death:
-			TNT1 A 1 {
+			TNT1 A 5 {
 				A_ProjectileSmoke();
 				FakePopcornCrumb();
 				FakePopcornCrumb();
@@ -197,6 +202,7 @@ CLASS PopcornBullet : DI_Projectile
 				FakePopcornCrumb();
 				FakePopcornCrumb();
 				if (invoker.damagetype != invoker.default.damagetype) {DIProjectileTrail(3.0);}
+				if (!invoker.crashed) {invoker.DoImpactDeath();}
 			}
 			Stop;
 	}
@@ -213,8 +219,8 @@ CLASS PopcornBomb : DI_Projectile
 		Height 12;
 		Gravity 0.4;
 		Mass 10;
+		DI_Projectile.AutoImpact false;
 
-		Projectile;
 		-NOGRAVITY;
 		+INTERPOLATEANGLES;
 		+ROLLSPRITE;
@@ -247,6 +253,8 @@ CLASS PopcornBomb : DI_Projectile
 		A_SpawnParticleEX("White", TexMan.CheckForTexture("POPNL0"), 0, SPF_ROLL, 50, 20, 0, frandom(-4, 4), frandom(-4, 4), frandom(-4, 4), 0, 0, 0, 0, 0, -0.33, 1, 0, -0.1, random(0, 359), 6 - (12 * (random(0, 1))));
 	}
 
+	bool crashed;
+
 	States
 	{
 		Spawn:
@@ -268,10 +276,15 @@ CLASS PopcornBomb : DI_Projectile
 			Loop;
 		XDeath:
 		Crash:
-			TNT1 A 0 A_StartSound("weapons/popcorn/pophit");
+			TNT1 A 0 
+			{
+				A_StartSound("weapons/popcorn/pophit");
+				invoker.crashed = true;
+			}
 		Death.Sky:
 		Death:
 			TNT1 A 4 {
+				if (!invoker.crashed) {invoker.DoImpactDeath();}
 				BulletAmount = 0;
 				while (BulletAmount < 20)
 				{

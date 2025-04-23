@@ -10,6 +10,7 @@ Class DI_Projectile : DI_Actor
 	property DoBounce : dobounce;
 	property DoPiercing : dopiercing;
 	property PierceAmount : pierceamount;
+	property AutoImpact : autoimpact;
 	
 	DI_Weapon plrwpn;
 
@@ -17,7 +18,7 @@ Class DI_Projectile : DI_Actor
 	array<DIProjectileInventory> items;
 	
 	int initdamage, justpierced;
-	bool justbounced, justimpacted, impactdeathdone;
+	bool justbounced, justimpacted, impactdeathdone, autoimpact;
 	
 	Default
 	{
@@ -30,6 +31,7 @@ Class DI_Projectile : DI_Actor
 		DI_Projectile.DoBounce true; //disable to use custom bouncing behavior.
 		DI_Projectile.DoPiercing true; //disable this to allow original bRIPPER behavior.
 		DI_Projectile.PierceAmount 1.0; //determines how many enemies the bullet can pierce through. values lower than 1.0 will reduce the bullet's damage.
+		DI_Projectile.AutoImpact true; //spawns impact effects from passive projectile items upon crashing into a wall/floor without bouncing. disable this and run DoImpactDeath() manually if your projectile contains a Crash animation, or you are running into issues with impact functions running twice or not at all.
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FORCEXYBILLBOARD;
@@ -270,14 +272,20 @@ Class DI_Projectile : DI_Actor
 		{
 			if (justbounced) {justbounced = false;}
 		}
-		if (!justimpacted)
+		if (autoimpact)
 		{
-			if (!curstate) {DoImpactDeath();}
-			//if (!curstate) {ThrowAbortException("what");}
-			//if (curstate.InStateSequence(ResolveState("Death"))) {DoImpactDeath();}
-			//else if (curstate.InStateSequence(ResolveState("Crash"))) {DoImpactDeath();}
+			if (!justimpacted)
+			{
+				//if (!curstate) {DoImpactDeath();}
+				if (!curstate && !impactdeathdone) {ThrowAbortException("ERROR: %s was despawned before it had a chance to run DoImpactDeath()!\n\ca(Maybe disable AutoImpactDeath or extend the death animation's tics?)", self.getclassname());}
+				if (curstate)
+				{
+					if (curstate.InStateSequence(ResolveState("Death"))) {DoImpactDeath();}
+					else if (curstate.InStateSequence(ResolveState("Crash"))) {DoImpactDeath();}
+				}
+			}
+			//else {justimpacted = false;}
 		}
-		else {justimpacted = false;}
 	}
 }
 

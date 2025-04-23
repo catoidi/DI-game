@@ -98,10 +98,13 @@ CLASS LaserPointerBullet : DI_Projectile
 		Height 6;
 		Speed 20;
 		DamageType "Lightning";
+		DI_Projectile.AutoImpact false;
 		+INTERPOLATEANGLES;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
 	}
+	
+	bool crashed;
 	
 	States
 	{
@@ -113,7 +116,11 @@ CLASS LaserPointerBullet : DI_Projectile
 			Loop;
 		XDeath:
 		Crash:
-			LAZR C 0 BRIGHT A_StartSound("weapons/laser/lasrhit");
+			LAZR C 0 BRIGHT 
+			{
+				A_StartSound("weapons/laser/lasrhit");
+				invoker.crashed = true;
+			}
 		Death.Sky:
 		Death:
 			LAZR C 1 BRIGHT 
@@ -121,6 +128,7 @@ CLASS LaserPointerBullet : DI_Projectile
 				A_DIScale(0.3, 0.3);
 				A_FadeOut(0.2);
 				if (invoker.damagetype != "Lightning") {DIProjectileTrail(2.0);}
+				if (!invoker.crashed) {invoker.DoImpactDeath();}
 			}
 			LAZR CCCCCC 0 BRIGHT A_SpawnParticleEX("White", TexMan.CheckForTexture("LAZRC0"), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELATIVE, 10, 6.0, random(0, 359), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 2), random(-2, 1), 0, 0, 0, 1.0, -1, 0, random(0, 359));
 			LAZR CCCC 1 BRIGHT

@@ -89,7 +89,7 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 		Super.DoEffect();
 		if (owner)
 		{
-			console.printf("%.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
+			//console.printf("%.1f, %.1f, %.1f", owner.pos.x, owner.pos.y, owner.pos.z);
 			if (owner.pos != (0.0, 0.0, 0.0)) {oldpos = owner.pos;}
 		}
 	}

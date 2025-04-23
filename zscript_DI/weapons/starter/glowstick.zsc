@@ -254,6 +254,7 @@ CLASS GlowstickThrow : DI_Projectile
 		Height 4;
 		Gravity 0.3;
 		Mass 1;
+		DI_Projectile.AutoImpact false; //prevents Impact functions from running twice.
 		
 		+INTERPOLATEANGLES;
 		+ROLLSPRITE;
@@ -282,6 +283,8 @@ CLASS GlowstickThrow : DI_Projectile
 		A_StartSound("weapons/glowstick/glowwack");
 	}
 	
+	bool crashed;
+	
 	States
 	{
 		Spawn:
@@ -302,12 +305,17 @@ CLASS GlowstickThrow : DI_Projectile
 			Loop;
 		XDeath:
 		Crash:
-			"####" "#" 0 BRIGHT A_StartSound("weapons/glowstick/glowwack");
+			"####" "#" 0 BRIGHT 
+			{
+				A_StartSound("weapons/glowstick/glowwack");
+				invoker.crashed = true;
+			}
 		Death.Sky:
 		Death:
 			"####" "#" 1 BRIGHT A_SetRoll(0);
 			"####" "#" 0 BRIGHT {bMOVEWITHSECTOR = true;}
 			"####" "#" 0 BRIGHT A_SpawnItemEX(throwstring, 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" "#" 0 BRIGHT {if (!invoker.crashed) {invoker.DoImpactDeath();}}
 			"####" "#" 0 BRIGHT A_Jump(256, "Flipper", "Stopper");
 		Flipper:
 			"####" "#" 0 BRIGHT {bSPRITEFLIP = TRUE;}

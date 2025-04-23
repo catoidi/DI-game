@@ -169,7 +169,7 @@ CLASS PartyShottyBullet : DI_Projectile
 			Loop;
 		Death.Sky:
 		Death:
-			TNT1 A 1 
+			TNT1 A 5
 			{
 				A_ProjectileSmoke();
 				FakeShottyCrumb();

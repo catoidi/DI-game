@@ -175,6 +175,8 @@ CLASS CheeseGunBullet : DI_Projectile
 		}
 	}
 	
+	bool crashed;
+	
 	States
 	{
 		Spawn:
@@ -183,7 +185,11 @@ CLASS CheeseGunBullet : DI_Projectile
 			Wait;
 		XDeath:
 		Crash:
-			CHES E 0 BRIGHT A_StartSound("weapons/laser/lasrhit");
+			CHES E 0 BRIGHT 
+			{
+				A_StartSound("weapons/laser/lasrhit");
+				invoker.crashed = true;
+			}
 		Death.Sky:
 		Death:
 			CHES E 0
@@ -196,6 +202,7 @@ CLASS CheeseGunBullet : DI_Projectile
 				{
 					A_SpawnParticle("f8cc3b", 0, 35, 6, 0, 0, 0, 0, frandom(-2, 2), frandom(-2, 2), frandom(-2, 2), 0, 0, -0.33);
 				}
+				if (!invoker.crashed) {invoker.DoImpactDeath();}
 			}
 			CHES E 1
 			{
