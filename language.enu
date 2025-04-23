@@ -172,6 +172,7 @@ DIPOPUP_di_unlock_item_bloodmoney = "Blood Money";
 DIPOPUP_di_unlock_item_beachball = "Beach Ball";
 DIPOPUP_di_unlock_item_poisongun = "P.P.D.S.";
 DIPOPUP_di_unlock_item_ruinedhat = "Ruined Hat";
+DIPOPUP_di_unlock_item_explosiverounds = "Explosive Rounds";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -194,6 +195,7 @@ SHOPLOCK_DI_BLOODYHEART = "\cbGet 10 Tomahawk kills to unlock this item.";
 SHOPLOCK_DI_BULLETMITOSIS = "\cbUnlock 15 shop items to unlock this item.";
 SHOPLOCK_DI_TOOMANYBULLETS = "\cbGet 3 bullet splitters at once to unlock this item.";
 SHOPLOCK_DI_STARFRUIT = "\cbUnlock 30 shop items to unlock this item.";
+SHOPLOCK_DI_EXPLOSIVEROUNDS = "\cbUnlock 45 shop items to unlock this item.";
 SHOPLOCK_DI_COMBODAMAGEMULT = "\cbGain +100% DMG Mult at once to unlock this item.";
 SHOPLOCK_DI_FRESHBONUSCHARGER = "\cbGet 40 fresh bonuses in 1 run to unlock this item.";
 SHOPLOCK_DI_FRESHBULLETS = "\cbGet 10 fresh bonuses in a row without reloading to unlock this item.";

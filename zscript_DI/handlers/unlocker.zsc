@@ -712,5 +712,9 @@ Class DIUnlockHandler : EventHandler
 		{
 			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_starfruit");
 		}
+		if (unlockcount >= 45)
+		{
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_explosiverounds");
+		}
 	}
 }

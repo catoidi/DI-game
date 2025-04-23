@@ -104,6 +104,7 @@ di_unlock_item_ruinedhat DI_RuinedHat 2 di_playerkills 66666;
 di_unlock_item_bulletmitosis DI_BulletMitosis 2  999999;
 di_unlock_item_toomanybullets DI_TooManyBullets 2  999999;
 di_unlock_item_starfruit DI_Starfruit 2  999999;
+di_unlock_item_explosiverounds DI_ExplosiveRounds 2  999999;
 >>di_unlock_item_combomult DI_ComboDamageMult 2  999999;
 >>Swag Level Unlocks
 di_unlock_item_bombbundle DI_ThrowBomb_Bundle 3 di_swaglevel 1000001;

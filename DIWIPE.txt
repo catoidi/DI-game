@@ -90,3 +90,4 @@ DI_Spring;
 DI_BloodMoney;
 PoisonGun;
 DI_RuinedHat;
+DI_ExplosiveRounds;

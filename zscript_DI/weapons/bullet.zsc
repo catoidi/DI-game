@@ -17,7 +17,7 @@ Class DI_Projectile : DI_Actor
 	array<DIProjectileInventory> items;
 	
 	int initdamage, justpierced;
-	bool justbounced;
+	bool justbounced, justimpacted, impactdeathdone;
 	
 	Default
 	{
@@ -163,19 +163,34 @@ Class DI_Projectile : DI_Actor
 	virtual void DoImpactActor(bool bounced, Actor bounceMobj)
 	{
 		foreach(mo : items) {if (mo) {mo.ImpactActor(plr, bounced, bounceMobj);}}
+		justimpacted = true;
 		//console.printf("hit actor");
 	}
 	
 	virtual void DoImpactWall(bool bounced, Line bounceLine)
 	{
 		foreach(mo : items) {if (mo) {mo.ImpactWall(plr, bounced, bounceLine);}}
+		justimpacted = true;
 		//console.printf("hit wall");
 	}
 	
 	virtual void DoImpactFloor(bool bounced, readonly<SecPlane> bouncePlane)
 	{
 		foreach(mo : items) {if (mo) {mo.ImpactFloor(plr, bounced, bouncePlane);}}
+		justimpacted = true;
 		//console.printf("hit floor");
+	}
+	
+	virtual void DoImpactDeath()
+	{
+		//console.printf("impact death start");
+		if (!impactdeathdone) 
+		{
+			//console.printf("impact death active");
+			foreach(mo : items) {if (mo) {mo.ImpactDeath(plr);}}
+			impactdeathdone = true;
+		}
+		//console.printf("impact death finished");
 	}
 	
 	void TrackBulletSource()
@@ -202,7 +217,7 @@ Class DI_Projectile : DI_Actor
 		Super.Tick();
 		if (flatbullet) {pitch = (-Vel.Z / Speed) * 90;}
 		
-		if (!Level.IsFrozen()) {BulletTick();}
+		if (!IsFrozen()) {BulletTick();}
 	}
 	
 	virtual void BulletTick()
@@ -254,6 +269,14 @@ Class DI_Projectile : DI_Actor
 		{
 			if (justbounced) {justbounced = false;}
 		}
+		if (!justimpacted)
+		{
+			if (!curstate) {DoImpactDeath();}
+			//if (!curstate) {ThrowAbortException("what");}
+			//if (curstate.InStateSequence(ResolveState("Death"))) {DoImpactDeath();}
+			//else if (curstate.InStateSequence(ResolveState("Crash"))) {DoImpactDeath();}
+		}
+		else {justimpacted = false;}
 	}
 }
 
@@ -302,6 +325,7 @@ Class DI_Tracer : DI_Projectile
 			TNT1 A 1 
 			{
 				A_SpawnItemEX("DI_BulletPuff", flags: SXF_NOCHECKPOSITION);
+				//invoker.DoImpactDeath();
 				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
 			}
 			Stop;
@@ -381,7 +405,8 @@ Class DIProjectileInventory : Inventory
 	virtual double GivePiercing(DI_PlayerBase plr) {return 0.0;}
 	virtual double GiveBounceFactor(DI_PlayerBase plr) {return 0.0;}
 	virtual double GiveWallBounceFactor(DI_PlayerBase plr) {return 0.0;}
-	virtual void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim) {}
-	virtual void ImpactWall(DI_PlayerBase plr, bool bounced, Line wall) {}
-	virtual void ImpactFloor(DI_PlayerBase plr, bool bounced, readonly<SecPlane> ground) {}
+	virtual void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim) {} //called when crashing or bouncing on an actor.
+	virtual void ImpactWall(DI_PlayerBase plr, bool bounced, Line wall) {} //called when bouncing off a wall.
+	virtual void ImpactFloor(DI_PlayerBase plr, bool bounced, readonly<SecPlane> ground) {} //called when bouncing off a sector.
+	virtual void ImpactDeath(DI_PlayerBase plr) {} //called when crashing onto a wall or floor.
 }

@@ -1,0 +1,109 @@
+//zscript_DI/items/passive/explosiverounds.zsc
+
+Class DI_ExplosiveRounds : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Explosive Rounds";
+		Inventory.Icon "POW3M0";
+		Inventory.PickupMessage "Explosive Rounds acquired! (Bullets have a 10% chance to explode, dealing an extra 5 AOE DMG.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	bool exploding;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen())
+		{
+			if (random(1, 10) <= plr.countinv(self.getclassname())) {exploding = true;}
+			else {exploding = false;}
+		}
+	}
+
+	override string, int GiveProjectileItem()
+	{
+		if (!plr || !exploding) {return "", 0;}
+		return "DI_ExplosiveRounds_Item", plr.CountInv(self.GetClassName());
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 M -1;
+			Stop;
+	}
+}
+
+Class DI_ExplosiveRounds_Item : DIProjectileInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 999999;
+	}
+	
+	//projectile inventory items cant count themselves for some reason. 
+	//maybe the function is called too early in advance?
+	//regardless, we can get a more reliable number from just checking the player's inventory instead.
+	void Kaboom(DI_PlayerBase plr)
+	{
+		if (self)
+		{
+			//owner.A_Explode(5 * plr.CountInv("DI_ExplosiveRounds"), 24.0, XF_CIRCULAR | XF_CIRCULARTHRUST, fulldamagedistance: 99.0);
+			bool spawned;
+			actor boomer;
+			[spawned, boomer] = A_SpawnItemEX("DI_ExplosiveRounds_Boom", 0, flags: SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
+			if (boomer)
+			{
+				let realboom = DI_ExplosiveRounds_Boom(boomer);
+				realboom.plr = plr;
+				//realboom.damagetype = owner.damagetype;
+			}
+		}
+		else
+		{
+			ThrowAbortException("WHERE IS THE OWNER????");
+		}
+	}
+	override void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim) {Kaboom(plr);}
+	override void ImpactWall(DI_PlayerBase plr, bool bounced, Line wall) {Kaboom(plr);}
+	override void ImpactFloor(DI_PlayerBase plr, bool bounced, readonly<SecPlane> ground) {Kaboom(plr);}
+	override void ImpactDeath(DI_PlayerBase plr) 
+	{
+		console.printf("RUNNING KABOOM");
+		Kaboom(plr);
+	}
+	
+	
+	States
+	{
+		Spawn:
+			POW3 M -1;
+			Stop;
+	}
+}
+
+Class DI_ExplosiveRounds_Boom : SafeBoomSmall
+{
+	DI_PlayerBase plr;
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+			//#### # 0 A_BoxParticle("ff b5 00", 3, 12, 16, PSpeed: 8.0);
+			#### # 0
+			{
+				if (invoker.plr)
+				{
+					A_Explode(5 * invoker.plr.CountInv("DI_ExplosiveRounds"), 56.0, XF_HURTSOURCE | XF_CIRCULAR, fulldamagedistance: 56.0);
+				}
+			}
+			BOOM B 0 BRIGHT A_StartSound("boxboom2", 0, CHANF_OVERLAP, 0.5);
+			BOOM BBBBBB 0 BRIGHT A_SpawnParticle("ffeb00", SPF_FULLBRIGHT | SPF_RELVEL, 48, 8, random(0, 359), 0, 0, 0, random(0, 12), 0, random(0, 6), 0, 0, -0.33, 1.0, -1, -0.15);
+			BOOM B 0 BRIGHT A_AttachLightDef("Boomer", "BIGBOOM");
+			Goto Expander;
+	}
+}
