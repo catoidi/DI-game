@@ -44,22 +44,30 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 		Inventory.MaxAmount 999999;
 	}
 	
+	vector3 oldpos;
+	double oldradius;
+	
 	//projectile inventory items cant count themselves for some reason. 
 	//maybe the function is called too early in advance?
 	//regardless, we can get a more reliable number from just checking the player's inventory instead.
 	void Kaboom(DI_PlayerBase plr)
 	{
-		if (self)
+		if (owner)
 		{
 			//owner.A_Explode(5 * plr.CountInv("DI_ExplosiveRounds"), 24.0, XF_CIRCULAR | XF_CIRCULARTHRUST, fulldamagedistance: 99.0);
-			bool spawned;
+			//console.printf("%.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
 			actor boomer;
-			[spawned, boomer] = A_SpawnItemEX("DI_ExplosiveRounds_Boom", 0, flags: SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
+			boomer = owner.Spawn("DI_ExplosiveRounds_Boom", owner.pos, ALLOW_REPLACE);
 			if (boomer)
 			{
 				let realboom = DI_ExplosiveRounds_Boom(boomer);
 				realboom.plr = plr;
 				//realboom.damagetype = owner.damagetype;
+				console.printf(boomer.getclassname());
+			}
+			else
+			{
+				ThrowAbortException("literally how");
 			}
 		}
 		else
@@ -76,6 +84,15 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 		Kaboom(plr);
 	}
 	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (owner)
+		{
+			console.printf("%.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
+			if (owner.pos != (0.0, 0.0, 0.0)) {oldpos = owner.pos;}
+		}
+	}
 	
 	States
 	{

@@ -108,6 +108,7 @@ Class DI_Projectile : DI_Actor
 		{
 			if (items[i])
 			{
+				items[i].owner = self;
 				//console.printf("\cqFound: %s", items[i].GetClassName());
 				if (dobounce)
 				{
@@ -322,7 +323,7 @@ Class DI_Tracer : DI_Projectile
 		Crash:
 		Death.Sky:
 		Death:
-			TNT1 A 1 
+			TNT1 A 5 
 			{
 				A_SpawnItemEX("DI_BulletPuff", flags: SXF_NOCHECKPOSITION);
 				//invoker.DoImpactDeath();
@@ -330,7 +331,7 @@ Class DI_Tracer : DI_Projectile
 			}
 			Stop;
 		XDeath:
-			TNT1 A 1 
+			TNT1 A 5 
 			{
 				A_SpawnParticleEX("fff59e", TexMan.CheckForTexture("PUFFA0"), STYLE_NONE, SPF_ROLL, 10, 8 + sqrt(invoker.GetWeaponDamage()), startroll: random(0, 359));
 				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
@@ -394,10 +395,11 @@ Class DIProjectileInventory : Inventory
 			{
 				//keep list of all projectile inventory items here.
 				proj.items.Push(self);
-				self.owner = proj;
+				//self.owner = proj;
 				//console.printf("adding item to projectile");
 			}
 		}
+		Super.AttachToOwner(other);
 	}
 	
 	virtual int GiveBonusDamage(DI_PlayerBase plr) {return 0;}
