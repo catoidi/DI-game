@@ -44,9 +44,6 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 		Inventory.MaxAmount 999999;
 	}
 	
-	vector3 oldpos;
-	double oldradius;
-	
 	//projectile inventory items cant count themselves for some reason. 
 	//maybe the function is called too early in advance?
 	//regardless, we can get a more reliable number from just checking the player's inventory instead.
@@ -63,16 +60,8 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 				let realboom = DI_ExplosiveRounds_Boom(boomer);
 				realboom.plr = plr;
 				//realboom.damagetype = owner.damagetype;
-				console.printf(boomer.getclassname());
+				//console.printf(boomer.getclassname());
 			}
-			else
-			{
-				ThrowAbortException("literally how");
-			}
-		}
-		else
-		{
-			ThrowAbortException("WHERE IS THE OWNER????");
 		}
 	}
 	override void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim) {Kaboom(plr);}
@@ -80,18 +69,8 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 	override void ImpactFloor(DI_PlayerBase plr, bool bounced, readonly<SecPlane> ground) {Kaboom(plr);}
 	override void ImpactDeath(DI_PlayerBase plr) 
 	{
-		console.printf("RUNNING KABOOM");
+		//console.printf("RUNNING KABOOM");
 		Kaboom(plr);
-	}
-	
-	override void DoEffect()
-	{
-		Super.DoEffect();
-		if (owner)
-		{
-			//console.printf("%.1f, %.1f, %.1f", owner.pos.x, owner.pos.y, owner.pos.z);
-			if (owner.pos != (0.0, 0.0, 0.0)) {oldpos = owner.pos;}
-		}
 	}
 	
 	States
