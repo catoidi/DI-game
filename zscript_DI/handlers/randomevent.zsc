@@ -18,6 +18,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	bool dohyperfocusing; //Player speed is reduced while reloading.
 	bool dopayday; //Enemies drop +2 coins.
 	bool docursed; //Gives you 2 random debuffs.
+	bool doriskreward; //+50% DMG to enemies, +200% DMG to player.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -88,6 +89,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			docursed = true;
 			plr.GiveInventory("DI_Cursed", 1);
+		}
+		else if (e.Name == "dievent_riskreward")
+		{
+			doriskreward = true;
+			plr.GiveInventory("DI_RiskReward", 1);
 		}
 	}
 	
@@ -180,6 +186,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			docursed = false;
 			plr.TakeInventory("DI_Cursed", 1);
+		}
+		if (doriskreward)
+		{
+			doriskreward = false;
+			plr.TakeInventory("DI_RiskReward", 1);
 		}
 	}
 	

@@ -1,0 +1,21 @@
+//zscript_DI/items/event/riskreward.zsc
+
+Class DI_RiskReward : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0.0;}
+		return 0.5;
+	}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		newdamage *= 3.0;
+		Super.AbsorbDamage(damage, damageType, newdamage, inflictor, source, flags);
+	}
+}
