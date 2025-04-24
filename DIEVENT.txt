@@ -17,7 +17,7 @@ DI01, Event, dievent_oldmagazine, 50, 1;
 DI01, Event, dievent_hyperfocusing, 50, 1;
 DI01, Event, dievent_cursed, 50, 1;
 DI01, Event, dievent_payday, 100, 1;
-DI01, Event, dievent_riskreward, 0, 1;
+DI01, Event, dievent_riskreward, 50, 1;
 >>LEVEL TWO EVENTS:
 DI02, Event, dievent_bulletdeath, 60, 1;
 DI02, Event, dievent_iamrisen, 120, 1;
