@@ -19,6 +19,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	bool dopayday; //Enemies drop +2 coins.
 	bool docursed; //Gives you 2 random debuffs.
 	bool doriskreward; //+50% DMG to enemies, +200% DMG to player.
+	bool dospeedrun; //+30% player/weapon speed. +60% enemy speed.
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -94,6 +95,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			doriskreward = true;
 			plr.GiveInventory("DI_RiskReward", 1);
+		}
+		else if (e.Name == "dievent_speedrun")
+		{
+			dospeedrun = true;
+			plr.GiveInventory("DI_Speedrun", 1);
 		}
 	}
 	
@@ -191,6 +197,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			doriskreward = false;
 			plr.TakeInventory("DI_RiskReward", 1);
+		}
+		if (dospeedrun)
+		{
+			dospeedrun = false;
+			plr.TakeInventory("DI_Speedrun", 1);
 		}
 	}
 	

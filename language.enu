@@ -319,3 +319,5 @@ dievent_cursed = "\cgCursed!";
 dievent_cursed_desc = "\caGet 2 random debuffs. Use the Catalogue\nMenu to see what the debuffs are.";
 dievent_riskreward = "\ctRisk/Reward";
 dievent_riskreward_desc = "\cbDeal +50% DMG to enemies.\n\caEnemies deal +200% DMG to you.";
+dievent_speedrun = "\ctSpeedrun";
+dievent_speedrun_desc = "\cbIncrease Player/Weapon Speed by +30%.\n\caEnemies/Projectiles move 60% faster.";
