@@ -30,5 +30,5 @@ DI02, Event, dievent_oldmagazine, 120, 1;
 DI02, Event, dievent_hyperfocusing, 60, 1;
 DI02, Event, dievent_cursed, 60, 1;
 DI02, Event, dievent_payday, 120, 1;
-DI01, Event, dievent_riskreward, 60, 1;
-DI01, Event, dievent_speedrun, 60, 1;
+DI02, Event, dievent_riskreward, 60, 1;
+DI02, Event, dievent_speedrun, 60, 1;
