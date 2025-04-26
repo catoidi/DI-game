@@ -548,6 +548,10 @@ SHOPITEM_DI_EXPLOSIVEROUNDS = "Explosive Rounds";
 SHOPDESC_DI_EXPLOSIVEROUNDS = "10% chance for bullets to explode upon\nhitting something, dealing 5 AOE DMG.";
 SHOPDESC2_DI_EXPLOSIVEROUNDS = "AOE DMG scales solely based on item stacks, and nothing else. Item stacks also increase the chance of explosions.";
 SHOPTYPE_DI_EXPLOSIVEROUNDS = "\cd[Passive] \cl[Max: 5]";
+SHOPITEM_DI_SESAMESEEDS = "Sesame Seeds";
+SHOPDESC_DI_SESAMESEEDS = "Spawn seed projectiles while you are moving.\nSeeds deal 8 DMG on enemy contact.";
+SHOPDESC2_DI_SESAMESEEDS = "Item stacks increase the chance of seeds spawning and the damage each seed deals. Seeds will count as weapon projectiles, but cannot activate fresh weapon bonuses.";
+SHOPTYPE_DI_SESAMESEEDS = "\cd[Passive] \cl[Max: 4]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

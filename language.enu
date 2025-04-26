@@ -173,6 +173,7 @@ DIPOPUP_di_unlock_item_beachball = "Beach Ball";
 DIPOPUP_di_unlock_item_poisongun = "P.P.D.S.";
 DIPOPUP_di_unlock_item_ruinedhat = "Ruined Hat";
 DIPOPUP_di_unlock_item_explosiverounds = "Explosive Rounds";
+DIPOPUP_di_unlock_item_sesameseeds = "Sesame Seeds";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -182,6 +183,7 @@ SHOPLOCK_GLOWSTICK = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 2 \cbto 
 SHOPLOCK_SLEDGEHAMMER = "\cbReach 10k score as \cvHamill \cbon \cfLVL 2 \cbto unlock this weapon.";
 SHOPLOCK_DI_WHOPPEECUSHION = "\cbReach 10k score as \cvHamill \cbon \cfLVL 1 \cbto unlock this item.";
 SHOPLOCK_DI_BLOODMONEY = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 3 \cbto unlock this item.";
+SHOPLOCK_DI_SESAMESEEDS = "\cbReach 10k score as \cvCheeseburger \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_DI_BEACHBALL = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_DI_SPRING = "\cbReach 10k score as \cvHamill \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_PARTYSHOTTY = "\cbComplete 3 side quests in \cvLevel 2 \cbto unlock this weapon.";
