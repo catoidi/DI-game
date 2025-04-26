@@ -49,16 +49,17 @@ Class DI_ExplosiveRounds_Item : DIProjectileInventory
 	//regardless, we can get a more reliable number from just checking the player's inventory instead.
 	void Kaboom(DI_PlayerBase plr)
 	{
-		if (owner)
+		if (proj)
 		{
 			//owner.A_Explode(5 * plr.CountInv("DI_ExplosiveRounds"), 24.0, XF_CIRCULAR | XF_CIRCULARTHRUST, fulldamagedistance: 99.0);
 			//console.printf("%.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
 			actor boomer;
-			boomer = owner.Spawn("DI_ExplosiveRounds_Boom", owner.pos, ALLOW_REPLACE);
+			boomer = proj.Spawn("DI_ExplosiveRounds_Boom", proj.pos, ALLOW_REPLACE);
 			if (boomer)
 			{
 				let realboom = DI_ExplosiveRounds_Boom(boomer);
 				realboom.plr = plr;
+				realboom.di_notweapon = proj.di_notweapon;
 				//realboom.damagetype = owner.damagetype;
 				//console.printf(boomer.getclassname());
 			}
