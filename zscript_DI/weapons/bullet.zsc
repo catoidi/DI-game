@@ -11,6 +11,9 @@ Class DI_Projectile : DI_Actor
 	property DoPiercing : dopiercing;
 	property PierceAmount : pierceamount;
 	property AutoImpact : autoimpact;
+	property CanImpactFloor : canimpactfloor;
+	property CanImpactWall : canimpactwall;
+	property CanImpactActor : canimpactactor;
 	
 	DI_Weapon plrwpn;
 
@@ -18,7 +21,7 @@ Class DI_Projectile : DI_Actor
 	array<DIProjectileInventory> items;
 	
 	int initdamage, justpierced;
-	bool justbounced, justimpacted, impactdeathdone, autoimpact;
+	bool justbounced, justimpacted, impactdeathdone, autoimpact, canimpactfloor, canimpactwall, canimpactactor;
 	
 	Default
 	{
@@ -32,6 +35,9 @@ Class DI_Projectile : DI_Actor
 		DI_Projectile.DoPiercing true; //disable this to allow original bRIPPER behavior.
 		DI_Projectile.PierceAmount 1.0; //determines how many enemies the bullet can pierce through. values lower than 1.0 will reduce the bullet's damage.
 		DI_Projectile.AutoImpact true; //spawns impact effects from passive projectile items upon crashing into a wall/floor without bouncing. disable this and run DoImpactDeath() manually if your projectile contains a Crash animation, or you are running into issues with impact functions running twice or not at all.
+		DI_Projectile.CanImpactFloor true; //allows DoImpactFloor to run.
+		DI_Projectile.CanImpactWall true; //allows DoImpactWall to run.
+		DI_Projectile.CanImpactActor true; //allows DoImpactActor to run.
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FORCEXYBILLBOARD;
@@ -80,20 +86,20 @@ Class DI_Projectile : DI_Actor
 		{
 			if (bounceMobj) 
 			{
-				DoImpactActor(bBOUNCEONACTORS, bounceMobj);
+				if (canimpactactor)	{DoImpactActor(bBOUNCEONACTORS, bounceMobj);}
 				if (BounceFactor == 0.0) {returnvalue = 0;}
 				justbounced = true;
 			}
 			if (bounceLine) 
 			{
 				impacted.Clear();
-				DoImpactWall(bBOUNCEONWALLS, bounceLine);
+				if (canimpactwall) {DoImpactWall(bBOUNCEONWALLS, bounceLine);}
 				if (WallBounceFactor == 0.0) {returnvalue = 0;}
 				//justbounced = true;
 			}
 			if (bouncePlane) 
 			{
-				DoImpactFloor((bBOUNCEONFLOORS || bBOUNCEONCEILINGS), bouncePlane);
+				if (canimpactfloor) {DoImpactFloor((bBOUNCEONFLOORS || bBOUNCEONCEILINGS), bouncePlane);}
 				if (BounceFactor == 0.0) {returnvalue = 0;}
 				//justbounced = true;
 			}
@@ -230,7 +236,7 @@ Class DI_Projectile : DI_Actor
 			if (justpierced > 0) 
 			{
 				//impactactor pierce check
-				if (!justbounced) //dont run if we already bounced this tic.
+				if (!justbounced && canimpactactor) //dont run if we already bounced this tic.
 				{
 					for (int i = justpierced - 1; i < impacted.Size(); ++i)
 					{
@@ -394,11 +400,13 @@ Class DI_Tracer_Side : DI_Actor
 
 Class DIProjectileInventory : Inventory
 {
+	DI_Projectile proj;
+	
 	override void AttachToOwner(Actor other)
 	{
 		if (other is "DI_Projectile")
 		{
-			let proj = DI_Projectile(other);
+			proj = DI_Projectile(other);
 			if (proj.items.Find(self) == proj.items.Size())
 			{
 				//keep list of all projectile inventory items here.
