@@ -174,7 +174,7 @@ DIPOPUP_di_unlock_item_poisongun = "P.P.D.S.";
 DIPOPUP_di_unlock_item_ruinedhat = "Ruined Hat";
 DIPOPUP_di_unlock_item_explosiverounds = "Explosive Rounds";
 DIPOPUP_di_unlock_item_sesameseeds = "Sesame Seeds";
-DIPOPUP_di_unlock_item_speeddemon = "Speed Demon";
+DIPOPUP_di_unlock_item_speeddemon = "Speed Fiend";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";

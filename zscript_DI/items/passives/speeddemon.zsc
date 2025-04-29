@@ -4,9 +4,9 @@ Class DI_SpeedDemon : DIPassiveInventory
 {
 	Default
 	{
-		Tag "Speed Demon";
+		Tag "Speed Fiend";
 		Inventory.Icon "POW3N0";
-		Inventory.PickupMessage "Speed Demon acquired! (+15% Player Speed, gain DMG% the faster you move, take +35% more DMG from enemies.)";
+		Inventory.PickupMessage "Speed Fiend acquired! (+15% Player Speed, gain DMG% the faster you move, take +35% more DMG from enemies.)";
 		Inventory.MaxAmount 4;
 	}
 	
