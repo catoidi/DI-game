@@ -1,0 +1,58 @@
+//zscript_DI/items/passives/speeddemon.zsc
+
+Class DI_SpeedDemon : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Speed Demon";
+		Inventory.Icon "POW3N0";
+		Inventory.PickupMessage "Speed Demon acquired! (+15% Player Speed, gain DMG% the faster you move, take +35% more DMG from enemies.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	double totalvel;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen())
+		{
+			vector3 curvel = plr.vel;
+			if (curvel.x < 0.0) {curvel.x *= -1;}
+			if (curvel.y < 0.0) {curvel.y *= -1;}
+			if (curvel.z < 0.0) {curvel.z *= -1;}
+			totalvel = 0.0075 * plr.countinv(self.getclassname()) * (curvel.x + curvel.y + curvel.z);
+			//too stupid to calculate this the right way right now.
+			//console.printf("%.3f", totalvel);
+		}
+	}
+	
+	override double GivePlayerSpeed()
+	{
+		if (!plr) {return 0.0;}
+		else {return 0.15 * plr.countinv(self.getclassname());}
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 0.0;}
+		else {return totalvel;}
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (plr && passive)
+		{
+			newdamage *= 1.0 + (0.35 * plr.countinv(self.getclassname()));
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 N -1;
+			Loop;
+	}
+}

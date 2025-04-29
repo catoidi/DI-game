@@ -92,3 +92,4 @@ PoisonGun;
 DI_RuinedHat;
 DI_ExplosiveRounds;
 DI_SesameSeeds;
+DI_SpeedDemon;
