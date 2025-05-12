@@ -74,6 +74,7 @@ Class DI_Melon : Inventory
 Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 {
 	int hptick;
+	int partick;
 
 	Default
 	{
@@ -88,6 +89,13 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 		
 		if (owner && (owner.isFrozen() == false))
 		{
+			++partick;
+			if (partick >= 5)
+			{
+				owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);
+				partick = 0;
+			}	
+		
 			++hptick;
 			if (hptick >= 35)
 			{
