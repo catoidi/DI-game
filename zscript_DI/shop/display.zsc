@@ -149,7 +149,7 @@ Class DIShop_Number : DIShop_Display
 			
 				if (digitnum > 0)
 				{
-					numbersprite = string.format("_L%d%d", pricelength, digitnum);
+					numbersprite = string.format("_I%d%d", pricelength, digitnum);
 					if (curshop.dosale) {A_SetTranslation("DamGreen");}
 					else if ((curshop.curround > curshop.lastpurchased + 1) && (curshop.currentprice > 0)) {A_SetTranslation("DamYellow");}
 					else if ((curshop.curround > curshop.lastpurchased) && (curshop.currentprice > 0)) {A_SetTranslation("DamOrange");}

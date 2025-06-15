@@ -245,8 +245,8 @@ class DI_HUD : BaseStatusBar
 		
 		let hpfont = Font.CR_WHITE;
 		if (cplayer.health > diplayer.DIMaxHealth()) {hpfont = Font.CR_BRICK;}
-		string drawhealth = FormatNumber(cplayer.health, 0);
-		if (detailnum.GetBool()) {drawhealth.AppendFormat("\cu/\cb%d", diplayer.DIMaxHealth());}
+		string drawhealth = string.format("%.1f", 0.1 * cplayer.health);
+		if (detailnum.GetBool()) {drawhealth.AppendFormat("\cu/\cb%.1f", 0.1 * diplayer.DIMaxHealth());}
 		DrawString(SmallFont, drawhealth, GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, hpfont);
 		let regfont = Font.CR_GREEN;
 		if (regenamount > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}

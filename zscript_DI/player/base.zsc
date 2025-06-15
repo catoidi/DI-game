@@ -5,10 +5,11 @@ Class DI_PlayerBase : PlayerPawn abstract
 	Default
 	{
 		Speed 0.7;
-		Health 100;
+		Health 1000;
+		Player.MaxHealth 1000;
 		Radius 16;
 		Height 56;
-		Mass 100;
+		Mass 1000;
 		PainChance 255;
 		SelfDamageFactor 0.25;
 		Player.ViewBob 0.4;

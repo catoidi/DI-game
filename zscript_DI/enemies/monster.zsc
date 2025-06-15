@@ -39,9 +39,9 @@ Class DI_Monster : DI_Actor abstract
 	//Called by all of DI's enemies.
 	Default
 	{
-		Mass 100;
+		Mass 1000;
 		PainChance 256;
-		GibHealth 100; //player must do ludicrous extra damage in order to get blood coins.
+		GibHealth 1000; //player must do ludicrous extra damage in order to get blood coins.
 		PainChance "Heart", 256;
 		Monster;
 		DamageFactor "Enemy", 0;
@@ -239,7 +239,7 @@ Class DI_Monster : DI_Actor abstract
 			//launch enemy vertically upon taking damage
 			if (bNOGRAVITY == false)
 			{
-				float thrustnum = 1 + (((damage * 25) / default.health) / (0.01 * mass));
+				float thrustnum = 1 + (((damage * 25) / default.health) / (0.001 * mass));
 				ThrustThingZ(0, thrustnum, 0, 1);
 			}
 			

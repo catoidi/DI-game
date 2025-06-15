@@ -4,8 +4,8 @@ class DI_PlayerHam : DI_PlayerBase
 	{
 		Speed 0.5; //the slowest speed in the game.
 		Height 58;
-		Health 160;
-		Player.MaxHealth 160;
+		Health 1600;
+		Player.MaxHealth 1600;
 		Player.DisplayName "Hamill";
 		Player.Portrait "graphics/info_hammer.png";
 		Player.ViewHeight 41;

@@ -5,7 +5,7 @@ CLASS StarPistol : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 2;
-		DI_Weapon.BaseDamage 9;
+		DI_Weapon.BaseDamage 90;
 		DI_Weapon.Recoil 1.5;
 		DI_Weapon.RecoilRecover 1.25;
 		DI_Weapon.BaseAccuracy 3;
@@ -31,7 +31,7 @@ CLASS StarPistol : DI_Weapon
 		{
 			int coindmg = plr.combonum + plr.combonum_bonus;
 			if (plr.CanFreshKill()) {coindmg += wpn_freshbonus;}
-			return (wpn_damage + (2 * coindmg)) * basescale;
+			return (wpn_damage + (20 * coindmg)) * basescale;
 		}
 		else return Super.CheckBaseDamage(basescale);
 	}

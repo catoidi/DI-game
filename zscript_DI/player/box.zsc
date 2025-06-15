@@ -7,8 +7,8 @@ class DI_PlayerBox : DI_PlayerBase
 	Default
 	{
 		Height 56;
-		Health 60;
-		Player.MaxHealth 60;
+		Health 600;
+		Player.MaxHealth 600;
 		Player.DisplayName "Box Partyer";
 		Player.Portrait "graphics/info_boxpartyer.png";
 		Player.StartItem "Glowstick";

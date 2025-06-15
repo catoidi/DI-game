@@ -64,7 +64,7 @@ class DamNum : Actor
 	{
 		// Figure out what digit we are.
 		DamNum this = DamNum(self);
-		int digitCount = (this.digitCount == 0) ? 1 : this.digitCount;
+		int digitCount = (this.digitCount == 1) ? 0 : this.digitCount;
 		int digitPlace = (this.digitPlace == 0) ? 1 : this.digitPlace;
 		string fontPrefix = (this.fontPrefix == "") ? "ND" : this.fontPrefix;
 

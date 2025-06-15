@@ -5,10 +5,10 @@ Class Ron : DI_Monster
 	Default
 	{
 		Speed 5;
-		Health 50;
+		Health 500;
 		Radius 16;
 		Height 60;
-		Mass 160;
+		Mass 1600;
 		//Species "Ron";
 		BloodColor "Blue";
 		DamageFactor "Poison", 1.2;
@@ -56,9 +56,9 @@ Class Ron2 : Ron
 
 	Default
 	{
-		Mass 80;
+		Mass 800;
 		Speed 10;
-		Health 150;
+		Health 1500;
 		Scale 1.25;
 		Radius 20;
 		Height 75;
@@ -109,7 +109,7 @@ Class Ron2_Bullet : Ron_Bullet
 {
 	Default
 	{
-		DamageFunction (12);
+		DamageFunction (120);
 		Radius 15;
 		Height 30;
 		Scale 1.5;

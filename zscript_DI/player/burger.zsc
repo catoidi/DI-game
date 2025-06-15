@@ -6,9 +6,9 @@ class DI_PlayerBurger : DI_PlayerBase
 	{
 		Speed 0.65;
 		Height 48;
-		Health 60;
+		Health 600;
 		Scale 1.5;
-		Player.MaxHealth 120;
+		Player.MaxHealth 1200;
 		Player.DisplayName "Cheeseburger";
 		Player.Portrait "graphics/info_burger.png";
 		Player.StartItem "CheeseGun";
