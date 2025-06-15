@@ -93,7 +93,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.Projectiles 1;
 		DI_Weapon.BulletSize 1.0;
 		DI_Weapon.ComboDrain 1.0;
-		DI_Weapon.RegenSpeed 35.0;
+		DI_Weapon.RegenSpeed 3.5;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.NoProjectiles false;

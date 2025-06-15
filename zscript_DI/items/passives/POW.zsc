@@ -48,7 +48,7 @@ Class DI_POW : DIPassiveInventory
 	{
 		if (!plr) {return 0;}
 		if (!prevpow) {return 0;} //projectile spawning has a 1 tic delay.
-		return 3 * plr.CountInv(self.GetClassName());
+		return 30 * plr.CountInv(self.GetClassName());
 	}
 	
 	

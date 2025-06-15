@@ -161,7 +161,7 @@ Class DI_Toast : Inventory
 
 	override bool Use(bool pickup)
 	{
-		if (owner) {owner.GiveInventory("DI_Regen", 4);}
+		if (owner) {owner.GiveInventory("DI_Regen", 40);}
 		return true;
 	}
 	

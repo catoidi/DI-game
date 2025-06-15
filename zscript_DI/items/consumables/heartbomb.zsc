@@ -38,7 +38,7 @@ Class DI_HeartBomb_Projectile : DI_ThrowBomb_Projectile
 			TNT1 F 1 
 			{
 				A_SpawnItemEX("SafeBoom", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
-				int heartnum = A_Explode(10, 192, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 96, damagetype: "Heart");
+				int heartnum = A_Explode(100, 192, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 96, damagetype: "Heart");
 				heartnum *= 3;
 				for (int i = 0; i < (heartnum * 2); ++i)
 				{

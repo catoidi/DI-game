@@ -31,7 +31,7 @@ Class DI_LastStand : DIPassiveInventory
 					float regennum = 0.1 + (0.15 * plr.CountInv("DI_LastStand"));
 					if (plr.Health < ((plr.GetMaxHealth(true) - plr.CountInv("DI_Degen")) * regennum))
 					{
-						plr.A_GiveInventory("DI_Regen", 1);
+						plr.A_GiveInventory("DI_Regen", 10);
 					}
 				}
 			}

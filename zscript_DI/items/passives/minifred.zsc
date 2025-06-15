@@ -77,7 +77,7 @@ Class DI_MiniFred_Actor : DI_Actor
 	Default
 	{
 		Speed 3;
-		Health 15;
+		Health 150;
 		Radius 9;
 		Height 20;
 		Scale 0.5;
@@ -152,7 +152,7 @@ Class DI_MiniFred_Actor : DI_Actor
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(3, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(30, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash_Mini", 6, 0, 9);
 				A_DIScale(0.1, -0.1);
 			}
@@ -206,7 +206,7 @@ Class DI_MiniFred_Actor2 : DI_MiniFred_Actor
 	Default
 	{
 		Speed 9;
-		Health 40;
+		Health 400;
 		Tag "Mini Fiendish Fred";
 	}
 
@@ -224,7 +224,7 @@ Class DI_MiniFred_Actor2 : DI_MiniFred_Actor
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(6, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(60, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash_Mini", 6, 0, 11);
 				A_DIScale(0.05, -0.05);
 			}
@@ -232,7 +232,7 @@ Class DI_MiniFred_Actor2 : DI_MiniFred_Actor
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(6, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(60, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash2_Mini", 6, 0, 11);
 				A_DIScale(0.05, -0.05);
 			}

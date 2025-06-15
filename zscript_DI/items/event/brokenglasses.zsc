@@ -30,6 +30,6 @@ Class DI_BrokenGlasses : DIPassiveInventory
 
 	override double GiveAccuracy()
 	{
-		return 0.04 * itemtimer * plr.CountInv(self.GetClassName());
+		return 0.02 * itemtimer * plr.CountInv(self.GetClassName());
 	}
 }

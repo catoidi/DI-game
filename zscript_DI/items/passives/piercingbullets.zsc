@@ -19,7 +19,7 @@ Class DI_PiercingBullets : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return -plr.countinv(self.getclassname());
+		return -plr.countinv(self.getclassname()) * 10;
 	}
 	
 	States

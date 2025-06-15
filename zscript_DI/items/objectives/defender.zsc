@@ -66,7 +66,7 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 	Default
 	{
 		Speed 3;
-		Health 20;
+		Health 200;
 		Radius 9;
 		Height 20;
 		Scale 0.5;
@@ -106,7 +106,7 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 		
 		if (!tracker) {trackfail = true;}
 		
-		int newhp = 50 * ACS_ScriptCall("DICheckWave");
+		int newhp = 500 * ACS_ScriptCall("DICheckWave");
 		health = newhp;
 		starthealth = newhp;
 	}
@@ -130,7 +130,7 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 			
 				if ((health < starthealth) && (health > 0))
 				{
-					GiveBody(1, starthealth);
+					GiveBody(10, starthealth);
 				}
 				
 				teletime = 0;

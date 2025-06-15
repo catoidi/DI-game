@@ -56,7 +56,7 @@ Class DI_CarbonatedDrink_Pickup : Inventory
 
 	override bool Use(bool pickup)
 	{
-		if (owner) {owner.GiveInventory("DI_Regen", 3);}
+		if (owner) {owner.GiveInventory("DI_Regen", 30);}
 		return true;
 	}
 

@@ -17,7 +17,7 @@ Class DI_PeerPressure : DIPassiveInventory
 			DI_PlayerBase plr = DI_PlayerBase(owner);
 			int anumber = plr.CountInv("DI_PeerPressure");
 			plr.A_DIHearted(anumber, 1.0);
-			plr.A_Explode(1, 32 * anumber, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 32 * anumber, damagetype: "Heart");
+			plr.A_Explode(10, 32 * anumber, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 32 * anumber, damagetype: "Heart");
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}

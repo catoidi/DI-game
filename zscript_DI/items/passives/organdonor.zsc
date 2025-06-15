@@ -54,7 +54,7 @@ Class DI_OrganDonor_Pickup : Inventory
 
 	override bool Use(bool pickup)
 	{
-		if (owner) {owner.GiveInventory("DI_Regen", owner.CountInv(self.GetClassName()));}
+		if (owner) {owner.GiveInventory("DI_Regen", 10 * owner.CountInv(self.GetClassName()));}
 		return true;
 	}
 

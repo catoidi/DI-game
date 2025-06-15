@@ -29,7 +29,7 @@ Class DI_BottomlessClip : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		else {return -2 * plr.CountInv(self.GetClassName());}
+		else {return -20 * plr.CountInv(self.GetClassName());}
 	}
 	
 	override int GiveAmmoUse1()

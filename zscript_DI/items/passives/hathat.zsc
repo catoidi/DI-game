@@ -17,7 +17,7 @@ Class DI_HatHat : DIPassiveInventory
 		int blocknum = 1;
 		if ((newdamage >= 1) && (owner) && (passive == true))
 		{
-			blocknum = owner.CountInv("DI_HatHat");
+			blocknum = owner.CountInv("DI_HatHat") * 10;
 			if (newdamage > blocknum) {newdamage -= blocknum;}
 			else {newdamage = 1;}
 		}

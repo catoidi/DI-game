@@ -13,7 +13,7 @@ Class DI_KnifeBullets : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return plr.countinv(GetClassName()) * 2;
+		return plr.countinv(GetClassName()) * 20;
 	}
 
 	override double GiveFirerate()

@@ -217,7 +217,7 @@ Class GlowstickHealthDrop : Inventory
 		if (toucher is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(toucher);
-			plr.DI_HealSelf(3);
+			plr.DI_HealSelf(30);
 		
 			Super.DoPickupSpecial(toucher);
 		}

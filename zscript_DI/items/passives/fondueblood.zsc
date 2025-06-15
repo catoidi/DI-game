@@ -83,7 +83,7 @@ Class DI_FondueBlood_Bullet : CheeseGunBullet
 		Super.PostBeginPlay();
 		
 		damagetype = "Fire";
-		damnum = 10;
+		damnum = 100;
 		di_notweapon = true;
 	}
 	

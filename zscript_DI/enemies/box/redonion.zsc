@@ -4,7 +4,7 @@ Class RedOnion : OnionTurret
 {
 	Default
 	{
-		Health 48;
+		Health 480;
 		Radius 16;
 		Height 32;
 		BloodType "RedOnionBlood";

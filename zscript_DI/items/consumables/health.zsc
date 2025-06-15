@@ -18,7 +18,7 @@ Class DI_Pizza : Inventory
 		if (owner is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(owner);
-			plr.DI_HealSelf(20);
+			plr.DI_HealSelf(200);
 			DIUsed(); 
 			Super.Use(pickup); 
 			return true;
@@ -51,7 +51,7 @@ Class DI_JuiceBox : Inventory
 	{
 		if (owner)
 		{
-			owner.A_GiveInventory("DI_Regen", 30);
+			owner.A_GiveInventory("DI_Regen", 300);
 			return DIUsed();
 		}
 		else {return false;}

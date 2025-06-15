@@ -73,8 +73,8 @@ Class DI_SesameSeeds_Drop : DI_Projectile
 	override int GetWeaponDamage()
 	{
 		GetDIPlayer();
-		if (plr) {return plr.countinv("DI_SesameSeeds") * 8;}
-		else {return 8;}
+		if (plr) {return plr.countinv("DI_SesameSeeds") * 80;}
+		else {return 80;}
 	}
 	
 	override bool CanCollideWith(Actor other, bool passive)

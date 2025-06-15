@@ -15,7 +15,7 @@ Class DI_Bullet : DI_Actor abstract
 		Radius 10;
 		Height 20;
 		Speed 8;
-		DamageFunction (4);
+		DamageFunction (40);
 		DamageType "Enemy";
 		Projectile;
 		DI_Bullet.Trail "RONNE0";

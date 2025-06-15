@@ -13,7 +13,7 @@ Class DI_Gunslinger : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return plr.weaponnum * plr.CountInv(GetClassName());
+		return 10 * plr.weaponnum * plr.CountInv(GetClassName());
 	}
 	
 	States

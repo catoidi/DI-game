@@ -57,17 +57,17 @@ Class DI_BeachBall_Actor : DI_Actor
 {
 	Default
 	{
-		Health 9999;
+		Health 99999;
 		Height 32;
 		Radius 16;
-		Mass 1000;
+		Mass 10000;
 		PainChance 256;
 		Gravity 0.2;
 		BounceType "Hexen";
 		BounceFactor 0.75;
 		WallBounceFactor 0.9;
 		PushFactor 0.85;
-		DamageFunction (100);
+		DamageFunction (1000);
 		DamageType "Melee";
 		BloodType "ProjectileSmoke";
 		DI_Actor.IgnoreWeapon true;

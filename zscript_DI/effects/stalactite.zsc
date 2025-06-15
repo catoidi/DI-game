@@ -53,7 +53,7 @@ Class DI_Stalactite_Projectile : DI_Actor
 		Height 48;
 		Radius 16;
 		Speed 0;
-		DamageFunction (250);
+		DamageFunction (2500);
 		Projectile;
 		-NOGRAVITY;
 		+BLOODSPLATTER;

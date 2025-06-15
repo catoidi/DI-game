@@ -172,7 +172,7 @@ extend class DIHandler
 				int consumer = itemplr.CountInv("DI_Consumer");
 				if (consumer > 0) 
 				{
-					itemplr.GiveInventory("DI_Regen", 3 * consumer);
+					itemplr.GiveInventory("DI_Regen", 30 * consumer);
 					itemplr.GiveInventory("DI_Consumer_Powerup", 3 * consumer);
 				}
 				

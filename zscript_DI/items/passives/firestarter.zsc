@@ -44,7 +44,7 @@ Class DI_Firestarter_Enemy : Inventory
 			let firechance = 3 + (firenum * 3);
 			if ((random(1, 20) <= firechance) || (owner.CheckRange(192) == false))
 			{
-				let firedmg = 4 + (firenum * 4);
+				let firedmg = 40 + (firenum * 40);
 				if (firedmg >= owner.Health) {firedmg = owner.Health - 1;}
 				owner.A_DamageSelf(firedmg, "Fire");
 			}

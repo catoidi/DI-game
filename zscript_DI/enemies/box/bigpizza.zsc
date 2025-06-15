@@ -5,10 +5,10 @@ Class Pizzaulter : DI_Monster
 	Default
 	{
 		Speed 6;
-		Health 80;
+		Health 800;
 		Radius 24;
 		Height 40;
-		Mass 400;
+		Mass 4000;
 		DamageFactor "Melee", 1.5;
 		DamageFactor "Poison", 1.25;
 		DamageFactor "FakePoison", 1.25;
@@ -82,7 +82,7 @@ Class PepperoniBullet : DI_Bullet
 		Radius 3;
 		Height 6;
 		Speed 12;
-		DamageFunction (3);
+		DamageFunction (30);
 		DI_Bullet.Trail "PIZZC0";
 		DI_Bullet.TrailSize 6.0;
 		DI_Bullet.FancyLight "";

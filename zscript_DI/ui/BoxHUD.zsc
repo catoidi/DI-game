@@ -65,8 +65,8 @@ class DI_HUD : BaseStatusBar
 		//set max air capacity
 		MaxOxygen = AirAmount * 35;
 		
-		BoxHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
-		BoxArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
+		BoxHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 80);
+		BoxArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 500);
 		BoxAmmoInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
 		BoxAmmo2Interpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
 		BoxScoreInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 9999999);
@@ -117,11 +117,11 @@ class DI_HUD : BaseStatusBar
 			if (!OffsetHealth > 0) {OffsetHealth = cplayer.health;} //offsethealth should never reach 0 after start
 			else if (OffsetHealth > cplayer.health) //health lowered, start shaking
 			{
-				if (OffsetHealth > 200 + cplayer.health) {OffsetHealth = 200 + cplayer.health;}
-				OffsetAmount = (((OffsetHealth - cplayer.health) * (shakecvar.GetInt())) / 20); //shakes 1 pixel per 10 damage
+				if (OffsetHealth > 2000 + cplayer.health) {OffsetHealth = 2000 + cplayer.health;}
+				OffsetAmount = (((OffsetHealth - cplayer.health) * (shakecvar.GetInt())) / 200); //shakes 1 pixel per 10 damage
 				if (OffsetAmount > 9) {OffsetAmount = 9;} //cap shake amount
 				ShakeOffset = (randompick[boxhud](-OffsetAmount, OffsetAmount), randompick[boxhud](-OffsetAmount, OffsetAmount));
-				OffsetHealth += -1;
+				OffsetHealth -= 10;
 			}
 			else //health raised/stagnated, stop shaking
 			{
@@ -252,7 +252,7 @@ class DI_HUD : BaseStatusBar
 		if (regenamount > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
 		if (GetAmount("DI_Regen") > 0)
 		{
-			DrawString(SmallFont, FormatNumber(GetAmount("DI_Regen"), 0), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);
+			DrawString(SmallFont, string.format("+%.1f", 0.1 * GetAmount("DI_Regen")), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);
 		}
 		
 		//DrawTexture(GetMugShot(5), GlobalOffset + (-36, -36), DI_ITEM_OFFSETS);
@@ -268,8 +268,8 @@ class DI_HUD : BaseStatusBar
 				DrawBar("graphics/boxhud/HUDBARK.png", "graphics/boxhud/HUDBARH.png", BoxArmorInterpolator.GetValue() - ArmorMax, ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 			}
 			
-			string drawarmor = FormatNumber(GetArmorAmount(), 0);
-			if (detailnum.GetBool()) {drawarmor.AppendFormat("\cu/\cb%d", ArmorMax);}
+			string drawarmor = string.format("%.1f", 0.1 * GetArmorAmount());
+			if (detailnum.GetBool()) {drawarmor.AppendFormat("\cu/\cb%.1f", 0.1 * ArmorMax);}
 			DrawString(SmallFont, drawarmor, GlobalOffset + (-48, -49), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
 			
 			DrawInventoryIcon(curarmor, GlobalOffset + (-24, -36), DI_ITEM_OFFSETS);

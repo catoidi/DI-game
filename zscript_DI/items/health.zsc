@@ -20,7 +20,7 @@ Class DI_FullHeal : Inventory
 			if (owner is "DI_PlayerBase")
 			{
 				let plr = DI_PlayerBase(owner);
-				plr.DI_HealSelf(100);
+				plr.DI_HealSelf(1000);
 				eventhandler.sendnetworkevent("di_burgerunlock");
 				return true;
 			}
@@ -56,7 +56,7 @@ Class DI_Melon : Inventory
 			if (owner is "DI_PlayerBase")
 			{
 				let plr = DI_PlayerBase(owner);
-				plr.DI_HealSelf(60, 2.0);
+				plr.DI_HealSelf(600, 2.0);
 				return true;
 			}
 		}
@@ -74,7 +74,6 @@ Class DI_Melon : Inventory
 Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 {
 	double hptick;
-	int partick;
 	
 	DI_PlayerBase plr;
 	DI_Weapon wpn;
@@ -82,7 +81,7 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 	Default
 	{
 		Health 1;
-		Inventory.MaxAmount 999;
+		Inventory.MaxAmount 9999999;
 		-INVENTORY.INVBAR;
 	}
 
@@ -97,21 +96,16 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 				plr = DI_PlayerBase(owner);
 				wpn = DI_Weapon(plr.player.ReadyWeapon);
 			}
-			double hptick_max = (plr && wpn) ? wpn.plr_regen : 35.0;
+			double hptick_max = (plr && wpn) ? wpn.plr_regen : 3.5;
 			if (hptick_max < 0.01) {hptick_max = 0.01;}
-			
-			++partick;
-			if (partick >= 5)
-			{
-				owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);
-				partick = 0;
-			}	
 		
 			++hptick;
 			while (hptick >= hptick_max)
 			{
 				if (CallACS("DICheckWaveProgress") == true)
 				{
+					owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);
+					
 					int maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
 					if (owner.health < maxhp) {Use(false);}
 					int takeamount = 1;
@@ -130,7 +124,7 @@ Class DI_Degen : Inventory
 	
 	Default
 	{
-		Inventory.MaxAmount 999;
+		Inventory.MaxAmount 9999999;
 		-INVENTORY.INVBAR;
 	}
 	

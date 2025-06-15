@@ -36,7 +36,7 @@ Class DI_Banana_Projectile : DI_ThrowBomb_Projectile
 	
 	Default
 	{
-		DamageFunction (30);
+		DamageFunction (300);
 		BounceFactor 0.3;
 		-BRIGHT;
 		+BOUNCEONWALLS;

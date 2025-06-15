@@ -253,7 +253,7 @@ Class DISpawner_FX : DI_Actor
 	virtual void DoSpawn()
 	{
 		A_StartSound("plateB");
-		A_Explode(25, 32, XF_NOTMISSILE | XF_EXPLICITDAMAGETYPE, damagetype: "Enemy");
+		A_Explode(250, 32, XF_NOTMISSILE | XF_EXPLICITDAMAGETYPE, damagetype: "Enemy");
 		Spawner.TimeToSpawn();
 	}
 

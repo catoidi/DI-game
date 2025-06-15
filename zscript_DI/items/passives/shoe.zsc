@@ -68,8 +68,8 @@ Class DI_Shoe_Throw : DI_Projectile
 
 	override int GetWeaponDamage()
 	{
-		if (plr) {return 20 + (plr.CountInv("DI_Shoe") * 5) + (plr.CountInv("DI_LavaBoot") * 15);}
-		else return 25;
+		if (plr) {return 200 + (plr.CountInv("DI_Shoe") * 50) + (plr.CountInv("DI_LavaBoot") * 150);}
+		else return 250;
 	}
 	
 	action void ShoeParticle()

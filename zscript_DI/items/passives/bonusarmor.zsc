@@ -31,8 +31,8 @@ Class DI_BonusArmorPickup : BasicArmorBonus
 		Inventory.PickupMessage "+2 Armor";
 		Inventory.Icon "ARMOE0";
 		Armor.SavePercent 25;
-		Armor.MaxSaveAmount 300;
-		Armor.SaveAmount 2;
+		Armor.MaxSaveAmount 3000;
+		Armor.SaveAmount 20;
 		+BRIGHT;
 		+FLOATBOB;
 	}

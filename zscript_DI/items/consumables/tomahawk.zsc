@@ -27,7 +27,7 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 
 	Default
 	{
-		DamageFunction (512);
+		DamageFunction (5120);
 		+NOGRAVITY;
 		+BLOODSPLATTER;
 		//+EXTREMEDEATH;

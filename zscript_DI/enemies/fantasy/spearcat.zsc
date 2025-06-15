@@ -5,10 +5,10 @@ Class DI_SpearCat : DI_Monster
 	Default
 	{
 		Speed 17;
-		Health 108;
+		Health 1080;
 		Radius 18;
 		Height 60;
-		Mass 500;
+		Mass 5000;
 		Tag "Spear Cat";
 		DI_Monster.DIDrop "DI_Money";
 		MeleeRange 88;
@@ -30,7 +30,7 @@ Class DI_SpearCat : DI_Monster
 			#### D 0 A_Recoil(-10);
 			#### D 0 
 			{
-				A_CustomMeleeAttack(12, "melee", "whiff", "Melee", false);
+				A_CustomMeleeAttack(120, "melee", "whiff", "Melee", false);
 				for (int i = 0; i < 3; ++i)
 				{
 					int offsetx = 23 * (i + 1);

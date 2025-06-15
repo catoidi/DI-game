@@ -71,7 +71,7 @@ Class DI_Nugget_Powerup : DIPowerup
 			int newkills = Level.Killed_Monsters - prevmon;
 			if (newkills > 0)
 			{
-				plr.DI_HealSelf(newkills * 2, 2.0);
+				plr.DI_HealSelf(newkills * 20, 2.0);
 				prevmon = Level.Killed_Monsters;
 			}
 		}

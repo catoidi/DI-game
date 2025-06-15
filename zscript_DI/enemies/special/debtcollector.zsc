@@ -13,11 +13,11 @@ Class DI_DebtCollector : DI_Monster
 	
 	Default
 	{
-		Health 666;
+		Health 6666;
 		Radius 24;
 		Height 48;
 		Speed 5;
-		Mass 1000;
+		Mass 10000;
 		BloodColor "Black";
 		DamageFactor 0.17;
 		RadiusDamageFactor 0.4;
@@ -46,7 +46,7 @@ Class DI_DebtCollector : DI_Monster
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(666, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(6666, "melee", "whiff", "Melee", true);
 				//A_SpawnItemEX("Fred_Slash", 6, 0, 18);
 				A_DIScale(0.1, -0.1);
 			}

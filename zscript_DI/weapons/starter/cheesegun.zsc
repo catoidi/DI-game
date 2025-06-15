@@ -161,7 +161,7 @@ CLASS CheeseGunBullet : DI_Projectile
 		else if (target is "DI_CheeseArtifact_Cloud")
 		{
 			damagetype = "Fire";
-			damnum = 16;
+			damnum = 160;
 			di_notweapon = true;
 		}
 	}

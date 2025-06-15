@@ -138,7 +138,7 @@ Class DI_CheeseArtifact_Cloud : DI_Actor
 		
 			vector3 newpos = invoker.target.Pos;
 			
-			double between = (invoker.Pos.Z - (invoker.target.Pos.Z + invoker.target.Height + 8)) / 2;
+			double between = (invoker.Pos.Z - (invoker.target.Pos.Z + invoker.target.Height + 16)) / 2;
 			
 			newpos.Z = invoker.Pos.Z - between;
 			

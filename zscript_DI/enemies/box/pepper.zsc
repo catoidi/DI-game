@@ -7,8 +7,8 @@ Class Pepper : DI_Monster
         Speed 8;
         Radius 32;
         Height 64;
-        Health 80;
-        Mass 250;
+        Health 800;
+        Mass 2500;
 		DamageFactor "Ice", 1.5;
 		DamageFactor "FakeIce", 1.5;
 		DamageFactor "Fire", 0.75;
@@ -78,7 +78,7 @@ Class PepperBullet : DI_Bullet
 		Radius 12;
 		Height 24;
 		Speed 12;
-		DamageFunction (10);
+		DamageFunction (100);
 		DI_Bullet.Trail "PEPRP0";
 		DI_Bullet.FancyLight "GLOWYELLOW";
 	}
@@ -90,7 +90,7 @@ Class PepperBullet : DI_Bullet
 			Loop;
 		Death:
 			#### # 0 A_SpawnItemEX("SafeBoom", 0, 12, flags: SXF_NOCHECKPOSITION);
-			#### # 0 A_Explode(10, 64, XF_CIRCULAR, fulldamagedistance: 64);
+			#### # 0 A_Explode(100, 64, XF_CIRCULAR, fulldamagedistance: 64);
 		DeathLoop:
 			#### # 0 A_RemoveLight("fancylight");
 			#### # 1 A_FadeOut(0.4);

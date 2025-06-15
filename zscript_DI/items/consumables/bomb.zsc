@@ -60,7 +60,7 @@ Class DI_ThrowBomb_Projectile : DI_Actor
 		Death:
 			TNT1 A 1 
 			{
-				A_Explode(300, 64);
+				A_Explode(3000, 64);
 				A_SpawnItemEX("SafeBoom", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
 				A_SpawnItemEX("BoomText", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
 			}

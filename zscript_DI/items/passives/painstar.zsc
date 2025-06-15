@@ -16,7 +16,7 @@ Class DI_PainStar : DIPassiveInventory
 		int painstarnum = plr.CountInv("DI_PainStar") * 6;
 		painstarnum -= plr.CountInv("DI_PainStar") * plr.combonum;
 		if (painstarnum < 0) {painstarnum = 0;}
-		return painstarnum;
+		return painstarnum * 10;
 	}
 	
 	States

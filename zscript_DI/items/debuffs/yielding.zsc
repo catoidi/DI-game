@@ -10,7 +10,7 @@ Class DI_QuestDebuff_Yielding : DI_QuestDebuff
 		
 		if (plr && (newdamage > 0))
 		{
-			plr.GiveInventory("DI_QuestDebuff_Yielding_Powerup", plr.CountInv(self.getclassname()) * newdamage * 8);
+			plr.GiveInventory("DI_QuestDebuff_Yielding_Powerup", plr.CountInv(self.getclassname()) * newdamage * 0.8);
 		}
 	}
 }

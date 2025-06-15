@@ -11,7 +11,7 @@ Class DI_TopHat : BasicArmorPickup
 		Inventory.PickupMessage "+100 Armor";
 		Inventory.Icon "ARMOA0";
 		Armor.SavePercent 40;
-		Armor.SaveAmount 100;
+		Armor.SaveAmount 1000;
 	}
 	
 	States
@@ -33,7 +33,7 @@ Class DI_TopHat2 : BasicArmorPickup
 		Inventory.PickupMessage "+150 Armor";
 		Inventory.Icon "ARMOB0";
 		Armor.SavePercent 60;
-		Armor.SaveAmount 150;
+		Armor.SaveAmount 1500;
 	}
 	
 	States
@@ -55,7 +55,7 @@ Class DI_PartyHat : BasicArmorPickup
 		Inventory.PickupMessage "+200 Armor";
 		Inventory.Icon "ARMOC0";
 		Armor.SavePercent 80;
-		Armor.SaveAmount 200;
+		Armor.SaveAmount 2000;
 	}
 	
 	States
@@ -77,7 +77,7 @@ Class DI_BowTie : BasicArmorPickup
 		Inventory.PickupMessage "+50 True Armor";
 		Inventory.Icon "ARMOD0";
 		Armor.SavePercent 100;
-		Armor.SaveAmount 50;
+		Armor.SaveAmount 500;
 	}
 	
 	States

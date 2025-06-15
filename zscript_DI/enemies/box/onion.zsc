@@ -5,7 +5,7 @@ Class OnionTurret : DI_Monster
 	Default
 	{
 		Speed 0;
-		Health 144;
+		Health 1440;
 		Radius 30;
 		Height 56;
 		Mass 0x7FFFFFFF; //immovable object
@@ -140,7 +140,7 @@ Class OnionBullet : DI_Bullet
 		Radius 4;
 		Height 8;
 		Speed 10;
-		DamageFunction (6);
+		DamageFunction (60);
 		DI_Bullet.Trail "ONIOJ0";
 		DI_Bullet.TrailSize 10.0;
 		DI_Bullet.FancyLight "GLOWCYAN";
