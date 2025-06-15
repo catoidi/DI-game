@@ -94,6 +94,7 @@ class DIPassiveInventory : Inventory
 	virtual int GiveMaxAmmo2() {return 0;} //Same as above, but for secondary ammo.
 	virtual double GivePlayerSpeed() {return 0.0;} //Adds movement speed to the player. Has a lower cap of 0.1.
 	virtual double GiveComboDrain() {return 1.0;} //Multiplies the speed of the combo drain.
+	virtual double GiveRegenSpeed() {return 1.0;} //Multiplies the speed of health regeneration.
 	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
 	virtual string ReplaceGunSound() {return "";} //changes the sound that plays when DI_GunSound is called. the sound loaded last will be chosen.
 

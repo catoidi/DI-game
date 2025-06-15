@@ -73,8 +73,11 @@ Class DI_Melon : Inventory
 
 Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 {
-	int hptick;
+	double hptick;
 	int partick;
+	
+	DI_PlayerBase plr;
+	DI_Weapon wpn;
 
 	Default
 	{
@@ -89,6 +92,14 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 		
 		if (owner && (owner.isFrozen() == false))
 		{
+			if (!plr && owner is "DI_PlayerBase")
+			{
+				plr = DI_PlayerBase(owner);
+				wpn = DI_Weapon(plr.player.ReadyWeapon);
+			}
+			double hptick_max = (plr && wpn) ? wpn.plr_regen : 35.0;
+			if (hptick_max < 0.01) {hptick_max = 0.01;}
+			
 			++partick;
 			if (partick >= 5)
 			{
@@ -97,7 +108,7 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 			}	
 		
 			++hptick;
-			if (hptick >= 35)
+			while (hptick >= hptick_max)
 			{
 				if (CallACS("DICheckWaveProgress") == true)
 				{
@@ -107,7 +118,7 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 					if ((owner.CountInv("DI_Regen") + owner.health) > maxhp) {takeamount = 2;}
 					owner.A_TakeInventory("DI_Regen", takeamount);
 				}
-				hptick = 0;
+				hptick -= hptick_max;
 			}
 		}
 	}

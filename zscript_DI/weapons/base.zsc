@@ -22,7 +22,9 @@ Class DI_Weapon : Weapon abstract
 	int maxammouse; //the max amount inventory items can increase ammo.
 	string gunsound; //replacement gun sound from inventory items.
 	
-	double plr_speed, plr_combodrainbonus;
+	double plr_speed; //player movement speed.
+	double plr_combodrainbonus; //combo drain speed.
+	double plr_regen; //regeneration speed, in tics.
 	
 	private int wpn_speed_mode; //determines which "mode" the weapon is in. 0 is neutral. 1 is firing. 2 is reloading.
 	double wpn_speed_current; //weapon speed for this specific tic.
@@ -54,6 +56,7 @@ Class DI_Weapon : Weapon abstract
 	property BulletSize: wpn_bulletsize;
 	property PlayerSpeed: plr_speed;
 	property ComboDrain: plr_combodrainbonus;
+	property RegenSpeed: plr_regen;
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
@@ -90,6 +93,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.Projectiles 1;
 		DI_Weapon.BulletSize 1.0;
 		DI_Weapon.ComboDrain 1.0;
+		DI_Weapon.RegenSpeed 35.0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.NoProjectiles false;
@@ -212,6 +216,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_speed_reload = Default.wpn_speed_reload;
 		plr_speed = Default.plr_speed;
 		plr_combodrainbonus = Default.plr_combodrainbonus;
+		plr_regen = Default.plr_regen;
 		gunsound = Default.gunsound;
 		
 		for (int i = 0; i < plr.knownpassives.Size(); ++i)
@@ -246,6 +251,7 @@ Class DI_Weapon : Weapon abstract
 				wpn_speed_reload += curinv.GiveReloadSpeed();
 				plr_speed += curinv.GivePlayerSpeed();
 				plr_combodrainbonus *= curinv.GiveComboDrain();
+				plr_regen *= curinv.GiveRegenSpeed();
 				string replacesound = curinv.ReplaceGunSound();
 				if (replacesound != "") {gunsound = replacesound;}
 			}
