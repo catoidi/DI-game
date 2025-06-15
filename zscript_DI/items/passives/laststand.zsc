@@ -29,9 +29,11 @@ Class DI_LastStand : DIPassiveInventory
 					DI_PlayerBase plr = DI_PlayerBase(owner);
 					
 					float regennum = 0.1 + (0.15 * plr.CountInv("DI_LastStand"));
-					if (plr.Health < ((plr.GetMaxHealth(true) - plr.CountInv("DI_Degen")) * regennum))
+					int hpthreshold = (plr.GetMaxHealth(true) - plr.CountInv("DI_Degen")) * regennum;
+					if (plr.Health < hpthreshold)
 					{
-						plr.A_GiveInventory("DI_Regen", 10);
+						int givenum = ((hpthreshold - plr.health) >= 10) ? 10 : hpthreshold - plr.health;
+						plr.A_GiveInventory("DI_Regen", givenum);
 					}
 				}
 			}
