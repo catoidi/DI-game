@@ -64,7 +64,7 @@ extend class DIHandler
 			{
 				DIBossHandler(e);
 			}
-			if (e.thing is "DI_Projectile" && (e.thing.target is "DI_PlayerBase"))
+			if (e.thing is "DI_Projectile")
 			{
 				DIProjectileHandler(e);
 			}

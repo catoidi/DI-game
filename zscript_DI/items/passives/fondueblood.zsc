@@ -77,14 +77,12 @@ Class DI_FondueBlood_Enemy : Inventory
 Class DI_FondueBlood_Bullet : CheeseGunBullet
 {
 	actor oldtarget;
-
-	override void PostBeginPlay()
+	
+	override int GetWeaponDamage()
 	{
-		Super.PostBeginPlay();
-		
 		damagetype = "Fire";
-		damnum = 100;
 		di_notweapon = true;
+		return 100;
 	}
 	
 	override bool CanCollideWith(Actor other, bool passive)

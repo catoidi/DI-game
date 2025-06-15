@@ -134,18 +134,15 @@ CLASS CheeseGunBullet : DI_Projectile
 		Radius 4;
 		Height 8;
 		Speed 16;
-		DamageFunction damnum;
-		Projectile;
 		-NOGRAVITY;
 		+ROLLSPRITE;
 		+BLOODSPLATTER;
 	}
 	
-	int damnum;
-	
-	override void PostBeginPlay()
+	override int GetWeaponDamage()
 	{
-		Super.PostBeginPlay();
+		GetDIPlayer();
+		int damnum = 160;
 		
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "CheeseGun"))
 		{
@@ -161,9 +158,10 @@ CLASS CheeseGunBullet : DI_Projectile
 		else if (target is "DI_CheeseArtifact_Cloud")
 		{
 			damagetype = "Fire";
-			damnum = 160;
 			di_notweapon = true;
 		}
+		
+		return damnum;
 	}
 	
 	override void Tick()

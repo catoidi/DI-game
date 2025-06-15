@@ -6,19 +6,22 @@ extend class DIHandler
 	{
 		//it is already implied that this is a di_projectile and a player is the target.
 		let proj = DI_Projectile(e.thing);
-		let plr = DI_PlayerBase(proj.target);
-		
-		for (int i = 0; i < plr.knownpassives.Size(); ++i)
+		if (proj.target is "DI_PlayerBase")
 		{
-			DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
-			if (curinv)
+			let plr = DI_PlayerBase(proj.target);
+			
+			for (int i = 0; i < plr.knownpassives.Size(); ++i)
 			{
-				string returnstring;
-				int returnnum;
-				[returnstring, returnnum] = curinv.GiveProjectileItem();
-				if (returnstring != "")
+				DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+				if (curinv)
 				{
-					proj.GiveInventory(returnstring, returnnum);
+					string returnstring;
+					int returnnum;
+					[returnstring, returnnum] = curinv.GiveProjectileItem();
+					if (returnstring != "")
+					{
+						proj.GiveInventory(returnstring, returnnum);
+					}
 				}
 			}
 		}
