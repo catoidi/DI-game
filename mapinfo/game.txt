@@ -35,8 +35,7 @@ GameInfo
 		"pc_EventHandler", //controls everything Precise Crosshair related.
 		"ATMP_MapHandler", //the minimap.
 		"DIMusicHandler", //handles music.
-		"DIPopupHandler", //Displays side quests on the middle left of your screen.
-		"DIUpdater" //Handles resetting cvars when updating from older versions of DI.
+		"DIPopupHandler" //Displays side quests on the middle left of your screen.
 }
 
 DamageType "Spawner" {}

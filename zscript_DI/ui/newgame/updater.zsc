@@ -1,12 +1,13 @@
-//zscript_DI/handlers/updater.zsc
+//zscript_DI/ui/newgame/updater.zsc
 
-Class DIUpdater : EventHandler
+extend class DINewGameMenu
 {
-	override void OnRegister()
+	virtual void DIUpdater()
 	{
+		//console.printf("attempting to run cvar updater script...");
 		cvar prevversion = cvar.getcvar("di_version");
 		array<string> filedata;
-		int curversion;
+		double curversion;
 		
 		int ThisLump = Wads.FindLump("DIUPDATE", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DIUPDATE", ThisLump + 1, Wads.ANYNAMESPACE);
@@ -28,9 +29,10 @@ Class DIUpdater : EventHandler
 			
 			if (filedata[i].Left(8) ~== "version ")
 			{
-				curversion = filedata[i].Mid(8).ToInt(10);
+				curversion = filedata[i].Mid(8).ToDouble();
 				
-				if (curversion > prevversion.GetInt()) {doupdates = true;}
+				//console.printf("%.1f, %.1f", curversion, prevversion.GetFloat());
+				if (curversion > prevversion.GetFloat()) {doupdates = true;}
 				else {doupdates = false;}
 			}
 			else if (doupdates)
@@ -44,6 +46,6 @@ Class DIUpdater : EventHandler
 			}
 		}
 		
-		prevversion.SetInt(curversion);
+		prevversion.SetFloat(curversion);
 	}
 }

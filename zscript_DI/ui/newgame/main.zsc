@@ -42,6 +42,9 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	override void init(menu parent)
 	{
 		super.init(parent);
+		
+		DIUpdater();
+		
 		setbaseresolution((640, 400));
 		bigFont = Font.GetFont("BigFont");
 		smallFont = Font.GetFont("SmallFont");
