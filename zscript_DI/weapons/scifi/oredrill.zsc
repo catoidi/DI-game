@@ -5,7 +5,7 @@ Class DI_OreDrill : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
-		DI_Weapon.BaseDamage 10;
+		DI_Weapon.BaseDamage 100;
 		DI_Weapon.BaseAccuracy 2;
 		DI_Weapon.NoProjectiles true;
 		Weapon.SelectionOrder 9999;

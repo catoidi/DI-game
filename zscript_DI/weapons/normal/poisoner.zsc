@@ -5,7 +5,7 @@ Class PoisonGun : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
-		DI_Weapon.BaseDamage 15;
+		DI_Weapon.BaseDamage 150;
 		DI_Weapon.Recoil 1.5;
 		DI_Weapon.RecoilRecover 1.25;
 		DI_Weapon.RecoilOffset 1.5;

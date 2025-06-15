@@ -5,7 +5,7 @@ class Sledgehammer : DI_Weapon
 		Radius 20;
 		Height 24;
 		DI_Weapon.FreshBonus 1;
-		DI_Weapon.BaseDamage 80;
+		DI_Weapon.BaseDamage 800;
 		DI_Weapon.PlayerSpeed -0.15;
 		DI_Weapon.Ammo1HUD 3;
 		DI_Weapon.DontGiveAmmo1 true;

@@ -5,7 +5,7 @@ CLASS GrenadeLauncher : DI_Weapon
 	Default
 	{
 		DI_Weapon.FreshBonus 1;
-		DI_Weapon.BaseDamage 120; //direct hit does 1/10th of this.
+		DI_Weapon.BaseDamage 1200; //direct hit does 1/10th of this.
 		DI_Weapon.BaseAccuracy 10;
 		DI_Weapon.PlayerSpeed -0.1;
 		DI_Weapon.Recoil 6.0;
