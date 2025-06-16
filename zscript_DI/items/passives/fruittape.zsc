@@ -13,6 +13,7 @@ Class DI_FruitTape : DIPassiveInventory
 	}
 	
 	int hpcount;
+	int regencount;
 	
 	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags) 
 	{
@@ -25,12 +26,26 @@ Class DI_FruitTape : DIPassiveInventory
 				hpcount += newdamage;
 				
 				int hpcap = 6 - plr.CountInv(self.GetClassName());
-				
 				while(hpcount >= hpcap)
 				{
-					plr.DI_HealSelf(1, 1.0, true);
+					++regencount;
 					hpcount -= hpcap;
 				}
+			}
+		}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+	
+		if (plr && !Level.isFrozen())
+		{
+			if (regencount > 0)
+			{
+				//defer healing to the next tic, allowing more accurate calculations of HealingPower.
+				plr.DI_HealSelf(regencount, 1.0, true);
+				regencount = 0;
 			}
 		}
 	}
