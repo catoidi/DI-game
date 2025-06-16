@@ -167,7 +167,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if ((damage > 0) && wpn)
 		{
 			//add recoil to the current weapon upon taking damage.
-			double addrecoil = 3 + (damage / 2.5);
+			double addrecoil = 3 + (damage / 25.0);
 			if (addrecoil > 20) (addrecoil = 20.0);
 			wpn.current_recoil += addrecoil / wpn.wpn_recoil_offset;
 		}
