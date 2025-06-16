@@ -512,7 +512,6 @@ Class DIShop : DIShop_Base
 		lastpurchased = curround;
 		plr.ACS_ScriptCall("di_shopbought", buyprice, user_dontprogress);
 		ACS_ScriptCall("di_newitem", plr.tid, newitem_size);
-		console.printf("ICON: %s, NAME: %s, DESC: %s, SIZE: %d", newitem_icon, newitem_name, newitem_desc, newitem_size);
 		plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
 		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);

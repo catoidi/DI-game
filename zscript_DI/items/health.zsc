@@ -118,7 +118,6 @@ Class DI_Regen : Inventory //regenerates 1 hp every second.
 					}
 					int takeamount = 1;
 					if ((owner.CountInv("DI_Regen") + owner.health) > maxhp) {takeamount = 2;}
-					console.printf("%d > %d : %d", owner.CountInv("DI_Regen") + owner.health, maxhp, takeamount);
 					owner.A_TakeInventory("DI_Regen", takeamount);
 				}
 				hptick -= hptick_max;
