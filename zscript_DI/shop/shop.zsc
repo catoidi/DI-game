@@ -359,9 +359,29 @@ Class DIShop : DIShop_Base
 				if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
 				else {shop_currentsprite = currentitem[2];}
 			}
+			else
+			{
+				newitem_icon = "";
+				newitem_size = 0;
+			}
 			if (user_baseprice > 0) {shop_baseprice = user_baseprice;}
 			else {shop_baseprice = currentitem[3].ToInt(10);}
 		}
+		
+		//compatibility for DI_NewItem ACS Script.
+		if (!user_hideitem) 
+		{
+			newitem_icon = string.Format("%s0", shop_currentsprite);
+			let realicon = TexMan.CheckForTexture(newitem_icon);
+			int realicon_x, realicon_y;
+			[realicon_x, realicon_y] = TexMan.GetSize(realicon);
+			newitem_size = realicon_x;
+		}
+		newitem_name = GetShopItem();
+		newitem_desc = String.Format("$shopdesc_%s", newitem_name);
+		newitem_desc = Stringtable.Localize(newitem_desc);
+		newitem_name = String.Format("$shopitem_%s", newitem_name);
+		newitem_name = Stringtable.Localize(newitem_name);
 	}
 	
 	override void RerollShopItem(void)
@@ -491,6 +511,8 @@ Class DIShop : DIShop_Base
 		currentprice += priceincrease;
 		lastpurchased = curround;
 		plr.ACS_ScriptCall("di_shopbought", buyprice, user_dontprogress);
+		ACS_ScriptCall("di_newitem", plr.tid, newitem_size);
+		console.printf("ICON: %s, NAME: %s, DESC: %s, SIZE: %d", newitem_icon, newitem_name, newitem_desc, newitem_size);
 		plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
 		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);

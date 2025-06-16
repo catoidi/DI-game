@@ -33,6 +33,9 @@ Class DIShop_Base : SwitchableDecoration abstract
 	bool dosale; //puts the shop item on sale when true.
 	bool canshop;
 	
+	int newitem_size; //size of newitem_icon, horizontally.
+	string newitem_icon, newitem_name, newitem_desc; //used for activating the DI_NewItem ACS Script. Provides the sprite, name, and first description of the most recently purchased item.
+	
 	PlayerPawn plr; //the player who is attempting to make a purchase.
 	
 	override void PostBeginPlay()

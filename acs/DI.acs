@@ -261,3 +261,27 @@ SCRIPT "DI_Cursed" (int plr)
 	SetFont("SMALLFONT");
 	HudMessage(s:currentdebuff2_desc; HUDMSG_FADEINOUT, -1906, CR_BRICK, 320.4, 310.0, 5.0, 0.25, 0.25);
 }
+
+SCRIPT "DI_NewItem" (int plr, int xsize)
+{
+	str curitem_icon = GetUserVariable(0, "newitem_icon");
+	str curitem_name = GetUserVariable(0, "newitem_name");
+	str curitem_desc = GetUserVariable(0, "newitem_desc");
+	SetActivator(plr);
+	if ((curitem_icon != "") && (xsize > 0))
+	{
+		SetHudSize(640, 480, false);
+		int startx = 330.0 + xsize;
+		SetFont(curitem_icon);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, -1903, CR_UNTRANSLATED, startx, 428.0, 5.0, 0.25, 0.25);
+	}
+	else
+	{
+		HudMessage(s:" "; HUDMSG_FADEINOUT, -1903, CR_UNTRANSLATED, 0.0, 0.0, 5.0, 0.25, 0.25);
+	}
+	SetHudSize(640, 400, false);
+	SetFont("BIGFONT");
+	HudMessage(s:"New Item: ", s:curitem_name; HUDMSG_FADEINOUT, -1901, CR_GOLD, 320.4, 356.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:curitem_desc; HUDMSG_FADEINOUT, -1902, CR_WHITE, 320.4, 376.0, 5.0, 0.25, 0.25);
+}
