@@ -26,6 +26,7 @@ Class DI_Weapon : Weapon abstract
 	double plr_combodrainbonus; //combo drain speed.
 	double plr_regen; //regeneration speed, in tics.
 	double plr_healing; //strength of healing items.
+	double plr_maxhp; //multiplier of player's max health.
 	
 	private int wpn_speed_mode; //determines which "mode" the weapon is in. 0 is neutral. 1 is firing. 2 is reloading.
 	double wpn_speed_current; //weapon speed for this specific tic.
@@ -59,6 +60,7 @@ Class DI_Weapon : Weapon abstract
 	property ComboDrain: plr_combodrainbonus;
 	property RegenSpeed: plr_regen;
 	property HealingPower: plr_healing;
+	property PlayerHealth: plr_maxhp;
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
@@ -97,6 +99,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.ComboDrain 1.0;
 		DI_Weapon.RegenSpeed 3.5;
 		DI_Weapon.HealingPower 1.0;
+		DI_Weapon.PlayerHealth 1.0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.NoProjectiles false;
@@ -221,6 +224,7 @@ Class DI_Weapon : Weapon abstract
 		plr_combodrainbonus = Default.plr_combodrainbonus;
 		plr_regen = Default.plr_regen;
 		plr_healing = Default.plr_healing;
+		plr_maxhp = Default.plr_maxhp;
 		gunsound = Default.gunsound;
 		
 		for (int i = 0; i < plr.knownpassives.Size(); ++i)
@@ -257,6 +261,7 @@ Class DI_Weapon : Weapon abstract
 				plr_combodrainbonus *= curinv.GiveComboDrain();
 				plr_regen *= curinv.GiveRegenSpeed();
 				plr_healing *= curinv.GiveHealingPower();
+				plr_maxhp *= curinv.GiveMaxHealth();
 				string replacesound = curinv.ReplaceGunSound();
 				if (replacesound != "") {gunsound = replacesound;}
 			}

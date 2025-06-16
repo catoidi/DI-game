@@ -71,7 +71,7 @@ Class DI_Melon : Inventory
 	}
 }
 
-Class DI_Regen : HealthPickup //regenerates 1 hp every second.
+Class DI_Regen : Inventory //regenerates 1 hp every second.
 {
 	double hptick;
 	
@@ -80,7 +80,6 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 
 	Default
 	{
-		Health 1;
 		Inventory.MaxAmount 9999999;
 		-INVENTORY.INVBAR;
 	}
@@ -106,10 +105,20 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 				{
 					owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);
 					
-					int maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
-					if (owner.health < maxhp) {Use(false);}
+					int maxhp;
+					if (plr)
+					{
+						maxhp = plr.DIMaxHealth();
+						if (plr.health < maxhp) {plr.DI_HealSelf(1, 1.0, false, false);}
+					}
+					else
+					{
+						maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
+						if (owner.health < maxhp) {owner.GiveBody(1);}
+					}
 					int takeamount = 1;
 					if ((owner.CountInv("DI_Regen") + owner.health) > maxhp) {takeamount = 2;}
+					console.printf("%d > %d : %d", owner.CountInv("DI_Regen") + owner.health, maxhp, takeamount);
 					owner.A_TakeInventory("DI_Regen", takeamount);
 				}
 				hptick -= hptick_max;
@@ -136,5 +145,31 @@ Class DI_Degen : Inventory
 		{
 			owner.A_Die();
 		}
+	}
+}
+
+Class DI_MaxHealthGiver : DIPassiveInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1000000;
+	}
+	
+	override double GiveHealingPower()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + 0.001 * plr.countinv(self.getclassname());
+	}
+	
+	override double GiveRegenSpeed()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 / (1.0 + 0.001 * plr.countinv(self.getclassname()));
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0001 + 0.001 * plr.countinv(self.getclassname());
 	}
 }

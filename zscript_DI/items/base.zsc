@@ -96,6 +96,7 @@ class DIPassiveInventory : Inventory
 	virtual double GiveComboDrain() {return 1.0;} //Multiplies the speed of the combo drain.
 	virtual double GiveRegenSpeed() {return 1.0;} //Multiplies the speed of health regeneration.
 	virtual double GiveHealingPower() {return 1.0;} //Multiplies the efficacy of healing/regen items. 
+	virtual double GiveMaxHealth() {return 1.0;} //Multiplies the player's max health.
 	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
 	virtual string ReplaceGunSound() {return "";} //changes the sound that plays when DI_GunSound is called. the sound loaded last will be chosen.
 

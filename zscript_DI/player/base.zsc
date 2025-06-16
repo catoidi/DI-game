@@ -552,10 +552,12 @@ Class DI_PlayerBase : PlayerPawn abstract
 		}
 	}
 	
-	clearscope virtual int DIMaxHealth()
+	clearscope virtual int DIMaxHealth(bool dodegen = true, bool dohpbuff = true)
 	{
 		let heal = GetMaxHealth(true);
-		heal -= CountInv("DI_Degen");
+		if (dodegen) {heal -= CountInv("DI_Degen");}
+		if (dohpbuff && wpn) {heal *= wpn.plr_maxhp;} //HP Debt is proportional to any Max HP buffs applied to the player.
+		if (heal < 1) {heal = 1;} //Minimum player HP of 1.
 		return heal;
 	}
 	
@@ -773,10 +775,10 @@ Class DI_PlayerBase : PlayerPawn abstract
 		A_SpawnItemEX(self.BloodType, diX, diY, diZ, 0, 0, random(6, 10), 0, SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION, 96);
 	}
 	
-	action void DI_HealSelf(int healamount = 1, float maxheal = 1.0, bool doregen = false)
+	action void DI_HealSelf(int healamount = 1, float maxheal = 1.0, bool doregen = false, bool dobuff = true)
 	{
 		//give health/regen to the player without going beyond the max health (minus borrowed health).
-		if (invoker.wpn) {healamount *= invoker.wpn.plr_healing;}
+		if (dobuff && invoker.wpn) {healamount *= invoker.wpn.plr_healing;}
 		if (healamount < 1) {healamount = 1;}
 		int healnum = (invoker.DIMaxHealth() * maxheal) - invoker.health;
 		if (healnum > 0)

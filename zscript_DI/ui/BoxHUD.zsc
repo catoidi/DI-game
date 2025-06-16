@@ -225,17 +225,17 @@ class DI_HUD : BaseStatusBar
 		
 		if (GetAmount("DI_Regen") > 0)
 		{
-			DrawBar("graphics/boxhud/HUDBARB1.png", "graphics/boxhud/HUDBARA.png", regenamount, cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARB0.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB1.png", "graphics/boxhud/HUDBARA.png", regenamount, diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARB0.png", BoxHealthInterpolator.GetValue(), diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		else 
 		{
-			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARA.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARA.png", BoxHealthInterpolator.GetValue(), diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		
-		if (BoxHealthInterpolator.GetValue() > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen")))
+		if (BoxHealthInterpolator.GetValue() > (diplayer.DIMaxHealth()))
 		{
-			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen")), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - (diplayer.DIMaxHealth()), diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		
 		if (GetAmount("DI_Degen") > 0)
@@ -249,7 +249,7 @@ class DI_HUD : BaseStatusBar
 		if (detailnum.GetBool()) {drawhealth.AppendFormat("\cu/\cb%.1f", 0.1 * diplayer.DIMaxHealth());}
 		DrawString(SmallFont, drawhealth, GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, hpfont);
 		let regfont = Font.CR_GREEN;
-		if (regenamount > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
+		if (regenamount > (diplayer.DIMaxHealth())) {regfont = Font.CR_RED;}
 		if (GetAmount("DI_Regen") > 0)
 		{
 			DrawString(SmallFont, string.format("+%.1f", 0.1 * GetAmount("DI_Regen")), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);

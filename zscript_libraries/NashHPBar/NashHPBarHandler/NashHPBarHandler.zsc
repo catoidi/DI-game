@@ -213,6 +213,8 @@ class NashHPBarHandler : EventHandler
 				String txt;
 				DIShop_Base prevShop = DIShop_Base(prevAimTarget);
 				
+				let plr = DI_PlayerBase(CPlayer.mo);
+				
 				if (prevShop.canshop == false) return;
 				
 				// get font colours
@@ -286,7 +288,10 @@ class NashHPBarHandler : EventHandler
 				bool isPerma = false;
 				if (prevShop is "DIPermaShop") {isPerma = true;}
 				if (isPerma) {txt = String.Format("%s\cz[PERMANENT] ", txt);}
-				if (prevShop.GetDebt(CPlayer.mo) > 0) {txt = String.Format("%s\ca[-%.1f HP] ", txt, 0.1 * prevShop.GetDebt(CPlayer.mo));}
+				if (plr && prevShop.GetDebt(CPlayer.mo) > 0) 
+				{
+					txt = String.Format("%s\ca[-%.1f HP] ", txt, 0.1 * prevShop.GetDebt(CPlayer.mo) * plr.wpn.plr_maxhp);
+				}
 				else if ((prevShop.user_allowdebt == false) && (CPlayer.mo.score < prevShop.GetShopPrice())) {txt = String.Format("%s\ca[Can't Afford] ", txt);}
 				int havenum = 0;
 				let desc2 = String.Format("$shopdesc2_%s", targName); //GROSS HACK !!!!!!!!!!
@@ -295,9 +300,8 @@ class NashHPBarHandler : EventHandler
 				if (desc2.Left(9) ~== "IsBundle ")
 				{
 					let itemname = desc2.Mid(9);
-					if (IsPerma && (CPlayer.mo is "DI_PlayerBase"))
+					if (IsPerma && plr)
 					{
-						let plr = DI_PlayerBase(CPlayer.mo);
 						havenum = plr.GetPermaItemAmount(itemname);
 					}
 					else
@@ -307,9 +311,8 @@ class NashHPBarHandler : EventHandler
 					}
 				}
 				else if (realitem && (!isPerma)) {havenum = CPlayer.mo.CountInv(targName);}
-				else if (isPerma && (CPlayer.mo is "DI_PlayerBase"))
+				else if (isPerma && plr)
 				{
-					let plr = DI_PlayerBase(CPlayer.mo);
 					havenum = plr.GetPermaItemAmount(targName);
 				}
 				if (havenum > 0) {txt = String.Format("%s\cn[Have: %d] ", txt, havenum);}
@@ -488,10 +491,10 @@ class NashHPBarHandler : EventHandler
 				String targName = prevAimTarget.GetCharacterName();
 				if (prevAimTarget is "PlayerPawn")
 				{
-					PlayerInfo plr = prevAimTarget.player;
-					if (plr)
+					PlayerInfo plrinfo = prevAimTarget.player;
+					if (plrinfo)
 					{
-						targName = plr.GetUserName();
+						targName = plrinfo.GetUserName();
 					}
 				}
 				txt = String.Format("%s", targName);
