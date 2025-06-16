@@ -56,6 +56,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	Vector2 OldMove;
 	bool switchtime;
 	Weapon oldweapon;
+	DI_Weapon wpn;
 	
 	int weaponnum;
 	
@@ -119,6 +120,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 				ResetAutoOffset();
 				oldweapon = player.ReadyWeapon;
 			}
+			
+			wpn = DI_Weapon(player.ReadyWeapon);
+			
 			//weaponnum = 0;
 			
 			justfired = false;
@@ -160,13 +164,12 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)
 	{
-		if ((damage > 0) && (player.ReadyWeapon is "DI_Weapon"))
+		if ((damage > 0) && wpn)
 		{
-			DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
 			//add recoil to the current weapon upon taking damage.
 			double addrecoil = 3 + (damage / 2.5);
 			if (addrecoil > 20) (addrecoil = 20.0);
-			diwep.current_recoil += addrecoil / diwep.wpn_recoil_offset;
+			wpn.current_recoil += addrecoil / wpn.wpn_recoil_offset;
 		}
 		
 		Super.TakeSpecialDamage(inflictor, source, damage, damagetype);
@@ -361,7 +364,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			else
 			{
 				CurrentWeaponKill = player.ReadyWeapon.GetClassName();
-				curwpn = DI_Weapon(player.ReadyWeapon);
+				curwpn = wpn;
 			}
 			
 			if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
@@ -453,9 +456,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(3)) {cnum = 3; cdrain = 3;}
 		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(2)) {cnum = 2; cdrain = 2;}
 		
-		if (player.readyweapon is "DI_Weapon")
+		if (wpn)
 		{
-			let wpn = DI_Weapon(player.readyweapon);
 			double drainmult = wpn.plr_combodrainbonus;
 			if (drainmult < 0.1) {drainmult = 0.1;}
 			
@@ -496,15 +498,14 @@ Class DI_PlayerBase : PlayerPawn abstract
 		//if (combodrain == 0) {combodrain = combonum;}
 		
 		combonum_bonus = 0;
-		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
-		if (diwep)
+		if (wpn)
 		{
-			combonum_bonus += diwep.wpn_extracoin;
+			combonum_bonus += wpn.wpn_extracoin;
 			
 			if ((CountInv("DI_TokenComboFreeze") == 0) && (Level.Total_Monsters > Level.Killed_Monsters)) 
 			{
 				if (combodrain > 0) {A_TakeInventory("DI_TokenComboTimer", combodrain);}
-				if (LastKillTimer > 0) {LastKillTimer -= 1 + diwep.wpn_freshcharge;}
+				if (LastKillTimer > 0) {LastKillTimer -= 1 + wpn.wpn_freshcharge;}
 				if (LastKillTimer < 0) {LastKillTimer = 0;}
 				
 				if ((LastKillTimer == 0) && (freshmsg == false))
@@ -775,8 +776,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	action void DI_HealSelf(int healamount = 1, float maxheal = 1.0, bool doregen = false)
 	{
 		//give health/regen to the player without going beyond the max health (minus borrowed health).
-		let curwpn = DI_Weapon(invoker.player.ReadyWeapon);
-		if (curwpn) {healamount *= curwpn.plr_healing;}
+		if (invoker.wpn) {healamount *= invoker.wpn.plr_healing;}
 		if (healamount < 1) {healamount = 1;}
 		int healnum = (invoker.DIMaxHealth() * maxheal) - invoker.health;
 		if (healnum > 0)
@@ -788,23 +788,21 @@ Class DI_PlayerBase : PlayerPawn abstract
 	}
 	
 	action void AutoOffset()
-	{
-		DI_Weapon diwep = DI_Weapon(player.ReadyWeapon);
-		
+	{	
 		//when enabled, auto adjust weapon sprite's offset based off current recoil and player's relative velocity.
 		//this setup cannot be used with the default weapon bobbing enabled, as it will cause visual issues.
 		//you can disable autooffset in the weapon's properties.
 		
-		if (diwep && diwep.wpn_autooffset == true && invoker.switchtime == false)
+		if (invoker.wpn && invoker.wpn.wpn_autooffset == true && invoker.switchtime == false)
 		{
 			//recoil part
-			double newoffset = diwep.current_recoil * diwep.wpn_recoil_offset;
-			if (newoffset != diwep.autooffset_prev)
+			double newoffset = invoker.wpn.current_recoil * invoker.wpn.wpn_recoil_offset;
+			if (newoffset != invoker.wpn.autooffset_prev)
 			{
 				Vector2 shootoffset = 
 				(
-					(newoffset - diwep.autooffset_prev) * diwep.wpn_recoil_offset_x,
-					(newoffset - diwep.autooffset_prev) * diwep.wpn_recoil_offset_y
+					(newoffset - invoker.wpn.autooffset_prev) * invoker.wpn.wpn_recoil_offset_x,
+					(newoffset - invoker.wpn.autooffset_prev) * invoker.wpn.wpn_recoil_offset_y
 				);
 				
 				//Use these 2 debug things if you're having issues with weapon offsets.
@@ -812,7 +810,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				//console.printf("\ct%s: %.1f, %.1f", diwep.GetClassName(), shootoffset.x, shootoffset.y);
 				A_WeaponOffset(shootoffset.x, shootoffset.y, WOF_ADD);
 			
-				diwep.autooffset_prev = newoffset;
+				invoker.wpn.autooffset_prev = newoffset;
 			}
 			
 			//velocity part
