@@ -54,7 +54,8 @@ Class DI_OrganDonor_Pickup : Inventory
 
 	override bool Use(bool pickup)
 	{
-		if (owner) {owner.GiveInventory("DI_Regen", 10 * owner.CountInv(self.GetClassName()));}
+		let plr = DI_PlayerBase(owner);
+		if (plr) {plr.DI_HealSelf(10 * owner.CountInv(self.GetClassName()), 2.0, true);}
 		return true;
 	}
 

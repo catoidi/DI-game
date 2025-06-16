@@ -33,7 +33,7 @@ Class DI_BloodMoney : DIPassiveInventory
 					int fail = (plr.DIMaxHealth() + success - bonus) * (4 - plr.countinv(self.getclassname()));
 					if (random(1, fail) <= chance) 
 					{
-						plr.GiveInventory("DI_Regen", 10);
+						plr.DI_HealSelf(10, 2.0, true);
 						++success;
 						bonus = 0;
 					}

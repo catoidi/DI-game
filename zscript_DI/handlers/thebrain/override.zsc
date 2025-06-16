@@ -165,14 +165,14 @@ extend class DIHandler
 		}
 		else if (e.Name.Left(16) == "diplayeritemused") //called automagically by all consumable items on successful use.
 		{
-			let itemplr = players[e.Player].mo;
+			let itemplr = DI_PlayerBase(players[e.Player].mo);
 			if (itemplr)
 			{
 				//code for DI_Consumer.
 				int consumer = itemplr.CountInv("DI_Consumer");
 				if (consumer > 0) 
 				{
-					itemplr.GiveInventory("DI_Regen", 30 * consumer);
+					itemplr.DI_HealSelf(30 * consumer, 2.0, true);
 					itemplr.GiveInventory("DI_Consumer_Powerup", 3 * consumer);
 				}
 				

@@ -49,9 +49,10 @@ Class DI_JuiceBox : Inventory
 	
 	override bool Use(bool pickup)
 	{
-		if (owner)
+		let plr = DI_PlayerBase(owner);
+		if (plr)
 		{
-			owner.A_GiveInventory("DI_Regen", 300);
+			plr.DI_HealSelf(300, 2.0, true);
 			return DIUsed();
 		}
 		else {return false;}

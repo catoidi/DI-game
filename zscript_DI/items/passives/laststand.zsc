@@ -19,22 +19,15 @@ Class DI_LastStand : DIPassiveInventory
 		
 		++lasttimer;
 		
-		if (owner && (lasttimer >= (75 - (owner.CountInv("DI_LastStand") * 5))))
+		if (plr && (lasttimer >= (75 - (plr.CountInv("DI_LastStand") * 5))))
 		{
 			if (savinggrace == false) {savinggrace = true;}
-			else if (owner is "DI_PlayerBase")
+			else if (CallACS("DICheckWaveProgress") == true)
 			{
-				if (CallACS("DICheckWaveProgress") == true)
+				float regennum = 0.1 + (0.15 * plr.CountInv("DI_LastStand"));
+				if (plr.Health < (plr.DIMaxHealth() * regennum))
 				{
-					DI_PlayerBase plr = DI_PlayerBase(owner);
-					
-					float regennum = 0.1 + (0.15 * plr.CountInv("DI_LastStand"));
-					int hpthreshold = (plr.GetMaxHealth(true) - plr.CountInv("DI_Degen")) * regennum;
-					if (plr.Health < hpthreshold)
-					{
-						int givenum = ((hpthreshold - plr.health) >= 10) ? 10 : hpthreshold - plr.health;
-						plr.A_GiveInventory("DI_Regen", givenum);
-					}
+					plr.DI_HealSelf(10, regennum, true);
 				}
 			}
 			lasttimer = 0;

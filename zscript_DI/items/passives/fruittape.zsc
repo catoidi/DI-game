@@ -28,7 +28,7 @@ Class DI_FruitTape : DIPassiveInventory
 				
 				while(hpcount >= hpcap)
 				{
-					plr.GiveInventory("DI_Regen", 1);
+					plr.DI_HealSelf(1, 1.0, true);
 					hpcount -= hpcap;
 				}
 			}
