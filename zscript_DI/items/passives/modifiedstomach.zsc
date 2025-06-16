@@ -1,0 +1,37 @@
+//zscript_DI/items/passives/modifiedstomach.zsc
+
+Class DI_ModifiedStomach : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Modified Stomach";
+		Inventory.Icon "POW2Q0";
+		Inventory.PickupMessage "Modified Stomach acquired! (+20% Max Health. Healing is 5% worse, and regen is 5% slower.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.000001 + (0.2 * plr.countinv(self.getclassname()));
+	}
+	
+	override double GiveHealingPower()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 - (0.05 * plr.countinv(self.getclassname()));
+	}
+	
+	override double GiveRegenSpeed()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.05 * plr.countinv(self.getclassname()));
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 Q -1;
+			Stop;
+	}
+}
