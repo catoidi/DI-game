@@ -366,7 +366,7 @@ Class DI_Monster : DI_Actor abstract
 			if (hploss < 0.1) {hploss = 0.1;}
 			else if (hploss > 2.0) {hploss = 2.0;}
 			tics *= hploss;
-			tics += invoker.stuntic / 10;
+			tics += invoker.stuntic / 50;
 			if (tics < 5) {tics = 5;}
 			invoker.squishtic = tics;
 			invoker.owie = true;
