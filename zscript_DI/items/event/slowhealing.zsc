@@ -1,0 +1,19 @@
+//zscript_DI/items/event/slowhealing.zsc
+
+Class DI_SlowHealing : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+		
+	override double GiveRegenSpeed()
+	{
+		return 2.0;
+	}
+	
+	override double GiveHealingPower()
+	{
+		return 0.5;
+	}
+}

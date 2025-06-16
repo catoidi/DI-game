@@ -19,6 +19,7 @@ DI01, Event, dievent_cursed, 50, 1;
 DI01, Event, dievent_payday, 100, 1;
 DI01, Event, dievent_riskreward, 50, 1;
 DI01, Event, dievent_speedrun, 50, 1;
+DI01, Event, dievent_slowhealing, 50, 3;
 >>LEVEL TWO EVENTS:
 DI02, Event, dievent_bulletdeath, 60, 1;
 DI02, Event, dievent_iamrisen, 120, 1;
@@ -32,3 +33,4 @@ DI02, Event, dievent_cursed, 60, 1;
 DI02, Event, dievent_payday, 120, 1;
 DI02, Event, dievent_riskreward, 60, 1;
 DI02, Event, dievent_speedrun, 60, 1;
+DI02, Event, dievent_slowhealing, 60, 3;

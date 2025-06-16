@@ -20,6 +20,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	bool docursed; //Gives you 2 random debuffs.
 	bool doriskreward; //+50% DMG to enemies, +200% DMG to player.
 	bool dospeedrun; //+30% player/weapon speed. +60% enemy speed.
+	bool doslowheal;
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -100,6 +101,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dospeedrun = true;
 			plr.GiveInventory("DI_Speedrun", 1);
+		}
+		else if (e.Name == "dievent_slowhealing")
+		{
+			doslowheal = true;
+			plr.GiveInventory("DI_SlowHealing", 1);
 		}
 	}
 	
@@ -202,6 +208,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			dospeedrun = false;
 			plr.TakeInventory("DI_Speedrun", 1);
+		}
+		if (doslowheal)
+		{
+			doslowheal = false;
+			plr.TakeInventory("DI_SlowHealing", 1);
 		}
 	}
 	
