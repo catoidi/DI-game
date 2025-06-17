@@ -98,29 +98,28 @@ Class DI_Regen : Inventory //regenerates 1 hp every second.
 			double hptick_max = (plr && wpn) ? wpn.plr_regen : 3.5;
 			if (hptick_max < 0.01) {hptick_max = 0.01;}
 		
+			int ticktime = 0;
 			++hptick;
-			while (hptick >= hptick_max)
+			while (hptick >= hptick_max) {++ticktime; hptick -= hptick_max;}
+			
+			if ((ticktime > 0) && (CallACS("DICheckWaveProgress") == true))
 			{
-				if (CallACS("DICheckWaveProgress") == true)
+				for (int i = 0; i < ticktime; ++i) {owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);}
+				
+				int maxhp;
+				if (plr)
 				{
-					owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);
-					
-					int maxhp;
-					if (plr)
-					{
-						maxhp = plr.DIMaxHealth();
-						if (plr.health < maxhp) {plr.DI_HealSelf(1, 1.0, false, false);}
-					}
-					else
-					{
-						maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
-						if (owner.health < maxhp) {owner.GiveBody(1);}
-					}
-					int takeamount = 1;
-					if ((owner.CountInv("DI_Regen") + owner.health) > maxhp) {takeamount = 2;}
-					owner.A_TakeInventory("DI_Regen", takeamount);
+					maxhp = plr.DIMaxHealth();
+					if (plr.health < maxhp) {plr.DI_HealSelf(ticktime, 1.0, false, false);}
 				}
-				hptick -= hptick_max;
+				else
+				{
+					maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
+					if (owner.health < maxhp) {owner.GiveBody(ticktime);}
+				}
+				int takeamount = ticktime;
+				if ((owner.CountInv("DI_Regen") + owner.health) > maxhp) {takeamount *= 2;}
+				owner.A_TakeInventory("DI_Regen", takeamount);
 			}
 		}
 	}
