@@ -80,6 +80,11 @@ Class DIShop_Base : SwitchableDecoration abstract
 		return salenum;
 	}
 	
+	clearscope virtual double GetDebtMult(DI_PlayerBase diplr)
+	{
+		return diplr.wpn.shop_debtmult;
+	}
+	
 	clearscope virtual int GetDebt(PlayerPawn buyer, int buyprice = -999999)
 	{
 		//overwrite this if you want to change how debt is calculated.
@@ -95,6 +100,11 @@ Class DIShop_Base : SwitchableDecoration abstract
 			else
 			{
 				let debtnum = (buyprice - buyer.score) / 5;
+				if (buyer is "DI_PlayerBase")
+				{
+					let diplr = DI_PlayerBase(buyer);
+					debtnum *= GetDebtMult(diplr);
+				}
 				if (buyer.score < 0) {debtnum = buyprice / 5;}
 				if (debtnum < 0) {debtnum = 0;}
 				debtnum += user_debthp;

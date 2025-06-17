@@ -118,6 +118,7 @@ class DIPassiveInventory : Inventory
 	
 	//Activated by the DIShop_Base actors. Can increase/decrease base shop prices. Shop prices cannot go below 1.
 	virtual double MultiplyShopPrices(DIShop_Base shop) {return 1.0;} //Multiplies the prices of shops. For performance reasons, only called once per wave.
+	virtual double MultiplyShopDebt() {return 1.0;} //Multiplies the amount of HP Debt given to you by shops.
 	
 	//Ran once upon the player dying, to calculate Final Score with.
 	clearscope virtual double MultiplyFinalScore() {return 1.0;}
