@@ -266,6 +266,7 @@ Class DI_Weapon : Weapon abstract
 				if (replacesound != "") {gunsound = replacesound;}
 			}
 		}
+		plr_maxhp += 0.0000001;
 		maxammouse = CalculateAmmoCost();
 		
 		if (wpn_damage < 1) {wpn_damage = 1;}
