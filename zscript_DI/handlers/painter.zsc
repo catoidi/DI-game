@@ -36,9 +36,9 @@ class PaintHandler : EventHandler
 		int painttries = 0;
 		while (painttries < 32) //cap attempts to 32 tries.
 		{
-			int paintnum = random(0, (PaintNames.Size() - 1));
+			int paintnum = random[dihandler](0, (PaintNames.Size() - 1));
 			fullpainting = PaintNames[paintnum]; //go ahead and define selected painting to the string, just in case this thing fails 32 times in a row.
-			if (random(0, PaintChance[paintnum]) == 0) {painttries = 32;} //if Painting's random chance lands on 0, go ahead and choose this painting.
+			if (random[dihandler](0, PaintChance[paintnum]) == 0) {painttries = 32;} //if Painting's random chance lands on 0, go ahead and choose this painting.
 			else {++painttries;} //otherwise, try again.
 		}
 		paintsprite = fullpainting.Mid(0, 4);

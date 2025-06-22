@@ -101,7 +101,7 @@ Class DIShop : DIShop_Base
 					//sale chance increases based on how long since the last sale 
 					//and also how long since the player last purchased from this shop.
 					extrasale = newround - lastpurchased;
-					if ((random(1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {dosale = true; lastsale = 0;}
+					if ((random[dishop](1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {dosale = true; lastsale = 0;}
 					else {dosale = false; ++lastsale;}
 					GetSalePercent();
 					if (shop_itemstock > 0) {canshop = true;} //if shop is restocked, reenable shopping.
@@ -274,7 +274,7 @@ Class DIShop : DIShop_Base
 					{
 						if (user_currentitem != currentline[1]) {continue;} 
 					}
-					else if (random(0, 255) > pushchance) 
+					else if (random[dishop](0, 255) > pushchance) 
 					{
 						if (debugline > 0) 
 						{
@@ -346,7 +346,7 @@ Class DIShop : DIShop_Base
 		}
 		else if ((canshop == true) || (user_alwaysreroll == true))
 		{
-			int chosenitem = random(0, itempool.Size() - 1);
+			int chosenitem = random[dishop](0, itempool.Size() - 1);
 		
 			Array<String> currentitem;
 			itempool[chosenitem].Split(currentitem, " ", TOK_SKIPEMPTY);
@@ -484,7 +484,7 @@ Class DIShop : DIShop_Base
 			maxsale += overpricesale;
 			if (maxsale > 0.9) {maxsale = 0.9;}
 			if (minsale > maxsale) {minsale = maxsale;}
-			float rtn = 1.0 - frandom(minsale, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
+			float rtn = 1.0 - frandom[dishop](minsale, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
 			salenum = rtn;
 			//console.printf("%.2f", rtn);
 		}

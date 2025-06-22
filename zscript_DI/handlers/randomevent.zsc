@@ -245,7 +245,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	virtual void PizzaHorde(DI_Monster thingy)
 	{
 		if (thingy is "PizzaSlicer") {return;}
-		if (random(0, pizzanum) == 0) 
+		if (random[dihandler](0, pizzanum) == 0) 
 		{
 			SendNetworkEvent("addwaveenemy PizzaSlicer 3 DISpawnerSpot_Flying");
 			++pizzanum;
@@ -256,7 +256,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	{
 		if (thingy is "DI_Boss") {return;}
 		if (thingy.spawnspotted = "") {return;}
-		if (random(0, risennum) == 0) 
+		if (random[dihandler](0, risennum) == 0) 
 		{
 			string cmd = string.format("addwaveenemy %s 1 %s", thingy.getclassname(), thingy.spawnspotted);
 			SendNetworkEvent(cmd);
@@ -268,7 +268,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	{
 		if (e.Replacee.GetClassName() == "Fred")
 		{
-			if (random(0, folionum) == 0)
+			if (random[dihandler](0, folionum) == 0)
 			{
 				e.Replacement = 'Fred2';
 				++folionum;
@@ -276,7 +276,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		}
 		else if (e.Replacee.GetClassName() == "Ron")
 		{
-			if (random(0, folionum) == 0)
+			if (random[dihandler](0, folionum) == 0)
 			{
 				e.Replacement = 'Ron2';
 				++folionum;

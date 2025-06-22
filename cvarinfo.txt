@@ -7,6 +7,7 @@ server bool di_testcvar = true; //test cvar pls ignore
 server bool di_autosave = false; //game will save at the end of every wave (not recommended)
 server noarchive bool di_musicloaded = false; //this cvar is set to true if the di-music addon is loaded.
 server float di_version = "0"; //used to check what the last version of DI you played.
+server noarchive int di_randomseed = 0; //controls the outcome of certain RNG events. if set to 0, gets changed to something else.
 
 //DI menu options
 user bool di_menu_dosave = false; //enable save/load options on main menu.

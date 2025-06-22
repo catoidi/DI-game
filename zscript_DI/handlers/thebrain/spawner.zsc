@@ -48,7 +48,7 @@ extend class DIHandler
 		{	
 			//Choose the enemy to spawn.
 			int spawnnum = -1;
-			do {spawnnum = random(0, spawnqueue.Size() - 1);} //choose a random available enemy.
+			do {spawnnum = random[dihandler](0, spawnqueue.Size() - 1);} //choose a random available enemy.
 			while (spotarray_names.Find(spawnqueue_spawner[spawnnum]) == spotarray_names.Size()); //reroll the random number until we get a valid spot.
 			name nextenemy = spawnqueue[spawnnum]; //record the enemy class name for future use.
 			name nextspawner = spawnqueue_spawner[spawnnum]; //record the spot the enemy wants to spawn from.
@@ -72,7 +72,7 @@ extend class DIHandler
 			
 			if (spotmatch.Size() != 0) 
 			{
-				int spotchoice = random(0, spotmatch.Size() - 1); //choose a random available spot.	
+				int spotchoice = random[dihandler](0, spotmatch.Size() - 1); //choose a random available spot.	
 				int spotchoice_int = spotmatch[spotchoice];
 				//console.printf("Spawning at: %s #%d", nextspawner, spotmatch[spotchoice]);
 				DISpawnerSpot chosenspot = DISpawnerSpot(spotarray[spotchoice_int]); //create a pointer to the chosen spot.

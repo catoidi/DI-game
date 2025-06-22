@@ -453,7 +453,7 @@ extend class DIHandler
 				if (eventwave > wavenum) {continue;} //don't do this event if the minimum wave check is not met.
 				int eventchance = eventline[3].ToInt(10);
 				if (eventchance < 0) {eventchance = 0;}
-				if (random(0, eventchance) <= lastevent) //only run this part if the RNG check passes.
+				if (random[dihandler](0, eventchance) <= lastevent) //only run this part if the RNG check passes.
 				{
 					currentevents.Push(eventdata[i]);
 				}
@@ -464,7 +464,7 @@ extend class DIHandler
 				//not multiplayer compatible cuz im lazy :p
 				let plr = DI_PlayerBase(players[consoleplayer].mo);
 			
-				int eventnum = random(1, currentevents.Size()) - 1;
+				int eventnum = random[dihandler](1, currentevents.Size()) - 1;
 				Array<string> eventline;
 				currentevents[eventnum].Split(eventline, ",", TOK_SKIPEMPTY);
 				if (eventline[1] == "acs") //activate an ACS script.
