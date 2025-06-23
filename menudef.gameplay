@@ -4,6 +4,8 @@ OptionMenu "DIGameplay"
 {
 	class "DITF_TooltipOptionMenu"
 	Title "Gameplay Options"
+	TextField "Set Random Seed", "di_randomseed"
+	Tooltip "Allows you to control the outcomes of RNG related to shop item pools, random events, waves, etc.\n\nNote that RNG values are also affected by your unlocks.\n\nDefault is '0', which selects a random seed every game."
 	StaticText ""
 	StaticText "Aim Assist", "Purple"
 	Option "Aim Assist Enabled","cl_aim_assist_enabled","OnOff"
