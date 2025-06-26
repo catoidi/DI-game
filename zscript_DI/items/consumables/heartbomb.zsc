@@ -27,6 +27,7 @@ Class DI_HeartBomb_Projectile : DI_ThrowBomb_Projectile
 	Default
 	{
 		+FORCEPAIN;
+		-EXTREMEDEATH;
 	}
 
 	States

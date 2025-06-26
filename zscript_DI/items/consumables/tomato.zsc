@@ -26,6 +26,7 @@ Class DI_Tomato_Projectile : DI_ThrowBomb_Projectile
 	Default
 	{
 		DamageFunction (80);
+		-EXTREMEDEATH;
 	}
 
 	override int DoSpecialDamage(Actor target, int damage, Name damagetype)

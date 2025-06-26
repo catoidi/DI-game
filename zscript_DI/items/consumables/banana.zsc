@@ -43,6 +43,7 @@ Class DI_Banana_Projectile : DI_ThrowBomb_Projectile
 		+BOUNCEONFLOORS;
 		+BOUNCEONCEILINGS;
 		+CANBOUNCEWATER;
+		-EXTREMEDEATH;
 	}
 	
 	override int SpecialBounceHit(Actor bounceMobj, Line bounceLine, readonly<SecPlane> bouncePlane)

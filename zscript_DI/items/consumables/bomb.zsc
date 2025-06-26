@@ -50,6 +50,7 @@ Class DI_ThrowBomb_Projectile : DI_Actor
 		+SPRITEANGLE;
 		+FORCEXYBILLBOARD;
 		+INTERPOLATEANGLES;
+		+EXTREMEDEATH;
 	}
 	
 	States
