@@ -22,7 +22,7 @@ Class DI_Banana : DI_ThrowBomb
 				if (invoker.owner is "DI_PlayerBase")
 				{
 					let plr = DI_PlayerBase(invoker.owner);
-					plr.DI_HealSelf(15, 2.0);
+					plr.DI_HealSelf(150, 2.0);
 					A_FireProjectile("DI_Banana_Projectile", 0, false);
 				}
 			}
