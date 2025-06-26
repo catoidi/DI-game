@@ -129,6 +129,7 @@ version "4.14"
 #include "zscript_DI/items/event/riskreward.zsc"
 #include "zscript_DI/items/event/speedrun.zsc"
 #include "zscript_DI/items/event/slowhealing.zsc"
+#include "zscript_DI/items/event/fatigue.zsc"
 //modifiers
 #include "zscript_DI/items/modifiers/doubletrouble.zsc"
 #include "zscript_DI/items/modifiers/debilitated.zsc"

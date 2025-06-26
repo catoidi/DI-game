@@ -327,3 +327,5 @@ dievent_speedrun = "\ctSpeedrun";
 dievent_speedrun_desc = "\cbIncrease Player/Weapon Speed by +30%.\n\caEnemies/Projectiles move 60% faster.";
 dievent_slowhealing = "\cgWorse Healing";
 dievent_slowhealing_desc = "\caRegen Speed is 50% slower.\nHealing Items heal 50% less.";
+dievent_fatigue = "\cgFatigue";
+dievent_fatigue_desc = "\caEach Fresh Kill grants -1.5% Weapon Speed.";

@@ -21,6 +21,7 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 	bool doriskreward; //+50% DMG to enemies, +200% DMG to player.
 	bool dospeedrun; //+30% player/weapon speed. +60% enemy speed.
 	bool doslowheal;
+	bool dofatigue;
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -106,6 +107,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			doslowheal = true;
 			plr.GiveInventory("DI_SlowHealing", 1);
+		}
+		else if (e.Name == "dievent_fatigue")
+		{
+			dofatigue = true;
+			plr.GiveInventory("DI_Fatigue", 1);
 		}
 	}
 	
@@ -213,6 +219,11 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		{
 			doslowheal = false;
 			plr.TakeInventory("DI_SlowHealing", 1);
+		}
+		if (dofatigue)
+		{
+			dofatigue = false;
+			plr.TakeInventory("DI_Fatigue", 1);
 		}
 	}
 	
