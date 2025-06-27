@@ -21,6 +21,7 @@ GameInfo
 	
 	AddEventHandlers = 
 		"DIHandler", //the main DI system, including monsters/spawners/waves/loot/etc.
+		"DI_DamageFlash",
 		"DIEventHandler", //random event handler.
 		"DIXHairHandler", //crosshair.
 		"DIItemHUDHandler", //The list of passive items at the top right of your HUD.

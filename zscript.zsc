@@ -28,6 +28,7 @@ version "4.14"
 //ui
 #include "zscript_DI/ui/mixin.zsc"
 #include "zscript_DI/ui/BoxHUD.zsc" //smh lazy dev copy/pasting code from their other game /s
+#include "zscript_DI/ui/damageflash.zsc"
 #include "zscript_DI/ui/crosshair.zsc"
 #include "zscript_DI/ui/itemhud.zsc"
 #include "zscript_DI/ui/popup.zsc"

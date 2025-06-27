@@ -15,6 +15,7 @@ class DI_PlayerHam : DI_PlayerBase
 		DI_PlayerBase.AutoBlacklist "Sledgehammer,DI_WhoppeeCushion";
 		DI_PlayerBase.PermaStart "Sledgehammer,DI_WhoppeeCushion";
 		BloodType "DI_HammerBlood";
+		+NOBLOODDECALS;
 	}
 	
 	States
