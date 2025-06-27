@@ -1,0 +1,19 @@
+extend class DIHandler
+{
+	virtual void DIRandomSeed(WorldEvent e)
+	{
+		int curseed = di_randomseed;
+		if (di_mod_dailyrun)
+		{
+			curseed = di_dailyseed;
+			console.printf("Daily Seed: %d", curseed);
+		}
+		else if (curseed == 0) {curseed = random[di](1, 2147483640);}
+		SetRandomSeed[dihandler](curseed); //RNG for event handlers and the like.
+		SetRandomSeed[dishop](curseed); //RNG for Shop-related actors.
+		SetRandomSeed[diplayer](curseed); //RNG for anything player related, including items and weapons.
+		SetRandomSeed[dienemy](curseed); //RNG for monster things.
+		SetRandomSeed[diworld](curseed); //RNG for world/decor things, like decorations or gibs.
+		SetRandomSeed[di](curseed); //RNG for misc things.
+	}
+}

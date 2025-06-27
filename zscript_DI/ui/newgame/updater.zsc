@@ -4,6 +4,10 @@ extend class DINewGameMenu
 {
 	virtual void DIUpdater()
 	{
+		cvar dailyseed = cvar.getcvar("di_dailyseed");
+		string today = SystemTime.Format("%Y%m%d", SystemTime.Now());
+		dailyseed.SetInt(today.ToInt(10));
+	
 		//console.printf("attempting to run cvar updater script...");
 		cvar prevversion = cvar.getcvar("di_version");
 		array<string> filedata;

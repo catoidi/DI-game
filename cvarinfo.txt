@@ -8,6 +8,7 @@ server bool di_autosave = false; //game will save at the end of every wave (not 
 server noarchive bool di_musicloaded = false; //this cvar is set to true if the di-music addon is loaded.
 server float di_version = "0"; //used to check what the last version of DI you played.
 server noarchive int di_randomseed = 0; //controls the outcome of certain RNG events. if set to 0, gets changed to something else.
+server noarchive int di_dailyseed = 0;
 
 //DI menu options
 user bool di_menu_dosave = false; //enable save/load options on main menu.
@@ -19,6 +20,8 @@ user noarchive int di_menu_current_skl = 0; //same as above, but for skill.
 user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (not implemented yet.)
 
 //Difficulty Modifiers
+server noarchive bool di_mod_dailyrun = false; //Enables the "Daily Run" mode.
+server cheat bool di_unlock_mod_dailyrun = true;
 server noarchive bool di_mod_doubletrouble = false; //Enables the "Double Trouble" mode.
 server cheat bool di_unlock_mod_doubletrouble = false; //grants the player access to the Double Trouble difficulty modifier.
 server noarchive bool di_mod_debilitated = false; //yea.
