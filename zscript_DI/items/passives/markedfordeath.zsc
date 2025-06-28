@@ -50,7 +50,7 @@ Class DI_DeathMark_Enemy : Inventory
 			{
 				if (newdamage + 1 >= owner.health)
 				{
-					newdamage += 101; //enemy will always gib on death.
+					newdamage += owner.GibHealth + 1; //enemy will always gib on death.
 				}
 			}
 		}
