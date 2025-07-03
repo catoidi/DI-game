@@ -28,12 +28,6 @@ Class DI_TooManyBullets : DIPassiveInventory
 		return plr.CountInv(GetClassName()) * -0.35;
 	}
 	
-	override double GiveAccuracy()
-	{
-		if (!plr) {return 0;}
-		return plr.CountInv(GetClassName()) * 3;
-	}
-	
 	States
 	{
 		Spawn:

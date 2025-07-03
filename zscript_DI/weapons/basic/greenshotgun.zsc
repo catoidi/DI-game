@@ -2,11 +2,14 @@
 
 CLASS GreenShotgun : DI_Weapon
 {
+	mixin DI_Spray_PureRandom;
+
 	Default
 	{
 		DI_Weapon.FreshBonus 3;
 		DI_Weapon.BaseDamage 80;
-		DI_Weapon.BaseAccuracy 5;
+		DI_Weapon.MaxSpread 0.625;
+		DI_Weapon.BonusSpread 0.625;
 		DI_Weapon.Projectiles 8;
 		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 4.0;

@@ -8,7 +8,10 @@ Class DoubleShotgun : GreenShotgun
 	{
 		DI_Weapon.FreshBonus 2;
 		DI_Weapon.BaseDamage 80;
-		DI_Weapon.BaseAccuracy 8;
+		DI_Weapon.BaseAccuracy 0;
+		DI_Weapon.MaxSpread 0.45;
+		DI_Weapon.BonusSpread 0.45;
+		DI_Weapon.Spread_Y 0.5;
 		DI_Weapon.Projectiles 18;
 		DI_Weapon.PlayerSpeed -0.1;
 		DI_Weapon.Recoil 10.0;

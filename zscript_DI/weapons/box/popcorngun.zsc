@@ -36,6 +36,7 @@ CLASS PopcornGunAmmo2 : Ammo
 CLASS PopcornGun : DI_Weapon //200
 {
 	//popcorngun shoot very fast boolet
+	mixin DI_Spray_Progressive;
 
 	Default
 	{
@@ -45,7 +46,8 @@ CLASS PopcornGun : DI_Weapon //200
 		DI_Weapon.BaseDamage 130;
 		DI_Weapon.Ammo1HUD 1;
 		DI_Weapon.Ammo2HUD 1;
-		DI_Weapon.BaseAccuracy 3;
+		DI_Weapon.MaxSpread 3;
+		DI_Weapon.BonusSpread 3;
 		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 1;
 		DI_Weapon.RecoilRecover 2;

@@ -6,13 +6,17 @@ Class DI_Weapon : Weapon abstract
 	int wpn_damage; //the base damage of the weapon. by default, this gets multiplied by damagemult.
 	double damagemult; //the damage multiplier. this is usually only used by passive items.
 	double wpn_accuracy; //the base accuracy of the weapon. lower numbers are more accurate.
+	double wpn_maxspread; //scales the maximum "spread value" between each projectile. used for shotgun sprays.
+	double wpn_spread_bonus; //extra spread given for every projectile on the weapon, excluding the first projectile.
+	double wpn_spread_x; //multiplier of spread in the X coordinate.
+	double wpn_spread_y; //multiplier of spread in the Y coordinate.
 	double wpn_recoil; //how much recoil is added to the accuracy per shot. can be negative.
 	double wpn_recoil_recover; //how fast the recoil recovers. smaller weapons should recover faster.
 	double wpn_recoil_offset; //with autooffset enabled, the weapon's recoil offset gets multiplied by this amount.
 	int wpn_recoil_offset_x; //multiply the autooffset of the x axis. defaults to -1, for left-handed weapons.
 	int wpn_recoil_offset_y; //same as above, but for the y axis instead. defaults to 1, to make the recoil push the weapon downwards.
 	bool wpn_autooffset; //enables/disables the autooffset feature, where the weapon sprite will match the recoil amount.
-	int wpn_projectiles; //how many bullets/projectiles are spawned per shot.
+	uint wpn_projectiles; //how many bullets/projectiles are spawned per shot.
 	double wpn_bulletsize; //projectile size.
 	bool wpn_dontgiveammo1; //tells items to NOT give this weapon it's first ammo type.
 	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
@@ -50,6 +54,10 @@ Class DI_Weapon : Weapon abstract
 	property BaseDamage: wpn_damage;
 	property DamageMult: damagemult;
 	property BaseAccuracy: wpn_accuracy;
+	property MaxSpread: wpn_maxspread;
+	property BonusSpread: wpn_spread_bonus;
+	property Spread_X: wpn_spread_x;
+	property Spread_Y: wpn_spread_y;
 	property Recoil: wpn_recoil;
 	property RecoilRecover: wpn_recoil_recover;
 	property RecoilOffset: wpn_recoil_offset;
@@ -91,6 +99,10 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.BaseDamage 0;
 		DI_Weapon.DamageMult 1.0;
 		DI_Weapon.BaseAccuracy 0;
+		DI_Weapon.MaxSpread 0.0;
+		DI_Weapon.BonusSpread 0.0;
+		DI_Weapon.Spread_X 1.0;
+		DI_Weapon.Spread_Y 1.0;
 		DI_Weapon.Recoil 0;
 		DI_Weapon.RecoilRecover 0.5;
 		DI_Weapon.RecoilOffset 4.0;
@@ -207,6 +219,10 @@ Class DI_Weapon : Weapon abstract
 		wpn_extracoin = Default.wpn_extracoin;
 		wpn_freshbonus = Default.wpn_freshbonus;
 		wpn_accuracy = Default.wpn_accuracy;
+		wpn_maxspread = Default.wpn_maxspread;
+		wpn_spread_bonus = Default.wpn_spread_bonus;
+		wpn_spread_x = Default.wpn_spread_x;
+		wpn_spread_y = Default.wpn_spread_y;
 		wpn_recoil = Default.wpn_recoil;
 		wpn_recoil_recover = Default.wpn_recoil_recover;
 		wpn_projectiles = Default.wpn_projectiles;
@@ -242,6 +258,10 @@ Class DI_Weapon : Weapon abstract
 				wpn_extracoin += curinv.GiveExtraCoin();
 				wpn_freshbonus += curinv.GiveFreshBonus();
 				wpn_accuracy += curinv.GiveAccuracy();
+				wpn_maxspread *= curinv.GiveMaxSpread();
+				wpn_spread_bonus += curinv.GiveBonusSpread();
+				wpn_spread_x *= curinv.GiveSpreadX();
+				wpn_spread_y *= curinv.GiveSpreadY();
 				wpn_recoil += curinv.GiveRecoil();
 				wpn_recoil_recover += curinv.GiveRecoilRecover();
 				double finalaccuracy = wpn_accuracy + current_recoil;
@@ -272,6 +292,10 @@ Class DI_Weapon : Weapon abstract
 				if (replacesound != "") {gunsound = replacesound;}
 			}
 		}
+		
+		//apply bonus spread to total spread
+		if (wpn_projectiles > 1) {wpn_maxspread += wpn_spread_bonus * (wpn_projectiles - 1);}
+		
 		plr_maxhp += 0.0000001;
 		maxammouse = CalculateAmmoCost();
 		
@@ -468,7 +492,12 @@ Class DI_Weapon : Weapon abstract
 		DI_FireProjectile("DI_Tracer", ammouse: useammo, spawnofs_xy: -4);
 	}
 	
-	action void DI_BasicBullet(int dmgnum = 0, bool useammo = true, string defpuff = "DI_BulletPuff", bool isRecoil = true)
+	clearscope virtual vector2 DI_SprayPattern(uint startspray = 0, double spreadscale = 1.0)
+	{
+		return (0.0, 0.0);
+	}
+	
+	action void DI_BasicBullet(int dmgnum = 0, bool useammo = true, string defpuff = "DI_BulletPuff", bool isRecoil = true, bool dospread = true, uint startspray = 0, double sprayscale = 1.0)
 	{
 		//DEPRECATED.
 		//Using projectiles instead of hitscans allows for more potential interactions with Passive Items.
@@ -492,7 +521,11 @@ Class DI_Weapon : Weapon abstract
 		int bulnum = invoker.wpn_projectiles;
 		if (bulnum == 1) {bulnum = -1;} //stop that hard-coded thing in a_firebullets that'll ignore accuracy values for the first bullet if the gun only fires 1 bullet.
 		
-		A_FireBullets(invoker.wpn_accuracy + invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil, bulnum, dmgnum, defpuff, bflag);
+		for (int i = 0; i < invoker.wpn_projectiles; ++i)
+		{
+			vector2 spraypattern = invoker.DI_SprayPattern(startspray + i, sprayscale); //does not actually respect spray patterns, simply adds them to final accuracy calculation
+			A_FireBullets(spraypattern.x + invoker.wpn_accuracy + invoker.current_recoil, spraypattern.y + invoker.wpn_accuracy + invoker.current_recoil, -1, dmgnum, defpuff, bflag);
+		}
 		invoker.plr.justfired = true;
 		
 		if (isRecoil) 
@@ -528,7 +561,7 @@ Class DI_Weapon : Weapon abstract
 		}
 	}
 	
-	action void DI_FireProjectile(class<Actor> missiletype, int projectiles = -32768, double angle = -32768, int ammouse = -32768, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0, double pitch = -32768, bool isRecoil = true)
+	action void DI_FireProjectile(class<Actor> missiletype, int projectiles = -32768, double angle = -32768, int ammouse = -32768, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0, double pitch = -32768, bool isRecoil = true, bool dospread = true, uint startspray = 0, double sprayscale = 1.0)
 	{
 		//this function implies that you have already done your own ammo check beforehand.
 		//it also implies that invoker.bAltFire is set correctly.
@@ -538,14 +571,15 @@ Class DI_Weapon : Weapon abstract
 		if (projectiles == -32768) {projectiles = invoker.wpn_projectiles;}
 		if (ammouse == -32768) {ammouse = invoker.AmmoUse1;}
 		
+		double randomangle = angle;
+		double randompitch = pitch;
+		if (angle == -32768) {randomangle = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
+		if (pitch == -32768) {randompitch = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
 		for (int i = 0; i < projectiles; ++i)
 		{
-			double randomangle = angle;
-			double randompitch = pitch;
-			if (angle == -32768) {randomangle = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
-			if (pitch == -32768) {randompitch = frandom(-invoker.wpn_accuracy - invoker.current_recoil, invoker.wpn_accuracy + invoker.current_recoil);}
+			vector2 spraypattern = (dospread) ? invoker.DI_SprayPattern(startspray + i, sprayscale) : (0, 0);
 		
-			A_FireProjectile(missiletype, randomangle, false, spawnofs_xy, spawnheight, flags, randompitch);
+			A_FireProjectile(missiletype, randomangle + spraypattern.x, false, spawnofs_xy, spawnheight, flags, randompitch + spraypattern.y);
 			invoker.plr.justfired = true;
 		}
 
