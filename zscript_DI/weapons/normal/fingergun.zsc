@@ -2,6 +2,8 @@
 
 Class FingerGun : DI_Weapon
 {
+	mixin DI_Spray_Progressive;
+
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
@@ -9,7 +11,8 @@ Class FingerGun : DI_Weapon
 		DI_Weapon.Recoil 12.0;
 		DI_Weapon.RecoilRecover 0.5;
 		DI_Weapon.RecoilOffset 2.0;
-		DI_Weapon.BaseAccuracy 4;
+		DI_Weapon.MaxSpread 4;
+		DI_Weapon.BonusSpread 4;
 		Weapon.Kickback 500;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 1;

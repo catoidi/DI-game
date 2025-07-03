@@ -34,6 +34,13 @@ Class DI_Jumpshot : DIPassiveInventory
 		}
 	}
 	
+	override double GiveMaxSpread()
+	{
+		if (!plr) {return 1.0;}
+		if (!givedmg) {return 1.0;}
+		return 1.0 - (0.1 * plr.CountInv(self.GetClassName()));
+	}
+	
 	States
 	{
 		Spawn:

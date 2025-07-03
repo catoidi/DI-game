@@ -8,8 +8,9 @@ CLASS GreenShotgun : DI_Weapon
 	{
 		DI_Weapon.FreshBonus 3;
 		DI_Weapon.BaseDamage 80;
-		DI_Weapon.MaxSpread 0.625;
-		DI_Weapon.BonusSpread 0.625;
+		DI_Weapon.BaseAccuracy 1;
+		DI_Weapon.MaxSpread 0.5;
+		DI_Weapon.BonusSpread 0.5;
 		DI_Weapon.Projectiles 8;
 		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 4.0;

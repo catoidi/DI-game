@@ -18,7 +18,8 @@ CLASS GlowstickPower : Inventory
 CLASS Glowstick : DI_Weapon //20010
 {
 	//literally the glowstick copy/pasted from box party, but with some things like color translation stuff removed.
-
+	mixin DI_Spray_Progressive;
+	
 	Default
 	{
 		Radius 20;
@@ -26,6 +27,8 @@ CLASS Glowstick : DI_Weapon //20010
 		DI_Weapon.FreshBonus 4;
 		DI_Weapon.BaseDamage 300;
 		DI_Weapon.BaseAccuracy 2;
+		DI_Weapon.MaxSpread 2;
+		DI_Weapon.BonusSpread 4;
 		DI_Weapon.AutoOffset false;
 		DI_Weapon.Ammo1HUD 1;
 		Weapon.SelectionOrder 9999;

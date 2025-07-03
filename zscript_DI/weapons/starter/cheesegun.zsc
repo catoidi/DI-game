@@ -2,6 +2,8 @@
 
 Class CheeseGun : DI_Weapon
 {
+	mixin DI_Spray_PureRandom;
+	
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
@@ -10,7 +12,9 @@ Class CheeseGun : DI_Weapon
 		DI_Weapon.Recoil 10;
 		DI_Weapon.RecoilRecover 0.5;
 		DI_Weapon.RecoilOffset 1.5;
-		DI_Weapon.BaseAccuracy 5;
+		DI_Weapon.BaseAccuracy 1.5;
+		DI_Weapon.MaxSpread 3;
+		DI_Weapon.BonusSpread 1;
 		DI_Weapon.Ammo2HUD 3;
 		Weapon.Kickback 0;
 		Weapon.SelectionOrder 10000;

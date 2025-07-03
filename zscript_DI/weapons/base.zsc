@@ -248,6 +248,7 @@ Class DI_Weapon : Weapon abstract
 		shop_debtmult = Default.shop_debtmult;
 		gunsound = Default.gunsound;
 		
+		double spreadmult = 1.0;
 		for (int i = 0; i < plr.knownpassives.Size(); ++i)
 		{
 			DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
@@ -258,14 +259,12 @@ Class DI_Weapon : Weapon abstract
 				wpn_extracoin += curinv.GiveExtraCoin();
 				wpn_freshbonus += curinv.GiveFreshBonus();
 				wpn_accuracy += curinv.GiveAccuracy();
-				wpn_maxspread *= curinv.GiveMaxSpread();
+				spreadmult *= curinv.GiveMaxSpread();
 				wpn_spread_bonus += curinv.GiveBonusSpread();
 				wpn_spread_x *= curinv.GiveSpreadX();
 				wpn_spread_y *= curinv.GiveSpreadY();
 				wpn_recoil += curinv.GiveRecoil();
 				wpn_recoil_recover += curinv.GiveRecoilRecover();
-				double finalaccuracy = wpn_accuracy + current_recoil;
-				if (finalaccuracy < 0.0) {wpn_accuracy += -finalaccuracy;}
 				wpn_projectiles += curinv.GiveProjectiles();
 				wpn_bulletsize += curinv.GiveBulletSize();
 				if (wpn_bulletsize < 0.1) {wpn_bulletsize = 0.1;}
@@ -294,7 +293,12 @@ Class DI_Weapon : Weapon abstract
 		}
 		
 		//apply bonus spread to total spread
+		wpn_maxspread *= spreadmult;
+		wpn_spread_bonus *= spreadmult;
 		if (wpn_projectiles > 1) {wpn_maxspread += wpn_spread_bonus * (wpn_projectiles - 1);}
+		
+		double finalaccuracy = wpn_accuracy + current_recoil;
+		if (finalaccuracy < 0.0) {wpn_accuracy += -finalaccuracy;}
 		
 		plr_maxhp += 0.0000001;
 		maxammouse = CalculateAmmoCost();

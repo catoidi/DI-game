@@ -13,7 +13,8 @@ CLASS BlueSMG : DI_Weapon
 		DI_Weapon.PlayerSpeed -0.05;
 		DI_Weapon.Recoil 2.0;
 		DI_Weapon.RecoilRecover 1.0;
-		DI_Weapon.MaxSpread 3;
+		DI_Weapon.BaseAccuracy 3;
+		DI_Weapon.MaxSpread 0;
 		DI_Weapon.BonusSpread 2;
 		Weapon.Kickback 100;
 		Weapon.SelectionOrder 10000;

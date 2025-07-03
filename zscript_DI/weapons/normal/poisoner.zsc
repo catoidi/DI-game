@@ -2,6 +2,8 @@
 
 Class PoisonGun : DI_Weapon
 {
+	mixin DI_Spray_Progressive;
+	
 	Default
 	{
 		DI_Weapon.FreshBonus 4;
@@ -9,7 +11,8 @@ Class PoisonGun : DI_Weapon
 		DI_Weapon.Recoil 1.5;
 		DI_Weapon.RecoilRecover 1.25;
 		DI_Weapon.RecoilOffset 1.5;
-		DI_Weapon.BaseAccuracy 3;
+		DI_Weapon.MaxSpread 3;
+		DI_Weapon.BonusSpread 1.25;
 		Weapon.Kickback 500;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 1;

@@ -6,20 +6,26 @@ Class DI_SprayNPray : DIPassiveInventory
 	{
 		Tag "Spray n' Pray";
 		Inventory.Icon "POW2O0";
-		Inventory.PickupMessage "Spray n' Pray acquired! (Accuracy is reduced. Gain up to 15% Firerate as your accuracy worsens.)";
+		Inventory.PickupMessage "Spray n' Pray acquired! (Accuracy/Spread is reduced. Gain up to 15% Firerate as your accuracy worsens.)";
 		Inventory.MaxAmount 4;
 	}
 	
 	override double GiveAccuracy()
 	{
 		if (!plr) {return 0.0;}
-		return 3.0 * plr.CountInv(self.GetClassName());
+		return 1.5 * plr.CountInv(self.GetClassName());
+	}
+	
+	override double GiveMaxSpread()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.15 * plr.CountInv(self.GetClassName()));
 	}
 	
 	override double GiveFirerate()
 	{
 		if (!plr || !wpn) {return 0.0;}
-		double returnvalue = 0.01 * plr.CountInv(self.GetClassName()) * (wpn.wpn_accuracy + wpn.current_recoil);
+		double returnvalue = 0.01 * plr.CountInv(self.GetClassName()) * (wpn.wpn_accuracy + wpn.current_recoil + wpn.wpn_maxspread);
 		double maxvalue = 0.15 * plr.CountInv(self.GetClassName());
 		if (returnvalue > maxvalue) {returnvalue = maxvalue;}
 		return -returnvalue;
