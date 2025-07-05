@@ -20,7 +20,19 @@ Class DI_PlayerBase : PlayerPawn abstract
 		Player.Colorset 0, "$TXT_COLOR_GREEN", 144, 191, 144;
 		Player.Colorset 1, "$TXT_COLOR_RED", 96, 143, 96;
 		Player.Colorset 2, "$TXT_COLOR_BLUE", 192, 239, 192;
+		DI_PlayerBase.ppawn_isoyaw 225;
+		DI_PlayerBase.ppawn_isodist 300;
+		DI_PlayerBase.ppawn_isopitch 30;
 	}
+	
+	//isometric stuff
+	int diffangle, face_cam_mult, ppawn_camflags;
+	double ppawn_isoyaw, ppawn_isodist, ppawn_isopitch;
+	Actor ppawn_isocamera;
+	property ppawn_isoyaw : ppawn_isoyaw;
+	property ppawn_isodist : ppawn_isodist;
+	property ppawn_isopitch : ppawn_isopitch;
+	property ppawn_isocamera : ppawn_isocamera;
 	
 	string autoblacklist;
 	string permastart;
@@ -85,6 +97,26 @@ Class DI_PlayerBase : PlayerPawn abstract
 	{
 		Super.PostBeginPlay();
 		
+		//isometric stuff
+		if (di_isometric)
+		{
+			ViewBob = 0.0;
+			FlyBob = 0.0;
+			bISOMETRICSPRITES = true;
+			
+			face_cam_mult = 1;
+			ppawn_camflags = VPSF_ABSOLUTEOFFSET | VPSF_ALLOWOUTOFBOUNDS | VPSF_ORTHOGRAPHIC;
+			if(player.camera == player.mo) // Setup isometric camera
+			{
+				player.camera = SpectatorCamera(Actor.Spawn("SpectatorCamera", pos));
+				player.camera.player = player; // Necessary for pain and pickup screen flashes. Adds viewbob too.
+				ppawn_isocamera = player.camera; // Store pointer, in case you lose it
+				player.camera.tracer = player.mo; // Do you want the camera to follow any actor? Set it as tracer here.
+				player.camera.player = player; // Necessary for pain and pickup screen flashes. Adds viewbob too.
+				SpectatorCamera(player.camera).Init(ppawn_isodist, ppawn_isoyaw, ppawn_isopitch, ppawn_camflags);
+			}
+		}
+		
 		int ThisLump = Wads.FindLump("DIWIPE", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DIWIPE", ThisLump + 1, Wads.ANYNAMESPACE);
 		
@@ -101,6 +133,13 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	override void Tick(void)
 	{
+		if (di_isometric)
+		{
+			diffangle = deltaangle(angle, ppawn_isoyaw);
+			if (abs(diffangle) > 90) face_cam_mult = -1;
+			else face_cam_mult = 1;
+		}
+		
 		Super.Tick();
 		
 		if (self.health > 0)
@@ -161,6 +200,25 @@ Class DI_PlayerBase : PlayerPawn abstract
 		}
 		
 		if (killtic > 0) {killtic = 0;}
+	}
+	
+	override void MovePlayer ()
+	{
+		if (di_isometric)
+		{
+			UserCmd cmd = player.cmd;
+			let player = self.player;
+			A_SetPitch(0); // Cancel pitch modification here
+
+			cmd.yaw -= GetPlayerInput(INPUT_YAW); // Cancel default mouse-turn first
+		  
+			if(diffangle > 45 && diffangle < 135) cmd.yaw += 3*GetPlayerInput(INPUT_PITCH);
+			else if(diffangle > -135 && diffangle < -45) cmd.yaw -= 3*GetPlayerInput(INPUT_PITCH);
+
+			if(abs(diffangle) < 80 || abs(diffangle) > 100) cmd.yaw += face_cam_mult*GetPlayerInput(INPUT_YAW);
+		}
+		
+		Super.MovePlayer();
 	}
 	
 	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)

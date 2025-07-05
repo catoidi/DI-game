@@ -28,6 +28,10 @@ class DIXHairHandler : EventHandler
 	transient DI_PlayerBase diplayer; //the current console player.
 	transient ui bool showwheel; //is the weapon wheel active on this tic?
 	
+	transient ui bool doisometric;
+	transient ui double isoyaw, playeryaw, diffangle;
+	transient ui int cosine, sine, cursordist;
+	
 	override void WorldLoaded(WorldEvent e)
 	{
 		xhair_dottex = TexMan.CheckForTexture("graphics/dixhair_dot.png");
@@ -45,6 +49,36 @@ class DIXHairHandler : EventHandler
 	{
 		if (diwep && diplayer)
 		{
+			if (di_isometric)
+			{
+				if (!doisometric)
+				{
+					cursordist = 75 * CleanXFac;
+					cosine = 0; sine = 0;
+					doisometric = true;
+				}
+				isoyaw = diplayer.ppawn_isoyaw;
+				playeryaw = diplayer.angle;
+				diffangle = diplayer.deltaangle(playeryaw, isoyaw);
+				cosine = (int)(-0.5*cursordist*Cos(diffangle));
+				sine = (int)(cursordist*Sin(diffangle));
+				if(diplayer.player.camera != NULL && diplayer.player.camera.tracer != NULL)
+				{
+					if(diplayer.player.camera.ViewPos.Flags & VPSF_ORTHOGRAPHIC)
+					{ // If using orthographic projection
+						Vector3 playerdisp = diplayer.player.camera.tracer.pos - diplayer.player.camera.pos;
+						diffangle = diplayer.deltaangle(playerdisp.Angle(), isoyaw);
+						// Translate game/map (x, y, z) position into screen (x, y) location
+						double xproj = 320/players[consoleplayer].camera.ViewPos.offset.length();
+						double yproj = Sin(diplayer.player.camera.pitch)*xproj;
+						double zproj = Cos(diplayer.player.camera.pitch)*xproj;
+						cosine -= (int)(playerdisp.xy.length()*Cos(diffangle)*yproj);
+						cosine -= (int)(playerdisp.z*zproj);
+						sine += (int)(playerdisp.xy.length()*Sin(diffangle)*xproj);
+					}
+				}
+			}
+		
 			if (diplayer.Health > 0)
 			{ 
 				if (xhair_startalpha < 1.0) {xhair_startalpha += 0.1;}
@@ -104,7 +138,12 @@ class DIXHairHandler : EventHandler
 		{
 			double cenx = screen.GetWidth() / 2;
 			double ceny = screen.GetHeight() / 2;
-			if (xhair_precise_toggle.GetBool() == true) //mod compatibility with Precise Crosshair.
+			if (doisometric)
+			{
+				cenx += sine;
+				ceny += cosine;
+			}
+			else if (xhair_precise_toggle.GetBool() == true) //mod compatibility with Precise Crosshair.
 			{
 				newy = xhair_precise.GetFloat();
 				ceny = oldy + ((newy - oldy) * e.FracTic);

@@ -42,6 +42,8 @@ DI_MOD_DAILYRUN = "Daily Challenge";
 DIMODDESC_DI_MOD_DAILYRUN = "Play the same run again and again, changes everyday. \cvInfluenced by your current unlocks.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DEBILITATED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DEBILITATED = "Debilitated";
+DI_ISOMETRIC = "Isometric Mode";
+DIMODDESC_DI_ISOMETRIC = "Grants a new perspective on life.\n\Aim Assist is recommended.\n\caWarning: Contains jank.";
 
 //Credits
 DI_CREDIT_TITLE = "\cbCredits:";

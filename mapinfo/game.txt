@@ -21,6 +21,7 @@ GameInfo
 	
 	AddEventHandlers = 
 		"DIHandler", //the main DI system, including monsters/spawners/waves/loot/etc.
+		"DIIsometricHandler", //isometric camera handler.
 		"DI_DamageFlash",
 		"DIEventHandler", //random event handler.
 		"DIXHairHandler", //crosshair.

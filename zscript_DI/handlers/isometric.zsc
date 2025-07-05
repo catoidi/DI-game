@@ -1,0 +1,247 @@
+//zscript_DI/handlers/isometric.zsc
+
+Class DIIsometricHandler : EventHandler
+{
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (di_isometric)
+		{
+			Level.ReplaceTextures(Texman.GetName(skyflatnum), "SKY1", TexMan.NOT_FLOOR); // Don't render sky from ceiling
+		}
+	}
+	
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (di_isometric)
+		{
+			if (e.Thing is "DI_PlayerBase")
+			{
+				e.Thing.GiveInventory("IsometricMovement", 1);
+				e.Thing.A_SpawnItemEX("DI_LaserSight", flags: SXF_SETTARGET | SXF_NOCHECKPOSITION);
+			}
+			if (e.Thing is "DI_Pickup")
+			{
+				e.Thing.bWALLSPRITE = false;
+				e.Thing.bISOMETRICSPRITES = true;
+			}
+		}
+	}
+}
+
+
+
+class IsometricMovement : CustomInventory
+{
+	int diffangle, face_cam_mult, oldcmdyaw, oldsidemove, oldforwardmove;
+	bool sidedownfacecam, fwddownfacecam;
+	double isoyaw;
+	
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.UNCLEARABLE
+		+INVENTORY.AUTOACTIVATE
+	}
+
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		// ChangeStatNum(Thinker.STAT_PLAYER - 1); // For performance (dangerous code)
+	}
+  
+	bool bIsInPain(void)
+	{
+		return false;
+	
+		State PainState = Owner.FindState('Pain');
+		if (PainState != NULL && Owner.InStateSequence(Owner.CurState, PainState))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (Owner && Owner is "DI_PlayerBase" && Owner.player)
+		{
+		  let diplr = DI_PlayerBase(Owner);
+		  isoyaw = diplr.ppawn_isoyaw;
+		}
+		face_cam_mult = 1;
+		oldcmdyaw = 0;
+		oldsidemove = 0;
+		oldforwardmove = 0;
+		sidedownfacecam = false;
+		fwddownfacecam = false;
+	}
+
+	//===========================================================================
+	//
+	//
+	//
+	//===========================================================================
+
+	void MoveRelativeToCamera(UserCmd cmd)
+	{
+		double fm = 0;
+		double sm = 0;
+		let player = Owner.player;
+
+		if (!bIsInPain())
+		{
+		    [fm, sm] = PlayerPawn(Owner).TweakSpeeds(cmd.forwardmove, cmd.sidemove);
+		    sm *= Owner.Speed / 256.;
+		    fm *= Owner.Speed / 256.;
+		    if (PlayerPawn(Owner).CanCrouch() && player.crouchfactor != 1)
+		    {
+		      sm *= player.crouchfactor;
+		      fm *= player.crouchfactor;
+		    }
+		    double friction, movefactor;
+		    [friction, movefactor] = PlayerPawn(Owner).GetFriction();
+		    if (!player.onground && !Owner.bNoGravity && !waterlevel) movefactor *= level.aircontrol;
+		    sm *= movefactor * (35 / TICRATE);
+		    fm *= movefactor * (35 / TICRATE);
+			// cancel old move
+			if (fm)
+			{
+				Owner.Vel.X -= fm * Cos(Owner.angle);
+				Owner.Vel.Y -= fm * Sin(Owner.angle);
+			}
+		    if (sm)
+		    {
+		      let a = Owner.angle - 90.0;
+		      Owner.Vel.X -= sm * Cos(a);
+		      Owner.Vel.Y -= sm * Sin(a);
+		    }
+			// apply new move
+			if (fm != 0 || sm != 0)
+			{
+				double camyaw = isoyaw;
+				Owner.Vel.X += fm * Cos(camyaw) + sm * Sin(camyaw);
+				Owner.Vel.Y += - sm * Cos(camyaw) + fm * Sin(camyaw);
+			}
+		}
+	}
+
+	override void Tick(void)
+	{
+		if (!(Owner && Owner is "PlayerPawn"))
+		{
+			destroy(); return;
+		}
+
+		if (!automapactive && Owner && Owner is "PlayerPawn" && Owner.player) // Remap controls for isometric mode
+		{
+		  let player = Owner.player;
+		  UserCmd cmd = player.cmd;
+		  diffangle = Owner.deltaangle(Owner.angle, isoyaw);
+		  if (abs(diffangle) > 90) face_cam_mult = -1; // Player is facing camera
+		  else face_cam_mult = 1; // Player is facing away from camera
+
+		/*
+		  Owner.angle -= cmd.yaw * (360/65536.f); // Cancel default mouse-turn first
+		  float newyaw = 0;
+
+ 		  if(diffangle >= 0) newyaw += cmd.pitch;
+		  else if(diffangle < 0) newyaw -= cmd.pitch;
+		  if(diffangle > 45 && diffangle < 135) newyaw += 2*cmd.pitch;
+		  else if(diffangle > -135 && diffangle < -45) newyaw -= 2*cmd.pitch;
+ 
+		  newyaw += 2*face_cam_mult*cmd.yaw;
+		  float absdiff = abs(diffangle);
+		  oldcmdyaw = cmd.yaw;
+
+		  Owner.angle += newyaw * (360./65536.);
+		*/
+
+		  // Reverse side-movement (strafing) control mapping
+		  bool keychange = (oldsidemove != cmd.sidemove) || (oldforwardmove != cmd.forwardmove);
+		  if (keychange)
+		  {
+		    if ((abs(diffangle) > 112.5) && (oldsidemove == 0)) sidedownfacecam = true;
+		    else sidedownfacecam = false;
+		    if ((abs(diffangle) > 112.5) && (oldforwardmove == 0)) fwddownfacecam = true;
+		    else fwddownfacecam = false;
+		  }
+
+		  MoveRelativeToCamera(cmd);
+
+		  oldsidemove = cmd.sidemove;
+		  oldforwardmove = cmd.forwardmove;
+		}
+
+		Super.Tick();
+	}
+
+	//===========================================================================
+	//
+	//
+	//
+	//===========================================================================
+	States
+	{
+	Use:
+		TNT1 A 0;
+		Fail;
+	Pickup:
+		TNT1 A 0
+		{
+			return true;
+		}
+		Stop;
+	}
+}
+
+class DI_LaserSight : DI_Actor
+{
+	DI_PlayerBase plr;
+	
+	default
+	{
+		Radius 0;
+		Height 0;
+		Scale 0.25;
+		Alpha 0.6;
+		Renderstyle "Translucent";
+		-SOLID;
+		+BRIGHT;
+		+NOGRAVITY;
+		+NOINTERACTION;
+		+NOBLOCKMAP;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		plr = DI_PlayerBase(target);
+		if (!plr) {destroy(); return;}
+		A_AttachLightDef("glower", "GLOWRED");
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (plr)
+		{
+			FLineTraceData bdata;
+			plr.LineTrace(plr.angle, 256, plr.pitch, TRF_SOLIDACTORS, (plr.player.mo.height * 0.5) - plr.player.mo.floorclip + (plr.player.mo.AttackZOffset*plr.player.crouchFactor), 0, 0, bdata);
+			vector3 newpos = bdata.HitLocation;
+			
+			SetOrigin(newpos, true);
+		}
+	}
+	
+	states
+	{
+		Spawn:
+			RONN E -1;
+			Stop;
+	}
+}

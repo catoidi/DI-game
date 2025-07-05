@@ -148,8 +148,10 @@ class NashHPBarPlugin : Inventory
 			currentAimTarget = NULL;
 			return;
 		}
-
-		let at = GetAimTarget(Owner.player.camera);
+		
+		let tar = Owner.player.camera;
+		if (di_isometric) {tar = Owner;}
+		let at = GetAimTarget(tar);
 		bool isLiveTarget = (at && at.bIsMonster) || (at && at.bFriendly) || at is "PlayerPawn" || (at is "DIShop_Base" && targetDistance <= 128) || (at is "DI_QuestGiver" && targetDistance <= 128) || (at is "DIFakeShop" && targetDistance <= 128);
 		if (isLiveTarget || at == NULL)
 		{
