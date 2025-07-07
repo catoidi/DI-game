@@ -42,7 +42,7 @@ Class DI_QuestObjective_BloodDrive : DI_QuestObjective
 	override string QuestName() {return "Blood Drive";}
 	override string QuestProgress()
 	{
-		if (queststarted) {return string.format("Health Remaining: \ca%d/40.0", expectedhp - minhp);}
+		if (queststarted) {return string.format("Health Remaining: \ca%.1f/40.0", (0.1 * expectedhp) - minhp);}
 		else {return "N/A";}
 	}
 }
