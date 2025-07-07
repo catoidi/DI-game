@@ -15,13 +15,13 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	cvar curlvl_cvar, curplr_cvar, curskl_cvar;
 	
-	bool pageupdate, justkeyed;
+	bool pageupdate, justkeyed, cheatmode;
 	
 	int pagenum, pagenum_tick, keypos, curkey;
 	
 	string playername, levelname; //for finding high scores with.
 	double heartalpha;
-	int hearttimer, modsactive;
+	int hearttimer, modsactive, cheatmodsactive;
 	
 	Font bigFont, smallFont;
 	boxparty_ZF_Image background, plrinfo;
@@ -35,7 +35,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	boxparty_ZF_BoxImage keyboardselect, modselect;
 	
 	Array<String> filedata; //all the lines from DIGAME.
-	Array<String> playerpool, playerlock, levelpool, levellock, modpool, modlock; //all available players. does not include players that are locked.
+	Array<String> playerpool, playerlock, levelpool, levellock, modpool, modlock, cheatmodpool; //all available players. does not include players that are locked.
 	
 	transient cvar currentcvar;
 	
@@ -354,8 +354,9 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 					else {levellock.Push("u");}
 					//console.printf("%s", currentline[2]);
 				}
-				else if ((currentline[1] == "modifier") && (currentline[2]))
+				else if (((currentline[1] == "modifier") || (currentline[1] == "cheatmod")) && (currentline[2]))
 				{
+					if (currentline[1] == "cheatmod") {cheatmodpool.Push(currentline[2]);}
 					modpool.Push(currentline[2]);
 					if (currentline.Size() == 4) 
 					{

@@ -2,6 +2,8 @@
 
 Class DIKillTracker : EventHandler
 {
+	bool canprogress;
+
 	array<string> currentkills, queuedkills, cvarunlocks;
 	transient cvar killcvar;
 	
@@ -10,62 +12,74 @@ Class DIKillTracker : EventHandler
 	
 	override void WorldLoaded(WorldEvent e)
 	{
-		killcvar = cvar.getcvar("di_playerkills");
-		string cvarstring = killcvar.GetString();
-		cvarstring.Split(currentkills, ",");
+		canprogress = di_progression;
 		
-		array<string> filedata;
-		
-		int ThisLump = Wads.FindLump("DIKILL", 0, Wads.ANYNAMESPACE);
-		int NextLump = Wads.FindLump("DIKILL", ThisLump + 1, Wads.ANYNAMESPACE);
-		
-		while (ThisLump != -1)
+		if (!canprogress) {console.printf("Progression is disabled, disabling kill tracker...");}
+		else
 		{
-			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
-			ThisLump = NextLump;
-			NextLump = Wads.FindLump("DIKILL", ThisLump + 1, 1);
-		}
-		
-		for (int i = 0; i < filedata.Size(); i++)
-		{
-			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
-			if (filedata[i].Length() < 3) {continue;}
-			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			killcvar = cvar.getcvar("di_playerkills");
+			string cvarstring = killcvar.GetString();
+			cvarstring.Split(currentkills, ",");
 			
-			Array<String> currentline;
-			filedata[i].Split(currentline, " ");
-			if (currentline.Size() != 3) {continue;} //this is not a valid kill cvar.
-			let currentcvar = cvar.getcvar(currentline[2]);
-			if (!currentcvar) {continue;} //dont bother adding invalid cvars.
-			else if (currentcvar.GetBool()) {continue;} //dont bother adding CVARs that are already unlocked.
+			array<string> filedata;
 			
-			//Weapon Name
-			cvarunlocks.Push(currentline[0]);
-			//Number of Kills
-			cvarunlocks.Push(currentline[1]);
-			//Item Unlock CVAR
-			cvarunlocks.Push(currentline[2]);
+			int ThisLump = Wads.FindLump("DIKILL", 0, Wads.ANYNAMESPACE);
+			int NextLump = Wads.FindLump("DIKILL", ThisLump + 1, Wads.ANYNAMESPACE);
+			
+			while (ThisLump != -1)
+			{
+				Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+				ThisLump = NextLump;
+				NextLump = Wads.FindLump("DIKILL", ThisLump + 1, 1);
+			}
+			
+			for (int i = 0; i < filedata.Size(); i++)
+			{
+				if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+				if (filedata[i].Length() < 3) {continue;}
+				filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+				
+				Array<String> currentline;
+				filedata[i].Split(currentline, " ");
+				if (currentline.Size() != 3) {continue;} //this is not a valid kill cvar.
+				let currentcvar = cvar.getcvar(currentline[2]);
+				if (!currentcvar) {continue;} //dont bother adding invalid cvars.
+				else if (currentcvar.GetBool()) {continue;} //dont bother adding CVARs that are already unlocked.
+				
+				//Weapon Name
+				cvarunlocks.Push(currentline[0]);
+				//Number of Kills
+				cvarunlocks.Push(currentline[1]);
+				//Item Unlock CVAR
+				cvarunlocks.Push(currentline[2]);
+			}
 		}
 	}
 	
 	override void WorldThingDied(WorldEvent e)
 	{
-		if (e.Thing is "DI_Monster")
+		if (canprogress)
 		{
-			let mon = DI_Monster(e.Thing);
-			if ((mon.di_notweapon == false) && (mon.plrwpn))
+			if (e.Thing is "DI_Monster")
 			{
-				//console.printf("%s", mon.plrwpn.GetClassName());
-				queuedkills.Push(mon.plrwpn.GetClassName());
+				let mon = DI_Monster(e.Thing);
+				if ((mon.di_notweapon == false) && (mon.plrwpn))
+				{
+					//console.printf("%s", mon.plrwpn.GetClassName());
+					queuedkills.Push(mon.plrwpn.GetClassName());
+				}
 			}
 		}
 	}
 	
 	override void WorldTick()
 	{
-		if (queuedkills.Size() > 0)
+		if (canprogress)
 		{
-			UpdateKills();
+			if (queuedkills.Size() > 0)
+			{
+				UpdateKills();
+			}
 		}
 	}
 	

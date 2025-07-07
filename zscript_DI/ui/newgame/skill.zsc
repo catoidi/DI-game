@@ -113,6 +113,7 @@ extend class DINewGameMenu
 		
 		for (int i = 0; i < modpool.Size(); ++i)
 		{
+			bool ischeatmod = (cheatmodpool.Find(modpool[i]) < cheatmodpool.Size());
 			let modcvar = cvar.findcvar(modpool[i]);
 			let modunlockcvar = cvar.findcvar(modlock[i]);
 			// Create the box image's textures.
@@ -147,6 +148,7 @@ extend class DINewGameMenu
 			{
 				labeltxt.AppendFormat("%s", ": \cd[ON]");
 				++modsactive;
+				if (ischeatmod) {++cheatmodsactive;}
 			}
 			else {labeltxt.AppendFormat("%s", ": \ca[OFF]");}
 			
@@ -187,6 +189,7 @@ extend class DINewGameMenu
 			
 			string buttoncmd = String.Format("mod%d", i);
 			if (!modunlockcvar.GetBool() && !cheatcvar.GetBool()) {buttoncmd = string.Format("locked%s", buttoncmd);}
+			else if (ischeatmod) {buttoncmd = string.format("cheatmod%d", i);}
 			
 			// Create the button's textures.
 			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
@@ -409,6 +412,7 @@ extend class DINewGameMenu
 			modselect.Destroy();
 		}
 		modsactive = 0;
+		cheatmodsactive = 0;
 	}
 	
 	clearscope virtual int GetMaxSwag()

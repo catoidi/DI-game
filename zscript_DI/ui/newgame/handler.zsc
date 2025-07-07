@@ -130,9 +130,10 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			currentskill = sklnum;
 			//link.UpdateKeySelect();
 		}
-		else if (cmd.Left(3) == "mod")
+		else if ((cmd.Left(3) == "mod") || (cmd.Left(8) == "cheatmod"))
 		{
-			let modstr = cmd.Mid(3);
+			bool ischeatmod = (cmd.Left(8) == "cheatmod");
+			let modstr = ischeatmod ? cmd.Mid(8) : cmd.Mid(3);
 			let modnum = modstr.ToInt(10);
 			string modclass = stringtable.localize(link.modpool[modnum], false);
 			//link.levelname = link.levelpool[lvlnum];
@@ -146,11 +147,13 @@ Class DINewGameHandler : boxparty_ZF_Handler
 				{
 					curmod.SetBool(false);
 					--link.modsactive;
+					if (ischeatmod) {--link.cheatmodsactive;}
 				}
 				else 
 				{
 					curmod.SetBool(true);
 					++link.modsactive;
+					if (ischeatmod) {++link.cheatmodsactive;}
 				}
 				
 				string labeltxt = stringtable.localize(link.modpool[modnum], false);

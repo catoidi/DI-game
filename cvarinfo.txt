@@ -14,6 +14,7 @@ server noarchive int di_dailyseed = 0;
 user bool di_menu_dosave = false; //enable save/load options on main menu.
 user bool di_menu_gzdoom = false; //options button jumps straight to gzdoom options instead of DI options.
 user bool di_menu_asktutorial = false; //check if the player has been asked about the tutorial yet.
+server noarchive bool di_menu_forcelock = false; //use this when using difficulty modifiers that affect cvars like "di_unlock_cheat".
 user noarchive int di_menu_current_plr = 0; //currently selected player. remembers the selection even after closing/reopening the menu.
 user noarchive int di_menu_current_lvl = 0; //same as above, but for level.
 user noarchive int di_menu_current_skl = 0; //same as above, but for skill.
@@ -30,6 +31,7 @@ server cheat bool di_unlock_mod_debilitated = false; //yea.
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
 server cheat bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
+server cheat bool di_progression = true; //enables game progression.
 server bool di_unlock_showdefaults = false; //shows the default items in the unlocks menu.
 server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unlocked through beating Wave 25 in Hard Mode.
 server cheat bool di_unlock_lvl_di01 = false; //unlocks Level 1. unlocked through playing/skipping the tutorial.
