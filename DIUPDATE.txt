@@ -16,5 +16,5 @@ di_itemhud_scale;
 di_itemhud_alpha;
 di_questscale;
 di_questalpha;
-version 12.3;
+version 13.0;
 blood_fade_scalar;
