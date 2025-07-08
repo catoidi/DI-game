@@ -36,8 +36,8 @@ Class DI_SpeedDemon : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0.0;}
-		else {return totalvel;}
+		if (!plr) {return 1.0;}
+		else {return 1.0 + totalvel;}
 	}
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)

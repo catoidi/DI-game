@@ -6,7 +6,7 @@ Class DI_TooManyBullets : DIPassiveInventory
 	{
 		Tag "TooManyBullets";
 		Inventory.Icon "POWRH0";
-		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, -35% Reload and DMG)";
+		Inventory.PickupMessage "Too Many Bullets Acquired! (Projectiles x2, massively reduced Reload and DMG)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -24,8 +24,8 @@ Class DI_TooManyBullets : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0;}
-		return plr.CountInv(GetClassName()) * -0.35;
+		if (!plr) {return 1.0;}
+		return 1.0 / (1.0 + (0.7 * plr.CountInv(GetClassName())));
 	}
 	
 	States

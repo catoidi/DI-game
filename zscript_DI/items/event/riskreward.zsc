@@ -9,8 +9,8 @@ Class DI_RiskReward : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0.0;}
-		return 0.5;
+		if (!plr) {return 1.0;}
+		return 1.5;
 	}
 	
 	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)

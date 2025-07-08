@@ -97,7 +97,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.FreshBonus 1;
 		DI_Weapon.FreshCharge 0;
 		DI_Weapon.BaseDamage 0;
-		DI_Weapon.DamageMult 1.0;
+		DI_Weapon.DamageMult 1.000001; //workaround for rounding error
 		DI_Weapon.BaseAccuracy 0;
 		DI_Weapon.MaxSpread 0.0;
 		DI_Weapon.BonusSpread 0.0;
@@ -255,7 +255,7 @@ Class DI_Weapon : Weapon abstract
 			if (curinv)
 			{
 				wpn_damage += curinv.GiveBaseDamage();
-				damagemult += curinv.GiveDamageMult();
+				damagemult *= curinv.GiveDamageMult();
 				wpn_extracoin += curinv.GiveExtraCoin();
 				wpn_freshbonus += curinv.GiveFreshBonus();
 				wpn_accuracy += curinv.GiveAccuracy();

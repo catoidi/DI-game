@@ -80,7 +80,7 @@ class DIPassiveInventory : Inventory
 	virtual int GiveFreshBonus() {return 0;} //Increases coin drops from fresh weapon bonus.
 	virtual int GiveFreshCharge() {return 0;} //Makes fresh bonus recharge faster.
 	virtual int GiveBaseDamage() {return 0;} //Adds to the current weapon, before multipliers are applied.
-	virtual double GiveDamageMult() {return 0.0;} //Multiplies the weapon's base damage.
+	virtual double GiveDamageMult() {return 1.0;} //Multiplies the weapon's base damage.
 	virtual double GiveAccuracy() {return 0.0;} //Lower numbers improve base acccuracy, and vice versa.
 	virtual double GiveMaxSpread() {return 1.0;} //Maximum amount of inaccuracy given from spray patterns.
 	virtual double GiveBonusSpread() {return 0.0;} //Applies extra spread to the MaxSpread value for every projectile on the weapon, excluding the first one.

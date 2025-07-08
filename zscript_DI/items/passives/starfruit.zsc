@@ -32,9 +32,9 @@ Class DI_Starfruit : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0;}
-		if (!active) {return 0;}
-		return 0.2 * plr.CountInv(GetClassName());
+		if (!plr) {return 1.0;}
+		if (!active) {return 1.0;}
+		return 1.0 + (0.2 * plr.CountInv(GetClassName()));
 	}
 	
 	States

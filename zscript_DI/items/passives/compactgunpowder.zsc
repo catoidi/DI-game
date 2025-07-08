@@ -14,9 +14,9 @@ Class DI_CompactGunpowder : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		if (!plr || !wpn) {return 0.0;}
-		if (wpn.wpn_projectiles >= 4) {return 0.25 * plr.CountInv(self.GetClassName());}
-		else {return -0.1 * plr.CountInv(self.GetClassName());}
+		if (!plr || !wpn) {return 1.0;}
+		if (wpn.wpn_projectiles >= 4) {return 1.0 + (0.25 * plr.CountInv(self.GetClassName()));}
+		else {return 1.0 - (0.1 * plr.CountInv(self.GetClassName()));}
 	}
 	
 	States

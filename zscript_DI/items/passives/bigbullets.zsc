@@ -12,8 +12,8 @@ Class DI_BigBullets : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0.0;}
-		return 0.15 * plr.countinv(GetClassName());
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.15 * plr.countinv(GetClassName()));
 	}
 
 	override double GiveBulletSize()

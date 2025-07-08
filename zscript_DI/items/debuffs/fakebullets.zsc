@@ -31,9 +31,9 @@ Class DI_QuestDebuff_FakeBullets : DI_QuestDebuff
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0.0;}
-		if (!isfake) {return 0.0;}
+		if (!plr) {return 1.0;}
+		if (!isfake) {return 1.0;}
 		
-		return -999.0;
+		return 0.0;
 	}
 }

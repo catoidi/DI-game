@@ -30,7 +30,7 @@ Class DI_OldMagazine : DIPassiveInventory
 	
 	virtual void RerollDMG()
 	{
-		newdmg = frandom(-0.5, -0.01);
+		newdmg = frandom(0.5, 1.25);
 	}
 	
 	override double GiveDamageMult()

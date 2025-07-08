@@ -17,7 +17,7 @@ Class DI_CreditFraud : DIPassiveInventory
 		{
 			float fraud = 0.00025 * -plr.score; //max dmg is 50% at -2000 or lower score.
 			if (fraud > 0.5) {fraud = 0.5;}
-			return fraud * plr.countinv("DI_CreditFraud");
+			return 1.0 + (fraud * plr.countinv("DI_CreditFraud"));
 		}
 		else {return 0.0;}
 	}
