@@ -124,6 +124,7 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			if (currentskill == sklnum) 
 			{
 				if (currentskill == 1) {currentskill = 2;}
+				CheatModCheck();
 				PlayDI(currentclass, currentlvl, currentskill);
 			} //{link.pagenum = 2;}
 			else {link.SetKeyPos(sklnum);}
@@ -294,6 +295,32 @@ Class DINewGameHandler : boxparty_ZF_Handler
 						break;
 				}
 				break;
+		}
+	}
+	
+	virtual void CheatModCheck()
+	{
+		let cheatcvar = cvar.findcvar("di_unlock_cheat");
+		let forcelockcvar = cvar.findcvar("di_menu_forcelock");
+		let progresscvar = cvar.findcvar("di_progression");
+		
+		if (link.cheatmodsactive > 0)
+		{
+			if (!forcelockcvar.getbool())
+			{
+				cheatcvar.setbool(true);
+				forcelockcvar.setbool(true);
+				progresscvar.setbool(false);
+			}
+		}
+		else
+		{
+			if (forcelockcvar.getbool())
+			{
+				cheatcvar.setbool(false);
+				forcelockcvar.setbool(false);
+				progresscvar.setbool(true);
+			}
 		}
 	}
 	

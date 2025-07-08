@@ -118,7 +118,7 @@ extend class DINewGameMenu
 			let modunlockcvar = cvar.findcvar(modlock[i]);
 			// Create the box image's textures.
 			let boxTexture_String = "graphics/catalog/ITEMBAR_BIG.png";
-			if (!modunlockcvar.GetBool() && !cheatcvar.GetBool()) {boxTexture_String = "graphics/catalog/ITEMBAR2_BIG.png";}
+			if (!modunlockcvar.GetBool() && !cheatmode) {boxTexture_String = "graphics/catalog/ITEMBAR2_BIG.png";}
 			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(boxTexture_String, (0, 0), (252, 21), false, false);
 			// Add a box image.
 			let boxSize = (252, 21);
@@ -143,7 +143,7 @@ extend class DINewGameMenu
 
             // Get the player's name.
             string labeltxt = stringtable.localize(modpool[i], false);
-			if (!modunlockcvar.GetBool() && !cheatcvar.GetBool()) {labeltxt = "\ca[LOCKED]";}
+			if (!modunlockcvar.GetBool() && !cheatmode) {labeltxt = "\ca[LOCKED]";}
 			else if (modcvar.GetBool()) 
 			{
 				labeltxt.AppendFormat("%s", ": \cd[ON]");
@@ -188,7 +188,7 @@ extend class DINewGameMenu
             skllabels.Push (label);
 			
 			string buttoncmd = String.Format("mod%d", i);
-			if (!modunlockcvar.GetBool() && !cheatcvar.GetBool()) {buttoncmd = string.Format("locked%s", buttoncmd);}
+			if (!modunlockcvar.GetBool() && !cheatmode) {buttoncmd = string.Format("locked%s", buttoncmd);}
 			else if (ischeatmod) {buttoncmd = string.format("cheatmod%d", i);}
 			
 			// Create the button's textures.

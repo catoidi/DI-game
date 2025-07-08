@@ -11,7 +11,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 
 	DINewGameHandler handler;
 	
-	cvar tutcvar, cheatcvar;
+	cvar tutcvar;
 	
 	cvar curlvl_cvar, curplr_cvar, curskl_cvar;
 	
@@ -49,7 +49,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		bigFont = Font.GetFont("BigFont");
 		smallFont = Font.GetFont("SmallFont");
 		
-		cheatcvar = cvar.getcvar("di_unlock_cheat");
+		cheatmode = (di_unlock_cheat && !di_menu_forcelock);
 		
 		curlvl_cvar = cvar.findcvar("di_menu_current_lvl");
 		curplr_cvar = cvar.findcvar("di_menu_current_plr");
@@ -362,7 +362,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 					{
 						modlock.push(currentline[3]);
 						
-						if (!cheatcvar.GetBool())
+						if (!cheatmode)
 						{
 							//prevent locked modifiers from being active while cheat mode is off.
 							let tempcvar1 = cvar.findcvar(currentline[2]);
