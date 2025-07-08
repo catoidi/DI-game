@@ -2,7 +2,7 @@ extend class DIHandler
 {
 	virtual void DIRandomSeed(WorldEvent e)
 	{
-		int curseed = di_randomseed;
+		curseed = di_randomseed;
 		if (di_mod_dailyrun)
 		{
 			curseed = di_dailyseed;

@@ -20,6 +20,7 @@ Class DI_GlassGem : DIPassiveInventory
 
 Class DI_GlassGem_Tracker : Inventory
 {
+	//no di_progression check here needed, done in the eventhandler.
     bool unlocked;
 
     override void DoEffect()

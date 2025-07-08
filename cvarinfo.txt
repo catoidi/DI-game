@@ -30,8 +30,8 @@ server cheat bool di_unlock_mod_debilitated = false; //yea.
 
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
-server cheat bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
-server cheat bool di_progression = true; //enables game progression.
+server noarchive bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
+server noarchive bool di_progression = true; //enables game progression.
 server bool di_unlock_showdefaults = false; //shows the default items in the unlocks menu.
 server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unlocked through beating Wave 25 in Hard Mode.
 server cheat bool di_unlock_lvl_di01 = false; //unlocks Level 1. unlocked through playing/skipping the tutorial.

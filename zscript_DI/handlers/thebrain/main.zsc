@@ -2,6 +2,10 @@
 
 class DIHandler : EventHandler
 {
+	bool canprogress;
+	
+	int curseed;
+	
 	Array<Actor> spotarray; //list of available spawn spots.
 	Array<String> spawnqueue; //list of enemies waiting to spawn.
 	Array<String> spawnqueue_spawner; //what spawner each enemy in the spawnqueue can spawn from.

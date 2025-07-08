@@ -30,6 +30,8 @@ Class DIShop : DIShop_Base
 	
 	bool user_debugpool; //prints the itempool to the console.
 	
+	bool canprogress; //di_progression check. not related to DontProgress/user_dontprogress.
+	
 	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
@@ -48,7 +50,9 @@ Class DIShop : DIShop_Base
 	
 	override void PostBeginPlay()
 	{	
-		ParseBlacklist();
+		canprogress = di_progression;
+	
+		if (canprogress) {ParseBlacklist();} //disable user-made blacklist if progression is turned off.
 		ParseDISHOP();
 		
 		if (user_pricemult < 1) {user_pricemult = 1;}

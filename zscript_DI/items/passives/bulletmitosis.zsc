@@ -47,9 +47,9 @@ Class DI_BulletMitosis : DIPassiveInventory
 	{
 		super.tick();
 		
-		if (plr && (plr.CountInv(GetClassName()) >= 3))
+		if (plr && plr.canprogress && (plr.CountInv(GetClassName()) >= 3))
 		{
-			eventhandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_toomanybullets");
+			plr.PlayerDoUnlock("di_unlock_item_toomanybullets");
 		}
 	}
 	

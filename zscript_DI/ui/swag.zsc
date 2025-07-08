@@ -13,6 +13,7 @@ Class SwagHandler : EventHandler
 	ui int msgrng;
 	ui bool unlockedscore, unlockedextras;
 	ui bool scoredone;
+	ui bool canprogress;
 	ui int prevscore;
 	ui int finalscore; //prevent extra score from being calculated after death.
 	ui float exp1, exp2, exp3, lvl1, lvl2, lvlover, lvlmax, lvlguess;
@@ -106,6 +107,7 @@ Class SwagHandler : EventHandler
 		
 		plr = DI_PlayerBase(players[consoleplayer].mo);
 		if (!plr) {return;}
+		canprogress = plr.canprogress;
 		if (plr.Health <= 0) {IsDead = true;}
 		else {IsDead = false;}
 		
@@ -135,16 +137,18 @@ Class SwagHandler : EventHandler
 			else if (diedmove > 4.0) {diedmove = 4.0;}
 			else if (diedmove < 2.0) {diedmove = 2.0;}
 			
-			
-			if (scoredone && !unlockedscore)
+			if (canprogress)
 			{
-				DoScoreUnlocks();
-				unlockedscore = true;
-			}
-			else if (scoredone && unlockedscore && !unlockedextras)
-			{
-				DoExtraUnlocks();
-				unlockedextras = true;
+				if (scoredone && !unlockedscore)
+				{
+					DoScoreUnlocks();
+					unlockedscore = true;
+				}
+				else if (scoredone && unlockedscore && !unlockedextras)
+				{
+					DoExtraUnlocks();
+					unlockedextras = true;
+				}
 			}
 		}
 		else
@@ -500,17 +504,20 @@ Class SwagHandler : EventHandler
 			{
 				prevscore = GetHighScore();
 				finalscore = plr.GetScore();
-				int prevdeaths = GetHighScore("di_playerdeaths");
-				++prevdeaths;
-				if (finalscore > prevscore)
+				if (canprogress)
 				{
-					bool iseasy = false;
-					if (skill == 0) {iseasy = true;}
-					UpdateHighScore(finalscore, iseasy);
+					int prevdeaths = GetHighScore("di_playerdeaths");
+					++prevdeaths;
+					if (finalscore > prevscore)
+					{
+						bool iseasy = false;
+						if (skill == 0) {iseasy = true;}
+						UpdateHighScore(finalscore, iseasy);
+					}
+					UpdateHighScore(prevdeaths, false, "di_playerdeaths");
+					UpdateSwag(finalscore);
+					eventhandler.sendnetworkevent("swagcheck", lvl2);
 				}
-				UpdateHighScore(prevdeaths, false, "di_playerdeaths");
-				UpdateSwag(finalscore);
-				eventhandler.sendnetworkevent("swagcheck", lvl2);
 				scoredone = true;
 			}
 			
@@ -633,85 +640,100 @@ Class SwagHandler : EventHandler
 			}
 			if (DeathTimer > 268)
 			{
-				string died = string.format("%s \cb%d/%d", "\ctSwag Level:", lvl1, di_swaglevel_max);
-				if (lvlover > 0)
+				if (canprogress)
 				{
-					died.appendformat(" \cd(+%d)", lvlover);
-				}
-				int starty = (Screen.GetHeight() * 2) / 3;
-				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
-					starty,
-					died,
-					DTA_ScaleX, CleanXFac * 1.5,
-					DTA_ScaleY, CleanYFac * 1.5
-				);
-				
-				int startx3 = (Screen.GetWidth() / 2) - (80 * CleanXFac);
-				string fill1 = "9999ea";
-				string fill2 = "000073";
-				string fill3 = "f4ef6a";
-				string fill4 = "732b00";
-				string dim1 = "404040";
-				string dim2 = "121212";
-				starty += 16 * CleanYFac;
-				Screen.Dim(dim2, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
-					164 * CleanXFac, 
-					10 * CleanYFac
-				);
-				Screen.Dim(dim1, 1.0, startx3, starty, 
-					160 * CleanXFac, 
-					6 * CleanYFac
-				);
-				
-				float remainder = ((exp2 - exp1) / exp2) * (160.0 * CleanXFac);
-				float gained = ((exp2 - (exp1 - exp3)) / exp2) * (160.0 * CleanXFac);
-				if (remainder > (160 * CleanXFac)) {remainder = 160 * CleanXFac;}
-				if (gained > (160 * CleanXFac)) {gained = 160 * CleanXFac;}
-				
-				if (remainder > 0)
-				{
-					Screen.Dim(fill4, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
-						(162 * CleanXFac) - remainder, 
-						10 * CleanYFac
-					);
-					Screen.Dim(fill3, 1.0, startx3, starty, 
-						(160 * CleanXFac) - remainder, 
-						6 * CleanYFac
-					);
-				}
-				
-				if (gained > 0)
-				{
-					Screen.Dim(fill2, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
-						(162 * CleanXFac) - gained, 
-						10 * CleanYFac
-					);
-					Screen.Dim(fill1, 1.0, startx3, starty, 
-						(160 * CleanXFac) - gained, 
-						6 * CleanYFac
-					);
-				}
-				
-				string expstring = string.format("\cnExp: \cb%d\cn/\cb%d \cf(+%d)", exp1, exp2, exp3);
-				Screen.DrawText(smallfont, Font.CR_WHITE,
-					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(expstring) / 2) * CleanXFac),
-					starty + (12 * CleanYFac),
-					expstring,
-					DTA_ScaleX, CleanXFac,
-					DTA_ScaleY, CleanYFac
-				);
-				
-				string lvlstring = "";
-				if (lvl2 >= 1)
-				{
-					lvlstring = string.format("\n\n\cfYou gained %d swag this game.", lvl2);
+					string died = string.format("%s \cb%d/%d", "\ctSwag Level:", lvl1, di_swaglevel_max);
+					if (lvlover > 0)
+					{
+						died.appendformat(" \cd(+%d)", lvlover);
+					}
+					int starty = (Screen.GetHeight() * 2) / 3;
 					Screen.DrawText(smallfont, Font.CR_WHITE,
-						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(lvlstring) / 2) * CleanXFac),
+						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
+						starty,
+						died,
+						DTA_ScaleX, CleanXFac * 1.5,
+						DTA_ScaleY, CleanYFac * 1.5
+					);
+					
+					int startx3 = (Screen.GetWidth() / 2) - (80 * CleanXFac);
+					string fill1 = "9999ea";
+					string fill2 = "000073";
+					string fill3 = "f4ef6a";
+					string fill4 = "732b00";
+					string dim1 = "404040";
+					string dim2 = "121212";
+					starty += 16 * CleanYFac;
+					Screen.Dim(dim2, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
+						164 * CleanXFac, 
+						10 * CleanYFac
+					);
+					Screen.Dim(dim1, 1.0, startx3, starty, 
+						160 * CleanXFac, 
+						6 * CleanYFac
+					);
+					
+					float remainder = ((exp2 - exp1) / exp2) * (160.0 * CleanXFac);
+					float gained = ((exp2 - (exp1 - exp3)) / exp2) * (160.0 * CleanXFac);
+					if (remainder > (160 * CleanXFac)) {remainder = 160 * CleanXFac;}
+					if (gained > (160 * CleanXFac)) {gained = 160 * CleanXFac;}
+					
+					if (remainder > 0)
+					{
+						Screen.Dim(fill4, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
+							(162 * CleanXFac) - remainder, 
+							10 * CleanYFac
+						);
+						Screen.Dim(fill3, 1.0, startx3, starty, 
+							(160 * CleanXFac) - remainder, 
+							6 * CleanYFac
+						);
+					}
+					
+					if (gained > 0)
+					{
+						Screen.Dim(fill2, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
+							(162 * CleanXFac) - gained, 
+							10 * CleanYFac
+						);
+						Screen.Dim(fill1, 1.0, startx3, starty, 
+							(160 * CleanXFac) - gained, 
+							6 * CleanYFac
+						);
+					}
+					
+					string expstring = string.format("\cnExp: \cb%d\cn/\cb%d \cf(+%d)", exp1, exp2, exp3);
+					Screen.DrawText(smallfont, Font.CR_WHITE,
+						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(expstring) / 2) * CleanXFac),
 						starty + (12 * CleanYFac),
-						lvlstring,
+						expstring,
 						DTA_ScaleX, CleanXFac,
 						DTA_ScaleY, CleanYFac
+					);
+					
+					string lvlstring = "";
+					if (lvl2 >= 1)
+					{
+						lvlstring = string.format("\n\n\cfYou gained %d swag this game.", lvl2);
+						Screen.DrawText(smallfont, Font.CR_WHITE,
+							(Screen.GetWidth() / 2) - ((smallfont.StringWidth(lvlstring) / 2) * CleanXFac),
+							starty + (12 * CleanYFac),
+							lvlstring,
+							DTA_ScaleX, CleanXFac,
+							DTA_ScaleY, CleanYFac
+						);
+					}
+				}
+				else
+				{
+					string died = "\caProgression is disabled.";
+					int starty = (Screen.GetHeight() * 2) / 3;
+					Screen.DrawText(smallfont, Font.CR_WHITE,
+						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
+						starty,
+						died,
+						DTA_ScaleX, CleanXFac * 1.5,
+						DTA_ScaleY, CleanYFac * 1.5
 					);
 				}
 			}
@@ -721,6 +743,15 @@ Class SwagHandler : EventHandler
 					0,
 					Screen.GetHeight() - (smallfont.GetHeight() * CleanYFac),
 					"Press and hold the 'Activate' key to restart the game.",
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, 0.5
+				);
+				string curseed = string.format("Current Seed: %d", plr.thebrain.curseed);
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					Screen.GetWidth() - (CleanXFac * smallfont.StringWidth(curseed)),
+					Screen.GetHeight() - (smallfont.GetHeight() * CleanYFac),
+					curseed,
 					DTA_ScaleX, CleanXFac,
 					DTA_ScaleY, CleanYFac,
 					DTA_Alpha, 0.5

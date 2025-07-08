@@ -41,7 +41,7 @@ Class DI_QuestObjective_Kill : DI_QuestObjective abstract
 	{
 		//called by the assigned boss actor upon it's demise.
 		plr.ACS_ScriptCall("BossIsDead");
-		EventHandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_tomato");
+		if (plr.canprogress) {plr.PlayerDoUnlock("di_unlock_item_tomato");}
 		ObjectiveComplete();
 	}
 }

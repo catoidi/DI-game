@@ -2,6 +2,7 @@ extend class DIHandler
 {
 	override void WorldLoaded(WorldEvent e)
 	{
+		canprogress = di_progression;
 		DIRandomSeed(e);
 	
 		++wavenum;
@@ -87,7 +88,7 @@ extend class DIHandler
 			{
 				let plr = DI_PlayerBase(e.Thing);
 				plr.A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
-				if (!di_unlock_item_glassgem) {plr.GiveInventory("DI_GlassGem_Tracker", 1);}
+				if (canprogress && !di_unlock_item_glassgem) {plr.GiveInventory("DI_GlassGem_Tracker", 1);}
 				plr.thebrain = self;
 				DIModifierHandler(plr);
 			}

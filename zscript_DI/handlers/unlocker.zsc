@@ -24,6 +24,8 @@ Class DIUnlockHandler : EventHandler
 	int freshwave;
 	int freshreload;
 	
+	bool canprogress;
+	
 	array<string> filedata, shoplist_group, shoplist_item;
 	
 	override void WorldLoaded(WorldEvent e)
@@ -31,6 +33,8 @@ Class DIUnlockHandler : EventHandler
 		consumed = 0;
 		freshreload = 0;
 		freshwave = 0;
+		
+		canprogress = di_progression;
 		
 		//not designed with multiplayer in mind yet :)
 		diplr = DI_PlayerBase(players[consoleplayer].mo);
@@ -65,77 +69,89 @@ Class DIUnlockHandler : EventHandler
 	
 	override void WorldThingDied(WorldEvent e)
 	{
-		if (e.Thing is "DI_Monster")
+		if (canprogress)
 		{
-			//kill tracker (applies to every player currently in game, regardless of how the monster died.)
-			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
-			else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
-			else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
-			else if (e.Thing is "THEHAMMER") {listkills.Push("di_hammercount");}
-		}
-		else if (e.Thing is "DI_PlayerBase")
-		{
-			cvar deathcounter = cvar.getcvar("di_deathcounter");
-			int deathnum = deathcounter.getint() + 1;
-			deathcounter.setint(deathnum);
-			
-			if (deathnum >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_painstar");}
-			if (deathnum >= 20) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_acidblood");}
-			if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
+			if (e.Thing is "DI_Monster")
+			{
+				//kill tracker (applies to every player currently in game, regardless of how the monster died.)
+				if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
+				else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
+				else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
+				else if (e.Thing is "THEHAMMER") {listkills.Push("di_hammercount");}
+			}
+			else if (e.Thing is "DI_PlayerBase")
+			{
+				cvar deathcounter = cvar.getcvar("di_deathcounter");
+				int deathnum = deathcounter.getint() + 1;
+				deathcounter.setint(deathnum);
+				
+				if (deathnum >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_painstar");}
+				if (deathnum >= 20) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_acidblood");}
+				if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
+			}
 		}
 	}
 	
 	override void WorldThingDamaged(WorldEvent e)
 	{
-		if (e.newdamage >= e.Thing.health)
+		if (canprogress)
 		{
-			if (e.Thing is "DI_Monster")
+			if (e.newdamage >= e.Thing.health)
 			{
-				let mon = DI_Monster(e.Thing);
-				bool multicheck = false;
-				if (mon.icenum > 0) {StatusKill(0, multicheck); multicheck = true;}
-				if (mon.firenum > 0) {StatusKill(1, multicheck); multicheck = true;}
-				if (mon.poisonnum > 0) {StatusKill(2, multicheck); multicheck = true;}
-				if (mon.isshocked == true) {StatusKill(3, multicheck); multicheck = true;}
-				if (mon.hearted == true) {StatusKill(4, multicheck); multicheck = true;}
-				if (mon.CountInv("DI_DeathMark_Enemy") > 0) {StatusKill(5, multicheck); multicheck = true;}
+				if (e.Thing is "DI_Monster")
+				{
+					let mon = DI_Monster(e.Thing);
+					bool multicheck = false;
+					if (mon.icenum > 0) {StatusKill(0, multicheck); multicheck = true;}
+					if (mon.firenum > 0) {StatusKill(1, multicheck); multicheck = true;}
+					if (mon.poisonnum > 0) {StatusKill(2, multicheck); multicheck = true;}
+					if (mon.isshocked == true) {StatusKill(3, multicheck); multicheck = true;}
+					if (mon.hearted == true) {StatusKill(4, multicheck); multicheck = true;}
+					if (mon.CountInv("DI_DeathMark_Enemy") > 0) {StatusKill(5, multicheck); multicheck = true;}
+				}
 			}
 		}
 	}
 	
 	override void WorldTick(void)
 	{
-		KillCounter(); //unlocks related to getting kills.
-		CloverTracker();
-		DMGMultTracker();
-		++boxtimer;
-		if (boxtimer > 35) 
+		if (canprogress)
 		{
-			unlockcount = UnlockCounter();
-			UnlockCountUnlocker();
-			BoxTracker(); //for unlocking the Box Partyer player.
+			KillCounter(); //unlocks related to getting kills.
+			CloverTracker();
+			DMGMultTracker();
+			++boxtimer;
+			if (boxtimer > 35) 
+			{
+				unlockcount = UnlockCounter();
+				UnlockCountUnlocker();
+				BoxTracker(); //for unlocking the Box Partyer player.
+			}
 		}
 	}
 	
 	override void UiTick(void)
 	{
-		if ((!isunlocking) && (listunlocks.Size() > 0))
+		if (canprogress)
 		{
-			unlocktimer[0] = 0;
-			unlocktimer[1] = 0;
-			unlocktimer[2] = 0;
-			isunlocking = true;
-		}
-		else if ((isunlocking) && (Level.IsFrozen() == false))
-		{
-			DoUnlockTimer(0);
-			DoUnlockTimer(1);
-			DoUnlockTimer(2);
-			
-			if (CheckUnlockTimer(0) && CheckUnlockTimer(1) && CheckUnlockTimer(2))
+			if ((!isunlocking) && (listunlocks.Size() > 0))
 			{
-				listunlocks.Delete(0, 3);
-				isunlocking = false;
+				unlocktimer[0] = 0;
+				unlocktimer[1] = 0;
+				unlocktimer[2] = 0;
+				isunlocking = true;
+			}
+			else if ((isunlocking) && (Level.IsFrozen() == false))
+			{
+				DoUnlockTimer(0);
+				DoUnlockTimer(1);
+				DoUnlockTimer(2);
+				
+				if (CheckUnlockTimer(0) && CheckUnlockTimer(1) && CheckUnlockTimer(2))
+				{
+					listunlocks.Delete(0, 3);
+					isunlocking = false;
+				}
 			}
 		}
 	}
@@ -254,71 +270,77 @@ Class DIUnlockHandler : EventHandler
 	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
-		if (e.Name.Left(9) == "diunlock_")
+		if (canprogress)
 		{
-			let thiscvar = e.Name.Mid(9);
-			DoUnlock(thiscvar);
+			if (e.Name.Left(9) == "diunlock_")
+			{
+				let thiscvar = e.Name.Mid(9);
+				DoUnlock(thiscvar);
+			}
 		}
 	}
 	
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "di_burgerunlock")
+		if (canprogress)
 		{
-			burgertracker = cvar.getcvar("di_unlock_plr_burger");
-			if (burgertracker.getbool() == false)
+			if (e.Name == "di_burgerunlock")
 			{
-				burgercvar = cvar.getcvar("di_burgercount");
-				
-				burgercvar.setint(burgercvar.getint() + 1);
-				
-				if (burgercvar.getint() >= 4)
+				burgertracker = cvar.getcvar("di_unlock_plr_burger");
+				if (burgertracker.getbool() == false)
 				{
-					eventhandler.sendinterfaceevent(consoleplayer, "diunlock_di_unlock_plr_burger");
+					burgercvar = cvar.getcvar("di_burgercount");
+					
+					burgercvar.setint(burgercvar.getint() + 1);
+					
+					if (burgercvar.getint() >= 4)
+					{
+						eventhandler.sendinterfaceevent(consoleplayer, "diunlock_di_unlock_plr_burger");
+					}
+					else if (burgercvar.getint() < 4)
+					{
+						int fakepercent = (burgercvar.getint() + 1) * 20;
+						console.printf("\cvBurger Progress: (%d%%)", fakepercent);
+					}
 				}
-				else if (burgercvar.getint() < 4)
+			}
+			else if (e.Name == "DIWaveFinished") {WaveFinished();}
+			else if (e.Name.Left(17) == "diplayeritemused ")
+			{
+				++consumed;
+				if (consumed >= 25)
 				{
-					int fakepercent = (burgercvar.getint() + 1) * 20;
-					console.printf("\cvBurger Progress: (%d%%)", fakepercent);
+					SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_consumer");
+				}
+			}
+			else if (e.Name == "diplayerfreshbonus") {FreshTracker();}
+			else if (e.Name == "diweaponreload")
+			{
+				freshreload = 0;
+			}
+			else if (e.Name == "DIRerollShops")
+			{
+				cvar reroller = cvar.getcvar("di_rerollshop");
+				int newreroll = reroller.GetInt() + 1;
+				if (newreroll >= 25) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_dice");}
+				
+				reroller.SetInt(newreroll);
+			}
+			else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
+			else if (e.Name == "swagcheck") {DoSwagCheck(e.Args[0]);}
+			else if (e.Name == "doheartpickup")
+			{
+				let heart = cvar.getcvar("di_heartcount");
+				int heartnum = heart.getint() + 1;
+				heart.setint(heartnum);
+				
+				if ((heartnum >= 100) && (di_unlock_item_heartbomb == false))
+				{
+					sendinterfaceevent(consoleplayer, "diunlock_di_unlock_item_heartbomb");
 				}
 			}
 		}
 		else if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
-		else if (e.Name == "DIWaveFinished") {WaveFinished();}
-		else if (e.Name.Left(17) == "diplayeritemused ")
-		{
-			++consumed;
-			if (consumed >= 25)
-			{
-				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_consumer");
-			}
-		}
-		else if (e.Name == "diplayerfreshbonus") {FreshTracker();}
-		else if (e.Name == "diweaponreload")
-		{
-			freshreload = 0;
-		}
-		else if (e.Name == "DIRerollShops")
-		{
-			cvar reroller = cvar.getcvar("di_rerollshop");
-			int newreroll = reroller.GetInt() + 1;
-			if (newreroll >= 25) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_dice");}
-			
-			reroller.SetInt(newreroll);
-		}
-		else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
-		else if (e.Name == "swagcheck") {DoSwagCheck(e.Args[0]);}
-		else if (e.Name == "doheartpickup")
-		{
-			let heart = cvar.getcvar("di_heartcount");
-			int heartnum = heart.getint() + 1;
-			heart.setint(heartnum);
-			
-			if ((heartnum >= 100) && (di_unlock_item_heartbomb == false))
-			{
-				sendinterfaceevent(consoleplayer, "diunlock_di_unlock_item_heartbomb");
-			}
-		}
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)

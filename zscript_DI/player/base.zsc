@@ -81,9 +81,13 @@ Class DI_PlayerBase : PlayerPawn abstract
 	
 	bool hidemap;
 	
+	bool canprogress;
+	
 	override void PostBeginPlay(void)
 	{
 		Super.PostBeginPlay();
+		
+		canprogress = di_progression;
 		
 		int ThisLump = Wads.FindLump("DIWIPE", 0, Wads.ANYNAMESPACE);
 		int NextLump = Wads.FindLump("DIWIPE", ThisLump + 1, Wads.ANYNAMESPACE);

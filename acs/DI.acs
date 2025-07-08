@@ -14,6 +14,8 @@ int enemycount;
 bool announcewave;
 bool announceevent;
 
+bool canprogress;
+
 SCRIPT "playerscript" ENTER
 {
 	SetAirControl(0.5);
@@ -24,6 +26,8 @@ SCRIPT "playerscript" ENTER
 
 SCRIPT "openscript" (void) //run this script on your map to enable the waves.
 {
+	canprogress = GetCVAR("di_progression");
+
 	okspawn = true;
 	curwave = 1;
 	announcewave = true;
