@@ -129,6 +129,7 @@ CLASS GrenadeLauncherBullet : DI_Projectile
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FLATSPRITE;
+		+EXTREMEDEATH;
 	}
 	
 	int basedam;
@@ -145,8 +146,9 @@ CLASS GrenadeLauncherBullet : DI_Projectile
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "GrenadeLauncher"))
 		{
 			GrenadeLauncher tarwpn = GrenadeLauncher(target.player.ReadyWeapon);
-			basedam = tarwpn.CheckDamage();
-			impactdam = 0;
+			int dmgcheck = tarwpn.CheckDamage();
+			basedam = 0.8 * dmgcheck;
+			impactdam = 0.2 * dmgcheck;
 		}
 	}
 	
