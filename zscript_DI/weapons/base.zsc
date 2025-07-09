@@ -17,6 +17,7 @@ Class DI_Weapon : Weapon abstract
 	int wpn_recoil_offset_y; //same as above, but for the y axis instead. defaults to 1, to make the recoil push the weapon downwards.
 	bool wpn_autooffset; //enables/disables the autooffset feature, where the weapon sprite will match the recoil amount.
 	uint wpn_projectiles; //how many bullets/projectiles are spawned per shot.
+	uint wpn_fakeprojectiles; //fake placeholder projectiles used for Bullet Spread calculation. does not impact gameplay.
 	double wpn_bulletsize; //projectile size.
 	bool wpn_dontgiveammo1; //tells items to NOT give this weapon it's first ammo type.
 	bool wpn_dontgiveammo2; //tells items to NOT give this weapon it's second ammo type.
@@ -65,6 +66,7 @@ Class DI_Weapon : Weapon abstract
 	property RecoilOffset_Y: wpn_recoil_offset_y;
 	property AutoOffset: wpn_autooffset;
 	property Projectiles: wpn_projectiles;
+	property FakeProjectiles: wpn_fakeprojectiles;
 	property BulletSize: wpn_bulletsize;
 	property PlayerSpeed: plr_speed;
 	property ComboDrain: plr_combodrainbonus;
@@ -110,6 +112,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.RecoilOffset_Y 1;
 		DI_Weapon.AutoOffset true;
 		DI_Weapon.Projectiles 1;
+		DI_Weapon.FakeProjectiles 0;
 		DI_Weapon.BulletSize 1.0;
 		DI_Weapon.ComboDrain 1.0;
 		DI_Weapon.RegenSpeed 3.5;
@@ -226,6 +229,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_recoil = Default.wpn_recoil;
 		wpn_recoil_recover = Default.wpn_recoil_recover;
 		wpn_projectiles = Default.wpn_projectiles;
+		wpn_fakeprojectiles = Default.wpn_fakeprojectiles;
 		wpn_bulletsize = Default.wpn_bulletsize;
 		if (Ammo1) 
 		{
@@ -266,6 +270,7 @@ Class DI_Weapon : Weapon abstract
 				wpn_recoil += curinv.GiveRecoil();
 				wpn_recoil_recover += curinv.GiveRecoilRecover();
 				wpn_projectiles += curinv.GiveProjectiles();
+				wpn_fakeprojectiles += curinv.GiveFakeProjectiles();
 				wpn_bulletsize += curinv.GiveBulletSize();
 				if (wpn_bulletsize < 0.1) {wpn_bulletsize = 0.1;}
 				if ((Ammo1) && (wpn_dontgiveammo1 == false)) 
@@ -295,7 +300,7 @@ Class DI_Weapon : Weapon abstract
 		//apply bonus spread to total spread
 		wpn_maxspread *= spreadmult;
 		wpn_spread_bonus *= spreadmult;
-		if (wpn_projectiles > 1) {wpn_maxspread += wpn_spread_bonus * (wpn_projectiles - 1);}
+		if (wpn_projectiles + wpn_fakeprojectiles > 1) {wpn_maxspread += wpn_spread_bonus * (wpn_projectiles + wpn_fakeprojectiles - 1);}
 		
 		double finalaccuracy = wpn_accuracy + current_recoil;
 		if (finalaccuracy < 0.0) {wpn_accuracy += -finalaccuracy;}

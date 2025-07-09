@@ -556,6 +556,10 @@ SHOPITEM_DI_SPEEDDEMON = "Speed Fiend";
 SHOPDESC_DI_SPEEDDEMON = "Move +15% faster. Deal bonus DMG as you move.\n\caYou take +35% more DMG from enemies.";
 SHOPDESC2_DI_SPEEDDEMON = "\cbSometimes, you swear you can feel horns growing on the top of your head...";
 SHOPTYPE_DI_SPEEDDEMON = "\cd[Passive] \cl[Max: 4]";
+SHOPITEM_DI_QUANTUMBULLETS = "Quantum Bullets";
+SHOPDESC_DI_QUANTUMBULLETS = "+10% chance to gain +1 projectile and +0.4 piercing.\nIncreases Bullet Spread.";
+SHOPDESC2_DI_QUANTUMBULLETS = "\cbItem stacks will run the random chance multiple times, giving you a chance to get more than 1 buff. Chances of success increase with each failure. The increase to bullet spread varies based on what weapon you are holding.";
+SHOPTYPE_DI_QUANTUMBULLETS = "\cd[Passive] \cl[Max: 5]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

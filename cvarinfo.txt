@@ -159,6 +159,7 @@ server cheat bool di_unlock_item_poisongun = false; //swag 7.
 server cheat bool di_unlock_item_swagshells = false; //swag 10.
 //unimplemented unlocks
 server cheat bool di_unlock_item_modifiedstomach = false;
+server cheat bool di_unlock_item_quantumbullets = false;
 
 //DI crosshair
 user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).

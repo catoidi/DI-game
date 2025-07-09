@@ -1,0 +1,101 @@
+//zscript_DI/items/passives/quantumbullet.zsc
+
+Class DI_QuantumBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Quantum Bullet";
+		Inventory.Icon "POW3O0";
+		Inventory.PickupMessage "Acquired Quantum Bullets! (+10% chance to gain +1 projectile and +0.4 piercing.)";
+		Inventory.MaxAmount 5;
+	}
+	
+	int bonus;
+	int fakebonus;
+	int piercing;
+	int failures;
+	int timer;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen())
+		{
+			++timer;
+			if (timer >= 35)
+			{
+				bonus = 0;
+				for (int i = 0; i < plr.CountInv(self.GetClassName()); ++i)
+				{
+					if (random(1, (10 * (1 + bonus))) <= (1 + failures))
+					{
+						++bonus; 
+						failures = 0;
+					}
+					else {++failures;}
+				}
+				fakebonus = plr.CountInv(self.GetClassName()) - bonus;
+				timer = 0;
+			}
+		}
+	}
+	
+	override int GiveProjectiles() {if (!plr) return 0; return bonus;}
+	//override int GiveFakeProjectiles() {if (!plr) return 0; return fakebonus;}
+
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		piercing = bonus;
+		return "DI_QuantumBullets_Item", plr.CountInv(self.GetClassName());
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 O -1;
+			Stop;
+	}
+}
+
+Class DI_QuantumBullets_Item : DIProjectileInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 999999;
+	}
+	
+	//projectile inventory items cant count themselves for some reason. 
+	//maybe the function is called too early in advance?
+	//regardless, we can get a more reliable number from just checking the player's inventory instead.
+	override double GivePiercing(DI_PlayerBase plr)
+	{
+		let quantum = DI_QuantumBullets(plr.FindInventory("DI_QuantumBullets"));
+		if (quantum)
+		{
+			return 0.4 * quantum.piercing;
+		}
+		else return 0.0;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!Level.IsFrozen())
+		{
+			if (random(0, 3) == 0)
+			{
+				string parcolor;
+				switch(random(0, 2))
+				{
+					case 0: parcolor = "FF0000"; break;
+					case 1: parcolor = "00FF00"; break;
+					case 2: parcolor = "0000FF"; break;
+				}
+				owner.A_SpawnParticle(parcolor, SPF_FULLBRIGHT, 35, owner.radius, accelz: -0.03);
+			}
+		}
+	}
+}

@@ -202,6 +202,7 @@ version "4.14"
 #include "zscript_DI/items/passives/sesameseeds.zsc"
 #include "zscript_DI/items/passives/speeddemon.zsc"
 #include "zscript_DI/items/passives/modifiedstomach.zsc"
+#include "zscript_DI/items/passives/quantumbullet.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"
