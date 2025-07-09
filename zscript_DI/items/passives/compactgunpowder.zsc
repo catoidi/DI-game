@@ -6,17 +6,41 @@ Class DI_CompactGunpowder : DIPassiveInventory
 	{
 		Tag "Compact Gunpowder";
 		Inventory.Icon "POW2L0";
-		Inventory.PickupMessage "Compact Gunpowder Acquired! (+25% DMG to all weapons with at least 4 projectiles. -10% to ones that don't.)";
+		Inventory.PickupMessage "Compact Gunpowder Acquired! (Get better DMG and worse accuracy based on how many projectiles your weapon has. Has diminishing returns.)";
 		Inventory.MaxAmount 3;
 	}
+	
+	double bonus;
 
 	override int ItemPriority() {return 1;} //make sure this item is ran after all default items.
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && wpn)
+		{
+			int projnum = (-1 + wpn.wpn_projectiles) * plr.CountInv(self.GetClassName());
+			bonus = (0.01 * sqrt(30 * projnum));
+		}
+	}
 	
 	override double GiveDamageMult()
 	{
 		if (!plr || !wpn) {return 1.0;}
-		if (wpn.wpn_projectiles >= 4) {return 1.0 + (0.25 * plr.CountInv(self.GetClassName()));}
-		else {return 1.0 - (0.1 * plr.CountInv(self.GetClassName()));}
+		return 1.0 + bonus;
+	}
+	
+	override double GiveAccuracy()
+	{
+		if (!plr || !wpn) {return 0.0;}
+		return 15.0 * bonus;
+	}
+	
+	override string CatalogueDescription()
+	{
+		string desc2 = StringTable.Localize(string.format("$SHOPDESC2_%s", self.getclassname()));
+		return string.format("%s\n\n\cvCurrent Buff: (+%.1f%%)", desc2, 100 * bonus);
 	}
 	
 	States
