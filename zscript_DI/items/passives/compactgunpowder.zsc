@@ -39,7 +39,7 @@ Class DI_CompactGunpowder : DIPassiveInventory
 	
 	override string CatalogueDescription()
 	{
-		string desc2 = StringTable.Localize(string.format("$SHOPDESC2_%s", self.getclassname()));
+		string desc2 = Super.CatalogueDescription();
 		return string.format("%s\n\n\cvCurrent Buff: (+%.1f%%)", desc2, 100 * bonus);
 	}
 	
