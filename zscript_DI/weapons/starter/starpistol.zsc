@@ -10,8 +10,7 @@ CLASS StarPistol : DI_Weapon
 		DI_Weapon.BaseDamage 90;
 		DI_Weapon.Recoil 1.5;
 		DI_Weapon.RecoilRecover 1.25;
-		DI_Weapon.BaseAccuracy 2;
-		DI_Weapon.MaxSpread 1;
+		DI_Weapon.MaxSpread 3;
 		DI_Weapon.BonusSpread 3;
 		Weapon.Kickback 250;
 		Weapon.SelectionOrder 10000;

@@ -24,8 +24,8 @@ Class DI_BigBullets : DIPassiveInventory
 
 	override double GiveRecoil()
 	{
-		if (!plr) {return 0.0;}
-		return 2 * plr.countinv(GetClassName());
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.5 * plr.countinv(GetClassName()));
 	}
 	
 	States

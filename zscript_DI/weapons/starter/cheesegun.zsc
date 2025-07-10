@@ -12,8 +12,7 @@ Class CheeseGun : DI_Weapon
 		DI_Weapon.Recoil 10;
 		DI_Weapon.RecoilRecover 0.5;
 		DI_Weapon.RecoilOffset 1.5;
-		DI_Weapon.BaseAccuracy 1.5;
-		DI_Weapon.MaxSpread 3;
+		DI_Weapon.MaxSpread 4.5;
 		DI_Weapon.BonusSpread 1;
 		DI_Weapon.Ammo2HUD 3;
 		Weapon.Kickback 0;

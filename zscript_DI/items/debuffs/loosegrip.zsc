@@ -8,7 +8,7 @@ Class DI_QuestDebuff_LooseGrip : DI_QuestDebuff
 	}
 	override double GiveRecoil() 
 	{
-		if (!plr) {return 0.0;}
-		return 2.0 * plr.countinv(self.getclassname());
+		if (!plr) {return 1.0;}
+		return 1.0 + plr.countinv(self.getclassname());
 	}
 }

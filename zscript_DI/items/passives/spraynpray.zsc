@@ -6,7 +6,7 @@ Class DI_SprayNPray : DIPassiveInventory
 	{
 		Tag "Spray n' Pray";
 		Inventory.Icon "POW2O0";
-		Inventory.PickupMessage "Spray n' Pray acquired! (Accuracy/Spread is reduced. Gain up to 15% Firerate as your accuracy worsens.)";
+		Inventory.PickupMessage "Spray n' Pray acquired! (Accuracy/Spread is worsened. Gain up to 15% Firerate as your accuracy worsens.)";
 		Inventory.MaxAmount 4;
 	}
 	

@@ -6,7 +6,7 @@ Class DI_SuperGlue : DIPassiveInventory
 	{
 		Tag "Super Glue";
 		Inventory.Icon "POW2B0";
-		Inventory.PickupMessage "Acquired Super Glue! (Improves Accuracy and Recoil, but switching weapons temporarily reduces weapon speed.)";
+		Inventory.PickupMessage "Acquired Super Glue! (Improves Accuracy and Recoil amount/recovery, but switching weapons temporarily reduces weapon speed.)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -36,13 +36,19 @@ Class DI_SuperGlue : DIPassiveInventory
 	override double GiveAccuracy()
 	{
 		if (!plr) {return 0.0;}
-		return -1 * plr.countinv(GetClassName());
+		return -2.0 * plr.countinv(GetClassName());
 	}
 	
 	override double GiveRecoil()
 	{
-		if (!plr) {return 0.0;}
-		return -1 * plr.countinv(GetClassName());
+		if (!plr) {return 1.0;}
+		return 1.0 - (0.15 * plr.countinv(GetClassName()));
+	}
+	
+	override double GiveRecoilRecover()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.15 * plr.countinv(GetClassName()));
 	}
 	
 	States

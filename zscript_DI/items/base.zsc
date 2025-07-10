@@ -86,8 +86,8 @@ class DIPassiveInventory : Inventory
 	virtual double GiveBonusSpread() {return 0.0;} //Applies extra spread to the MaxSpread value for every projectile on the weapon, excluding the first one.
 	virtual double GiveSpreadX() {return 1.0;} //Multiplier of horizontal spread.
 	virtual double GiveSpreadY() {return 1.0;} //Multiplier of vertical spread.
-	virtual double GiveRecoil() {return 0.0;} //Increases accuracy loss from each attack.
-	virtual double GiveRecoilRecover() {return 0.0;} //Allows weapon to recover from recoil faster.
+	virtual double GiveRecoil() {return 1.0;} //Increases accuracy loss from each attack.
+	virtual double GiveRecoilRecover() {return 1.0;} //Allows weapon to recover from recoil faster.
 	virtual int GiveProjectiles() {return 0;} //Increases the number of attacks for all hitscan/projectile-based weapons.
 	virtual int GiveFakeProjectiles() {return 0;} //Not real projectiles, used for calculation of Bullet Spread. Meant for items that dynamically update the player's projectiles so that the player's crosshair isn't constantly moving.
 	virtual double GiveWeaponSpeed() {return 0.0;} //Lower numbers improve weapon's animation speed at diminishing rates, and vice versa.

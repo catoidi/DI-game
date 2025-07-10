@@ -100,7 +100,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.FreshCharge 0;
 		DI_Weapon.BaseDamage 0;
 		DI_Weapon.DamageMult 1.000001; //workaround for rounding error
-		DI_Weapon.BaseAccuracy 0;
+		DI_Weapon.BaseAccuracy 3.0;
 		DI_Weapon.MaxSpread 0.0;
 		DI_Weapon.BonusSpread 0.0;
 		DI_Weapon.Spread_X 1.0;
@@ -267,8 +267,8 @@ Class DI_Weapon : Weapon abstract
 				wpn_spread_bonus += curinv.GiveBonusSpread();
 				wpn_spread_x *= curinv.GiveSpreadX();
 				wpn_spread_y *= curinv.GiveSpreadY();
-				wpn_recoil += curinv.GiveRecoil();
-				wpn_recoil_recover += curinv.GiveRecoilRecover();
+				wpn_recoil *= curinv.GiveRecoil();
+				wpn_recoil_recover *= curinv.GiveRecoilRecover();
 				wpn_projectiles += curinv.GiveProjectiles();
 				wpn_fakeprojectiles += curinv.GiveFakeProjectiles();
 				wpn_bulletsize += curinv.GiveBulletSize();
@@ -301,9 +301,7 @@ Class DI_Weapon : Weapon abstract
 		wpn_maxspread *= spreadmult;
 		wpn_spread_bonus *= spreadmult;
 		if (wpn_projectiles + wpn_fakeprojectiles > 1) {wpn_maxspread += wpn_spread_bonus * (wpn_projectiles + wpn_fakeprojectiles - 1);}
-		
-		double finalaccuracy = wpn_accuracy + current_recoil;
-		if (finalaccuracy < 0.0) {wpn_accuracy += -finalaccuracy;}
+		if (wpn_accuracy < 0.0) {wpn_accuracy = 0.0;}
 		
 		plr_maxhp += 0.0000001;
 		maxammouse = CalculateAmmoCost();
