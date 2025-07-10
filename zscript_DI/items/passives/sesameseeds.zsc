@@ -15,14 +15,7 @@ Class DI_SesameSeeds : DIPassiveInventory
 		Super.DoEffect();
 		if (plr && !plr.IsFrozen())
 		{
-			//if it works it works
-			vector3 curvel = plr.vel;
-			if (curvel.x < 0) {curvel.x *= -1;}
-			if (curvel.y < 0) {curvel.y *= -1;}
-			if (curvel.z < 0) {curvel.z *= -1;}
-			double totalvel = curvel.x + curvel.y + curvel.z;
-			
-			if (totalvel >= 8.0) {SpawnSeeds();}
+			if (plr.vel.length() >= 8.0) {SpawnSeeds();}
 		}
 	}
 	

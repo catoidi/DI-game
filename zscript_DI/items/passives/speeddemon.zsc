@@ -18,13 +18,7 @@ Class DI_SpeedDemon : DIPassiveInventory
 		
 		if (plr && !plr.IsFrozen())
 		{
-			vector3 curvel = plr.vel;
-			if (curvel.x < 0.0) {curvel.x *= -1;}
-			if (curvel.y < 0.0) {curvel.y *= -1;}
-			if (curvel.z < 0.0) {curvel.z *= -1;}
-			totalvel = 0.0075 * plr.countinv(self.getclassname()) * (curvel.x + curvel.y + curvel.z);
-			//too stupid to calculate this the right way right now.
-			//console.printf("%.3f", totalvel);
+			totalvel = 0.0075 * plr.countinv(self.getclassname()) * plr.vel.length();
 		}
 	}
 	
