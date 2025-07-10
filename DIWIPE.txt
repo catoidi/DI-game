@@ -95,3 +95,4 @@ DI_SesameSeeds;
 DI_SpeedDemon;
 DI_QuantumBullets;
 DI_JumpShot;
+DI_FreshFrenzy;

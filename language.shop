@@ -560,6 +560,10 @@ SHOPITEM_DI_QUANTUMBULLETS = "Quantum Bullets";
 SHOPDESC_DI_QUANTUMBULLETS = "+10% chance to gain +1 projectile and +0.4 piercing.\nIncreases Bullet Spread.";
 SHOPDESC2_DI_QUANTUMBULLETS = "\cbItem stacks will run the random chance multiple times, giving you a chance to get more than 1 buff. Chances of success increase with each failure. The increase to bullet spread varies based on what weapon you are holding.";
 SHOPTYPE_DI_QUANTUMBULLETS = "\cd[Passive] \cv[Rare] \cl[Max: 5]";
+SHOPITEM_DI_FRESHFRENZY = "Fresh Frenzy";
+SHOPDESC_DI_FRESHFRENZY = "\caHealing items are 30% worse.\clGetting fresh kills\ngrants a \czPERMANENT \cl+0.2% Max HP buff.";
+SHOPDESC2_DI_FRESHFRENZY = "\cbItem stacks increases both the Healing Power debuff and the Max HP buff gained per fresh kill. You will retain the Max HP buff even when this item is removed.";
+SHOPTYPE_DI_FRESHFRENZY = "\cd[Passive] \cv[Rare] \cl[Max: 3]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
@@ -617,3 +621,7 @@ SHOPITEM_DI_QUESTDEBUFF_YIELDING_POWERUP = "\cgCurse of Yielding \cv(Active)";
 SHOPDESC_DI_QUESTDEBUFF_YIELDING_POWERUP = "Reduces movement speed by 35% while active.";
 SHOPDESC2_DI_QUESTDEBUFF_YIELDING_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
 SHOPTYPE_DI_QUESTDEBUFF_YIELDING_POWERUP = "\cg[Cursed Powerup] \cl[Max Timer: 999999]";
+SHOPITEM_DI_FRESHFRENZY_BUFF = "\cvFresh Frenzy (Buff)";
+SHOPDESC_DI_FRESHFRENZY_BUFF = "Grants a \czPERMANENT \cl+0.1% Max HP buff per item stack.";
+SHOPDESC2_DI_FRESHFRENZY_BUFF = "\cbCapped at +100.0% Max HP. This buff will not be removed even if the original Fresh Frenzy item is lost.";
+SHOPTYPE_DI_FRESHFRENZY_BUFF = "\cd[Passive] \cl[Max: 10000]";

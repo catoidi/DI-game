@@ -1,0 +1,58 @@
+//zscript_DI/items/passives/freshfrenzy.zsc
+
+//fresh bonuses grant a permanent +0.1% Max HP bonus.
+//reduce healing power by 10%.
+//can only be rented.
+
+Class DI_FreshFrenzy : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Fresh Frenzy";
+		Inventory.Icon "POW3P0";
+		Inventory.PickupMessage "Acquired Fresh Frenzy! (Gain +0.2% Max HP PERMANENTLY for every fresh kill you get. Healing items are 30% worse.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (plr && !plr.IsFrozen())
+		{
+			if (plr.JustKilled)
+			{
+				plr.GiveInventory("DI_FreshFrenzy_Buff", 2 * plr.CountInv(self.GetClassName()));
+				plr.BuyPermaItem("DI_FreshFrenzy_Buff", 2 * plr.CountInv(self.GetClassName()));
+			}
+		}
+	}
+	
+	override double GiveHealingPower()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 - (0.3 * plr.CountInv(self.GetClassName()));
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 P -1;
+			Stop;
+	}
+}
+
+Class DI_FreshFrenzy_Buff : DIPassiveInventory
+{
+	Default
+	{
+		Tag "\cvFresh Frenzy (Buff)";
+		Inventory.Icon "POW3P0";
+		Inventory.MaxAmount 10000;
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.001 * plr.CountInv(self.GetClassName()));
+	}
+}
