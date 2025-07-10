@@ -14,8 +14,7 @@ Class DIKillTracker : EventHandler
 	{
 		canprogress = di_progression;
 		
-		if (!canprogress) {console.printf("Progression is disabled, disabling kill tracker...");}
-		else
+		if (canprogress)
 		{
 			killcvar = cvar.getcvar("di_playerkills");
 			string cvarstring = killcvar.GetString();

@@ -6,9 +6,17 @@ extend class DIHandler
 		if (di_mod_dailyrun)
 		{
 			curseed = di_dailyseed;
-			console.printf("Daily Seed: %d", curseed);
+			console.printf("\ccEntering Daily Challenge mode...\n\cfDaily Seed: %d", curseed);
 		}
-		else if (curseed == 0) {curseed = random[di](1, 2147483640);}
+		else if (curseed == 0) 
+		{
+			curseed = random[di](1, 2147483640);
+			console.printf("\ccGenerating a random seed for this run...");
+		}
+		else
+		{
+			console.printf("\ccUsing a custom seed for this run...\n\cfCustom Seed: %d", curseed);
+		}
 		SetRandomSeed[dihandler](curseed); //RNG for event handlers and the like.
 		SetRandomSeed[dishop](curseed); //RNG for Shop-related actors.
 		SetRandomSeed[diplayer](curseed); //RNG for anything player related, including items and weapons.

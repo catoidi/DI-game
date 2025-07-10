@@ -518,6 +518,7 @@ Class SwagHandler : EventHandler
 					UpdateSwag(finalscore);
 					eventhandler.sendnetworkevent("swagcheck", lvl2);
 				}
+				console.printf("Current Seed: %d", plr.thebrain.curseed);
 				scoredone = true;
 			}
 			
@@ -546,12 +547,20 @@ Class SwagHandler : EventHandler
 			}
 			if (DeathTimer > 177)
 			{
-				string died = string.format("Current Wave: \ck%d", wavenum);
-				int scaley = (32 * (CleanYFac * 2)) / 2;
+				string died = string.format("Level: \ck%s - %s", Level.MapName, Level.LevelName);
+				string died2 = string.format("\nCurrent Wave: \ck%d",wavenum);
+				int scaley = (48 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
 					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
 					(Screen.GetHeight() / 2) - scaley,
 					died,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5
+				);
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died2) / 2) * (CleanXFac * 1.5)),
+					(Screen.GetHeight() / 2) - scaley,
+					died2,
 					DTA_ScaleX, CleanXFac * 1.5,
 					DTA_ScaleY, CleanYFac * 1.5
 				);
@@ -747,7 +756,9 @@ Class SwagHandler : EventHandler
 					DTA_ScaleY, CleanYFac,
 					DTA_Alpha, 0.5
 				);
-				string curseed = string.format("Current Seed: %d", plr.thebrain.curseed);
+				string curseed_txt = "Current Seed: ";
+				if (di_mod_dailyrun) {curseed_txt = "\czDaily Seed: ";}
+				string curseed = string.format("%s%d", curseed_txt, plr.thebrain.curseed);
 				Screen.DrawText(smallfont, Font.CR_WHITE,
 					Screen.GetWidth() - (CleanXFac * smallfont.StringWidth(curseed)),
 					Screen.GetHeight() - (smallfont.GetHeight() * CleanYFac),
