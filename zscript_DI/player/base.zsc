@@ -803,7 +803,10 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if (invoker.wpn && invoker.wpn.wpn_autooffset == true && invoker.switchtime == false)
 		{
 			//recoil part
-			double newoffset = invoker.wpn.current_recoil * invoker.wpn.wpn_recoil_offset;
+			double wpnrec = 0.0125 * invoker.wpn.current_recoil * invoker.wpn.wpn_recoil_offset;
+			double newoffset;
+			if (wpnrec > 0.0) {newoffset = 64 * (wpnrec / (1.0 + wpnrec));}
+			if (wpnrec < 0.0) {newoffset = -64 * (wpnrec / (1.0 + wpnrec));}
 			if (newoffset != invoker.wpn.autooffset_prev)
 			{
 				Vector2 shootoffset = 
