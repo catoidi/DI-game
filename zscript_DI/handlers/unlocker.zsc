@@ -132,26 +132,23 @@ Class DIUnlockHandler : EventHandler
 	
 	override void UiTick(void)
 	{
-		if (canprogress)
+		if ((!isunlocking) && (listunlocks.Size() > 0))
 		{
-			if ((!isunlocking) && (listunlocks.Size() > 0))
+			unlocktimer[0] = 0;
+			unlocktimer[1] = 0;
+			unlocktimer[2] = 0;
+			isunlocking = true;
+		}
+		else if ((isunlocking) && (Level.IsFrozen() == false))
+		{
+			DoUnlockTimer(0);
+			DoUnlockTimer(1);
+			DoUnlockTimer(2);
+			
+			if (CheckUnlockTimer(0) && CheckUnlockTimer(1) && CheckUnlockTimer(2))
 			{
-				unlocktimer[0] = 0;
-				unlocktimer[1] = 0;
-				unlocktimer[2] = 0;
-				isunlocking = true;
-			}
-			else if ((isunlocking) && (Level.IsFrozen() == false))
-			{
-				DoUnlockTimer(0);
-				DoUnlockTimer(1);
-				DoUnlockTimer(2);
-				
-				if (CheckUnlockTimer(0) && CheckUnlockTimer(1) && CheckUnlockTimer(2))
-				{
-					listunlocks.Delete(0, 3);
-					isunlocking = false;
-				}
+				listunlocks.Delete(0, 3);
+				isunlocking = false;
 			}
 		}
 	}
@@ -270,9 +267,9 @@ Class DIUnlockHandler : EventHandler
 	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
-		if (canprogress)
+		if (e.Name.Left(9) == "diunlock_")
 		{
-			if (e.Name.Left(9) == "diunlock_")
+			if (canprogress || (e.Args[0] == 1)) //progression check can be bypassed by setting e.Args[0] to 1.
 			{
 				let thiscvar = e.Name.Mid(9);
 				DoUnlock(thiscvar);
