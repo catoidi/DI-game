@@ -1,0 +1,21 @@
+GreenShotgun;
+{
+	Good;
+	{
+		GiveBaseDamage, 5, 20;
+		GiveDamageMult, 1.05, 1.25;
+		GiveWeaponSpeed, 0.05, 0.25;
+		GiveFirerate, 0.05, 0.25;
+		GiveReloadSpeed, 0.05, 0.25;
+		GiveExtraCoin, 1, 1;
+	}
+	Bad;
+	{
+		GiveBaseDamage, -20, -5;
+		GiveDamageMult, 0.75, 0.95;
+		GiveWeaponSpeed, -0.25, -0.05;
+		GiveFirerate, -0.25, -0.05;
+		GiveReloadSpeed, -0.25, -0.05;
+		GiveExtraCoin, -1, -1;
+	}
+}

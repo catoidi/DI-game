@@ -2,6 +2,8 @@
 
 extend class DIHandler
 {
+	array<string> weaponized_file;
+
 	virtual void DIModifierHandler(DI_PlayerBase plr)
 	{
 		if (di_mod_doubletrouble)
@@ -14,5 +16,56 @@ extend class DIHandler
 		{
 			plr.GiveInventory("DI_Debilitated", 1);
 		}
+		if (di_mod_weaponized)
+		{
+			Weaponized_Init();
+			plr.GiveInventory("DI_Weaponized", 1);
+		}
+	}
+	
+	virtual void Weaponized_Init()
+	{
+		int ThisLump = Wads.FindLump("DIWPNIZE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIWPNIZE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(weaponized_file, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIWPNIZE", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < weaponized_file.Size(); i++)
+		{
+			if (weaponized_file[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			//if (weaponized_file[i].Length() < 3) {continue;}
+			weaponized_file[i].Replace("	", "");
+			weaponized_file[i].Replace(" ", "");
+			weaponized_file[i] = weaponized_file[i].Left(weaponized_file[i].IndexOf(";"));
+		}
+	}
+	
+	virtual void Weaponized_AddShop(DIShop shop)
+	{
+		shop.GiveInventory("DI_Weaponized_Shop", 1);
+		let item = DI_Weaponized_Shop(shop.FindInventory("DI_Weaponized_Shop"));
+		if (!item) {ThrowAbortException("Failed to find DI_Weaponized_Shop!");}
+		item.shop = shop;
+		item.thebrain = self;
+	}
+	
+	virtual bool Weaponized_CheckWeapon(string wpn)
+	{
+		return true;
+	}
+	
+	virtual string Weaponized_GetBuff(string wpn)
+	{
+		return "placeholder buff";
+	}
+	
+	virtual string Weaponized_GetNerf(string wpn)
+	{
+		return "placeholder nerf";
 	}
 }

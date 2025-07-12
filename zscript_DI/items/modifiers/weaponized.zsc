@@ -1,0 +1,129 @@
+//zscript_DI/items/modifiers/weaponized.zsc
+
+Class DI_Weaponized : DIPassiveInventory
+{
+	Default {DIPassiveInventory.DIHidden true;}
+	
+	array<string> wpns, buffs, nerfs;
+	
+	double dmgmult, firerate, reload, wpnspd;
+	int basedmg, coins;
+	
+	DI_Weapon oldwpn;
+	
+	override void AttachToOwner(Actor other)
+	{
+		ResetWeaponEffects();
+		Super.AttachToOwner(other);
+	}
+	
+	override void DoEffect()
+	{
+		if (plr && wpn)
+		{
+			if (wpn != oldwpn) {SwapWeapon();}
+		}
+		
+		Super.DoEffect();
+	}
+	
+	virtual void SwapWeapon()
+	{
+		ResetWeaponEffects();
+		oldwpn = wpn;
+		DoWeaponEffects();
+	}
+	
+	virtual void NewWeapon(string newwpn, string buff, string nerf)
+	{
+		
+	}
+	
+	virtual void DoWeaponEffects()
+	{	
+		int pos = wpns.Find(oldwpn.getclassname());
+		if (pos >= wpns.Size()) {return;}
+		
+		NewTrait(buffs[pos]);
+		NewTrait(nerfs[pos]);
+	}
+	
+	virtual void ResetWeaponEffects()
+	{
+		dmgmult = 1.0;
+		firerate = 0.0;
+		reload = 0.0;
+		wpnspd = 0.0;
+		basedmg = 0;
+		coins = 0;
+	}
+	
+	virtual void NewTrait(string trait)
+	{
+		array<string> lines;
+		trait.split(lines, ",");
+		
+		if (lines[0] ~== "GiveBaseDamage") {basedmg = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveDamageMult") {dmgmult = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveFirerate") {firerate = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveReloadSpeed") {reload = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveWeaponSpeed") {wpnspd = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveExtraCoin") {coins = lines[1].ToInt();}
+	}
+	
+	override int ItemPriority() {return -1;} //run before other items take effect
+	override int GiveBaseDamage() {return basedmg;}
+	override double GiveDamageMult() {return dmgmult;}
+	override double GiveFireRate() {return firerate;}
+	override double GiveReloadSpeed() {return reload;}
+	override double GiveWeaponSpeed() {return wpnspd;}
+	override int GiveExtraCoin() {return coins;}
+}
+
+Class DI_Weaponized_Shop : Inventory
+{
+	DIShop shop;
+	DIHandler thebrain;
+	DI_Weaponized item;
+	
+	string buff, nerf;
+	
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		
+		if (other is "DIShop") {shop = DIShop(other);}
+	}
+	
+	override void DoEffect()
+	{
+		if (shop)
+		{
+			Super.DoEffect();
+			if (shop.didpurchase)
+			{
+				if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+				{
+					if (shop.spawnedactor)
+					{
+						item.NewWeapon(shop.shop_currentitem, buff, nerf);
+					}
+					else
+					{
+						ThrowAbortException("Did not find actor :(");
+					}
+				}
+			}
+			else if (shop.chosenewitem)
+			{
+				buff = "";
+				nerf = "";
+				if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+				{
+					buff = thebrain.Weaponized_GetBuff(shop.shop_currentitem);
+					nerf = thebrain.Weaponized_GetNerf(shop.shop_currentitem);
+				}
+			}
+		}
+	}
+}
