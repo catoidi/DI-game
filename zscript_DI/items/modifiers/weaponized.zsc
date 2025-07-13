@@ -6,8 +6,8 @@ Class DI_Weaponized : DIPassiveInventory
 	
 	array<string> wpns, buffs, nerfs;
 	
-	double dmgmult, firerate, reload, wpnspd;
-	int basedmg, coins;
+	double dmgmult, firerate, reload, wpnspd, accuracy, spread, recoil, piercing, bouncing;
+	int basedmg, coins, freshbonus, projectiles, ammouse, maxammo;
 	
 	DI_Weapon oldwpn;
 	
@@ -36,7 +36,19 @@ Class DI_Weaponized : DIPassiveInventory
 	
 	virtual void NewWeapon(string newwpn, string buff, string nerf)
 	{
+		int oldpos = wpns.Find(newwpn);
+		if (oldpos != wpns.Size())
+		{
+			wpns.Delete(oldpos);
+			buffs.Delete(oldpos);
+			nerfs.Delete(oldpos);
+		}
 		
+		wpns.Push(newwpn);
+		buffs.Push(buff);
+		nerfs.Push(nerf);
+		
+		console.printf("NEW WEAPON: %s ('%s' + '%s')", newwpn, buff, nerf);
 	}
 	
 	virtual void DoWeaponEffects()
@@ -56,6 +68,15 @@ Class DI_Weaponized : DIPassiveInventory
 		wpnspd = 0.0;
 		basedmg = 0;
 		coins = 0;
+		freshbonus = 0;
+		accuracy = 0.0;
+		recoil = 1.0;
+		spread = 1.0;
+		projectiles = 0;
+		ammouse = 0;
+		maxammo = 0;
+		piercing = 0.0;
+		bouncing = 0.0;
 	}
 	
 	virtual void NewTrait(string trait)
@@ -69,6 +90,15 @@ Class DI_Weaponized : DIPassiveInventory
 		else if (lines[0] ~== "GiveReloadSpeed") {reload = lines[1].ToDouble();}
 		else if (lines[0] ~== "GiveWeaponSpeed") {wpnspd = lines[1].ToDouble();}
 		else if (lines[0] ~== "GiveExtraCoin") {coins = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveFreshBonus") {freshbonus = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveAccuracy") {accuracy = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveRecoil") {recoil = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveMaxSpread") {spread = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveProjectiles") {projectiles = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveAmmoUse") {ammouse = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveMaxAmmo") {maxammo = lines[1].ToInt();}
+		else if (lines[0] ~== "GivePiercing") {piercing = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveBounceFactor") {bouncing = lines[1].ToDouble();}
 	}
 	
 	override int ItemPriority() {return -1;} //run before other items take effect
@@ -78,6 +108,58 @@ Class DI_Weaponized : DIPassiveInventory
 	override double GiveReloadSpeed() {return reload;}
 	override double GiveWeaponSpeed() {return wpnspd;}
 	override int GiveExtraCoin() {return coins;}
+	override int GiveFreshBonus() {return freshbonus;}
+	override double GiveAccuracy() {return accuracy;}
+	override double GiveMaxSpread() {return spread;}
+	override int GiveProjectiles() {return projectiles;}
+	override int GiveAmmoUse1() {return ammouse;}
+	override int GiveAmmoUse2() {return ammouse;}
+	override int GiveMaxAmmo1() {return maxammo;}
+	override int GiveMaxAmmo2() {return maxammo;}
+	
+	override string, int GiveProjectileItem()
+	{
+		if ((piercing == 0.0) && (bouncing == 0.0)) {return "", 0;}
+		return "DI_Weaponized_Projectile", 1;
+	}
+}
+
+Class DI_Weaponized_Projectile : DIProjectileInventory
+{
+	bool gotvalues;
+	double piercing, bouncing;
+	
+	void GetValues(DI_PlayerBase plr)
+	{
+		let item = DI_Weaponized(plr.FindInventory("DI_Weaponized"));
+		if (item)
+		{
+			piercing = item.piercing;
+			bouncing = item.bouncing;
+			gotvalues = true;
+		}
+	}
+	
+	override double GivePiercing(DI_PlayerBase plr)
+	{
+		if (!gotvalues) {GetValues(plr);}
+		
+		return piercing;
+	}
+	
+	override double GiveBounceFactor(DI_PlayerBase plr)
+	{
+		if (!gotvalues) {GetValues(plr);}
+		
+		return bouncing;
+	}
+	
+	override double GiveWallBounceFactor(DI_PlayerBase plr)
+	{
+		if (!gotvalues) {GetValues(plr);}
+		
+		return bouncing;
+	}
 }
 
 Class DI_Weaponized_Shop : Inventory
@@ -87,6 +169,9 @@ Class DI_Weaponized_Shop : Inventory
 	DI_Weaponized item;
 	
 	string buff, nerf;
+	
+	bool hastraits;
+	int inittimer;
 	
 	override void AttachToOwner(Actor other)
 	{
@@ -102,10 +187,13 @@ Class DI_Weaponized_Shop : Inventory
 			Super.DoEffect();
 			if (shop.didpurchase)
 			{
+				item = DI_Weaponized(shop.plr.FindInventory("DI_Weaponized"));
 				if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
 				{
 					if (shop.spawnedactor)
 					{
+						if (!hastraits) {ThrowAbortException("Attempted to give traits to invalid weapon.");}
+						//console.printf("%s, %s, %s", shop.shop_currentitem, buff, nerf);
 						item.NewWeapon(shop.shop_currentitem, buff, nerf);
 					}
 					else
@@ -116,14 +204,32 @@ Class DI_Weaponized_Shop : Inventory
 			}
 			else if (shop.chosenewitem)
 			{
-				buff = "";
-				nerf = "";
-				if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+				GenerateNewTraits();
+			}
+			else if (thebrain && !hastraits)
+			{
+				++inittimer;
+				if (inittimer >= 40)
 				{
-					buff = thebrain.Weaponized_GetBuff(shop.shop_currentitem);
-					nerf = thebrain.Weaponized_GetNerf(shop.shop_currentitem);
+					GenerateNewTraits();
 				}
 			}
 		}
+	}
+	
+	virtual void GenerateNewTraits()
+	{
+		buff = "";
+		nerf = "";
+		if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+		{
+			string newbuff, newnerf;
+			double newbuff_value, newnerf_value;
+			[newbuff, newbuff_value] = thebrain.Weaponized_RandomTrait(shop.shop_currentitem, false);
+			buff = string.format("%s,%.3f", newbuff, newbuff_value);
+			[newnerf, newnerf_value] = thebrain.Weaponized_RandomTrait(shop.shop_currentitem, true, newbuff);
+			nerf = string.format("%s,%.3f", newnerf, newnerf_value);
+		}
+		hastraits = true;
 	}
 }

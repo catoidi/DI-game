@@ -2,20 +2,33 @@ GreenShotgun;
 {
 	Good;
 	{
-		GiveBaseDamage, 5, 20;
-		GiveDamageMult, 1.05, 1.25;
-		GiveWeaponSpeed, 0.05, 0.25;
-		GiveFirerate, 0.05, 0.25;
-		GiveReloadSpeed, 0.05, 0.25;
+		GiveBaseDamage, 5, 12;
+		GiveDamageMult, 1.05, 1.15;
+		GiveWeaponSpeed, -0.25, -0.05;
+		GiveFirerate, -0.5, -0.1;
+		GiveReloadSpeed, -0.5, -0.1;
 		GiveExtraCoin, 1, 1;
+		GiveFreshBonus, 1, 1;
+		GiveMaxSpread, 0.75, 0.95;
+		GiveProjectiles, 1, 2;
+		GiveMaxAmmo, 1, 2;
+		GivePiercing, 0.1, 0.3;
+		GiveBounceFactor, 0.05, 0.25;
 	}
 	Bad;
 	{
-		GiveBaseDamage, -20, -5;
-		GiveDamageMult, 0.75, 0.95;
-		GiveWeaponSpeed, -0.25, -0.05;
-		GiveFirerate, -0.25, -0.05;
-		GiveReloadSpeed, -0.25, -0.05;
-		GiveExtraCoin, -1, -1;
+		GiveBaseDamage, -12, -5;
+		GiveDamageMult, 0.7, 0.9;
+		GiveWeaponSpeed, 0.1, 0.5;
+		GiveFirerate, 0.2, 1.0;
+		GiveReloadSpeed, 0.2, 1.0;
+		GiveExtraCoin, -1, -2;
+		GiveFreshBonus, -1, -1;
+		GiveAccuracy, 1.0, 5.0;
+		GiveRecoil, 1.5, 2.5;
+		GiveMaxSpread, 1.1, 1.5;
+		GiveProjectiles, -4, -1;
+		GiveAmmoUse, 1, 1;
+		GiveMaxAmmo, -4, -1;
 	}
 }
