@@ -96,8 +96,19 @@ extend class DIHandler
 						{
 							if ((weaponized_file[i].Left(blacklist_length) != blacklist) || (blacklist ~== ""))
 							{
-								validlines.Push(weaponized_file[i]);
-								//console.printf("#3: we found it!!! (%s)", weaponized_file[i]);
+								int randomchance = 256;
+								array<string> curtrait;
+								weaponized_file[i].Split(curtrait, ",");
+								if (curtrait.Size() == 4) 
+								{
+									randomchance = curtrait[3].ToInt(10);
+								}
+								
+								if (random[dihandler](1, 256) <= randomchance)
+								{							
+									validlines.Push(string.format("%s,%s,%s", curtrait[0], curtrait[1], curtrait[2]));
+									//console.printf("#3: we found it!!! (%s)", weaponized_file[i]);
+								}
 							}
 						}
 						break;

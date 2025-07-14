@@ -121,8 +121,8 @@ Class DI_Projectile : DI_Actor
 				if (dobounce)
 				{
 					//console.printf("\cqReading Bounce Stats...");
-					BounceFactor += items[i].GiveBounceFactor(plr);
-					WallBounceFactor += items[i].GiveWallBounceFactor(plr);
+					BounceFactor += ((BounceFactor + items[i].GiveBounceFactor(plr)) >= 0.0) ? items[i].GiveBounceFactor(plr) : -BounceFactor;
+					WallBounceFactor += ((WallBounceFactor + items[i].GiveWallBounceFactor(plr)) >= 0.0) ? items[i].GiveWallBounceFactor(plr) : -WallBounceFactor;
 				}
 				if (dopiercing)
 				{
@@ -130,6 +130,7 @@ Class DI_Projectile : DI_Actor
 				}
 			}
 		}
+		if (pierceamount < 0.0) {pierceamount = 0.0;}
 		
 		//console.printf("bounce: %.2f", BounceFactor);
 		

@@ -144,6 +144,9 @@ Class DI_Weaponized : DIPassiveInventory
 	
 	DI_Weapon oldwpn;
 	
+	bool shopentered;
+	int shoptimer;
+	
 	override void AttachToOwner(Actor other)
 	{
 		ResetWeaponEffects();
@@ -155,10 +158,43 @@ Class DI_Weaponized : DIPassiveInventory
 		if (plr && wpn)
 		{
 			if (wpn != oldwpn) {SwapWeapon();}
+			if (shopentered)
+			{
+				++shoptimer;
+				if (shoptimer >= 5) {VerifyWeapons();}
+			}
 		}
 		
 		Super.DoEffect();
 	}
+	
+	override bool EnterShop()
+	{
+		shopentered = true;
+		return true;
+	}
+	
+	virtual void VerifyWeapons()
+	{
+		if (wpns.Size() > 0)
+		{
+			for (int i = wpns.Size() - 1; i > -1; --i)
+			{
+				if (!plr.FindInventory(wpns[i]))
+				{
+					buffs.Delete(i);
+					nerfs.Delete(i);
+					wpns.Delete(i);
+				}
+			}
+		}
+		
+		if (shopentered)
+		{
+			shoptimer = 0;
+			shopentered = false;
+		}
+	}	
 	
 	virtual void SwapWeapon()
 	{

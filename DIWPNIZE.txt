@@ -4,29 +4,29 @@ GreenShotgun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
 		GiveMaxSpread, 0.75, 0.95;
 		GiveProjectiles, 1, 2;
 		GiveMaxAmmo, 1, 2;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -1;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
 		GiveMaxSpread, 1.1, 1.5;
 		GiveProjectiles, -4, -1;
-		GiveAmmoUse, 1, 1;
+		GiveAmmoUse, 1, 1, 128;
 		GiveMaxAmmo, -4, -1;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -36,29 +36,29 @@ DoubleShotgun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
 		GiveMaxSpread, 0.75, 0.95;
 		GiveProjectiles, 2, 5;
 		GiveMaxAmmo, 2, 4;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -1;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -1, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
 		GiveMaxSpread, 1.1, 1.5;
 		GiveProjectiles, -10, -2;
-		GiveAmmoUse, 1, 2;
+		GiveAmmoUse, 1, 2, 128;
 		GiveMaxAmmo, -8, -2;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -68,26 +68,26 @@ BlueSMG;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 2, 6;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 3;
+		GiveAmmoUse, 1, 3, 128;
 		GiveMaxAmmo, -12, -4;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -97,26 +97,26 @@ PinkRifle;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 4;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
+		GiveAmmoUse, 1, 2, 128;
 		GiveMaxAmmo, -8, -2;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -126,24 +126,24 @@ LaserPointer;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.25, -0.05;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 4;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.1, 0.5;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -1;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -1, 128;
 		GiveAccuracy, 2.0, 10.0;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -6, -1;
+		GiveAmmoUse, 1, 2, 64;
+		GiveMaxAmmo, -6, -1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -152,28 +152,28 @@ PartyShotty;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.25, -0.05;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
 		GiveMaxSpread, 0.75, 0.95;
 		GiveProjectiles, 1, 2;
 		GiveMaxAmmo, 1, 2;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.1, 0.5;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -1;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -1, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
 		GiveMaxSpread, 1.1, 1.5;
 		GiveProjectiles, -3, -1;
-		GiveAmmoUse, 1, 1;
-		GiveMaxAmmo, -3, -1;
+		GiveAmmoUse, 1, 1, 64;
+		GiveMaxAmmo, -3, -1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -182,25 +182,25 @@ PopcornGun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.25, -0.05;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 8;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.1, 0.5;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -1;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -1, 128;
 		GiveAccuracy, 2.0, 10.0;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -12, -4;
+		GiveAmmoUse, 1, 2, 64;
+		GiveMaxAmmo, -12, -4, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		GiveBounceFactor, -0.8, -0.2;
 	}
 }
 StunCrossbow;
@@ -208,23 +208,21 @@ StunCrossbow;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
-		GiveMaxAmmo, 1, 1;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
+		GiveMaxAmmo, 1, 1, 128;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -8, -2;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -233,28 +231,28 @@ FingerGun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 3;
-		GivePiercing, 1.0, 3.0;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 1.0, 3.0, 128;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.7, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -4;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -4, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -4, -1;
-		GivePiercing, -1.5, -0.5;
+		GiveAmmoUse, 1, 2, 64;
+		GiveMaxAmmo, -4, -1, 64;
+		GivePiercing, -3.0, -0.5, 128;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -263,23 +261,24 @@ GrenadeLauncher;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
-		GiveMaxAmmo, 1, 2;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 32;
+		GiveFreshBonus, 1, 1, 64;
+		GiveProjectiles, 1, 1, 64;
+		GiveMaxAmmo, 1, 2, 128;
 		GivePlayerSpeed, 0.05, 0.15;
+		GiveMaxSpread, 0.75, 0.95;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 192;
 		GiveFreshBonus, -1, -1;
-		GiveAccuracy, 1.0, 5.0;
-		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -2, -1;
+		GiveAccuracy, 1.0, 5.0, 128;
+		GiveRecoil, 1.5, 2.5, 128;
+		GiveAmmoUse, 1, 2, 64;
+		GiveMaxAmmo, -2, -1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -288,27 +287,27 @@ PoisonGun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 6;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -1, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -8, -2;
+		GiveAmmoUse, 1, 2, 64;
+		GiveMaxAmmo, -8, -2, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -317,17 +316,17 @@ DI_OreDrill;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 2;
-		GivePlayerSpeed, 0.05, 0.15;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 2, 128;
+		GivePlayerSpeed, 0.05, 0.3;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveExtraCoin, -1, -1;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -1, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 2.0, 10.0;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -337,20 +336,21 @@ CheeseGun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 2;
-		GiveMaxAmmo, 1, 2;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 2, 64;
+		GiveMaxAmmo, 1, 2, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
+		GiveProjectiles, -2, -1, 64;
 		GiveRecoil, 1.5, 2.5;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -360,22 +360,24 @@ Glowstick;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 2;
-		GiveProjectiles, 1, 2;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 2, 128;
+		GiveProjectiles, 1, 2, 64;
 		GiveMaxAmmo, 1, 2;
-		GivePlayerSpeed, 0.05, 0.15;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
+		GivePlayerSpeed, 0.05, 0.3;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveExtraCoin, -1, -1;
-		GiveFreshBonus, -4, -1;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -1, 64;
+		GiveFreshBonus, -4, -1, 128;
 		GiveAccuracy, 2.0, 10.0;
-		GiveMaxAmmo, -2, -1;
-		GiveAmmoUse, 1, 1;
+		GiveMaxAmmo, -2, -1, 64;
+		GiveAmmoUse, 1, 1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -384,17 +386,17 @@ Sledgehammer;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 2;
-		GivePlayerSpeed, 0.05, 0.15;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 2, 128;
+		GivePlayerSpeed, 0.05, 0.3;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveExtraCoin, -1, -1;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -1, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 2.0, 10.0;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
@@ -404,27 +406,27 @@ StarPistol;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 1;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 1, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 3;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -6, -2;
+		GiveAmmoUse, 1, 2, 64;
+		GiveMaxAmmo, -6, -2, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 	}
 }
@@ -433,27 +435,27 @@ DI_Minigun;
 	Good;
 	{
 		GiveDamageMult, 1.05, 1.3;
-		GiveFirerate, -0.5, -0.1;
-		GiveReloadSpeed, -0.5, -0.1;
-		GiveExtraCoin, 1, 1;
-		GiveFreshBonus, 1, 2;
-		GiveProjectiles, 1, 1;
+		GiveFirerate, -0.5, -0.1, 128;
+		GiveReloadSpeed, -0.5, -0.1, 128;
+		GiveExtraCoin, 1, 1, 64;
+		GiveFreshBonus, 1, 2, 128;
+		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 8, 32;
-		GivePiercing, 0.1, 0.3;
-		GiveBounceFactor, 0.05, 0.25;
+		GivePiercing, 0.1, 0.3, 64;
+		GiveBounceFactor, 0.05, 0.25, 64;
 		GivePlayerSpeed, 0.05, 0.15;
 	}
 	Bad;
 	{
 		GiveDamageMult, 0.5, 0.9;
-		GiveFirerate, 0.2, 1.0;
-		GiveReloadSpeed, 0.2, 1.0;
-		GiveExtraCoin, -1, -2;
-		GiveFreshBonus, -1, -2;
+		GiveFirerate, 0.2, 1.0, 128;
+		GiveReloadSpeed, 0.2, 1.0, 128;
+		GiveExtraCoin, -1, -2, 64;
+		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
-		GiveAmmoUse, 1, 2;
-		GiveMaxAmmo, -64, -16;
-		GivePlayerSpeed, -0.2, -0.05;
+		GiveAmmoUse, 1, 2, 128;
+		GiveMaxAmmo, -64, -16, 128;
+		GivePlayerSpeed, -0.4, -0.05;
 	}
 }
