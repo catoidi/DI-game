@@ -150,6 +150,10 @@ class DIPassiveInventory : Inventory
 		}
 		else {return itemdesc;}
 	}
+	
+	//Used to add custom code to item pages in the Catalogue Menu.
+	//I recommend adding any new elements you create to the menu's "itemextras" array, so it can be properly discarded when changing pages.
+	ui virtual void CustomCataloguePage(DICatalogueMenu catalogue, string curitem) {}
 }
 
 class DIPowerup : DIPassiveInventory

@@ -62,7 +62,7 @@ mixin class DI_Weaponized_Mixin
 		}
 		else if (lines[0] ~== "GiveAccuracy") 
 		{
-			traitname = "Accuracy"; 
+			traitname = "Inaccuracy"; 
 			double fr = lines[1].ToDouble();
 			string plus = (fr > 0.0) ? "+" : "";
 			traitvalue = string.format("%s%.1f", plus, fr);
@@ -126,6 +126,8 @@ mixin class DI_Weaponized_Mixin
 
 Class DI_Weaponized : DIPassiveInventory
 {
+	mixin DI_Weaponized_Mixin;
+
 	Default {DIPassiveInventory.DIHidden true;}
 	
 	array<string> wpns, buffs, nerfs;
@@ -245,6 +247,23 @@ Class DI_Weaponized : DIPassiveInventory
 	{
 		if ((piercing == 0.0) && (bouncing == 0.0)) {return "", 0;}
 		return "DI_Weaponized_Projectile", 1;
+	}
+	
+	override void CustomCataloguePage(DICatalogueMenu catalogue, string curitem)
+	{
+		int pos = wpns.Find(curitem);
+		if (pos < wpns.Size())
+		{
+			string curtxt = string.format("%s\n%s", FancyTrait(buffs[pos], false), FancyTrait(nerfs[pos], true));
+			let itemtraits = boxparty_ZF_Label.Create
+			(
+				(232, 370),
+				(96, 16),
+				text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
+			);
+			itemtraits.Pack (catalogue.mainFrame);
+			catalogue.itemextras.Push(itemtraits);
+		}
 	}
 }
 

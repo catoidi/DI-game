@@ -15,8 +15,10 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 	Array<boxparty_ZF_BoxImage> itemboximages, tabboximages;
 	Array<boxparty_ZF_Label> itemlabels;
     Array<boxparty_ZF_Button> itembuttons, tabbuttons;
+	Array<boxparty_ZF_Element> itemextras;
 	boxparty_ZF_BoxImage itemimage;
 	boxparty_ZF_Label categorytxt, itemtitle, itemdesc, itemdesc2, itemtags;
+	
 	Array<String> permaitems;
 	
 	int currenttab;
@@ -442,6 +444,14 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
 			itemtags.Unpack();
 			itemtags.Destroy();
 		}
+		if (itemextras.Size() > 0)
+		{
+			for (int i = 0; i < itemextras.Size(); ++i)
+			{
+				itemextras[i].Unpack();
+				itemextras[i].Destroy();
+			}
+		}
 		
 		let startx = 412;
 		
@@ -535,5 +545,16 @@ Class DICatalogueMenu : boxparty_ZF_GenericMenu
             text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
         );
         itemtags.Pack (mainFrame);
+		
+		let item = players[consoleplayer].mo.inv;
+        while (item != NULL)
+		{
+			if (item is "DIPassiveInventory")
+			{
+				let passiveinv = DIPassiveInventory(item);
+				passiveinv.CustomCataloguePage(self, curitem);
+			}
+			item = item.inv;
+		}
 	}
 }
