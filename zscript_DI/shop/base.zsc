@@ -38,6 +38,8 @@ Class DIShop_Base : SwitchableDecoration abstract
 	
 	PlayerPawn plr; //the player who is attempting to make a purchase.
 	
+	Array<DIShopInventory> shopinv; //list of all DIShopInventory items in the shop.
+	
 	override void PostBeginPlay()
 	{
 		SpawnShopExtras();

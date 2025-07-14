@@ -33,8 +33,6 @@ Class DIShop : DIShop_Base
 	
 	bool canprogress; //di_progression check. not related to DontProgress/user_dontprogress.
 	
-	bool chosenewitem, didpurchase;
-	
 	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
@@ -116,9 +114,6 @@ Class DIShop : DIShop_Base
 				}
 			}
 		}
-		
-		chosenewitem = false;
-		didpurchase = false;
 	}
 	
 	virtual void ParseBlacklist(void)
@@ -377,7 +372,10 @@ Class DIShop : DIShop_Base
 			if (user_baseprice > 0) {shop_baseprice = user_baseprice;}
 			else {shop_baseprice = currentitem[3].ToInt(10);}
 			
-			chosenewitem = true;
+			for (int i = 0; i < shopinv.Size(); ++i)
+			{
+				shopinv[i].ChoseNewShopItem(shop_currentitem);
+			}
 		}
 		
 		//compatibility for DI_NewItem ACS Script.
@@ -529,7 +527,7 @@ Class DIShop : DIShop_Base
 		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		AddPriceMult(0); //refresh price mult for passive items.
-		didpurchase = true;
+		for (int i = 0; i < shopinv.Size(); ++i) {shopinv[i].DidPurchase(diplr, spawnedactor);}
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
 	}

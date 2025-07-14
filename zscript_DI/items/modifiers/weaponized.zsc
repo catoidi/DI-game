@@ -162,9 +162,8 @@ Class DI_Weaponized_Projectile : DIProjectileInventory
 	}
 }
 
-Class DI_Weaponized_Shop : Inventory
+Class DI_Weaponized_Shop : DIShopInventory
 {
-	DIShop shop;
 	DIHandler thebrain;
 	DI_Weaponized item;
 	
@@ -173,40 +172,14 @@ Class DI_Weaponized_Shop : Inventory
 	bool hastraits;
 	int inittimer;
 	
-	override void AttachToOwner(Actor other)
-	{
-		Super.AttachToOwner(other);
-		
-		if (other is "DIShop") {shop = DIShop(other);}
-	}
+	default {DIShopInventory.AddController false;}
 	
+	/*
 	override void DoEffect()
 	{
 		if (shop)
 		{
-			Super.DoEffect();
-			if (shop.didpurchase)
-			{
-				item = DI_Weaponized(shop.plr.FindInventory("DI_Weaponized"));
-				if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
-				{
-					if (shop.spawnedactor)
-					{
-						if (!hastraits) {ThrowAbortException("Attempted to give traits to invalid weapon.");}
-						//console.printf("%s, %s, %s", shop.shop_currentitem, buff, nerf);
-						item.NewWeapon(shop.shop_currentitem, buff, nerf);
-					}
-					else
-					{
-						ThrowAbortException("Did not find actor :(");
-					}
-				}
-			}
-			else if (shop.chosenewitem)
-			{
-				GenerateNewTraits();
-			}
-			else if (thebrain && !hastraits)
+			if (thebrain && !hastraits)
 			{
 				++inittimer;
 				if (inittimer >= 40)
@@ -216,7 +189,30 @@ Class DI_Weaponized_Shop : Inventory
 			}
 		}
 	}
+	*/
 	
+	override void DidPurchase(DI_PlayerBase buyer, actor newitem)
+	{
+		console.printf("Did a purchase i guess");
+		item = DI_Weaponized(shop.plr.FindInventory("DI_Weaponized"));
+		if (thebrain.Weaponized_CheckWeapon(newitem.getclassname()))
+		{
+			console.printf("Weapon is valid.");
+			if (shop.spawnedactor)
+			{
+				console.printf("Adding traits to weapon...");
+				if (!hastraits) {ThrowAbortException("Attempted to give traits to invalid weapon.");}
+				//console.printf("%s, %s, %s", newitem, buff, nerf);
+				item.NewWeapon(newitem.getclassname(), buff, nerf);
+			}
+			else
+			{
+				ThrowAbortException("Did not find actor :(");
+			}
+		}
+	}
+	
+	override void ChoseNewShopItem(string newitem) {GenerateNewTraits();}
 	virtual void GenerateNewTraits()
 	{
 		buff = "";

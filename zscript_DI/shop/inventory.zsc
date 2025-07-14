@@ -1,0 +1,53 @@
+//zscript_DI/shop/inventory.zsc
+
+//inventory item with special functions to make accessing and modifying specific shop-related functions quicker and easier.
+//
+
+Class DIShopInventory : Inventory
+{
+	DIShop shop;
+	DIShopController controller;
+	DIShop_Base shopbase; //compatibility with modded stuff maybe
+	
+	bool addshop, addcontroller, addshopbase;
+	
+	Property AddShop : addshop;
+	Property AddController : addcontroller;
+	Property AddShopBase : addshopbase;
+	
+	Default
+	{
+		DIShopInventory.AddShop true; //Add to all actors inheriting from DIShop.
+		DIShopInventory.AddController true; //Add to all actors inheriting from DIShopController.
+		DIShopInventory.AddShopBase false; //Add to all actors inheriting from DIShop_Base. Called after the above 2 checks.
+	}
+
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+	
+		if (addshop && (other is "DIShop"))
+		{
+			shop = DIShop(other);
+			shop.shopinv.Push(self);
+			//console.printf("Added to shop.");
+		}
+		else if (addcontroller && (other is "DIShopController"))
+		{
+			controller = DIShopController(other);
+			controller.shopinv.Push(self);
+			//console.printf("Added to controller.");
+		}
+		else if (addshopbase && (other is "DIShop_Base"))
+		{
+			shopbase = DIShop_Base(other);
+			shopbase.shopinv.Push(self);
+			//console.printf("Added to shopbase.");
+		}
+		else {other.TakeInventory(self.GetClassName(), 999999);}
+	}
+
+	virtual void ChoseNewShopItem(string newitem) {} //Called with a new shop item is chosen.
+	virtual void DidPurchase(DI_PlayerBase buyer, actor newitem = null) {} //Called when the player successfully purchases an item from the shop.
+	ui virtual void CustomShopPopup(RenderEvent e) {} //Called by NashHPBar when viewing the shop. Can be used to add custom UI elements to the shop.
+}
