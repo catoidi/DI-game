@@ -1,5 +1,129 @@
 //zscript_DI/items/modifiers/weaponized.zsc
 
+mixin class DI_Weaponized_Mixin
+{
+	clearscope string FancyTrait(string rawtrait, bool isnerf = false)
+	{
+		array<string> lines;
+		rawtrait.split(lines, ",");
+		
+		string traitname, traitvalue;
+		double startpos;
+		
+		if (lines[0] ~== "GiveBaseDamage") 
+		{
+			traitname = "Base Damage"; 
+			int num = lines[1].ToInt(10);
+			string plus = (num > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f", plus, 0.1 * num);
+		}
+		else if (lines[0] ~== "GiveDamageMult") 
+		{
+			traitname = "Damage"; 
+			double num = lines[1].ToDouble() - 1.0;
+			string plus = (num > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.3f%%", plus, num);
+		}
+		else if (lines[0] ~== "GiveFirerate") 
+		{
+			traitname = "Firerate"; 
+			double fr = -lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveReloadSpeed") 
+		{
+			traitname = "Reload Speed"; 
+			double fr = -lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveWeaponSpeed") 
+		{
+			traitname = "Weapon Speed"; 
+			double fr = -lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveExtraCoin") 
+		{
+			traitname = "Extra Coin"; 
+			int coins = lines[1].ToInt();
+			if ((coins > 1) || (coins < -1)) {traitname.AppendFormat("s");}
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveFreshBonus") 
+		{
+			traitname = "Fresh Bonus"; 
+			int coins = lines[1].ToInt();
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveAccuracy") 
+		{
+			traitname = "Accuracy"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f", plus, fr);
+		}
+		else if (lines[0] ~== "GiveRecoil") 
+		{
+			traitname = "Recoil"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f", plus, fr);
+		}
+		else if (lines[0] ~== "GiveMaxSpread") 
+		{
+			traitname = "Spread"; 
+			double fr = lines[1].ToDouble() - 1.0;
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveProjectiles") 
+		{
+			traitname = "Projectile"; 
+			int coins = lines[1].ToInt();
+			if ((coins > 1) || (coins < -1)) {traitname.AppendFormat("s");}
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveAmmoUse") 
+		{
+			traitname = "Ammo Cost"; 
+			int coins = lines[1].ToInt();
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveMaxAmmo") 
+		{
+			traitname = "Max Ammo"; 
+			int coins = lines[1].ToInt();
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GivePiercing") 
+		{
+			traitname = "Piercing"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.2f", plus, fr);
+		}
+		else if (lines[0] ~== "GiveBounceFactor") 
+		{
+			traitname = "Bouncing"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.2f", plus, fr);
+		}
+		
+		string traitcolor = isnerf ? "\ca" : "\cd";
+		
+		return string.format("%s[%s %s]", traitcolor, traitvalue, traitname);
+	}
+}
+
 Class DI_Weaponized : DIPassiveInventory
 {
 	Default {DIPassiveInventory.DIHidden true;}
@@ -164,6 +288,8 @@ Class DI_Weaponized_Projectile : DIProjectileInventory
 
 Class DI_Weaponized_Shop : DIShopInventory
 {
+	mixin DI_Weaponized_Mixin;
+
 	DIHandler thebrain;
 	DI_Weaponized item;
 	
@@ -230,7 +356,7 @@ Class DI_Weaponized_Shop : DIShopInventory
 					DTA_ScaleY, 0.3 * CleanYFac);
 			}
 			
-			string txt = "\cd[placeholder]\n\ca[text]";
+			string txt = string.format("%s\n%s", FancyTrait(buff, false), FancyTrait(nerf, true));
 			Screen.DrawText(smallFont, Font.CR_WHITE,
 				(Screen.GetWidth() / 2) - ((smallFont.StringWidth(txt) / 2) * CleanXFac),
 				(baseYPos * CleanYFac) + (smallFont.GetHeight() * CleanYFac) - (smallFont.GetHeight() * CleanYFac) + (67 * CleanYFac),
