@@ -22,7 +22,7 @@ mixin class DI_Weaponized_Mixin
 			traitname = "Damage"; 
 			double num = lines[1].ToDouble() - 1.0;
 			string plus = (num > 0.0) ? "+" : "";
-			traitvalue = string.format("%s%.3f%%", plus, num);
+			traitvalue = string.format("%s%.1f%%", plus, num * 100);
 		}
 		else if (lines[0] ~== "GiveFirerate") 
 		{
@@ -117,6 +117,13 @@ mixin class DI_Weaponized_Mixin
 			string plus = (fr > 0.0) ? "+" : "";
 			traitvalue = string.format("%s%.2f", plus, fr);
 		}
+		else if (lines[0] ~== "GivePlayerSpeed") 
+		{
+			traitname = "Player Speed"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
 		
 		string traitcolor = isnerf ? "\ca" : "\cd";
 		
@@ -132,7 +139,7 @@ Class DI_Weaponized : DIPassiveInventory
 	
 	array<string> wpns, buffs, nerfs;
 	
-	double dmgmult, firerate, reload, wpnspd, accuracy, spread, recoil, piercing, bouncing;
+	double dmgmult, firerate, reload, wpnspd, accuracy, spread, recoil, piercing, bouncing, plrspd;
 	int basedmg, coins, freshbonus, projectiles, ammouse, maxammo;
 	
 	DI_Weapon oldwpn;
@@ -203,6 +210,7 @@ Class DI_Weaponized : DIPassiveInventory
 		maxammo = 0;
 		piercing = 0.0;
 		bouncing = 0.0;
+		plrspd = 0.0;
 	}
 	
 	virtual void NewTrait(string trait)
@@ -225,6 +233,7 @@ Class DI_Weaponized : DIPassiveInventory
 		else if (lines[0] ~== "GiveMaxAmmo") {maxammo = lines[1].ToInt();}
 		else if (lines[0] ~== "GivePiercing") {piercing = lines[1].ToDouble();}
 		else if (lines[0] ~== "GiveBounceFactor") {bouncing = lines[1].ToDouble();}
+		else if (lines[0] ~== "GivePlayerSpeed") {plrspd = lines[1].ToDouble();}
 	}
 	
 	override int ItemPriority() {return -1;} //run before other items take effect
@@ -242,6 +251,7 @@ Class DI_Weaponized : DIPassiveInventory
 	override int GiveAmmoUse2() {return ammouse;}
 	override int GiveMaxAmmo1() {return maxammo;}
 	override int GiveMaxAmmo2() {return maxammo;}
+	override double GivePlayerSpeed() {return plrspd;}
 	
 	override string, int GiveProjectileItem()
 	{

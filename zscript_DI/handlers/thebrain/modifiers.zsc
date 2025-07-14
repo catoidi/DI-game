@@ -66,6 +66,7 @@ extend class DIHandler
 		int bracket = 0;
 		bool foundwpn = false;
 		bool foundtraits = false;
+		int blacklist_length = blacklist.Length();
 		array<string> validlines;
 		for (int i = 0; i < weaponized_file.Size(); ++i)
 		{
@@ -91,10 +92,13 @@ extend class DIHandler
 						}
 						break;
 					case 2:
-						if (foundwpn && foundtraits && (weaponized_file[i] != blacklist)) 
+						if (foundwpn && foundtraits)
 						{
-							validlines.Push(weaponized_file[i]);
-							//console.printf("#3: we found it!!! (%s)", weaponized_file[i]);
+							if ((weaponized_file[i].Left(blacklist_length) != blacklist) || (blacklist ~== ""))
+							{
+								validlines.Push(weaponized_file[i]);
+								//console.printf("#3: we found it!!! (%s)", weaponized_file[i]);
+							}
 						}
 						break;
 				}
