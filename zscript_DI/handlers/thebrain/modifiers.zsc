@@ -54,7 +54,7 @@ extend class DIHandler
 		item.thebrain = self;
 	}
 	
-	virtual bool Weaponized_CheckWeapon(string wpn)
+	clearscope virtual bool Weaponized_CheckWeapon(name wpn)
 	{
 		bool returnvalue = (weaponized_file.Find(wpn) < weaponized_file.Size());
 		//console.printf("wpnize check: %d (%s)", returnvalue, wpn);

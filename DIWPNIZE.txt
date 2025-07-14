@@ -1,3 +1,4 @@
+>>Beware, all of the names are case sensitive!
 GreenShotgun;
 {
 	Good;
@@ -58,7 +59,7 @@ DoubleShotgun;
 		GiveMaxAmmo, -8, -2;
 	}
 }
-BlueSmg;
+BlueSMG;
 {
 	Good;
 	{

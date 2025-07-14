@@ -46,8 +46,9 @@ Class DIShopInventory : Inventory
 		}
 		else {other.TakeInventory(self.GetClassName(), 999999);}
 	}
-
+	
+	virtual void ShopInit() {} //Called when the shop generates it's first set of items (~35 ticks after creation).
 	virtual void ChoseNewShopItem(string newitem) {} //Called with a new shop item is chosen.
 	virtual void DidPurchase(DI_PlayerBase buyer, actor newitem = null) {} //Called when the player successfully purchases an item from the shop.
-	ui virtual void CustomShopPopup(RenderEvent e) {} //Called by NashHPBar when viewing the shop. Can be used to add custom UI elements to the shop.
+	ui virtual void CustomShopPopup(NashHPBarHandler handler, RenderEvent e, double baseYPos, double baralpha) {} //Called by NashHPBar when viewing the shop. Can be used to add custom UI elements to the shop.
 }

@@ -323,6 +323,11 @@ class NashHPBarHandler : EventHandler
 					DTA_CleanNoMove, true,
 					DTA_KeepRatio, true,
 					DTA_Alpha, healthBarAlpha);
+				
+				for (int i = 0; i < prevShop.shopinv.Size(); ++i)
+				{
+					prevShop.shopinv[i].CustomShopPopup(self, e, baseYPos, healthBarAlpha);
+				}
 			}
 			else if (prevAimTarget is "DI_QuestGiver")
 			{

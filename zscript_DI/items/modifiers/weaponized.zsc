@@ -174,23 +174,6 @@ Class DI_Weaponized_Shop : DIShopInventory
 	
 	default {DIShopInventory.AddController false;}
 	
-	/*
-	override void DoEffect()
-	{
-		if (shop)
-		{
-			if (thebrain && !hastraits)
-			{
-				++inittimer;
-				if (inittimer >= 40)
-				{
-					GenerateNewTraits();
-				}
-			}
-		}
-	}
-	*/
-	
 	override void DidPurchase(DI_PlayerBase buyer, actor newitem)
 	{
 		console.printf("Did a purchase i guess");
@@ -212,20 +195,49 @@ Class DI_Weaponized_Shop : DIShopInventory
 		}
 	}
 	
-	override void ChoseNewShopItem(string newitem) {GenerateNewTraits();}
-	virtual void GenerateNewTraits()
+	override void ShopInit() {GenerateNewTraits(shop.shop_currentitem);}
+	override void ChoseNewShopItem(string newitem) {GenerateNewTraits(newitem);}
+	virtual void GenerateNewTraits(string newitem)
 	{
 		buff = "";
 		nerf = "";
-		if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+		if (thebrain.Weaponized_CheckWeapon(newitem))
 		{
 			string newbuff, newnerf;
 			double newbuff_value, newnerf_value;
-			[newbuff, newbuff_value] = thebrain.Weaponized_RandomTrait(shop.shop_currentitem, false);
+			[newbuff, newbuff_value] = thebrain.Weaponized_RandomTrait(newitem, false);
 			buff = string.format("%s,%.3f", newbuff, newbuff_value);
-			[newnerf, newnerf_value] = thebrain.Weaponized_RandomTrait(shop.shop_currentitem, true, newbuff);
+			[newnerf, newnerf_value] = thebrain.Weaponized_RandomTrait(newitem, true, newbuff);
 			nerf = string.format("%s,%.3f", newnerf, newnerf_value);
 		}
 		hastraits = true;
+	}
+	
+	override void CustomShopPopup(NashHPBarHandler handler, RenderEvent e, double baseYPos, double baralpha)
+	{
+		if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+		{
+			let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+			if (brdTex.IsValid())
+			{
+				Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+				Screen.DrawTexture(brdTex, false,
+					(Screen.GetWidth() / 2) - ((brdTexSize.X / 4) * CleanXFac),
+					((baseYPos + 59.0) * CleanYFac),
+					DTA_KeepRatio, true,
+					DTA_Alpha, baralpha,
+					DTA_ScaleX, 0.5 * CleanXFac,
+					DTA_ScaleY, 0.3 * CleanYFac);
+			}
+			
+			string txt = "\cd[placeholder]\n\ca[text]";
+			Screen.DrawText(smallFont, Font.CR_WHITE,
+				(Screen.GetWidth() / 2) - ((smallFont.StringWidth(txt) / 2) * CleanXFac),
+				(baseYPos * CleanYFac) + (smallFont.GetHeight() * CleanYFac) - (smallFont.GetHeight() * CleanYFac) + (67 * CleanYFac),
+				txt,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, baralpha);
+		}
 	}
 }

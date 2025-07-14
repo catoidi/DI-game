@@ -33,6 +33,8 @@ Class DIShop : DIShop_Base
 	
 	bool canprogress; //di_progression check. not related to DontProgress/user_dontprogress.
 	
+	bool shopinv_init; //runs the Init function on shopinv items once the shop is ready to sell items.
+	
 	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
@@ -110,6 +112,11 @@ Class DIShop : DIShop_Base
 					else {dosale = false; ++lastsale;}
 					GetSalePercent();
 					if (shop_itemstock > 0) {canshop = true;} //if shop is restocked, reenable shopping.
+					if (!shopinv_init)
+					{
+						for (int i = 0; i < shopinv.Size(); ++i) {shopinv[i].ShopInit();}
+						shopinv_init = true;
+					}
 					curround = newround;
 				}
 			}
