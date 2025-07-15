@@ -1,0 +1,434 @@
+//zscript_DI/items/modifiers/weaponized.zsc
+
+mixin class DI_Weaponized_Mixin
+{
+	clearscope string FancyTrait(string rawtrait, bool isnerf = false)
+	{
+		array<string> lines;
+		rawtrait.split(lines, ",");
+		
+		string traitname, traitvalue;
+		double startpos;
+		
+		if (lines[0] ~== "GiveBaseDamage") 
+		{
+			traitname = "Base Damage"; 
+			int num = lines[1].ToInt(10);
+			string plus = (num > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f", plus, 0.1 * num);
+		}
+		else if (lines[0] ~== "GiveDamageMult") 
+		{
+			traitname = "Damage"; 
+			double num = lines[1].ToDouble() - 1.0;
+			string plus = (num > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, num * 100);
+		}
+		else if (lines[0] ~== "GiveFirerate") 
+		{
+			traitname = "Firerate"; 
+			double fr = -lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveReloadSpeed") 
+		{
+			traitname = "Reload Speed"; 
+			double fr = -lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveWeaponSpeed") 
+		{
+			traitname = "Weapon Speed"; 
+			double fr = -lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveExtraCoin") 
+		{
+			traitname = "Extra Coin"; 
+			int coins = lines[1].ToInt();
+			if ((coins > 1) || (coins < -1)) {traitname.AppendFormat("s");}
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveFreshBonus") 
+		{
+			traitname = "Fresh Bonus"; 
+			int coins = lines[1].ToInt();
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveAccuracy") 
+		{
+			traitname = "Inaccuracy"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f", plus, fr);
+		}
+		else if (lines[0] ~== "GiveRecoil") 
+		{
+			traitname = "Recoil"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f", plus, fr);
+		}
+		else if (lines[0] ~== "GiveMaxSpread") 
+		{
+			traitname = "Spread"; 
+			double fr = lines[1].ToDouble() - 1.0;
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "GiveProjectiles") 
+		{
+			traitname = "Projectile"; 
+			int coins = lines[1].ToInt();
+			if ((coins > 1) || (coins < -1)) {traitname.AppendFormat("s");}
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveAmmoUse") 
+		{
+			traitname = "Ammo Cost"; 
+			int coins = lines[1].ToInt();
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GiveMaxAmmo") 
+		{
+			traitname = "Max Ammo"; 
+			int coins = lines[1].ToInt();
+			string plus = (coins > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%d", plus, coins);
+		}
+		else if (lines[0] ~== "GivePiercing") 
+		{
+			traitname = "Piercing"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.2f", plus, fr);
+		}
+		else if (lines[0] ~== "GiveBounceFactor") 
+		{
+			traitname = "Bouncing"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.2f", plus, fr);
+		}
+		else if (lines[0] ~== "GivePlayerSpeed") 
+		{
+			traitname = "Player Speed"; 
+			double fr = lines[1].ToDouble();
+			string plus = (fr > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		
+		string traitcolor = isnerf ? "\ca" : "\cd";
+		
+		return string.format("%s[%s %s]", traitcolor, traitvalue, traitname);
+	}
+}
+
+Class DI_Weaponized : DIPassiveInventory
+{
+	mixin DI_Weaponized_Mixin;
+
+	Default {DIPassiveInventory.DIHidden true;}
+	
+	array<string> wpns, buffs, nerfs;
+	
+	double dmgmult, firerate, reload, wpnspd, accuracy, spread, recoil, piercing, bouncing, plrspd;
+	int basedmg, coins, freshbonus, projectiles, ammouse, maxammo;
+	
+	DI_Weapon oldwpn;
+	
+	bool shopentered;
+	int shoptimer;
+	
+	override void AttachToOwner(Actor other)
+	{
+		ResetWeaponEffects();
+		Super.AttachToOwner(other);
+	}
+	
+	override void DoEffect()
+	{
+		if (plr && wpn)
+		{
+			if (wpn != oldwpn) {SwapWeapon();}
+			if (shopentered)
+			{
+				++shoptimer;
+				if (shoptimer >= 5) {VerifyWeapons();}
+			}
+		}
+		
+		Super.DoEffect();
+	}
+	
+	override bool EnterShop()
+	{
+		shopentered = true;
+		return true;
+	}
+	
+	virtual void VerifyWeapons()
+	{
+		if (wpns.Size() > 0)
+		{
+			for (int i = wpns.Size() - 1; i > -1; --i)
+			{
+				if (!plr.FindInventory(wpns[i]))
+				{
+					buffs.Delete(i);
+					nerfs.Delete(i);
+					wpns.Delete(i);
+				}
+			}
+		}
+		
+		if (shopentered)
+		{
+			shoptimer = 0;
+			shopentered = false;
+		}
+	}	
+	
+	virtual void SwapWeapon()
+	{
+		ResetWeaponEffects();
+		oldwpn = wpn;
+		DoWeaponEffects();
+	}
+	
+	virtual void NewWeapon(string newwpn, string buff, string nerf)
+	{
+		int oldpos = wpns.Find(newwpn);
+		if (oldpos != wpns.Size())
+		{
+			wpns.Delete(oldpos);
+			buffs.Delete(oldpos);
+			nerfs.Delete(oldpos);
+		}
+		
+		wpns.Push(newwpn);
+		buffs.Push(buff);
+		nerfs.Push(nerf);
+		
+		console.printf("NEW WEAPON: %s ('%s' + '%s')", newwpn, buff, nerf);
+	}
+	
+	virtual void DoWeaponEffects()
+	{	
+		int pos = wpns.Find(oldwpn.getclassname());
+		if (pos >= wpns.Size()) {return;}
+		
+		NewTrait(buffs[pos]);
+		NewTrait(nerfs[pos]);
+	}
+	
+	virtual void ResetWeaponEffects()
+	{
+		dmgmult = 1.0;
+		firerate = 0.0;
+		reload = 0.0;
+		wpnspd = 0.0;
+		basedmg = 0;
+		coins = 0;
+		freshbonus = 0;
+		accuracy = 0.0;
+		recoil = 1.0;
+		spread = 1.0;
+		projectiles = 0;
+		ammouse = 0;
+		maxammo = 0;
+		piercing = 0.0;
+		bouncing = 0.0;
+		plrspd = 0.0;
+	}
+	
+	virtual void NewTrait(string trait)
+	{
+		array<string> lines;
+		trait.split(lines, ",");
+		
+		if (lines[0] ~== "GiveBaseDamage") {basedmg = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveDamageMult") {dmgmult = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveFirerate") {firerate = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveReloadSpeed") {reload = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveWeaponSpeed") {wpnspd = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveExtraCoin") {coins = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveFreshBonus") {freshbonus = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveAccuracy") {accuracy = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveRecoil") {recoil = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveMaxSpread") {spread = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveProjectiles") {projectiles = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveAmmoUse") {ammouse = lines[1].ToInt();}
+		else if (lines[0] ~== "GiveMaxAmmo") {maxammo = lines[1].ToInt();}
+		else if (lines[0] ~== "GivePiercing") {piercing = lines[1].ToDouble();}
+		else if (lines[0] ~== "GiveBounceFactor") {bouncing = lines[1].ToDouble();}
+		else if (lines[0] ~== "GivePlayerSpeed") {plrspd = lines[1].ToDouble();}
+	}
+	
+	override int ItemPriority() {return -1;} //run before other items take effect
+	override int GiveBaseDamage() {return basedmg;}
+	override double GiveDamageMult() {return dmgmult;}
+	override double GiveFireRate() {return firerate;}
+	override double GiveReloadSpeed() {return reload;}
+	override double GiveWeaponSpeed() {return wpnspd;}
+	override int GiveExtraCoin() {return coins;}
+	override int GiveFreshBonus() {return freshbonus;}
+	override double GiveAccuracy() {return accuracy;}
+	override double GiveMaxSpread() {return spread;}
+	override int GiveProjectiles() {return projectiles;}
+	override int GiveAmmoUse1() {return ammouse;}
+	override int GiveAmmoUse2() {return ammouse;}
+	override int GiveMaxAmmo1() {return maxammo;}
+	override int GiveMaxAmmo2() {return maxammo;}
+	override double GivePlayerSpeed() {return plrspd;}
+	
+	override string, int GiveProjectileItem()
+	{
+		if ((piercing == 0.0) && (bouncing == 0.0)) {return "", 0;}
+		return "DI_Weaponized_Projectile", 1;
+	}
+	
+	override void CustomCataloguePage(DICatalogueMenu catalogue, string curitem)
+	{
+		int pos = wpns.Find(curitem);
+		if (pos < wpns.Size())
+		{
+			string curtxt = string.format("%s\n%s", FancyTrait(buffs[pos], false), FancyTrait(nerfs[pos], true));
+			let itemtraits = boxparty_ZF_Label.Create
+			(
+				(232, 370),
+				(96, 16),
+				text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
+			);
+			itemtraits.Pack (catalogue.mainFrame);
+			catalogue.itemextras.Push(itemtraits);
+		}
+	}
+}
+
+Class DI_Weaponized_Projectile : DIProjectileInventory
+{
+	bool gotvalues;
+	double piercing, bouncing;
+	
+	void GetValues(DI_PlayerBase plr)
+	{
+		let item = DI_Weaponized(plr.FindInventory("DI_Weaponized"));
+		if (item)
+		{
+			piercing = item.piercing;
+			bouncing = item.bouncing;
+			gotvalues = true;
+		}
+	}
+	
+	override double GivePiercing(DI_PlayerBase plr)
+	{
+		if (!gotvalues) {GetValues(plr);}
+		
+		return piercing;
+	}
+	
+	override double GiveBounceFactor(DI_PlayerBase plr)
+	{
+		if (!gotvalues) {GetValues(plr);}
+		
+		return bouncing;
+	}
+	
+	override double GiveWallBounceFactor(DI_PlayerBase plr)
+	{
+		if (!gotvalues) {GetValues(plr);}
+		
+		return bouncing;
+	}
+}
+
+Class DI_Weaponized_Shop : DIShopInventory
+{
+	mixin DI_Weaponized_Mixin;
+
+	DIHandler thebrain;
+	DI_Weaponized item;
+	
+	string buff, nerf;
+	
+	bool hastraits;
+	int inittimer;
+	
+	default {DIShopInventory.AddController false;}
+	
+	override void DidPurchase(DI_PlayerBase buyer, actor newitem)
+	{
+		console.printf("Did a purchase i guess");
+		item = DI_Weaponized(shop.plr.FindInventory("DI_Weaponized"));
+		if (thebrain.Weaponized_CheckWeapon(newitem.getclassname()))
+		{
+			console.printf("Weapon is valid.");
+			if (shop.spawnedactor)
+			{
+				console.printf("Adding traits to weapon...");
+				if (!hastraits) {ThrowAbortException("Attempted to give traits to invalid weapon.");}
+				//console.printf("%s, %s, %s", newitem, buff, nerf);
+				item.NewWeapon(newitem.getclassname(), buff, nerf);
+			}
+			else
+			{
+				ThrowAbortException("Did not find actor :(");
+			}
+		}
+	}
+	
+	override void ShopInit() {GenerateNewTraits(shop.shop_currentitem);}
+	override void ChoseNewShopItem(string newitem) {GenerateNewTraits(newitem);}
+	virtual void GenerateNewTraits(string newitem)
+	{
+		buff = "";
+		nerf = "";
+		if (thebrain.Weaponized_CheckWeapon(newitem))
+		{
+			string newbuff, newnerf;
+			double newbuff_value, newnerf_value;
+			[newbuff, newbuff_value] = thebrain.Weaponized_RandomTrait(newitem, false);
+			buff = string.format("%s,%.3f", newbuff, newbuff_value);
+			[newnerf, newnerf_value] = thebrain.Weaponized_RandomTrait(newitem, true, newbuff);
+			nerf = string.format("%s,%.3f", newnerf, newnerf_value);
+		}
+		hastraits = true;
+	}
+	
+	override void CustomShopPopup(NashHPBarHandler handler, RenderEvent e, double baseYPos, double baralpha)
+	{
+		if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
+		{
+			let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+			if (brdTex.IsValid())
+			{
+				Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+				Screen.DrawTexture(brdTex, false,
+					(Screen.GetWidth() / 2) - ((brdTexSize.X / 4) * CleanXFac),
+					((baseYPos + 59.0) * CleanYFac),
+					DTA_KeepRatio, true,
+					DTA_Alpha, baralpha,
+					DTA_ScaleX, 0.5 * CleanXFac,
+					DTA_ScaleY, 0.3 * CleanYFac);
+			}
+			
+			string txt = string.format("%s\n%s", FancyTrait(buff, false), FancyTrait(nerf, true));
+			Screen.DrawText(smallFont, Font.CR_WHITE,
+				(Screen.GetWidth() / 2) - ((smallFont.StringWidth(txt) / 2) * CleanXFac),
+				(baseYPos * CleanYFac) + (smallFont.GetHeight() * CleanYFac) - (smallFont.GetHeight() * CleanYFac) + (67 * CleanYFac),
+				txt,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, baralpha);
+		}
+	}
+}

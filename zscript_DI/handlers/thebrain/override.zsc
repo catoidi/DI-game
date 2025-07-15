@@ -74,6 +74,10 @@ extend class DIHandler
 			if (e.Thing is "DIShop")
 			{
 				shoparray.Push(DIShop(e.Thing));
+				if (di_mod_weaponized)
+				{
+					Weaponized_AddShop(DIShop(e.Thing));
+				}
 			}
 			if (e.Thing is "DIShopController")
 			{

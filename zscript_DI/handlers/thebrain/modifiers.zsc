@@ -2,6 +2,8 @@
 
 extend class DIHandler
 {
+	array<string> weaponized_file;
+
 	virtual void DIModifierHandler(DI_PlayerBase plr)
 	{
 		if (di_mod_doubletrouble)
@@ -13,6 +15,123 @@ extend class DIHandler
 		if (di_mod_debilitated)
 		{
 			plr.GiveInventory("DI_Debilitated", 1);
+		}
+		if (di_mod_weaponized)
+		{
+			Weaponized_Init();
+			plr.GiveInventory("DI_Weaponized", 1);
+		}
+	}
+	
+	virtual void Weaponized_Init()
+	{
+		int ThisLump = Wads.FindLump("DIWPNIZE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIWPNIZE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(weaponized_file, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIWPNIZE", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < weaponized_file.Size(); i++)
+		{
+			if (weaponized_file[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			//if (weaponized_file[i].Length() < 3) {continue;}
+			weaponized_file[i].Replace("	", "");
+			weaponized_file[i].Replace(" ", "");
+			weaponized_file[i] = weaponized_file[i].Left(weaponized_file[i].IndexOf(";"));
+		}
+	}
+	
+	virtual void Weaponized_AddShop(DIShop shop)
+	{
+		shop.GiveInventory("DI_Weaponized_Shop", 1);
+		let item = DI_Weaponized_Shop(shop.FindInventory("DI_Weaponized_Shop"));
+		if (!item) {ThrowAbortException("Failed to find DI_Weaponized_Shop!");}
+		item.shop = shop;
+		item.thebrain = self;
+	}
+	
+	clearscope virtual bool Weaponized_CheckWeapon(name wpn)
+	{
+		bool returnvalue = (weaponized_file.Find(wpn) < weaponized_file.Size());
+		//console.printf("wpnize check: %d (%s)", returnvalue, wpn);
+		return returnvalue;
+	}
+	
+	virtual string, double Weaponized_RandomTrait(string wpn, bool nerf = false, string blacklist = "")
+	{
+		int bracket = 0;
+		bool foundwpn = false;
+		bool foundtraits = false;
+		int blacklist_length = blacklist.Length();
+		array<string> validlines;
+		for (int i = 0; i < weaponized_file.Size(); ++i)
+		{
+			//console.printf("\cz'%s'", weaponized_file[i]);
+			if (weaponized_file[i].Left(1) ~=="{") {++bracket; continue;}
+			else if (weaponized_file[i].Left(1) ~== "}") {--bracket; continue;}
+			else
+			{
+				switch(bracket)
+				{
+					case 0:
+						if (weaponized_file[i] == wpn) {foundwpn = true;}
+						else if (weaponized_file[i].Length() > 3) {foundwpn = false;}
+						//console.printf("#1: found weapon? (%d)", foundwpn);
+						break;
+					case 1:
+						if (foundwpn)
+						{
+							if (weaponized_file[i].Left(4) ~== "Good" && !nerf) {foundtraits = true;}
+							else if (weaponized_file[i].Left(3) ~== "Bad" && nerf) {foundtraits = true;}
+							else {foundtraits = false;}
+							//console.printf("#2: found traits? (%d)", foundtraits);
+						}
+						break;
+					case 2:
+						if (foundwpn && foundtraits)
+						{
+							if ((weaponized_file[i].Left(blacklist_length) != blacklist) || (blacklist ~== ""))
+							{
+								int randomchance = 256;
+								array<string> curtrait;
+								weaponized_file[i].Split(curtrait, ",");
+								if (curtrait.Size() == 4) 
+								{
+									randomchance = curtrait[3].ToInt(10);
+								}
+								
+								if (random[dihandler](1, 256) <= randomchance)
+								{							
+									validlines.Push(string.format("%s,%s,%s", curtrait[0], curtrait[1], curtrait[2]));
+									//console.printf("#3: we found it!!! (%s)", weaponized_file[i]);
+								}
+							}
+						}
+						break;
+				}
+			}
+		}
+		
+		if (validlines.Size() <= 0) {ThrowAbortException("Failed to find any valid lines for chosen weapon: %s", wpn);}
+		int traitnum = random[dihandler](0, validlines.Size() - 1);
+		array<string> curtrait;
+		validlines[traitnum].Split(curtrait, ",");
+		if (curtrait.Size() != 3) {ThrowAbortException("Invalid data found in DIWPNIZE: '%s'", validlines[traitnum]);}
+		if (curtrait[1].IndexOf(".") > -1) //Is a double
+		{
+			double returnvalue = frandom[dihandler](curtrait[1].ToDouble(), curtrait[2].ToDouble());
+			//console.printf("New Trait: %s, %.2f", curtrait[0], returnvalue);
+			return curtrait[0], returnvalue;
+		}
+		else
+		{
+			int returnvalue = random[dihandler](curtrait[1].ToInt(10), curtrait[2].ToInt(10));
+			//console.printf("New Trait: %s, %d", curtrait[0], returnvalue);
+			return curtrait[0], returnvalue;
 		}
 	}
 }

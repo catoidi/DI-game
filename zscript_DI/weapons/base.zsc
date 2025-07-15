@@ -43,6 +43,8 @@ Class DI_Weapon : Weapon abstract
 	array<string> firestates; //if the weapon is in a state listed here, the weapon speed will switch to "fire" mode.
 	array<string> reloadstates; //if the weapon is in a state listed here, the weapon speed will switch to "reload" mode.
 	
+	array<string> traits; //Used by the Weaponized modifier to add random traits to weapons.
+	
 	int wpn_ammo1hud, wpn_ammo2hud; 
 	//how the ammo bar will be rendered on the HUD. 0 is default (unlimited ammo). 1 is used for limited ammo weapons. 2 is used for recharging weapons. 3 is used for heat ammo, 4 is used for box ammo.
 	

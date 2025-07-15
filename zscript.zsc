@@ -135,6 +135,7 @@ version "4.14"
 //modifiers
 #include "zscript_DI/items/modifiers/doubletrouble.zsc"
 #include "zscript_DI/items/modifiers/debilitated.zsc"
+#include "zscript_DI/items/modifiers/weaponized.zsc"
 //passive items
 #include "zscript_DI/items/passives/9dollarbill.zsc"
 #include "zscript_DI/items/passives/bigbullets.zsc"
@@ -296,6 +297,7 @@ version "4.14"
 #include "zscript_DI/shop/chest.zsc" //can provide 1 random perma item per round. price never goes down.
 #include "zscript_DI/shop/questgiver.zsc" //gives the player quests.
 #include "zscript_DI/shop/fakeshop.zsc" //invisible actor to display custom Shop UI text with. meant for wall buttons.
+#include "zscript_DI/shop/inventory.zsc" //DIShopInventory items.
 
 //secret (shh don't tell anyone ok???)
 #include "zscript_DI/secret/cats.zsc"
