@@ -38,10 +38,15 @@ DIPOPUP_DI_UNLOCK_MOD_DOUBLETROUBLE = "Double Trouble";
 DI_MOD_DEBILITATED = "Debilitated";
 DI_UNLOCK_MOD_DEBILITATED = "\ccunlocked by failing 5 \cfSide Quests \ccon \cfLevel 2 \ccin a single run.";
 DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave.\n\cnImproves EXP by 5% per debuff.\n";
-DI_MOD_DAILYRUN = "Daily Challenge";
-DIMODDESC_DI_MOD_DAILYRUN = "A new run everyday.\n\cnForce enables ALL shop items.\n\caProgression is disabled.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DEBILITATED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DEBILITATED = "Debilitated";
+DI_MOD_DAILYRUN = "Daily Challenge";
+DIMODDESC_DI_MOD_DAILYRUN = "A new run everyday.\n\cnForce enables ALL shop items.\n\caProgression is disabled.";
+DI_MOD_WEAPONIZED = "Weaponized";
+DI_UNLOCK_MOD_WEAPONIZED = "\ccUnlock 15 \cfShop Items \ccto unlock this modifier.";
+DIMODDESC_DI_MOD_WEAPONIZED = "All shop weapons gain a random \cdpositive \cland \canegative \clattribute.";
+DIUNLOCKTYPE_DI_UNLOCK_MOD_WEAPONIZED = "NEW MODIFIER:";
+DIPOPUP_DI_UNLOCK_MOD_WEAPONIZED = "Debilitated";
 
 //Credits
 DI_CREDIT_TITLE = "\cbCredits:";
