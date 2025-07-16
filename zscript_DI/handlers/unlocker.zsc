@@ -337,7 +337,7 @@ Class DIUnlockHandler : EventHandler
 				}
 			}
 		}
-		else if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
+		if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
@@ -520,6 +520,7 @@ Class DIUnlockHandler : EventHandler
 	
 	clearscope virtual void ParseDIGAME(array<string> parseddata)
 	{
+		console.printf("parsing DIGAME data...");
 		array<string> diunlock_filedata;
 	
 		int ThisLump = Wads.FindLump("DIGAME", 0, Wads.ANYNAMESPACE);
@@ -541,8 +542,14 @@ Class DIUnlockHandler : EventHandler
 			array<string> curline;
 			diunlock_filedata[i].Split(curline, ", ");
 			if (curline.Size() != 4) {continue;}
-			if ((curline[0] == "Add") && (curline[1] == "Player"))
-			parseddata.Push(curline[3]);
+			if (curline[0] == "Add") 
+			{
+				if (curline[1] == "Player")	{parseddata.Push(curline[3]);}
+				if (curline[1] == "Level")	{parseddata.Push(curline[3]);}
+				if (curline[1] == "CheatMod")	{parseddata.Push(curline[2]); parseddata.Push(curline[3]);}
+				if (curline[1] == "Modifier")	{parseddata.Push(curline[2]); parseddata.Push(curline[3]);}
+				console.printf(diunlock_filedata[i]);
+			}
 		}
 	}
 	
