@@ -14,6 +14,7 @@ GreenShotgun;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -29,6 +30,7 @@ GreenShotgun;
 		GiveAmmoUse, 1, 1, 128;
 		GiveMaxAmmo, -4, -1;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 DoubleShotgun;
@@ -46,6 +48,7 @@ DoubleShotgun;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -61,6 +64,7 @@ DoubleShotgun;
 		GiveAmmoUse, 1, 2, 128;
 		GiveMaxAmmo, -8, -2;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 BlueSMG;
@@ -77,6 +81,7 @@ BlueSMG;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -90,6 +95,7 @@ BlueSMG;
 		GiveAmmoUse, 1, 3, 128;
 		GiveMaxAmmo, -12, -4;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 PinkRifle;
@@ -106,6 +112,7 @@ PinkRifle;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -119,6 +126,7 @@ PinkRifle;
 		GiveAmmoUse, 1, 2, 128;
 		GiveMaxAmmo, -8, -2;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 LaserPointer;
@@ -134,6 +142,7 @@ LaserPointer;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -145,6 +154,7 @@ LaserPointer;
 		GiveAmmoUse, 1, 2, 64;
 		GiveMaxAmmo, -6, -1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 PartyShotty;
@@ -161,6 +171,7 @@ PartyShotty;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -175,6 +186,7 @@ PartyShotty;
 		GiveAmmoUse, 1, 1, 64;
 		GiveMaxAmmo, -3, -1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 PopcornGun;
@@ -189,6 +201,7 @@ PopcornGun;
 		GiveMaxAmmo, 1, 8;
 		GivePiercing, 0.1, 0.3, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -201,6 +214,7 @@ PopcornGun;
 		GiveMaxAmmo, -12, -4, 64;
 		GivePlayerSpeed, -0.2, -0.05;
 		GiveBounceFactor, -0.8, -0.2;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 StunCrossbow;
@@ -214,6 +228,7 @@ StunCrossbow;
 		GiveProjectiles, 1, 1, 64;
 		GiveMaxAmmo, 1, 1, 128;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -224,6 +239,7 @@ StunCrossbow;
 		GiveAccuracy, 1.0, 5.0;
 		GiveRecoil, 1.5, 2.5;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 FingerGun;
@@ -240,6 +256,7 @@ FingerGun;
 		GivePiercing, 1.0, 3.0, 128;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -254,6 +271,7 @@ FingerGun;
 		GiveMaxAmmo, -4, -1, 64;
 		GivePiercing, -3.0, -0.5, 128;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 GrenadeLauncher;
@@ -268,6 +286,7 @@ GrenadeLauncher;
 		GiveMaxAmmo, 1, 2, 128;
 		GivePlayerSpeed, 0.05, 0.15;
 		GiveMaxSpread, 0.75, 0.95;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -280,6 +299,7 @@ GrenadeLauncher;
 		GiveAmmoUse, 1, 2, 64;
 		GiveMaxAmmo, -2, -1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 PoisonGun;
@@ -296,6 +316,7 @@ PoisonGun;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -309,6 +330,7 @@ PoisonGun;
 		GiveAmmoUse, 1, 2, 64;
 		GiveMaxAmmo, -8, -2, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 DI_OreDrill;
@@ -320,6 +342,7 @@ DI_OreDrill;
 		GiveExtraCoin, 1, 1, 64;
 		GiveFreshBonus, 1, 2, 128;
 		GivePlayerSpeed, 0.05, 0.3;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -329,6 +352,7 @@ DI_OreDrill;
 		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 2.0, 10.0;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 CheeseGun;
@@ -344,6 +368,7 @@ CheeseGun;
 		GivePlayerSpeed, 0.05, 0.15;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -355,6 +380,7 @@ CheeseGun;
 		GiveProjectiles, -2, -1, 64;
 		GiveRecoil, 1.5, 2.5;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 Glowstick;
@@ -370,6 +396,7 @@ Glowstick;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.3;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -381,6 +408,7 @@ Glowstick;
 		GiveMaxAmmo, -2, -1, 64;
 		GiveAmmoUse, 1, 1, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 Sledgehammer;
@@ -392,6 +420,7 @@ Sledgehammer;
 		GiveExtraCoin, 1, 1, 64;
 		GiveFreshBonus, 1, 2, 128;
 		GivePlayerSpeed, 0.05, 0.3;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -401,6 +430,7 @@ Sledgehammer;
 		GiveFreshBonus, -1, -2, 128;
 		GiveAccuracy, 2.0, 10.0;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 StarPistol;
@@ -417,6 +447,7 @@ StarPistol;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -430,6 +461,7 @@ StarPistol;
 		GiveAmmoUse, 1, 2, 64;
 		GiveMaxAmmo, -6, -2, 64;
 		GivePlayerSpeed, -0.2, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }
 DI_Minigun;
@@ -446,6 +478,7 @@ DI_Minigun;
 		GivePiercing, 0.1, 0.3, 32;
 		GiveBounceFactor, 0.05, 0.25, 32;
 		GivePlayerSpeed, 0.05, 0.15;
+		MultiplyPrice, 0.7, 0.9;
 	}
 	Bad;
 	{
@@ -459,5 +492,6 @@ DI_Minigun;
 		GiveAmmoUse, 1, 2, 128;
 		GiveMaxAmmo, -64, -16, 128;
 		GivePlayerSpeed, -0.4, -0.05;
+		MultiplyPrice, 1.2, 2.0;
 	}
 }

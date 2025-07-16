@@ -89,10 +89,10 @@ Class DIShop : DIShop_Base
 			if (newround != curround)
 			{
 				RestockShop();
-				
-				AddPriceMult(0); //refresh price mult to allow passive items to work.
 			
 				if ((canshop == true) || (user_alwaysreroll == true)) {ChooseNewShopItem();} //previously used shops do not reroll, unless marked to always reroll.
+				
+				AddPriceMult(0); //refresh price mult to allow passive items to work.
 			
 				if (itempool.Size() > 0)
 				{
@@ -547,6 +547,13 @@ Class DIShop : DIShop_Base
 	virtual void AddPriceMult(int addmult)
 	{
 		item_pricemult = 1.0;
+		foreach(mo : shopinv)
+		{
+			if (mo)
+			{
+				item_pricemult *= mo.MultiplyPrice(shop_currentitem);
+			}
+		}
 		DI_PlayerBase diplr = DI_PlayerBase(plr);
 		if (diplr && (diplr.knownpassives.Size() > 0))
 		{
