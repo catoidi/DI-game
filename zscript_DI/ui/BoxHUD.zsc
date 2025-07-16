@@ -196,7 +196,7 @@ class DI_HUD : BaseStatusBar
 	{
 		DI_Weapon diwpn = DI_Weapon(CPlayer.readyweapon);
 		if (!diwpn) {return;}
-		int maxstats = 3;
+		int maxstats = 6;
 		for (int i = 0; i < maxstats; ++i)
 		{
 			string icon = "";
@@ -205,14 +205,20 @@ class DI_HUD : BaseStatusBar
 				default: icon = string.format("%d", i); break; //placeholder, replace with real icon graphics later.
 				case 0: icon = "DMG"; break;
 				case 1: icon = "ACC"; break;
-				case 2: icon = "SPD"; break;
+				case 2: icon = "FIR"; break;
+				case 3: icon = "RLD"; break;
+				case 4: icon = "SPD"; break;
+				case 5: icon = "COM"; break;
 			}
 			string value = "";
 			switch(i)
 			{
-				case 0: value = string.format("%d (x%d)", diwpn.CheckDamage(), diwpn.wpn_projectiles); break;
-				case 1: value = string.format("%.2f (+%.2f)", diwpn.wpn_accuracy + diwpn.current_recoil, diwpn.wpn_recoil); break;
-				case 2: value = string.format("%.2f", diwpn.CheckWeaponSpeed()); break;
+				case 0: value = string.format("%.1f (x%d)", 0.1 * diwpn.CheckDamage(), diwpn.wpn_projectiles); break;
+				case 1: value = string.format("%.2f (+%.2f)", diwpn.wpn_accuracy + diwpn.wpn_maxspread + diwpn.current_recoil, diwpn.wpn_recoil); break;
+				case 2: value = string.format("%.2f", diwpn.CheckWeaponSpeed(1)); break;
+				case 3: value = string.format("%.2f", diwpn.CheckWeaponSpeed(2)); break;
+				case 4: value = string.format("%.2f", diplayer.default.Speed + diwpn.plr_speed); break;
+				case 5: value = string.format("%.2f", diwpn.plr_combodrainbonus); break;
 			}
 			vector2 StatOffset = (16, -16 + (-8 * (maxstats - i)));
 			DrawString(SmallFont, string.format("%s: %s", icon, value), GlobalOffset + StatOffset, DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, Font.CR_WHITE, scale: (0.8, 0.8));

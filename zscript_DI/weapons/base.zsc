@@ -102,7 +102,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.FreshCharge 0;
 		DI_Weapon.BaseDamage 0;
 		DI_Weapon.DamageMult 1.000001; //workaround for rounding error
-		DI_Weapon.BaseAccuracy 3.0;
+		DI_Weapon.BaseAccuracy 0.0;
 		DI_Weapon.MaxSpread 0.0;
 		DI_Weapon.BonusSpread 0.0;
 		DI_Weapon.Spread_X 1.0;
@@ -393,13 +393,14 @@ Class DI_Weapon : Weapon abstract
 		//console.printf("%d", plr.Vel.X + plr.Vel.Y);
 	}
 	
-	clearscope float CheckWeaponSpeed()
+	clearscope float CheckWeaponSpeed(int mode = -1)
 	{
 		//return the current multiplier to weapon speed.
 		//we are not using "wpn_speed_current" here as that is on a 1 tic delay.
 		float speedcheck = wpn_speed;
-		if (wpn_speed_mode == 1) {speedcheck += wpn_speed_fire;}
-		else if (wpn_speed_mode == 2) {speedcheck += wpn_speed_reload;}
+		if (mode = -1) {mode = wpn_speed_mode;}
+		if (mode == 1) {speedcheck += wpn_speed_fire;}
+		else if (mode == 2) {speedcheck += wpn_speed_reload;}
 		
 		if (speedcheck == 0.0) {return 1.0;}
 		else if (speedcheck < 0) {return 1.0 + -speedcheck;}

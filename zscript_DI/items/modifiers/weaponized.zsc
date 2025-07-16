@@ -70,9 +70,9 @@ mixin class DI_Weaponized_Mixin
 		else if (lines[0] ~== "GiveRecoil") 
 		{
 			traitname = "Recoil"; 
-			double fr = lines[1].ToDouble();
-			string plus = (fr > 0.0) ? "+" : "";
-			traitvalue = string.format("%s%.1f", plus, fr);
+			double num = lines[1].ToDouble() - 1.0;
+			string plus = (num > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, num * 100);
 		}
 		else if (lines[0] ~== "GiveMaxSpread") 
 		{
@@ -123,6 +123,13 @@ mixin class DI_Weaponized_Mixin
 			double fr = lines[1].ToDouble();
 			string plus = (fr > 0.0) ? "+" : "";
 			traitvalue = string.format("%s%.1f%%", plus, fr * 100);
+		}
+		else if (lines[0] ~== "MultiplyPrice") 
+		{
+			traitname = "Base Price"; 
+			double num = lines[1].ToDouble() - 1.0;
+			string plus = (num > 0.0) ? "+" : "";
+			traitvalue = string.format("%s%.1f%%", plus, num * 100);
 		}
 		
 		string traitcolor = isnerf ? "\ca" : "\cd";
@@ -282,6 +289,7 @@ Class DI_Weaponized : DIPassiveInventory
 	override int GiveFreshBonus() {return freshbonus;}
 	override double GiveAccuracy() {return accuracy;}
 	override double GiveMaxSpread() {return spread;}
+	override double GiveRecoil() {return recoil;}
 	override int GiveProjectiles() {return projectiles;}
 	override int GiveAmmoUse1() {return ammouse;}
 	override int GiveAmmoUse2() {return ammouse;}
@@ -360,6 +368,8 @@ Class DI_Weaponized_Shop : DIShopInventory
 	
 	string buff, nerf;
 	
+	double pricemult;
+	
 	bool hastraits;
 	int inittimer;
 	
@@ -387,11 +397,13 @@ Class DI_Weaponized_Shop : DIShopInventory
 	}
 	
 	override void ShopInit() {GenerateNewTraits(shop.shop_currentitem);}
+	override double MultiplyPrice(string curitem) {return pricemult;}
 	override void ChoseNewShopItem(string newitem) {GenerateNewTraits(newitem);}
 	virtual void GenerateNewTraits(string newitem)
 	{
 		buff = "";
 		nerf = "";
+		pricemult = 1.0;
 		if (thebrain.Weaponized_CheckWeapon(newitem))
 		{
 			string newbuff, newnerf;
@@ -400,6 +412,8 @@ Class DI_Weaponized_Shop : DIShopInventory
 			buff = string.format("%s,%.3f", newbuff, newbuff_value);
 			[newnerf, newnerf_value] = thebrain.Weaponized_RandomTrait(newitem, true, newbuff);
 			nerf = string.format("%s,%.3f", newnerf, newnerf_value);
+			if (newbuff ~== "MultiplyPrice") {pricemult *= newbuff_value;}
+			if (newnerf ~== "MultiplyPrice") {pricemult *= newnerf_value;}
 		}
 		hastraits = true;
 	}
