@@ -1,0 +1,39 @@
+//zscript_DI/items/headhunter.zsc
+
+Class DI_Headhunter : Inventory
+{
+	DI_Monster mon;
+
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		
+		mon = DI_Monster(other);
+		
+		mon.health *= 1.8;
+		mon.StartHealth = other.health;
+	}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		if (damage > 0)
+		{
+			if ((inflictor != source) && (inflictor is "DI_Projectile"))
+			{
+				let proj = DI_Projectile(inflictor);
+				if (proj.canheadshot && !proj.di_notweapon)
+				{
+					let headpos = mon.FloorZ + mon.headheight;
+					if (proj.Pos.Z >= headpos) 
+					{
+						newdamage *= 2;
+						for (int i = 0; i < 3; ++i)
+						{
+							proj.A_SpawnParticle("ffea34", SPF_FULLBRIGHT, 35, 8, 0, 0, 0, 0, random(-4, 4), random(-4, 4), random(0, 4), 0, 0, -0.33, 0.5);
+						}
+					}
+				}
+			}
+		}
+	}
+}

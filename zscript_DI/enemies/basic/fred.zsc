@@ -10,6 +10,7 @@ Class Fred : DI_Monster
 		Health 300;
 		Radius 17;
 		Height 39;
+		DI_Monster.HeadHeight 27;
 		BloodColor "Red";
 		//Species "Fred";
 	}
@@ -98,6 +99,7 @@ Class Fred2 : Fred
 		Speed 12;
 		Radius 21;
 		Height 49;
+		DI_Monster.HeadHeight 33;
 		DamageFactor "Ice", 1.4;
 		DamageFactor "FakeIce", 1.4;
 		Tag "Fiendish Fred";
@@ -145,6 +147,7 @@ Class Fred3 : Fred
 		Health 6000;
 		Radius 34;
 		Height 78;
+		DI_Monster.HeadHeight 54;
 		Tag "Giant Fred";
 		DamageFactor "Fire", 1.5;
 		DamageFactor "FakeFire", 1.5;
@@ -222,6 +225,7 @@ Class Fred5 : Fred4
 		Speed 15;
 		Radius 21;
 		Height 49;
+		DI_Monster.HeadHeight 33;
 		Tag "Fiendish Robot Fred";
 		DamageFactor "Ice", 1.4;
 		DamageFactor "FakeIce", 1.4;

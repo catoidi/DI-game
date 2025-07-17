@@ -14,6 +14,7 @@ Class DI_Projectile : DI_Actor
 	property CanImpactFloor : canimpactfloor;
 	property CanImpactWall : canimpactwall;
 	property CanImpactActor : canimpactactor;
+	property CanHeadshot : canheadshot;
 	
 	DI_Weapon plrwpn;
 
@@ -21,7 +22,7 @@ Class DI_Projectile : DI_Actor
 	array<DIProjectileInventory> items;
 	
 	int initdamage, justpierced;
-	bool justbounced, justimpacted, impactdeathdone, autoimpact, canimpactfloor, canimpactwall, canimpactactor;
+	bool justbounced, justimpacted, impactdeathdone, autoimpact, canimpactfloor, canimpactwall, canimpactactor, canheadshot;
 	
 	Default
 	{
@@ -38,6 +39,7 @@ Class DI_Projectile : DI_Actor
 		DI_Projectile.CanImpactFloor true; //allows DoImpactFloor to run.
 		DI_Projectile.CanImpactWall true; //allows DoImpactWall to run.
 		DI_Projectile.CanImpactActor true; //allows DoImpactActor to run.
+		DI_Projectile.CanHeadshot true; //allows Headhunter modifier to work.
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FORCEXYBILLBOARD;

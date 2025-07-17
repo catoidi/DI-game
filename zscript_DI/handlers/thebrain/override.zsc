@@ -62,6 +62,7 @@ extend class DIHandler
 			if (e.Thing is "DI_Monster")
 			{
 				DIMonsterHandler(e);
+				DIModifierHandler_Monster(DI_Monster(e.Thing));
 			}
 			if (e.Thing is "DI_Boss")
 			{

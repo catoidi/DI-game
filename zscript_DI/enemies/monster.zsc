@@ -23,7 +23,11 @@ Class DI_Monster : DI_Actor abstract
 	int hearttimer; //how long to keep the enemy charmed.
 	bool forcefresh; //allow a fresh weapon bonus, if conditions are correct.
 	double speedmult; //speed multiplier.
+	bool hasheadshot; //headhunter modifier support.
+	int headheight; //controls the size of the headshot hitbox.
 	property DISpeedMult: speedmult;
+	property HasHeadshot: hasheadshot;
+	property HeadHeight: headheight;
 
 	bool wasfreshkilled;
 	
@@ -58,6 +62,7 @@ Class DI_Monster : DI_Actor abstract
 		DI_Monster.DISpeedMult 1.0;
 		DI_Monster.GibType "DI_GibExplosion";
 		DI_Monster.StunSquish true;
+		DI_Monster.HasHeadshot true;
 		DI_Monster.CanSwim true;
 		+THRUSPECIES; //monsters of the same type can walk through each other.
 		+FLOORCLIP;
