@@ -56,7 +56,7 @@ Class DI_QuestObjective_Defender : DI_QuestObjective
 	override string QuestProgress()
 	{
 		if (!npc) {return "NPC hasn't spawned yet!";}
-		return string.format("Health: %d/%d", npc.health, npc.StartHealth);
+		return string.format("Health: %.1f/%.1f", 0.1 * npc.health, 0.1 * npc.StartHealth);
 	}
 }
 
