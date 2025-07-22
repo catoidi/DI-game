@@ -18,3 +18,4 @@ di_questscale;
 di_questalpha;
 version 13.0;
 blood_fade_scalar;
+di_xhair_toggle;

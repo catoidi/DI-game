@@ -165,10 +165,11 @@ server cheat bool di_unlock_item_quantumbullets = false;
 server cheat bool di_unlock_item_freshfrenzy = false;
 
 //DI crosshair
-user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
+user int di_xhair_toggle = 1; //0 is disabled. 1 is simple crosshair. 2 is detailed crosshair.
 user float di_xhair_scale = 1.0; //the size of the di crosshair.
 user float di_xhair_alpha = 0.75; //guess what this does.
-user color di_xhair_color = "FF FF FF"; //the default color of the crosshair.
+user color di_xhair_color = "DamWhite"; //the default color of the crosshair.
+user bool di_xhair_color_fresh = true; //changes the color of the crosshair to match the status of the fresh bonus.
 user bool di_xhair_fresh_toggle = true; //fresh meter below crosshair.
 user float di_xhair_fresh_scale = 1.0; //how long the meter can grow.
 user float di_xhair_fresh_alpha = 0.65; //another alpha cvar, combined with the crosshair's alpha.

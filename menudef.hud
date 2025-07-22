@@ -61,7 +61,7 @@ OptionMenu "DIHUDOptions_Crosshair"
 	Tooltip ""
 	//StaticText "Crosshair Options", "Purple"
 	Option "Enabled?", "di_xhair_toggle", "xhairvalues"
-	Tooltip "Setting to 'Dynamic' will have crosshair dynamically match the weapon's accuracy."
+	Tooltip "Toggles the crosshair's visibility.\n\nSet to 'Simple' by default.\n\n'Detailed' will separate inaccuracy/recoil from the bullet spread."
 	Option "Add Dot", "di_xhair_dot", onoff
 	Tooltip "Adds a dot in the middle of the crosshair."
 	Option "Precise Mode", "di_xhair_precise", onoff
@@ -70,7 +70,11 @@ OptionMenu "DIHUDOptions_Crosshair"
 	Tooltip "Controls the size of the crosshair."
 	Slider "Alpha", "di_xhair_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_toggle"
 	Tooltip "Controls the opacity of the crosshair."
+	//ColorPicker "Color", "di_xhair_color", "di_xhair_color_fresh", 1
+	//Tooltip "Set a custom color for the crosshair.\n\nThe 'Fresh Color Override' setting MUST be false to use this color."
 	StaticText ""
+	Option "Fresh Color Override", "di_xhair_color_fresh", onoff
+	Tooltip "Updates the colors of the crosshair to match the current state of your Fresh Weapon Bonus. (Enabled by Default)\n\n- \cjWhite: \cfFresh Bonus is recharging.\n- \cvCyan: \cfFresh Bonus is ready.\n- \caRed: \cfYou need to swap weapons to use Fresh Bonus."
 	Option "Add Fresh Meter", "di_xhair_fresh_toggle", onoff
 	Tooltip "Adds a 2nd Fresh Weapon Bonus meter below the crosshair.\n\nFresh Weapon Bonus is kinda an important mechanic to the game, and this can help make tracking it easier."
 	Slider "Fresh Scale", "di_xhair_fresh_scale", 0.05, 3.0, 0.05, 1, "di_xhair_fresh_toggle"
@@ -123,8 +127,8 @@ OptionMenu "DIHUDOptions_DamNums"
 OptionValue "xhairvalues"
 {
 	0, "Off"
-	1, "On"
-	2, "Dynamic"
+	1, "Simple"
+	2, "Detailed"
 }
 
 OptionValue "passivevalues"

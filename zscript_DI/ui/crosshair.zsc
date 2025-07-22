@@ -11,6 +11,7 @@ class DIXHairHandler : EventHandler
 	transient ui cvar scalefactor;
 	transient ui cvar xhair_alpha;
 	transient ui cvar xhair_color;
+	transient ui cvar xhair_color_fresh;
 	transient ui cvar xhair_precise;
 	transient ui cvar xhair_precise_toggle;
 	transient ui cvar dot_toggle;
@@ -18,7 +19,7 @@ class DIXHairHandler : EventHandler
 	transient ui cvar fresh_scale;
 	transient ui cvar fresh_alpha;
 	transient ui double newy, oldy;
-	transient ui vector2 curspread, nextspread;
+	transient ui vector2 curspread, nextspread, curspread2, nextspread2;
 	transient ui double xhair_startalpha;
 	transient ui string diwep_name;
 	transient double wep_acc; //base weapon accuracy.
@@ -60,6 +61,13 @@ class DIXHairHandler : EventHandler
 			else if (nextspread.y > curspread.y) {curspread.y += (nextspread.y - curspread.y) / 3.0;}
 			else if (nextspread.y < curspread.y) {curspread.y -= (curspread.y - nextspread.y) / 3.0;}
 			
+			if (nextspread2.x ~== curspread2.x) {curspread2.x = nextspread2.x;}
+			else if (nextspread2.x > curspread2.x) {curspread2.x += (nextspread2.x - curspread2.x) / 3.0;}
+			else if (nextspread2.x < curspread2.x) {curspread2.x -= (curspread2.x - nextspread2.x) / 3.0;}
+			if (nextspread2.y ~== curspread2.y) {curspread2.y = nextspread2.y;}
+			else if (nextspread2.y > curspread2.y) {curspread2.y += (nextspread2.y - curspread2.y) / 3.0;}
+			else if (nextspread2.y < curspread2.y) {curspread2.y -= (curspread2.y - nextspread2.y) / 3.0;}
+			
 			oldy = newy;
 		}
 		Super.UITick();
@@ -93,6 +101,7 @@ class DIXHairHandler : EventHandler
 		scalefactor = CVar.GetCVar("hud_scalefactor", players[consoleplayer]);
 		xhair_alpha = CVar.GetCVar("di_xhair_alpha", players[consoleplayer]);
 		xhair_color = CVar.GetCVar("di_xhair_color", players[consoleplayer]);
+		xhair_color_fresh = CVar.GetCVar("di_xhair_color_fresh", players[consoleplayer]);
 		xhair_precise = CVar.GetCVar("pc_y", players[consoleplayer]);
 		xhair_precise_toggle = CVar.GetCVar("di_xhair_precise", players[consoleplayer]);
 		fresh_toggle = CVar.GetCVar("di_xhair_fresh_toggle", players[consoleplayer]);
@@ -115,28 +124,56 @@ class DIXHairHandler : EventHandler
 			double xscale = xhair_scale.GetFloat() * CleanXFac * scalefactor.GetFloat();
 			double yscale = xhair_scale.GetFloat() * CleanYFac * scalefactor.GetFloat();
 			vector2 fracspread = curspread;
-			vector2 accnum = (wep_acc + wep_spread.x, wep_acc + wep_spread.y);
-			if (xhair_toggle.GetInt() == 2) {accnum += (wep_rec, wep_rec);} //if dynamic crosshair, get weapon recoil too
+			vector2 fracspread2 = curspread2;
+			vector2 accnum = wep_spread;
+			vector2 accnum2 = accnum;
+			if (xhair_toggle.GetInt() == 2) {accnum2 += (wep_acc + wep_rec, wep_acc + wep_rec);} //separate inaccuracy and recoil into separate dots
+			else {accnum += (wep_acc + wep_rec, wep_acc + wep_rec);} //combine all accuracy-related values into 1 number
 			//get next frame's spread
 			nextspread.x = (3.0 * xscale) + (accnum.x * ((screen.GetWidth() / screen.GetAspectRatio()) / pfov));
 			nextspread.y = (3.0 * xscale) + (accnum.y * ((screen.GetWidth() / screen.GetAspectRatio()) / pfov));
+			nextspread2.x = (3.0 * xscale) + (accnum2.x * ((screen.GetWidth() / screen.GetAspectRatio()) / pfov));
+			nextspread2.y = (3.0 * xscale) + (accnum2.y * ((screen.GetWidth() / screen.GetAspectRatio()) / pfov));
 			//calculate the "between tic" spread
 			if (fracspread.x > nextspread.x) {fracspread.x += ((nextspread.x - curspread.x) / 3.0) * e.FracTic;}
 			else if (nextspread.x < fracspread.x) {fracspread.x -= ((curspread.x - nextspread.x) / 3.0) * e.FracTic;}
 			if (fracspread.y > nextspread.y) {fracspread.y += ((nextspread.y - curspread.y) / 3.0) * e.FracTic;}
 			else if (nextspread.y < fracspread.y) {fracspread.y -= ((curspread.y - nextspread.y) / 3.0) * e.FracTic;}
+			
+			if (fracspread2.x > nextspread2.x) {fracspread2.x += ((nextspread2.x - curspread2.x) / 3.0) * e.FracTic;}
+			else if (nextspread2.x < fracspread2.x) {fracspread2.x -= ((curspread2.x - nextspread2.x) / 3.0) * e.FracTic;}
+			if (fracspread2.y > nextspread2.y) {fracspread2.y += ((nextspread2.y - curspread2.y) / 3.0) * e.FracTic;}
+			else if (nextspread2.y < fracspread2.y) {fracspread2.y -= ((curspread2.y - nextspread2.y) / 3.0) * e.FracTic;}
 			//double xalpha = ((1.0 - (wep_rec / ((pfov / 2) - wep_acc))) * xhair_alpha.GetFloat()) * xhair_startalpha; //calculate xhair alpha
 			double xalpha = xhair_startalpha * xhair_alpha.GetFloat();
 			if (showwheel) {xalpha *= 0.05;} //hide xhair when weapon wheel is open
 			if (diplayer.thehud && diplayer.thehud.drawAutomap) {xalpha = 0.0;}
 			let xcolor = Translation.GetID("DamWhite");
-			if (diplayer.CanFreshKill()) {xcolor = Translation.GetID("IsFresh");} //change xhair color to blue when fresh is ready
-			else if ((diplayer.LastKillTimer >= 1) && (diplayer.LastWeaponKill == diwep.GetClassName())) {xcolor = Translation.GetID("DamDarkGrey");}
-			else if (diplayer.LastKillTimer < 1) {xcolor = Translation.GetID("NotFresh");} //fresh is ready but the weapon is wrong
+			if (xhair_color_fresh.GetBool())
+			{
+				if (diplayer.CanFreshKill()) {xcolor = Translation.GetID("IsFresh");} //change xhair color to blue when fresh is ready
+				else if ((diplayer.LastKillTimer >= 1) && (diplayer.LastWeaponKill == diwep.GetClassName())) {xcolor = Translation.GetID("DamDarkGrey");}
+				else if (diplayer.LastKillTimer < 1) {xcolor = Translation.GetID("NotFresh");} //fresh is ready but the weapon is wrong
+			}
+			else
+			{
+				xcolor = Translation.GetID(xhair_color.GetString());
+			}
 			
 			if (dot_toggle.GetBool() == true)
 			{
 				Screen.DrawTexture(xhair_dottex, false, cenx, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor);
+			}
+			
+			if (xhair_toggle.GetInt() == 2)
+			{
+				double accnum_offset = (accnum2.x - accnum.x);
+				if (accnum_offset > 1.0) {accnum_offset = 1.0;}
+				double xalpha2 = xalpha * accnum_offset;
+				Screen.DrawTexture(xhair_dottex, false, cenx + fracspread2.x, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha2, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //right
+				Screen.DrawTexture(xhair_dottex, false, cenx - fracspread2.x, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha2, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //left
+				Screen.DrawTexture(xhair_dottex, false, cenx, ceny + fracspread2.y, DTA_KeepRatio, true, DTA_Alpha, xalpha2, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //down
+				Screen.DrawTexture(xhair_dottex, false, cenx, ceny - fracspread2.y, DTA_KeepRatio, true, DTA_Alpha, xalpha2, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor, DTA_Rotate, 90.0); //up
 			}
 			
 			Screen.DrawTexture(xhair_tex, false, cenx + fracspread.x, ceny, DTA_KeepRatio, true, DTA_Alpha, xalpha, DTA_ScaleX, xscale, DTA_ScaleY, yscale, DTA_CenterOffset, true, DTA_TranslationIndex, xcolor); //right
@@ -146,7 +183,7 @@ class DIXHairHandler : EventHandler
 			
 			if ((diplayer.LastKillTimer > 0) && (fresh_toggle.GetBool() == true) && (xalpha > 0.0))
 			{
-				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + fracspread.y + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, yscale, DTA_CenterOffset, true);
+				Screen.DrawTexture(xhair_freshtex, false, cenx, ceny + ((xhair_toggle.GetInt() == 2) ? fracspread2.y : fracspread.y) + (12 * xscale), DTA_KeepRatio, true, DTA_Alpha, xalpha * fresh_alpha.GetFloat(), DTA_ScaleX, xscale * ((sqrt(diplayer.LastKillTimer / 2.0) * 0.25) * fresh_scale.GetFloat()), DTA_ScaleY, yscale, DTA_CenterOffset, true);
 			}
 		}
 		
