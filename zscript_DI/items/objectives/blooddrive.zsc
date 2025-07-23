@@ -17,7 +17,7 @@ Class DI_QuestObjective_BloodDrive : DI_QuestObjective
 		if ((plr) && (plr.inwave) && (!queststarted))
 		{
 			let curhp = plr.health;
-			if (curhp > plr.DIMaxHealth()) {curhp = plr.DIMaxHealth();}
+			//if (curhp > plr.DIMaxHealth()) {curhp = plr.DIMaxHealth();}
 			minhp = curhp - 400;
 			if (minhp < 0) {minhp = 0;}
 			expectedhp = curhp;
@@ -42,7 +42,7 @@ Class DI_QuestObjective_BloodDrive : DI_QuestObjective
 	override string QuestName() {return "Blood Drive";}
 	override string QuestProgress()
 	{
-		if (queststarted) {return string.format("Health Remaining: \ca%.1f/40.0", (0.1 * expectedhp) - minhp);}
+		if (queststarted) {return string.format("Health Remaining: \ca%.1f/40.0", 0.1 * (expectedhp - minhp));}
 		else {return "N/A";}
 	}
 }
