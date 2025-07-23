@@ -60,6 +60,12 @@ SHOPTYPE_DI_QUESTDEBUFF_LOOSEGRIP = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_SLOWNSTEADY = "\cgCurse of Slow 'n Steady";
 SHOPDESC_DI_QUESTDEBUFF_SLOWNSTEADY = "Reduces projectile speed by 50%.";
 SHOPTYPE_DI_QUESTDEBUFF_SLOWNSTEADY = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_EXPIREDFOOD = "\cgCurse of Expired Food";
+SHOPDESC_DI_QUESTDEBUFF_EXPIREDFOOD = "Healing items give 35% less health.";
+SHOPTYPE_DI_QUESTDEBUFF_EXPIREDFOOD = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_DEEPWOUNDS = "\cgCurse of Deep Wounds";
+SHOPDESC_DI_QUESTDEBUFF_DEEPWOUNDS = "Regeneration is 50% slower.";
+SHOPTYPE_DI_QUESTDEBUFF_DEEPWOUNDS = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

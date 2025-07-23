@@ -1,0 +1,17 @@
+//zscript_DI/items/debuffs/expiredfood.zsc
+
+Class DI_QuestDebuff_ExpiredFood : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Expired Food)";
+	}
+	
+	override double GiveHealingPower()
+	{
+		if (!plr) {return 1.0;}
+		double itemnum = 0.35 * plr.countinv("DI_QuestDebuff_ExpiredFood");
+		double newheal = 1.0 - (itemnum / (0.65 + itemnum));
+		return newheal;
+	}
+}

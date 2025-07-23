@@ -1,0 +1,17 @@
+//zscript_DI/items/debuffs/deepwounds.zsc
+
+Class DI_QuestDebuff_DeepWounds : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Deep Wounds)";
+	}
+	
+	override double GiveRegenSpeed()
+	{
+		if (!plr) {return 1.0;}
+		int itemnum = plr.countinv(self.getclassname());
+		double newheal = 1.0 + (0.5 * itemnum);
+		return newheal;
+	}
+}
