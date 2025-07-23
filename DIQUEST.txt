@@ -19,6 +19,7 @@
 * Debuff DI_QuestDebuff_SlowNSteady 256 0;
 * Debuff DI_QuestDebuff_ExpiredFood 256 2;
 * Debuff DI_QuestDebuff_DeepWounds 256 2;
+* Debuff DI_QuestDebuff_Debase 256 2;
 DI02 Debuff DI_QuestDebuff_MoreOnions 96 4;
 >>DI02 Debuff DI_QuestDebuff_MoreLemons;
 * Objective DI_QuestObjective_Fresh 192 2;

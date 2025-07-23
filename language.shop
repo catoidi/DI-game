@@ -66,6 +66,9 @@ SHOPTYPE_DI_QUESTDEBUFF_EXPIREDFOOD = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_DEEPWOUNDS = "\cgCurse of Deep Wounds";
 SHOPDESC_DI_QUESTDEBUFF_DEEPWOUNDS = "Regeneration is 50% slower.";
 SHOPTYPE_DI_QUESTDEBUFF_DEEPWOUNDS = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_DEBASE = "\cgCurse of Debased";
+SHOPDESC_DI_QUESTDEBUFF_DEBASE = "-0.5 Base DMG per second. Resets upon\nreloading or swapping weapons.";
+SHOPTYPE_DI_QUESTDEBUFF_DEBASE = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

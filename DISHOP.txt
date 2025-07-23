@@ -222,3 +222,4 @@ FakeShopItem DI_QuestDebuff_SlowNSteady BOOKB 1;
 FakeShopItem DI_FreshFrenzy_Buff POW3P 1;
 FakeShopItem DI_QuestDebuff_ExpiredFood BOOKB 1;
 FakeShopItem DI_QuestDebuff_DeepWounds BOOKB 1;
+FakeShopItem DI_QuestDebuff_Debase BOOKB 1;

@@ -1,0 +1,33 @@
+//zscript_DI/items/debuffs/debase.zsc
+
+Class DI_QuestDebuff_Debase : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Debased)";
+	}
+	
+	DI_Weapon oldwpn;
+	int itemtimer;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!Level.IsFrozen() && !plr.IsFrozen() && wpn && plr.inwave)
+		{
+			bool swap = (wpn != oldwpn) || (wpn.CheckWeaponMode() == 2);
+			
+			if (!swap) {++itemtimer;}
+			else {itemtimer = 0;}
+			
+			oldwpn = wpn;
+		}
+	}
+
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return (-itemtimer / 7) * plr.countinv(self.getclassname());
+	}
+}

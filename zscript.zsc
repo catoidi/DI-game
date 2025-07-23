@@ -115,6 +115,7 @@ version "4.14"
 #include "zscript_DI/items/debuffs/slownsteady.zsc"
 #include "zscript_DI/items/debuffs/deepwounds.zsc"
 #include "zscript_DI/items/debuffs/expiredfood.zsc"
+#include "zscript_DI/items/debuffs/debase.zsc"
 //objectives
 #include "zscript_DI/items/objectives/fresh.zsc"
 #include "zscript_DI/items/objectives/blooddrive.zsc"
