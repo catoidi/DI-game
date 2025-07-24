@@ -8,7 +8,6 @@ Class DI_Debilitated : DIPassiveInventory
 		Inventory.MaxAmount 1;
 	}
 	
-	int prevwave;
 	string newdebuff, newdebuff_name, newdebuff_desc;
 	int debuffnum, prevdebuffnum;
 	
@@ -30,7 +29,6 @@ Class DI_Debilitated : DIPassiveInventory
 		plr.GiveInventory(debuff, 1);
 		ACS_ScriptCall("DI_Debilitated", plr.tid);
 		++debuffnum;
-		prevwave = plr.thebrain.wavenum;
 	}
 	
 	override void DoEffect()
@@ -50,14 +48,7 @@ Class DI_Debilitated : DIPassiveInventory
 	override bool EnterWave()
 	{
 		if (!plr || !plr.thebrain || !plr.popuphandler) {return false;}
-		if (prevwave == 0) {SpawnDebuff();} //only applies to Wave 1, as the player spawns directly in the arena.
-		return true;
-	}
-	
-	override bool EnterShop()
-	{
-		if (!plr || !plr.thebrain || !plr.popuphandler) {return false;}
-		if (prevwave != 0) {SpawnDebuff();} //after Wave 1, grants the debuff upon entering the shop.
+		if (plr.score >= 0) {SpawnDebuff();} //only applies to Wave 1, as the player spawns directly in the arena.
 		return true;
 	}
 	
