@@ -1,0 +1,16 @@
+//zscript_DI/items/debuffs/pointblank.zsc
+
+Class DI_QuestDebuff_PointBlank : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Point Blank)";
+	}
+	
+	override double GiveBonusSpread()
+	{
+		if (!plr) {return 0.0;}
+		int itemnum = plr.countinv(self.getclassname());
+		return 0.5 * itemnum;
+	}
+}

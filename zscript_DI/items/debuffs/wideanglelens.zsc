@@ -1,0 +1,16 @@
+//zscript_DI/items/debuffs/wideanglelens.zsc
+
+Class DI_QuestDebuff_WideAngleLens : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Wide Angle Lens)";
+	}
+	
+	override double GiveSpreadX()
+	{
+		if (!plr) {return 1.0;}
+		int itemnum = plr.countinv(self.getclassname());
+		return 1.0 + (0.35 * itemnum);
+	}
+}

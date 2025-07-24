@@ -69,6 +69,12 @@ SHOPTYPE_DI_QUESTDEBUFF_DEEPWOUNDS = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_DEBASE = "\cgCurse of Debased";
 SHOPDESC_DI_QUESTDEBUFF_DEBASE = "-0.5 Base DMG per second. Resets upon\nreloading or swapping weapons.";
 SHOPTYPE_DI_QUESTDEBUFF_DEBASE = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_WIDEANGLELENS = "\cgCurse of Wide Angle Lens";
+SHOPDESC_DI_QUESTDEBUFF_WIDEANGLELENS = "Bullet Spread is 35% wider.";
+SHOPTYPE_DI_QUESTDEBUFF_WIDEANGLELENS = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_POINTBLANK = "\cgCurse of Point Blank";
+SHOPDESC_DI_QUESTDEBUFF_POINTBLANK = "Worsens bullet spread for every\nextra projectile on the weapon.";
+SHOPTYPE_DI_QUESTDEBUFF_POINTBLANK = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";
