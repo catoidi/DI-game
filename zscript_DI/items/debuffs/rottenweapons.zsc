@@ -11,6 +11,6 @@ class DI_QuestDebuff_Rotten : DI_QuestDebuff
 	override int GiveFreshBonus() 
 	{
 		if (!plr) {return 0;}
-		else {return -2 * plr.CountInv(self.GetClassName());}
+		else {return -2 * amount;}
 	}
 }

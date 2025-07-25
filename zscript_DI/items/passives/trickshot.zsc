@@ -16,7 +16,7 @@ Class DI_TrickShot : DIPassiveInventory
 		else
 		{
 			if (mon.di_notweapon == false) {return "", 0, 0;}
-			else {return mon.coindrop, 2 * plr.CountInv(self.GetClassName()), 0;}
+			else {return mon.coindrop, 2 * amount, 0;}
 		}
 	}
 	

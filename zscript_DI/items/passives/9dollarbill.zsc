@@ -27,7 +27,7 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 	{
 		if (!plr) {return "", 0, 0;}
 		if (!active) {return "", 0, 0;}
-		switch(plr.CountInv(self.GetClassName()))
+		switch(amount)
 		{
 			default: return "", 0, 0; break;
 			case 1: return "DI_9DollarBill_Drop1", 1, 0; break;
@@ -41,7 +41,7 @@ Class DI_ExtraCoinGiver : DIPassiveInventory
 	{
 		if (!plr) {return 0;}
 		if (!active) {return 0;}
-		return plr.CountInv(GetClassName());
+		return amount;
 	}
 	
 	States

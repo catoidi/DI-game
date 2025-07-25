@@ -16,7 +16,7 @@ Class DI_DeathMark : DIPassiveInventory
 	{
 		if (owner)
 		{
-			int chance = owner.CountInv(self.GetClassName()) * 3;
+			int chance = amount * 3;
 			if (random(1, 20) <= chance)
 			{
 				return "DI_DeathMark_Enemy", 1;

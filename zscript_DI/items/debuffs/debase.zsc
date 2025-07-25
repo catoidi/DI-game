@@ -28,6 +28,6 @@ Class DI_QuestDebuff_Debase : DI_QuestDebuff
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return (-itemtimer / 7) * plr.countinv(self.getclassname());
+		return (-itemtimer / 7) * amount;
 	}
 }

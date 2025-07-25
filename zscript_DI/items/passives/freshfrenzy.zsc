@@ -21,8 +21,8 @@ Class DI_FreshFrenzy : DIPassiveInventory
 		{
 			if (plr.JustKilled)
 			{
-				plr.GiveInventory("DI_FreshFrenzy_Buff", 2 * plr.CountInv(self.GetClassName()));
-				plr.BuyPermaItem("DI_FreshFrenzy_Buff", 2 * plr.CountInv(self.GetClassName()));
+				plr.GiveInventory("DI_FreshFrenzy_Buff", 2 * amount);
+				plr.BuyPermaItem("DI_FreshFrenzy_Buff", 2 * amount);
 			}
 		}
 	}
@@ -30,7 +30,7 @@ Class DI_FreshFrenzy : DIPassiveInventory
 	override double GiveHealingPower()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 - (0.3 * plr.CountInv(self.GetClassName()));
+		return 1.0 - (0.3 * amount);
 	}
 	
 	States
@@ -53,6 +53,6 @@ Class DI_FreshFrenzy_Buff : DIPassiveInventory
 	override double GiveMaxHealth()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + (0.001 * plr.CountInv(self.GetClassName()));
+		return 1.0 + (0.001 * amount);
 	}
 }

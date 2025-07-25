@@ -26,7 +26,7 @@ Class DI_QuantumBullets : DIPassiveInventory
 			if (timer >= 35)
 			{
 				bonus = 0;
-				for (int i = 0; i < plr.CountInv(self.GetClassName()); ++i)
+				for (int i = 0; i < amount; ++i)
 				{
 					if (random(1, (10 * (1 + bonus))) <= (1 + failures))
 					{
@@ -35,7 +35,7 @@ Class DI_QuantumBullets : DIPassiveInventory
 					}
 					else {++failures;}
 				}
-				fakebonus = plr.CountInv(self.GetClassName()) - bonus;
+				fakebonus = amount - bonus;
 				timer = 0;
 			}
 		}
@@ -48,7 +48,7 @@ Class DI_QuantumBullets : DIPassiveInventory
 	{
 		if (!plr) {return "", 0;}
 		piercing = bonus;
-		return "DI_QuantumBullets_Item", plr.CountInv(self.GetClassName());
+		return "DI_QuantumBullets_Item", amount;
 	}
 	
 	States

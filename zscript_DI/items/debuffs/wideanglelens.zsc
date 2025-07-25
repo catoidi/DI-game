@@ -10,7 +10,6 @@ Class DI_QuestDebuff_WideAngleLens : DI_QuestDebuff
 	override double GiveSpreadX()
 	{
 		if (!plr) {return 1.0;}
-		int itemnum = plr.countinv(self.getclassname());
-		return 1.0 + (0.35 * itemnum);
+		return 1.0 + (0.35 * amount);
 	}
 }

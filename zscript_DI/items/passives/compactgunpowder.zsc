@@ -20,7 +20,7 @@ Class DI_CompactGunpowder : DIPassiveInventory
 		
 		if (plr && wpn)
 		{
-			int projnum = (-1 + wpn.wpn_projectiles) * plr.CountInv(self.GetClassName());
+			int projnum = (-1 + wpn.wpn_projectiles) * amount;
 			bonus = (0.01 * sqrt(30 * projnum));
 		}
 	}

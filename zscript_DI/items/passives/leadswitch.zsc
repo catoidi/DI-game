@@ -25,7 +25,7 @@ Class DI_LeadSwitch : DIPassiveInventory
 			}
 			else if (plr.justfired)
 			{
-				if (random(1, 5) <= plr.countinv(self.getclassname()))
+				if (random(1, 5) <= amount)
 				{
 					++ammogive;
 					//console.printf("+1 ammo for next weapon");

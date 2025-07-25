@@ -32,7 +32,7 @@ Class DI_ShellSling : DIPassiveInventory
 				givespeed = false;
 			}
 		}
-		if (givespeed) {return -0.3 * plr.CountInv(self.GetClassName());}
+		if (givespeed) {return -0.3 * amount;}
 		else {return  0.0;}
 	}
 	

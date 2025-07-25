@@ -13,13 +13,13 @@ Class DI_ProcessedOre : DIPassiveInventory
 	override int GiveExtraCoin()
 	{
 		if (!plr) {return 0;}
-		return plr.CountInv(self.getclassname());
+		return amount;
 	}
 	
 	override double GiveComboDrain()
 	{
 		if (!plr) {return 0;}
-		return 1.0 + (0.3 * plr.CountInv(self.getclassname()));
+		return 1.0 + (0.3 * amount);
 	}
 	
 	States

@@ -16,12 +16,11 @@ Class DI_Shoe : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if ((owner is "DI_PlayerBase") && (owner.player.ReadyWeapon is "DI_Weapon"))
+		if (plr && wpn)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
 			if (plr.justfired)
 			{
-				if (random(1, 8) <= plr.CountInv("DI_Shoe"))
+				if (random(1, 8) <= amount)
 				{
 					plr.A_SpawnItemEX("DI_Shoe_Throw", 0, 0, plr.Height / 2, cos(plr.pitch - 10)*16, 0, -sin(plr.pitch - 10)*16, 0, SXF_SETTARGET | SXF_TRANSFERPITCH);
 				}

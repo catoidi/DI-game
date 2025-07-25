@@ -8,7 +8,7 @@ Class DI_QuestDebuff_Defenseless : DI_QuestDebuff
 	{
 		if ((passive == true) && (owner) && (source))
 		{
-			float dmgmod = 0.65 * owner.CountInv(self.GetClassName());
+			float dmgmod = 0.65 * amount;
 			int dmgdist = owner.Distance3D(source) - owner.radius - source.radius;
 			if (dmgdist < 64) {newdamage = damage * (1.0 + dmgmod);}
 		}

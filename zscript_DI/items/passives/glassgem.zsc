@@ -14,7 +14,7 @@ Class DI_GlassGem : DIPassiveInventory
     {
         if (!plr) {return 0;}
         if (plr.health < (plr.DIMaxHealth() * 0.75)) {return 0;}
-		return plr.CountInv(GetClassName());
+		return amount;
     }
 }
 

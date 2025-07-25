@@ -13,7 +13,7 @@ Class DI_PartyPopper : DIPassiveInventory
 	override string, int GiveEnemyItem()
 	{
 		if (!plr) {return "", 0;}
-		return "DI_PartyPopper_Item", plr.CountInv(self.GetClassName());
+		return "DI_PartyPopper_Item", amount;
 	}
 	
 	States
@@ -37,7 +37,7 @@ Class DI_PartyPopper_Item : Inventory
 	{
 		if (owner && passive && source && (source != owner)) 
 		{
-			newdamage *= 1.0 + (0.2 * owner.CountInv(self.GetClassName()));
+			newdamage *= 1.0 + (0.2 * amount);
 			hasdamaged = true;
 		}
 	}
@@ -50,8 +50,8 @@ Class DI_PartyPopper_Item : Inventory
 		{
 			if (hasdamaged)
 			{
-				SpawnConfetti(5 * owner.countinv(self.getclassname()));
-				owner.TakeInventory(self.GetClassName(), 999999);
+				SpawnConfetti(5 * amount);
+				owner.TakeInventory(getclassname(), 999999);
 			}
 		}
 	}

@@ -13,22 +13,19 @@ Class DI_EnemyDoubler : DIPassiveInventory
 	override uint MultiplyEnemies()
 	{
 		if (!plr) {return 0;}
-		uint returnvalue = plr.CountInv(self.GetClassName());
-		return returnvalue;
+		return amount;
 	}
 	
 	override uint MultiplySpawnCap()
 	{
 		if (!plr) {return 0;}
-		uint returnvalue = plr.CountInv(self.GetClassName());
-		return returnvalue;
+		return amount;
 	}
 	
 	override uint MultiplySpawnRate()
 	{
 		if (!plr) {return 0;}
-		uint returnvalue = plr.CountInv(self.GetClassName());
-		return returnvalue;
+		return amount;
 	}
 }
 
@@ -46,7 +43,7 @@ Class DI_PriceDoubler : DIPassiveInventory
 	override double MultiplyShopPrices(DIShop_Base shop)
 	{
 		if (!plr || !shop) {return 1.0;}
-		return 1.0 + (0.7 * plr.countinv(self.getclassname()));
+		return 1.0 + (0.7 * amount);
 	}
 }
 

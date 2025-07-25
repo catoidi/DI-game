@@ -10,7 +10,6 @@ Class DI_QuestDebuff_PointBlank : DI_QuestDebuff
 	override double GiveBonusSpread()
 	{
 		if (!plr) {return 0.0;}
-		int itemnum = plr.countinv(self.getclassname());
-		return 0.5 * itemnum;
+		return 0.5 * amount;
 	}
 }

@@ -29,7 +29,7 @@ Class DI_Spring : DIPassiveInventory
 		if (plr && !plr.IsFrozen())
 		{
 			bool onground = ((plr.Pos.Z ~== plr.FloorZ) || (plr.bOnMobj));
-			maxjumps = 1 + plr.countinv(self.getclassname());
+			maxjumps = 1 + amount;
 			
 			if (onground)
 			{

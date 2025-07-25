@@ -13,10 +13,9 @@ Class DI_RewardsProgram : DIPassiveInventory
 	override int GiveExtraCoin()
 	{
 		if (!plr) {return 0;}
-		int addcoin = plr.countinv("DI_RewardsProgram");
-		if (plr.score <= -2000) {addcoin *= 3;}
-		else if (plr.score <= -1000) {addcoin *= 2;}
-		return addcoin;
+		if (plr.score <= -2000) {amount *= 3;}
+		else if (plr.score <= -1000) {amount *= 2;}
+		return amount;
 	}
 	
 	States

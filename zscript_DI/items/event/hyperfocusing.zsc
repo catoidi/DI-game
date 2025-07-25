@@ -11,7 +11,7 @@ Class DI_Hyperfocusing : DIPassiveInventory
 	{
 		if (!plr || !wpn) {return 0.0;}
 		
-		if (wpn.CheckWeaponMode() == 2) {return -0.5 * plr.CountInv(self.GetClassName());}
+		if (wpn.CheckWeaponMode() == 2) {return -0.5 * amount;}
 		else {return 0.0;}
 	}
 }

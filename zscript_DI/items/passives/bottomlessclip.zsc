@@ -18,7 +18,7 @@ Class DI_BottomlessClip : DIPassiveInventory
 	
 		if (plr)
 		{
-			if (random(1, 20) <= (3 * plr.CountInv(self.GetClassName()))) {clipactive = true;}
+			if (random(1, 20) <= (3 * amount)) {clipactive = true;}
 			else {clipactive = false;}
 		}
 		else {clipactive = false;}
@@ -29,7 +29,7 @@ Class DI_BottomlessClip : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		else {return -20 * plr.CountInv(self.GetClassName());}
+		else {return -20 * amount;}
 	}
 	
 	override int GiveAmmoUse1()

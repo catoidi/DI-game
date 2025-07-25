@@ -21,8 +21,8 @@ Class DI_SuperGlue : DIPassiveInventory
 		{
 			if (prevwpn != plr.player.ReadyWeapon)
 			{
-				gluetimer = 35 * plr.CountInv(GetClassName());
-				plr.A_SetInventory("DI_SuperGlue_Powerup", plr.CountInv(GetClassName()));
+				gluetimer = 35 * amount;
+				plr.A_SetInventory("DI_SuperGlue_Powerup", amount);
 			}
 			prevwpn = plr.player.ReadyWeapon;
 			
@@ -36,19 +36,19 @@ Class DI_SuperGlue : DIPassiveInventory
 	override double GiveAccuracy()
 	{
 		if (!plr) {return 0.0;}
-		return -2.0 * plr.countinv(GetClassName());
+		return -2.0 * amount;
 	}
 	
 	override double GiveRecoil()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 - (0.15 * plr.countinv(GetClassName()));
+		return 1.0 - (0.15 * amount);
 	}
 	
 	override double GiveRecoilRecover()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + (0.15 * plr.countinv(GetClassName()));
+		return 1.0 + (0.15 * amount);
 	}
 	
 	States

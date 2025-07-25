@@ -219,12 +219,11 @@ class DIBundle : Inventory
 		if (owner is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(owner);
-			let itemnum = plr.CountInv(self.GetClassName());
 			
 			if (plr.GetPermaItemAmount(self.GetClassName()) > 0)
 			{
-				plr.BuyPermaItem(bundleitem, BundleAmount * itemnum);
-				plr.BuyPermaItem(self.GetClassName(), itemnum * -1);
+				plr.BuyPermaItem(bundleitem, BundleAmount * amount);
+				plr.BuyPermaItem(self.GetClassName(), -amount);
 			}
 			
 			plr.GiveInventory(bundleitem, BundleAmount);

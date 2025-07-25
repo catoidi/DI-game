@@ -36,7 +36,7 @@ Class DI_DepletedMag : DIPassiveInventory
 			if (ammocount2 < ammocount) {ammocount = ammocount2;} //prioritize whichever ammo type has the least amount consumed, to prevent cheesing.
 		}
 		
-		return -0.01 * ammocount * plr.countinv(self.getclassname());
+		return -0.01 * ammocount * amount;
 	}
 	
 	States

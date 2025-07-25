@@ -26,7 +26,7 @@ Class DI_SesameSeeds : DIPassiveInventory
 		++seedtimer;
 		if (seedtimer >= 3)
 		{
-			plr.A_SpawnItemEX("DI_SesameSeeds_Drop", random(-plr.radius, plr.radius), random(-plr.radius, plr.radius), plr.height / 3, plr.vel.x, plr.vel.y, plr.vel.z, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION | SXF_SETTARGET, 180 - (40 * plr.countinv(self.getclassname())), 7499);
+			plr.A_SpawnItemEX("DI_SesameSeeds_Drop", random(-plr.radius, plr.radius), random(-plr.radius, plr.radius), plr.height / 3, plr.vel.x, plr.vel.y, plr.vel.z, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION | SXF_SETTARGET, 180 - (40 * amount), 7499);
 			seedtimer = 0;
 		}
 	}

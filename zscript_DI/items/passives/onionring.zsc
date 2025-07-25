@@ -43,7 +43,7 @@ Class DI_OnionRing : DIPassiveInventory
 	{
 		if (!plr || !space) {return 0.0;}
 		if (space.touchtimer <= 0) {return 0.0;}
-		return (-0.1 + (-0.005 * space.touchtimer)) * plr.countinv(self.getclassname());
+		return (-0.1 + (-0.005 * space.touchtimer)) * amount;
 	}
 	
 	States

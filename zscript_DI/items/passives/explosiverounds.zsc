@@ -18,7 +18,7 @@ Class DI_ExplosiveRounds : DIPassiveInventory
 		
 		if (plr && !plr.IsFrozen())
 		{
-			if (random(1, 10) <= plr.countinv(self.getclassname())) {exploding = true;}
+			if (random(1, 10) <= amount) {exploding = true;}
 			else {exploding = false;}
 		}
 	}
@@ -26,7 +26,7 @@ Class DI_ExplosiveRounds : DIPassiveInventory
 	override string, int GiveProjectileItem()
 	{
 		if (!plr || !exploding) {return "", 0;}
-		return "DI_ExplosiveRounds_Item", plr.CountInv(self.GetClassName());
+		return "DI_ExplosiveRounds_Item", amount;
 	}
 	
 	States

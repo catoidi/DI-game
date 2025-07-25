@@ -11,17 +11,18 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 		DIPassiveInventory.DIHidden true;
 	}
 	
+	int rainbownum;
+	
 	override void DoEffect(void)
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
+			plr.chance_ice += amount;
+			rainbownum = plr.CountInv("DI_StatusGiver_Rainbow");
 			
-			plr.chance_ice += plr.CountInv("DI_StatusGiver_Ice");
-			
-			if (plr.CountInv("DI_StatusGiver_Ice") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			if (amount <= rainbownum) {dipassive_hidden = true;}
 			else {dipassive_hidden = false;}
 		}
 	}
@@ -31,7 +32,7 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 		if ((passive == false) && (owner))
 		{
 			if ((damageType == 'Ice') || (damageType == 'FakeIce'))
-			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -55,17 +56,18 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 		DIPassiveInventory.DIHidden true;
 	}
 	
+	int rainbownum;
+	
 	override void DoEffect(void)
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
+			plr.chance_fire += amount;
+			rainbownum = plr.CountInv("DI_StatusGiver_Rainbow");
 			
-			plr.chance_fire += plr.CountInv("DI_StatusGiver_Fire");
-			
-			if (plr.CountInv("DI_StatusGiver_Fire") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			if (amount <= rainbownum) {dipassive_hidden = true;}
 			else {dipassive_hidden = false;}
 		}
 	}
@@ -75,7 +77,7 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 		if ((passive == false) && (owner))
 		{
 			if ((damageType == 'Fire') || (damageType == 'FakeFire'))
-			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -99,17 +101,18 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 		DIPassiveInventory.DIHidden true;
 	}
 	
+	int rainbownum;
+	
 	override void DoEffect(void)
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
+			plr.chance_lightning += amount;
+			rainbownum = plr.CountInv("DI_StatusGiver_Rainbow");
 			
-			plr.chance_lightning += plr.CountInv("DI_StatusGiver_Lightning");
-			
-			if (plr.CountInv("DI_StatusGiver_Lightning") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			if (amount <= rainbownum) {dipassive_hidden = true;}
 			else {dipassive_hidden = false;}
 		}
 	}
@@ -119,7 +122,7 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 		if ((passive == false) && (owner))
 		{
 			if ((damageType == 'Lightning') || (damageType == 'FakeLightning'))
-			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -143,17 +146,18 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 		DIPassiveInventory.DIHidden true;
 	}
 	
+	int rainbownum;
+	
 	override void DoEffect(void)
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
+			plr.chance_poison += amount;
+			rainbownum = plr.CountInv("DI_StatusGiver_Rainbow");
 			
-			plr.chance_poison += plr.CountInv("DI_StatusGiver_Poison");
-			
-			if (plr.CountInv("DI_StatusGiver_Poison") <= plr.CountInv("DI_StatusGiver_Rainbow")) {dipassive_hidden = true;}
+			if (amount <= rainbownum) {dipassive_hidden = true;}
 			else {dipassive_hidden = false;}
 		}
 	}
@@ -163,7 +167,7 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 		if ((passive == false) && (owner))
 		{
 			if ((damageType == 'Poison') || (damageType == 'FakePoison'))
-			newdamage = damage * (1.0 + (0.2 * (owner.CountInv(GetClassName()) - owner.CountInv("DI_StatusGiver_Rainbow"))));
+			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -198,10 +202,10 @@ Class DI_StatusGiver_Rainbow : DIPassiveInventory
 			{
 				if (statusgiven == false)
 				{
-					owner.A_GiveInventory("DI_StatusGiver_Ice", owner.CountInv("DI_StatusGiver_Rainbow"));
-					owner.A_GiveInventory("DI_StatusGiver_Fire", owner.CountInv("DI_StatusGiver_Rainbow"));
-					owner.A_GiveInventory("DI_StatusGiver_Poison", owner.CountInv("DI_StatusGiver_Rainbow"));
-					owner.A_GiveInventory("DI_StatusGiver_Lightning", owner.CountInv("DI_StatusGiver_Rainbow"));
+					owner.A_GiveInventory("DI_StatusGiver_Ice", amount);
+					owner.A_GiveInventory("DI_StatusGiver_Fire", amount);
+					owner.A_GiveInventory("DI_StatusGiver_Poison", amount);
+					owner.A_GiveInventory("DI_StatusGiver_Lightning", amount);
 					statusgiven = true;
 				}
 			}

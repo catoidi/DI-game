@@ -14,7 +14,7 @@ Class DI_OrganDonor : DIPassiveInventory
 	{
 		if (owner)
 		{
-			return "DI_ExtraBloodCoin", owner.CountInv(self.GetClassName());
+			return "DI_ExtraBloodCoin", amount;
 		}
 
 		return "", 0;
@@ -24,7 +24,7 @@ Class DI_OrganDonor : DIPassiveInventory
 	{
 		if (owner && (mon.health <= -100))
 		{
-			return "DI_OrganDonor_Pickup", owner.CountInv(self.GetClassName()), 0;
+			return "DI_OrganDonor_Pickup", amount, 0;
 		}
 		return "", 0, 0;
 	}
@@ -55,7 +55,7 @@ Class DI_OrganDonor_Pickup : Inventory
 	override bool Use(bool pickup)
 	{
 		let plr = DI_PlayerBase(owner);
-		if (plr) {plr.DI_HealSelf(10 * owner.CountInv(self.GetClassName()), 2.0, true);}
+		if (plr) {plr.DI_HealSelf(10 * amount, 2.0, true);}
 		return true;
 	}
 

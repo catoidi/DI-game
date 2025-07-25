@@ -14,11 +14,9 @@ Class DI_FreshBullets : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			
-			int freshnum = 4 - plr.CountInv("DI_FreshBullets");
+			int freshnum = 4 - amount;
 			
 			if (plr.JustKilled == true)
 			{

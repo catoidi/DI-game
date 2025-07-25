@@ -35,6 +35,6 @@ Class DI_OldMagazine : DIPassiveInventory
 	
 	override double GiveDamageMult()
 	{
-		return newdmg * plr.CountInv(self.GetClassName());
+		return newdmg * amount;
 	}
 }

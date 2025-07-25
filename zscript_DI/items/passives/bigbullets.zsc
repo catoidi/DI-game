@@ -13,19 +13,19 @@ Class DI_BigBullets : DIPassiveInventory
 	override double GiveDamageMult()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + (0.15 * plr.countinv(GetClassName()));
+		return 1.0 + (0.15 * amount);
 	}
 
 	override double GiveBulletSize()
 	{
 		if (!plr) {return 0.0;}
-		return 0.3 * plr.countinv(GetClassName());
+		return 0.3 * amount;
 	}
 
 	override double GiveRecoil()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + (0.5 * plr.countinv(GetClassName()));
+		return 1.0 + (0.5 * amount);
 	}
 	
 	States

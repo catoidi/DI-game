@@ -18,7 +18,7 @@ Class DI_BulletMitosis : DIPassiveInventory
 		Super.DoEffect();
 		if (wpn) 
 		{
-			returnvalue = owner.CountInv(GetClassName());
+			returnvalue = amount;
 			if (returnvalue > wpn.maxammouse) {returnvalue = wpn.maxammouse;};
 		}
 	}
@@ -47,7 +47,7 @@ Class DI_BulletMitosis : DIPassiveInventory
 	{
 		super.tick();
 		
-		if (plr && plr.canprogress && (plr.CountInv(GetClassName()) >= 3))
+		if (plr && plr.canprogress && (amount >= 3))
 		{
 			plr.PlayerDoUnlock("di_unlock_item_toomanybullets");
 		}

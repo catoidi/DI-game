@@ -12,12 +12,10 @@ Class DI_PeerPressure : DIPassiveInventory
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
-		if (passive && (damage > 0) && (owner is "DI_PlayerBase"))
+		if (passive && (damage > 0) && (plr))
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			int anumber = plr.CountInv("DI_PeerPressure");
-			plr.A_DIHearted(anumber, 1.0);
-			plr.A_Explode(10, 32 * anumber, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 32 * anumber, damagetype: "Heart");
+			plr.A_DIHearted(amount, 1.0);
+			plr.A_Explode(10, 32 * amount, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 32 * amount, damagetype: "Heart");
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}

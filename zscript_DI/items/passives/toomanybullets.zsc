@@ -13,19 +13,19 @@ Class DI_TooManyBullets : DIPassiveInventory
 	override int GiveProjectiles()
 	{
 		if (!wpn || !plr) {return 0;}
-		return (plr.CountInv(GetClassName()) * wpn.default.wpn_projectiles);
+		return (amount * wpn.default.wpn_projectiles);
 	}
 	
 	override double GiveReloadSpeed()
 	{
 		if (!plr) {return 0;}
-		return plr.CountInv(GetClassName()) * 0.35;
+		return amount * 0.35;
 	}
 	
 	override double GiveDamageMult()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 / (1.0 + (0.7 * plr.CountInv(GetClassName())));
+		return 1.0 / (1.0 + (0.7 * amount));
 	}
 	
 	States

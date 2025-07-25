@@ -14,11 +14,9 @@ Class DI_BloodyHeart : DIPassiveInventory
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
-		int dropnum = 1;
 		if ((damage >= 1) && (owner) && (passive == true))
 		{
-			dropnum = owner.CountInv("DI_BloodyHeart");
-			for (int i = 0; i < dropnum; ++i) 
+			for (int i = 0; i < amount; ++i) 
 			{
 				owner.A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 24, random(-6, 6), random(-6, 6), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
 			

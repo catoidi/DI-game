@@ -13,7 +13,7 @@ Class DI_FreshBonusGiver : DIPassiveInventory
 	override int GiveFreshBonus()
 	{
 		if (!wpn || !plr) {return 0;}
-		return (plr.CountInv(GetClassName()));
+		return amount;
 	}
 	
 	States

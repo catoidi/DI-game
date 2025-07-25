@@ -13,7 +13,7 @@ Class DI_FreshBonusCharger : DIPassiveInventory
 	override int GiveFreshCharge()
 	{
 		if (!plr) {return 0;}
-		return plr.CountInv(GetClassName());
+		return amount;
 	}
 	
 	States

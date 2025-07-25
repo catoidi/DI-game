@@ -19,7 +19,7 @@ Class DI_CreditFreeze : DIPassiveInventory
 		{
 			if (Level.Killed_Monsters != prevmon)
 			{
-				plr.GiveInventory("DI_CreditFreeze_Powerup", plr.CountInv(self.GetClassName()));
+				plr.GiveInventory("DI_CreditFreeze_Powerup", amount);
 				prevmon = Level.Killed_Monsters;
 			}
 		}

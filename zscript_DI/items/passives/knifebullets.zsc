@@ -13,13 +13,13 @@ Class DI_KnifeBullets : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return plr.countinv(GetClassName()) * 20;
+		return amount * 20;
 	}
 
 	override double GiveFirerate()
 	{
 		if (!plr) {return 0;}
-		return plr.countinv(GetClassName()) * 0.15;
+		return amount * 0.15;
 	}
 	
 	States

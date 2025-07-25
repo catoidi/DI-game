@@ -9,6 +9,6 @@ Class DI_Payday : DIPassiveInventory
 
 	override int GiveExtraCoin()
 	{
-		return 2 * plr.CountInv(self.GetClassName());
+		return 2 * amount;
 	}
 }

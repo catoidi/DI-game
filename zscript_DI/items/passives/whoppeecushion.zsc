@@ -18,7 +18,7 @@ Class DI_WhoppeeCushion : DIPassiveInventory
 	{
 		if (plr && (jumped > 4))
 		{
-			if (dashed < plr.CountInv(GetClassName()) && (dashhold == 0))
+			if (dashed < amount && (dashhold == 0))
 			{
 				++dashed;
 				plr.A_Recoil(-15);

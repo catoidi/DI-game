@@ -9,6 +9,6 @@ Class DI_QuestDebuff_Underpaid : DI_QuestDebuff
 	override double GiveComboDrain() 
 	{
 		if (!plr) {return 1.0;}
-		else {return 1.0 + (0.3 * plr.CountInv(self.GetClassName()));}
+		else {return 1.0 + (0.3 * amount);}
 	}
 }

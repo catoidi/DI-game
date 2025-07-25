@@ -18,7 +18,7 @@ Class DI_OverwhelmingFirepower : DIPassiveInventory
 		{
 			if (!passive && !givepower && (damage > 0))
 			{
-				owner.GiveInventory("DI_OverwhelmingFirepower_Powerup", owner.CountInv(self.GetClassName()));
+				owner.GiveInventory("DI_OverwhelmingFirepower_Powerup", amount);
 				givepower = true;
 			}
 		}
@@ -62,6 +62,6 @@ Class DI_OverwhelmingFirepower_Powerup : DIPowerup
 	override double GiveFirerate()
 	{
 		if (!plr) {return 0.0;}
-		return -0.01 * plr.CountInv(self.GetClassName());
+		return -0.01 * amount;
 	}
 }

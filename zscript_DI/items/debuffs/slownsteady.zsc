@@ -10,7 +10,7 @@ Class DI_QuestDebuff_SlowNSteady : DI_QuestDebuff
 	override string, int GiveProjectileItem()
 	{
 		if (!plr) {return "", 0;}
-		return "DI_QuestDebuff_SlowNSteady_Item", plr.countinv(self.getclassname());
+		return "DI_QuestDebuff_SlowNSteady_Item", amount;
 	}
 }
 

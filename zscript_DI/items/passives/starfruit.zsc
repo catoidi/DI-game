@@ -27,14 +27,14 @@ Class DI_Starfruit : DIPassiveInventory
 	{
 		if (!plr) {return "", 0;}
 		if (!active) {return "", 0;}
-		return "DI_Starfruit_Projectile", plr.CountInv(self.GetClassName());
+		return "DI_Starfruit_Projectile", amount;
 	}
 	
 	override double GiveDamageMult()
 	{
 		if (!plr) {return 1.0;}
 		if (!active) {return 1.0;}
-		return 1.0 + (0.2 * plr.CountInv(GetClassName()));
+		return 1.0 + (0.2 * amount);
 	}
 	
 	States

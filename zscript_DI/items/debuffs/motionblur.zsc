@@ -9,6 +9,6 @@ Class DI_QuestDebuff_MotionBlur : DI_QuestDebuff
 	override double GiveAccuracy() 
 	{
 		if (!plr) {return 0.0;}
-        return 0.3 * plr.vel.length();
+        return 0.3 * plr.vel.length() * amount;
 	}
 }

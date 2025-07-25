@@ -10,7 +10,7 @@ Class DI_QuestDebuff_ExpiredFood : DI_QuestDebuff
 	override double GiveHealingPower()
 	{
 		if (!plr) {return 1.0;}
-		double itemnum = 0.35 * plr.countinv("DI_QuestDebuff_ExpiredFood");
+		double itemnum = 0.35 * amount;
 		double newheal = 1.0 - (itemnum / (0.65 + itemnum));
 		return newheal;
 	}

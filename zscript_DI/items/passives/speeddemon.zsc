@@ -18,14 +18,14 @@ Class DI_SpeedDemon : DIPassiveInventory
 		
 		if (plr && !plr.IsFrozen())
 		{
-			totalvel = 0.0075 * plr.countinv(self.getclassname()) * plr.vel.length();
+			totalvel = 0.0075 * amount * plr.vel.length();
 		}
 	}
 	
 	override double GivePlayerSpeed()
 	{
 		if (!plr) {return 0.0;}
-		else {return 0.15 * plr.countinv(self.getclassname());}
+		else {return 0.15 * amount;}
 	}
 	
 	override double GiveDamageMult()
@@ -38,7 +38,7 @@ Class DI_SpeedDemon : DIPassiveInventory
 	{
 		if (plr && passive)
 		{
-			newdamage *= 1.0 + (0.35 * plr.countinv(self.getclassname()));
+			newdamage *= 1.0 + (0.35 * amount);
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}

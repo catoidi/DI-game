@@ -139,7 +139,7 @@ Class DI_Degen : Inventory
 	{
 		Super.DoEffect();
 		
-		if (owner.GetMaxHealth(true) <= owner.CountInv("DI_Degen"))
+		if (owner.GetMaxHealth(true) <= amount)
 		{
 			owner.A_Die();
 		}
@@ -156,18 +156,18 @@ Class DI_MaxHealthGiver : DIPassiveInventory
 	override double GiveHealingPower()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + 0.001 * plr.countinv(self.getclassname());
+		return 1.0 + 0.001 * amount;
 	}
 	
 	override double GiveRegenSpeed()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 / (1.0 + 0.001 * plr.countinv(self.getclassname()));
+		return 1.0 / (1.0 + 0.001 * amount);
 	}
 	
 	override double GiveMaxHealth()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0001 + 0.001 * plr.countinv(self.getclassname());
+		return 1.0001 + 0.001 * amount;
 	}
 }

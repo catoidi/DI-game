@@ -13,13 +13,13 @@ Class DI_PiercingBullets : DIPassiveInventory
 	override string, int GiveProjectileItem()
 	{
 		if (!plr) {return "", 0;}
-		return "DI_PiercingBullets_Item", plr.CountInv(self.GetClassName());
+		return "DI_PiercingBullets_Item", amount;
 	}
 	
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return -plr.countinv(self.getclassname()) * 10;
+		return -amount * 10;
 	}
 	
 	States

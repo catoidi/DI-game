@@ -25,11 +25,11 @@ Class DI_MiniFred : DIPassiveInventory
 	
 	virtual void SpawnFred()
 	{
-		if (freds.Size() < plr.CountInv(GetClassName()))
+		if (freds.Size() < amount)
 		{
 			string fredtype = "DI_MiniFred_Actor";
 			
-			if (frandom(1.0, 20.0) <= sqrt(plr.CountInv(GetClassName()))) {fredtype = "DI_MiniFred_Actor2";}
+			if (frandom(1.0, 20.0) <= sqrt(amount)) {fredtype = "DI_MiniFred_Actor2";}
 			
 			actor thing;
 			bool check;

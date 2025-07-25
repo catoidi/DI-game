@@ -22,7 +22,7 @@ Class DI_FreshSpray : DIPassiveInventory
 			
 			if (plr.JustKilled == true)
 			{
-				plr.GiveInventory("DI_FreshSpray_Powerup", plr.CountInv(self.getclassname()));
+				plr.GiveInventory("DI_FreshSpray_Powerup", amount);
 				curwpn = DI_Weapon(plr.player.readyweapon);
 			}
 			else if (curwpn != DI_Weapon(plr.player.readyweapon))

@@ -19,12 +19,12 @@ Class DI_LastStand : DIPassiveInventory
 		
 		++lasttimer;
 		
-		if (plr && (lasttimer >= (75 - (plr.CountInv("DI_LastStand") * 5))))
+		if (plr && (lasttimer >= (75 - (amount * 5))))
 		{
 			if (savinggrace == false) {savinggrace = true;}
-			else if (CallACS("DICheckWaveProgress") == true)
+			else if (plr.inwave)
 			{
-				float regennum = 0.1 + (0.15 * plr.CountInv("DI_LastStand"));
+				float regennum = 0.1 + (0.15 * amount);
 				if (plr.Health < (plr.DIMaxHealth() * regennum))
 				{
 					plr.DI_HealSelf(10, regennum, true);

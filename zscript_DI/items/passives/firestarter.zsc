@@ -14,7 +14,7 @@ Class DI_Firestarter : DIPassiveInventory
 	{
 		if (owner)
 		{
-			return "DI_Firestarter_Enemy", owner.CountInv(self.GetClassName());
+			return "DI_Firestarter_Enemy", amount;
 		}
 
 		return "", 0;
@@ -40,11 +40,10 @@ Class DI_Firestarter_Enemy : Inventory
 	{
 		if (owner && pickup)
 		{
-			let firenum = owner.CountInv(self.GetClassName());
-			let firechance = 3 + (firenum * 3);
+			let firechance = 3 + (amount * 3);
 			if ((random(1, 20) <= firechance) || (owner.CheckRange(192) == false))
 			{
-				let firedmg = 40 + (firenum * 40);
+				let firedmg = 40 + (amount * 40);
 				if (firedmg >= owner.Health) {firedmg = owner.Health - 1;}
 				owner.A_DamageSelf(firedmg, "Fire");
 			}

@@ -13,8 +13,7 @@ Class DI_PainStar : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		int painstarnum = plr.CountInv("DI_PainStar") * 6;
-		painstarnum -= plr.CountInv("DI_PainStar") * plr.combonum;
+		int painstarnum = amount * (6 - plr.combonum);
 		if (painstarnum < 0) {painstarnum = 0;}
 		return painstarnum * 10;
 	}

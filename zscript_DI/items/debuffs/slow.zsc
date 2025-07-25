@@ -9,6 +9,6 @@ Class DI_QuestDebuff_Slow : DI_QuestDebuff
 	override double GivePlayerSpeed() 
 	{
 		if (!plr) {return 0.0;}
-		else {return -0.2 * plr.countinv(self.getclassname()) * ((0.0 + plr.health) / (0.01 + plr.DIMaxHealth()));}
+		else {return -0.2 * amount * ((0.0 + plr.health) / (0.01 + plr.DIMaxHealth()));}
 	}
 }

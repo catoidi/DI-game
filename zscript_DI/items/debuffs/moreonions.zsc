@@ -30,7 +30,7 @@ Class DI_QuestDebuff_MoreOnions : DI_QuestDebuff
 		string nme = "RedOnion";
 		if (random(0, 5) == 0) {nme = "OnionTurret";}
 		
-		string cmd = string.format("addwaveenemy %s %d DISpawnerSpot_Turret", nme, plr.CountInv(self.GetClassName()));
+		string cmd = string.format("addwaveenemy %s %d DISpawnerSpot_Turret", nme, amount);
 		
 		EventHandler.SendNetworkEvent(cmd);
 	}

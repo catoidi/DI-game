@@ -13,20 +13,20 @@ Class DI_SprayNPray : DIPassiveInventory
 	override double GiveAccuracy()
 	{
 		if (!plr) {return 0.0;}
-		return 1.5 * plr.CountInv(self.GetClassName());
+		return 1.5 * amount;
 	}
 	
 	override double GiveMaxSpread()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + (0.15 * plr.CountInv(self.GetClassName()));
+		return 1.0 + (0.15 * amount);
 	}
 	
 	override double GiveFirerate()
 	{
 		if (!plr || !wpn) {return 0.0;}
-		double returnvalue = 0.01 * plr.CountInv(self.GetClassName()) * (wpn.wpn_accuracy + wpn.current_recoil + wpn.wpn_maxspread);
-		double maxvalue = 0.15 * plr.CountInv(self.GetClassName());
+		double returnvalue = 0.01 * amount * (wpn.wpn_accuracy + wpn.current_recoil + wpn.wpn_maxspread);
+		double maxvalue = 0.15 * amount;
 		if (returnvalue > maxvalue) {returnvalue = maxvalue;}
 		return -returnvalue;
 	}

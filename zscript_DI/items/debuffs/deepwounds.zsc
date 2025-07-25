@@ -10,8 +10,7 @@ Class DI_QuestDebuff_DeepWounds : DI_QuestDebuff
 	override double GiveRegenSpeed()
 	{
 		if (!plr) {return 1.0;}
-		int itemnum = plr.countinv(self.getclassname());
-		double newheal = 1.0 + (0.5 * itemnum);
+		double newheal = 1.0 + (0.5 * amount);
 		return newheal;
 	}
 }

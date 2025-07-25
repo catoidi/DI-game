@@ -14,16 +14,15 @@ Class DI_CarbonatedDrink : DIPassiveInventory
 	{
 		if (mon.wasfreshkilled)
 		{
-			int drinks = plr.CountInv("DI_CarbonatedDrink");
-			if (drinks > 0)
+			if (amount > 0)
 			{
 				int failure = 400 - (400 * ((1.0 * (plr.DIMaxHealth() - plr.health - plr.CountInv("DI_Regen"))) / plr.DIMaxHealth()));
-				failure -= drinks * 40;
+				failure -= amount * 40;
 				//console.printf("%d", failure);
 				if (failure > 256) {failure = 256;}
 				
 				
-				return "DI_CarbonatedDrink_Pickup", drinks, failure;
+				return "DI_CarbonatedDrink_Pickup", amount, failure;
 			}
 		}
 		

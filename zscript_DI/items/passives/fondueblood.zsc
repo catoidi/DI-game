@@ -14,7 +14,7 @@ Class DI_FondueBlood : DIPassiveInventory
 	{
 		if (owner)
 		{
-			return "DI_FondueBlood_Enemy", owner.CountInv(self.GetClassName());
+			return "DI_FondueBlood_Enemy", amount;
 		}
 
 		return "", 0;
@@ -59,7 +59,7 @@ Class DI_FondueBlood_Enemy : Inventory
 	
 	virtual void SpawnCheese()
 	{
-		for (int i = 0; i < (4 * owner.CountInv(self.GetClassName())); ++i)
+		for (int i = 0; i < (4 * amount); ++i)
 		{
 			bool spawned;
 			actor cheese;

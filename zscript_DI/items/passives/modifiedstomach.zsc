@@ -13,19 +13,19 @@ Class DI_ModifiedStomach : DIPassiveInventory
 	override double GiveMaxHealth()
 	{
 		if (!plr) {return 1.0;}
-		return 1.000001 + (0.2 * plr.countinv(self.getclassname()));
+		return 1.000001 + (0.2 * amount);
 	}
 	
 	override double GiveHealingPower()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 - (0.05 * plr.countinv(self.getclassname()));
+		return 1.0 - (0.05 * amount);
 	}
 	
 	override double GiveRegenSpeed()
 	{
 		if (!plr) {return 1.0;}
-		return 1.0 + (0.05 * plr.countinv(self.getclassname()));
+		return 1.0 + (0.05 * amount);
 	}
 	
 	States

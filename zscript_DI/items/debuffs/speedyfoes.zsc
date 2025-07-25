@@ -9,7 +9,7 @@ Class DI_QuestDebuff_SpeedyFoes : DI_QuestDebuff
 
     override string, int GiveEnemyItem()
     {
-        if (owner) {return "DI_SpeedyFoes_Buff", owner.CountInv(GetClassName());}
+        if (owner) {return "DI_SpeedyFoes_Buff", amount;}
         else return "", 0;
     }
 }
@@ -27,7 +27,7 @@ Class DI_SpeedyFoes_Buff : Inventory
         if (owner is "DI_Monster")
         {
             let mon = DI_Monster(owner);
-            mon.speedmult *= 1.0 + (0.3 * mon.CountInv(self.GetClassName()));
+            mon.speedmult *= 1.0 + (0.3 * amount);
         }
         return false;
     }

@@ -16,13 +16,11 @@ Class DI_AcidBlood : DIPassiveInventory
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
-		int dropnum = 1;
 		if ((damage >= 1) && (owner) && (passive == true))
 		{
-			dropnum = owner.CountInv("DI_AcidBlood");
-			for (int i = 0; i < dropnum; ++i) 
+			acidstrength = amount;
+			for (int i = 0; i < amount; ++i) 
 			{
-				acidstrength = owner.CountInv("DI_AcidBlood");
 				owner.A_SpawnItemEX("DI_AcidBlood_Drop", 0, 0, owner.Height / 2, random(-4, 4), random(-4, 4), flags: SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
 			}
 		}

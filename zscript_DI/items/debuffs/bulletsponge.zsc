@@ -30,7 +30,7 @@ Class DI_BulletSponge_Buff : Inventory
         {
             if (source != self)
             {
-                healnum += (newdamage * owner.CountInv(GetClassName())) / 2;
+                healnum += (newdamage * amount) / 2;
 				healtime = -30;
             }
         }

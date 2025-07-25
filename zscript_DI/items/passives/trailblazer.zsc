@@ -22,7 +22,7 @@ Class DI_Trailblazer : DIPassiveInventory
 			daspeed = 1.0 * (hplost / plr.GetMaxHealth(true));
 			if (daspeed < 0.0) {daspeed = 0.0;}
 			
-			daspeed *= 0.20 * plr.CountInv(self.GetClassName());
+			daspeed *= 0.20 * amount;
 		}
 	}
 	

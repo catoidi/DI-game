@@ -15,7 +15,7 @@ Class DI_SwagShells : DIPassiveInventory
 		if (!plr) {return 1.0;}
 		int returnvalue = di_swaglevel + di_swaglevel_over;
 		if (returnvalue > 20) {returnvalue = 20;}
-		return 1.0 + (0.01 * plr.countinv(GetClassName()) * returnvalue);
+		return 1.0 + (0.01 * amount * returnvalue);
 	}
 	
 	States

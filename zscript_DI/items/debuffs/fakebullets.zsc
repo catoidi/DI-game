@@ -15,8 +15,7 @@ Class DI_QuestDebuff_FakeBullets : DI_QuestDebuff
 		
 		if (plr && !plr.IsFrozen())
 		{
-			int fakenum = plr.countinv(self.getclassname());
-			if (random(0, fakenum + 8) <= fakenum - 1) {isfake = true;} //10% chance, extra stacks give diminishing extra chance.
+			if (random(0, amount + 8) <= amount - 1) {isfake = true;} //10% chance, extra stacks give diminishing extra chance.
 			else {isfake = false;}
 		}
 	}
