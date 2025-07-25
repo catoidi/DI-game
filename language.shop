@@ -75,6 +75,9 @@ SHOPTYPE_DI_QUESTDEBUFF_WIDEANGLELENS = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_POINTBLANK = "\cgCurse of Point Blank";
 SHOPDESC_DI_QUESTDEBUFF_POINTBLANK = "Worsens bullet spread for every\nextra projectile on the weapon.";
 SHOPTYPE_DI_QUESTDEBUFF_POINTBLANK = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_SHIELDEDFOES = "\cgCurse of Shielded Foes";
+SHOPDESC_DI_QUESTDEBUFF_SHIELDEDFOES = "The first hit to enemies will\ndeal 25% less damage.";
+SHOPTYPE_DI_QUESTDEBUFF_SHIELDEDFOES = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

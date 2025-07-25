@@ -21,7 +21,8 @@
 * Debuff DI_QuestDebuff_DeepWounds 256 2;
 * Debuff DI_QuestDebuff_Debase 256 2;
 * Debuff DI_QuestDebuff_WideAngleLens 256 0;
-* Debuff DI_QuestDebuff_PointBlank 0;
+* Debuff DI_QuestDebuff_PointBlank 256 0;
+* Debuff DI_QuestDebuff_ShieldedFoes 256 0;
 DI02 Debuff DI_QuestDebuff_MoreOnions 96 4;
 >>DI02 Debuff DI_QuestDebuff_MoreLemons;
 * Objective DI_QuestObjective_Fresh 192 2;
