@@ -16,16 +16,14 @@ Class DI_FreshSpray : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if (owner is "DI_PlayerBase")
+		if (plr && wpn)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			
 			if (plr.JustKilled == true)
 			{
 				plr.GiveInventory("DI_FreshSpray_Powerup", amount);
-				curwpn = DI_Weapon(plr.player.readyweapon);
+				curwpn = wpn;
 			}
-			else if (curwpn != DI_Weapon(plr.player.readyweapon))
+			else if (curwpn != wpn)
 			{
 				plr.TakeInventory("DI_FreshSpray_Powerup", 15);
 			}

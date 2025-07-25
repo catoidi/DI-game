@@ -42,7 +42,7 @@ Class DI_FreshBullets : DIPassiveInventory
 	override double GiveReloadSpeed()
 	{
 		if (!plr) {return 0.0;}
-		return 0.5 * plr.CountInv(GetClassName());
+		return 0.5 * amount;
 	}
 	
 	States
