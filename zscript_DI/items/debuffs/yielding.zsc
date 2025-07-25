@@ -30,7 +30,7 @@ Class DI_QuestDebuff_Yielding_Powerup : DIPowerup
 	override double GivePlayerSpeed()
 	{
 		if (!plr) {return 0;}
-		return -0.35;
+		return -0.2;
 	}
 	
 	States
