@@ -452,14 +452,15 @@ Class DI_PlayerBase : PlayerPawn abstract
 		//use this to check the player's current combo number.
 		int cnum = 1;
 		int cdrain = 1;
-		if (CountInv("DI_TokenComboTimer") > ComboThreshold(9)) {cnum = 9; cdrain = 110;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(8)) {cnum = 8; cdrain = 55;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(7)) {cnum = 7; cdrain = 36;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(6)) {cnum = 6; cdrain = 21;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(5)) {cnum = 5; cdrain = 10;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(4)) {cnum = 4; cdrain = 6;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(3)) {cnum = 3; cdrain = 3;}
-		else if (CountInv("DI_TokenComboTimer") > ComboThreshold(2)) {cnum = 2; cdrain = 2;}
+		int combotimer = CountInv("DI_TokenComboTimer");
+		if (combotimer > ComboThreshold(9)) {cnum = 9; cdrain = 110;}
+		else if (combotimer > ComboThreshold(8)) {cnum = 8; cdrain = 55;}
+		else if (combotimer > ComboThreshold(7)) {cnum = 7; cdrain = 36;}
+		else if (combotimer > ComboThreshold(6)) {cnum = 6; cdrain = 21;}
+		else if (combotimer > ComboThreshold(5)) {cnum = 5; cdrain = 10;}
+		else if (combotimer > ComboThreshold(4)) {cnum = 4; cdrain = 6;}
+		else if (combotimer > ComboThreshold(3)) {cnum = 3; cdrain = 3;}
+		else if (combotimer > ComboThreshold(2)) {cnum = 2; cdrain = 2;}
 		
 		if (wpn)
 		{
