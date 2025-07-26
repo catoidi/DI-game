@@ -87,7 +87,7 @@ class DIItemHUDHandler : EventHandler
 			if (curitem is "DIPassiveInventory") //Only look for Passive items. No weapons, no consumables, etc.)
 			{
 				DIPassiveInventory hiddencheck = DIPassiveInventory(curitem);
-				if (hiddencheck.dipassive_hidden == false)
+				if ((hiddencheck.dipassive_hidden == false) && (hiddencheck.dipassive_nobar == false))
 				{
 					validitems.Push(itemnames[i]);
 					validsprites.Push(itemsprites[i]);

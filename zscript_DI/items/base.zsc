@@ -3,7 +3,8 @@
 class DIPassiveInventory : Inventory 
 {
 	//this is used for tracking purposes for the Item HUD.
-	bool dipassive_hidden; //if enabled, this item is not shown on the item hud.
+	bool dipassive_hidden; //if enabled, this item is not shown on the item hud or the catalogue.
+	bool dipassive_nobar; //if enabled, this item will not appear on the item hud, but will still appear in the catalogue.
 	
 	DI_PlayerBase plr;
 	DI_Weapon wpn;
@@ -11,6 +12,7 @@ class DIPassiveInventory : Inventory
 	string itemdesc; //default item description. blank by default. allows scripts to overwrite item descriptions in the Catalogue Menu.
 	
 	property DIHidden: dipassive_hidden;
+	property DINoBar: dipassive_nobar;
 	
 	default
 	{
@@ -27,7 +29,7 @@ class DIPassiveInventory : Inventory
 		
 		if (other is "DI_PlayerBase")
 		{
-			let plr = DI_PlayerBase(other);
+			plr = DI_PlayerBase(other);
 			if (plr.knownpassives.Find(GetClassName()) == plr.knownpassives.Size())
 			{
 				//plr.knownpassives.Push(GetClassName());

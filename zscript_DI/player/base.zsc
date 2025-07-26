@@ -47,6 +47,8 @@ Class DI_PlayerBase : PlayerPawn abstract
 	Array<String> renteditems; //a list of all items you've rented this round.
 	
 	Array<String> knownpassives; //NOT A LIST OF ITEMS CURRENTLY IN YOUR INVENTORY. this shows every passive you've ever interacted with.
+	DI_Armor curarmor;
+	
 	int boxammonum;
 	
 	int lastscore; //the score you had last round.
@@ -565,6 +567,11 @@ Class DI_PlayerBase : PlayerPawn abstract
 		if (dohpbuff && wpn) {heal *= wpn.plr_maxhp;} //HP Debt is proportional to any Max HP buffs applied to the player.
 		if (heal < 1) {heal = 1;} //Minimum player HP of 1.
 		return heal;
+	}
+	
+	clearscope virtual DI_Armor FindArmor()
+	{
+		return DI_Armor(FindInventory("DI_Armor", true));
 	}
 	
 	action void BuyPermaItem(string itemsave, int addamount = 1)

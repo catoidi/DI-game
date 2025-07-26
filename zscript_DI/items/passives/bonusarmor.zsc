@@ -20,19 +20,16 @@ Class DI_BonusArmor : DIPassiveInventory
 	}
 }
 
-Class DI_BonusArmorPickup : BasicArmorBonus
-{
-	mixin DI_ActorMixin;
-	
+Class DI_BonusArmorPickup : DI_ArmorPickup
+{	
 	Default
 	{
 		Radius 20;
 		Height 16;
 		Inventory.PickupMessage "+2 Armor";
 		Inventory.Icon "ARMOE0";
-		Armor.SavePercent 25;
-		Armor.MaxSaveAmount 3000;
-		Armor.SaveAmount 20;
+		DI_ArmorPickup.GiveDurability 20;
+		DI_ArmorPickup.MaxArmor 2.0;
 		+BRIGHT;
 		+FLOATBOB;
 	}

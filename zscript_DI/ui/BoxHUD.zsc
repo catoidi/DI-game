@@ -53,6 +53,8 @@ class DI_HUD : BaseStatusBar
 	bool HideAmmo2;
 	
 	int leveltime;
+	
+	DI_Armor curarmor;
 
 	override void Init()
 	{
@@ -263,23 +265,13 @@ class DI_HUD : BaseStatusBar
 		
 		//DrawTexture(GetMugShot(5), GlobalOffset + (-36, -36), DI_ITEM_OFFSETS);
 		
-		if (GetArmorAmount() > 0) //show armor when not empty
-		{
-			BasicArmor curarmor = BasicArmor(CPlayer.mo.FindInventory('BasicArmor'));
-			let ArmorMax = curarmor.ActualSaveAmount;
+		curarmor = diplayer.FindArmor();
 		
-			DrawBar("graphics/boxhud/HUDBARH.png", "graphics/boxhud/HUDBARG.png", BoxArmorInterpolator.GetValue(), ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			if (BoxArmorInterpolator.GetValue() > ArmorMax)
-			{
-				DrawBar("graphics/boxhud/HUDBARK.png", "graphics/boxhud/HUDBARH.png", BoxArmorInterpolator.GetValue() - ArmorMax, ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			}
-			
-			string drawarmor = string.format("%.1f", 0.1 * GetArmorAmount());
-			if (detailnum.GetBool()) {drawarmor.AppendFormat("\cu/\cb%.1f", 0.1 * ArmorMax);}
-			DrawString(SmallFont, drawarmor, GlobalOffset + (-48, -49), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
-			
-			DrawInventoryIcon(curarmor, GlobalOffset + (-24, -36), DI_ITEM_OFFSETS);
+		if (curarmor) //show armor when not empty
+		{
+			ArmorOffset = curarmor.ArmorHUD(self, GlobalOffset, BoxArmorInterpolator.GetValue(), detailnum.GetBool());
 		}
+		else {ArmorOffset = (0, 0);}
 		
 		//AMMO BARS
 		Ammo ammo1, ammo2;
@@ -287,8 +279,6 @@ class DI_HUD : BaseStatusBar
 		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
 		textureid ammo1icon, ammo2icon;
 		
-		if (GetArmorAmount() > 0) {ArmorOffset = (0, -24);} //do armor offset if armor > 0
-		else {ArmorOffset = (0, 0);}
 		Ammo1Offset = (0, -20 * HasAmmo1);
 		Ammo2Offset = (0, -20 * HasAmmo2);
 		
@@ -519,7 +509,8 @@ class DI_HUD : BaseStatusBar
 	virtual void BoxInterpolate() 
 	{
 		BoxHealthInterpolator.Update(CPlayer.health);
-		BoxArmorInterpolator.Update(GetArmorAmount());
+		if (curarmor) {BoxArmorInterpolator.Update(curarmor.durability);}
+		else {BoxArmorInterpolator.Update(0);}
 		BoxScoreInterpolator.Update(CPlayer.mo.score);
 	}
 }

@@ -1,17 +1,150 @@
 //armor.zsc
 
-Class DI_TopHat : BasicArmorPickup
+Class DI_Armor : DIPassiveInventory abstract
 {
-	mixin DI_ActorMixin;
+	int durability, maxdurability;
+	float protection;
+	bool canbreak;
 	
+	string armorbar_empty, armorbar_filled, armorbar_overfilled;
+	
+	property Durability : durability;
+	property MaxDurability : maxdurability;
+	property Protection : protection;
+	property CanBreak : canbreak;
+	
+	property EmptyBar : armorbar_empty;
+	property FilledBar : armorbar_filled;
+	property OverfilledBar : armorbar_overfilled;
+
+	Default
+	{
+		Inventory.MaxAmount 1;
+		DIPassiveInventory.DINoBar true;
+		DI_Armor.CanBreak true;
+		DI_Armor.EmptyBar "graphics/boxhud/HUDBARG.png";
+		DI_Armor.FilledBar "graphics/boxhud/HUDBARH.png";
+		DI_Armor.OverfilledBar "graphics/boxhud/HUDBARK.png";
+	}
+
+	override bool CanPickup(Actor toucher)
+	{
+		if (toucher is "DI_PlayerBase")
+		{
+			let pickplr = DI_PlayerBase(toucher);
+			if (pickplr.FindInventory("DI_Armor", true)) {return false;} //only 1 armor allowed at a time.
+		}
+		return Super.CanPickup(toucher);
+	}
+	
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		if (plr) 
+		{
+			console.printf("attaching armor to player");
+			plr.curarmor = self;
+		}
+	}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		if (plr && (damage > 0))
+		{
+			int absorb = damage * protection;
+			if ((absorb > 0) && (durability > 0))
+			{
+				if (absorb > durability) {absorb = durability;}
+				durability -= absorb;
+				newdamage = damage - absorb;
+				ArmorDamaged(absorb);
+				if (canbreak && (durability <= 0)) {ArmorDestroyed();}
+			}
+		}
+	}
+	virtual void ArmorDamaged(int damage) {}
+	virtual void ArmorDestroyed() {plr.TakeInventory(self.GetClassName(), 1);}
+	virtual void GiveArmor(int giveamount, float maxarmor = 1.0)
+	{
+		int maxgive = maxdurability * maxarmor;
+		if ((durability + giveamount) > maxgive) {durability = maxgive;}
+		else {durability += giveamount;}
+	}
+	
+	ui virtual vector2 ArmorHUD(DI_HUD hud, vector2 offset, int curvalue, bool detailed)
+	{
+		hud.DrawBar(armorbar_filled, armorbar_empty, curvalue, maxdurability, offset + (-142, -56), 0, hud.SHADER_REVERSE, hud.DI_ITEM_OFFSETS);
+		if (curvalue > maxdurability)
+		{
+			hud.DrawBar(armorbar_overfilled, armorbar_filled, curvalue - maxdurability, maxdurability, offset + (-142, -56), 0, hud.SHADER_REVERSE, hud.DI_ITEM_OFFSETS);
+		}
+		
+		string drawarmor = string.format("%.1f", 0.1 * durability);
+		if (detailed) {drawarmor.AppendFormat("\cu/\cb%.1f", 0.1 * maxdurability);}
+		hud.DrawString(hud.SmallFont, drawarmor, offset + (-48, -49), hud.DI_ITEM_OFFSETS|hud.DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
+		
+		hud.DrawInventoryIcon(self, offset + (-24, -36), hud.DI_ITEM_OFFSETS);
+		
+		return (0, -24);
+	}
+}
+
+Class DI_ArmorPickup : Inventory
+{
+	string fallbackarmor;
+	int givedurability;
+	float maxarmor;
+	
+	DI_PlayerBase plr;
+	
+	property FallbackArmor : fallbackarmor;
+	property GiveDurability : givedurability;
+	property MaxArmor : MaxArmor;
+	
+	Default
+	{
+		Inventory.MaxAmount 9999999;
+		DI_ArmorPickup.FallbackArmor "";
+		DI_ArmorPickup.GiveDurability 1;
+		DI_ArmorPickup.MaxArmor 1.0;
+		+Inventory.AUTOACTIVATE;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		plr = DI_PlayerBase(owner);
+		if (plr)
+		{
+			console.printf("found player");
+			if (plr.curarmor)
+			{
+				console.printf("found armor");
+				plr.curarmor.GiveArmor(givedurability, maxarmor);
+			}
+			else if (fallbackarmor != "")
+			{
+				plr.GiveInventory(fallbackarmor, 1);
+				let newarmor = DI_Armor(plr.FindInventory(fallbackarmor));
+				newarmor.durability = givedurability;
+			}
+		}
+		
+		return true;
+	}
+}
+
+//old armor stuff
+Class DI_TopHat : DI_Armor
+{
 	Default
 	{
 		Radius 20;
 		Height 16;
 		Inventory.PickupMessage "+100 Armor";
 		Inventory.Icon "ARMOA0";
-		Armor.SavePercent 40;
-		Armor.SaveAmount 1000;
+		DI_Armor.Protection 0.40;
+		DI_Armor.Durability 1000;
+		DI_Armor.MaxDurability 1000;
 	}
 	
 	States
@@ -22,18 +155,17 @@ Class DI_TopHat : BasicArmorPickup
 	}
 }
 
-Class DI_TopHat2 : BasicArmorPickup
+Class DI_TopHat2 : DI_Armor
 {
-	mixin DI_ActorMixin;
-	
 	Default
 	{
 		Radius 20;
 		Height 16;
 		Inventory.PickupMessage "+150 Armor";
 		Inventory.Icon "ARMOB0";
-		Armor.SavePercent 60;
-		Armor.SaveAmount 1500;
+		DI_Armor.Protection 0.60;
+		DI_Armor.Durability 1500;
+		DI_Armor.MaxDurability 1500;
 	}
 	
 	States
@@ -44,18 +176,17 @@ Class DI_TopHat2 : BasicArmorPickup
 	}
 }
 
-Class DI_PartyHat : BasicArmorPickup
+Class DI_PartyHat : DI_Armor
 {
-	mixin DI_ActorMixin;
-	
 	Default
 	{
 		Radius 20;
 		Height 16;
 		Inventory.PickupMessage "+200 Armor";
 		Inventory.Icon "ARMOC0";
-		Armor.SavePercent 80;
-		Armor.SaveAmount 2000;
+		DI_Armor.Protection 0.80;
+		DI_Armor.Durability 2000;
+		DI_Armor.MaxDurability 2000;
 	}
 	
 	States
@@ -66,18 +197,17 @@ Class DI_PartyHat : BasicArmorPickup
 	}
 }
 
-Class DI_BowTie : BasicArmorPickup
+Class DI_BowTie : DI_Armor
 {
-	mixin DI_ActorMixin;
-	
 	Default
 	{
 		Radius 20;
 		Height 16;
 		Inventory.PickupMessage "+50 True Armor";
 		Inventory.Icon "ARMOD0";
-		Armor.SavePercent 100;
-		Armor.SaveAmount 500;
+		DI_Armor.Protection 1.0;
+		DI_Armor.Durability 500;
+		DI_Armor.MaxDurability 500;
 	}
 	
 	States
