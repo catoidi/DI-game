@@ -150,7 +150,7 @@ DefensePassive DI_Spring POW3H 7 192 di_unlock_item_spring;
 DefensePassive DI_FruitTape POW2F 7;
 DefensePassive DI_Toaster POW1P 7 256 di_unlock_item_toaster;
 DefensePassive DI_BloodMoney POW3I 7 128 di_unlock_item_bloodmoney;
-DefensePassive DI_ModifiedStomach POWRA 7 256 di_unlock_item_modifiedstomach;
+DefensePassive DI_ModifiedStomach POW3Q 7 256 di_unlock_item_modifiedstomach;
 >>Combo Passives...
 ComboPassive DI_ExtraCoinGiver POWRB 9;
 ComboPassive DI_FreshBonusGiver POWRC 21 128;
