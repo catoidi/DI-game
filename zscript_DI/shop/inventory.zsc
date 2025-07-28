@@ -51,5 +51,7 @@ Class DIShopInventory : Inventory
 	virtual double MultiplyPrice(string curitem) {return 1.0;} //Allows shop inventory items to easily update the price of items.
 	virtual void ChoseNewShopItem(string newitem) {} //Called with a new shop item is chosen.
 	virtual void DidPurchase(DI_PlayerBase buyer, actor newitem = null) {} //Called when the player successfully purchases an item from the shop.
+	
 	ui virtual void CustomShopPopup(NashHPBarHandler handler, RenderEvent e, double baseYPos, double baralpha) {} //Called by NashHPBar when viewing the shop. Can be used to add custom UI elements to the shop.
+	ui virtual string SimpleShopPopup() {return "";} //Also called by NashHPBar. Meant for simple small additional popups to the Shop UI with support for multiple popups at a time.
 }

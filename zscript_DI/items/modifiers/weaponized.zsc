@@ -418,31 +418,12 @@ Class DI_Weaponized_Shop : DIShopInventory
 		hastraits = true;
 	}
 	
-	override void CustomShopPopup(NashHPBarHandler handler, RenderEvent e, double baseYPos, double baralpha)
+	override string SimpleShopPopup()
 	{
 		if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
 		{
-			let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
-			if (brdTex.IsValid())
-			{
-				Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
-				Screen.DrawTexture(brdTex, false,
-					(Screen.GetWidth() / 2) - ((brdTexSize.X / 4) * CleanXFac),
-					((baseYPos + 59.0) * CleanYFac),
-					DTA_KeepRatio, true,
-					DTA_Alpha, baralpha,
-					DTA_ScaleX, 0.5 * CleanXFac,
-					DTA_ScaleY, 0.3 * CleanYFac);
-			}
-			
-			string txt = string.format("%s\n%s", FancyTrait(buff, false), FancyTrait(nerf, true));
-			Screen.DrawText(smallFont, Font.CR_WHITE,
-				(Screen.GetWidth() / 2) - ((smallFont.StringWidth(txt) / 2) * CleanXFac),
-				(baseYPos * CleanYFac) + (smallFont.GetHeight() * CleanYFac) - (smallFont.GetHeight() * CleanYFac) + (67 * CleanYFac),
-				txt,
-				DTA_CleanNoMove, true,
-				DTA_KeepRatio, true,
-				DTA_Alpha, baralpha);
+			return string.format("%s\n%s", FancyTrait(buff, false), FancyTrait(nerf, true));
 		}
+		return "";
 	}
 }

@@ -153,6 +153,38 @@ class NashHPBarHandler : EventHandler
 		int smax = max(vmax, hmax);
 		return max(1, min(scaleval, smax));
 	}
+	
+	ui void DoSimpleShopPopup(string txt, int pos, int maxpos, RenderEvent e, double baseYPos, double baralpha)
+	{
+		let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+		if (brdTex.IsValid())
+		{
+			Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+			
+			vector2 posoffset = (0, 0);
+			posoffset.x = (pos % 2 == 0) ? (brdTexSize.X / 2) : 0;
+			if ((pos >= (maxpos - 1)) && (pos % 2 == 0)) {posoffset.x = brdTexSize.X / 4; console.printf("yea");}
+			int pos2 = pos / 2;
+			posoffset.y = pos2 * 24;
+			
+			
+			Screen.DrawTexture(brdTex, false,
+				(Screen.GetWidth() / 2) - (posoffset.x * CleanXFac),
+				((baseYPos + posoffset.y + 59.0) * CleanYFac),
+				DTA_KeepRatio, true,
+				DTA_Alpha, baralpha,
+				DTA_ScaleX, 0.5 * CleanXFac,
+				DTA_ScaleY, 0.3 * CleanYFac);
+			
+			Screen.DrawText(smallFont, Font.CR_WHITE,
+				(Screen.GetWidth() / 2) - (((-brdTexSize.X / 4) + posoffset.x + (smallFont.StringWidth(txt) / 2)) * CleanXFac),
+				((baseYPos + posoffset.y) * CleanYFac) + (smallFont.GetHeight() * CleanYFac) - (smallFont.GetHeight() * CleanYFac) + (67 * CleanYFac),
+				txt,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, baralpha);
+		}
+	}
 
 	ui void DrawNashHPBar(RenderEvent e)
 	{
@@ -324,8 +356,19 @@ class NashHPBarHandler : EventHandler
 					DTA_KeepRatio, true,
 					DTA_Alpha, healthBarAlpha);
 				
+				int simplepopups = 0;
+				int maxpopups = 0;
+				for (int i = 0; i < prevShop.shopinv.Size(); ++i) 
+				{
+					if (prevShop.shopinv[i].SimpleShopPopup() != "") {++maxpopups;}
+				}
 				for (int i = 0; i < prevShop.shopinv.Size(); ++i)
 				{
+					if (prevShop.shopinv[i].SimpleShopPopup() != "")
+					{
+						DoSimpleShopPopup(prevShop.shopinv[i].SimpleShopPopup(), simplepopups, maxpopups, e, baseYpos, healthBarAlpha);
+						++simplepopups;
+					}
 					prevShop.shopinv[i].CustomShopPopup(self, e, baseYPos, healthBarAlpha);
 				}
 			}
