@@ -4,10 +4,49 @@ Class DIFakeShop : DI_Actor
 {
 	string user_shoptext; //the text that gets displayed in the Shop UI. accepts LANGUAGE lumps.
 
+	property ShopText : user_shoptext;
+
 	Default
 	{
 		Radius 20;
 		Height 96;
 		-SOLID;
+	}
+	
+	ui virtual string ShopUIText(DI_PlayerBase plr)
+	{
+		return user_shoptext;
+	}
+}
+
+Class DIExitPopup : DIFakeShop
+{
+	Default
+	{
+		DIFakeShop.ShopText "$DISHOP_EXIT";
+	}
+
+	override string ShopUIText(DI_PlayerBase plr)
+	{
+		if (plr.weaponnum < 2)
+		{
+			string shoptxt = stringtable.localize(user_shoptext);
+			string warntxt = stringtable.localize("$WARN_NOWEAPONS");
+			return string.format("%s\n%s", shoptxt, warntxt);
+		}
+		return user_shoptext;
+	}
+}
+
+Class DIExitPopup_Quest : DIExitPopup
+{
+	override string ShopUIText(DI_PlayerBase plr)
+	{
+		if (!plr.FindInventory("DI_MainQuest"))
+		{
+			string warntxt = stringtable.localize("$WARN_NOQUEST");
+			return string.format("%s\n%s", StringTable.Localize(Super.ShopUIText(plr)), warntxt);
+		}
+		return Super.ShopUIText(plr);
 	}
 }

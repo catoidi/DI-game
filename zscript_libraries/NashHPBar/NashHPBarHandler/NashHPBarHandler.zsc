@@ -239,13 +239,13 @@ class NashHPBarHandler : EventHandler
 			double baseYPos = (SmallFont.GetHeight() * scale) * con_notifylines;
 			baseYPos /= CleanYfac;
 			baseYPos += SmallFont.GetHeight();
+			
+			let plr = DI_PlayerBase(CPlayer.mo);
 
 			if (prevAimTarget is "DIShop_Base")
 			{
 				String txt;
 				DIShop_Base prevShop = DIShop_Base(prevAimTarget);
-				
-				let plr = DI_PlayerBase(CPlayer.mo);
 				
 				if (prevShop.canshop == false) return;
 				
@@ -465,7 +465,7 @@ class NashHPBarHandler : EventHandler
 				}
 
 				// display fakeshop's text
-				txt = StringTable.Localize(prevFake.user_shoptext);
+				txt = StringTable.Localize(prevFake.ShopUIText(plr));
 				Screen.DrawText(fnt, nameTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
 					(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (1 * CleanYFac),

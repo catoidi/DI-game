@@ -50,4 +50,6 @@ DoomEdNums
 	20047 = DI_DI02Canvas
 	20048 = DIShopController_Debuff
 	20049 = DIFakeShop
+	20050 = DIExitPopup
+	20051 = DIExitPopup_Quest
 }

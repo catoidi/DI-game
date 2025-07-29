@@ -377,14 +377,14 @@ Class DI_Weaponized_Shop : DIShopInventory
 	
 	override void DidPurchase(DI_PlayerBase buyer, actor newitem)
 	{
-		console.printf("Did a purchase i guess");
+		//console.printf("Did a purchase i guess");
 		item = DI_Weaponized(shop.plr.FindInventory("DI_Weaponized"));
 		if (thebrain.Weaponized_CheckWeapon(newitem.getclassname()))
 		{
-			console.printf("Weapon is valid.");
+			//console.printf("Weapon is valid.");
 			if (shop.spawnedactor)
 			{
-				console.printf("Adding traits to weapon...");
+				//console.printf("Adding traits to weapon...");
 				if (!hastraits) {ThrowAbortException("Attempted to give traits to invalid weapon.");}
 				//console.printf("%s, %s, %s", newitem, buff, nerf);
 				item.NewWeapon(newitem.getclassname(), buff, nerf);
