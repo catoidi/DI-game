@@ -163,7 +163,7 @@ class NashHPBarHandler : EventHandler
 			
 			vector2 posoffset = (0, 0);
 			posoffset.x = (pos % 2 == 0) ? (brdTexSize.X / 2) : 0;
-			if ((pos >= (maxpos - 1)) && (pos % 2 == 0)) {posoffset.x = brdTexSize.X / 4; console.printf("yea");}
+			if ((pos >= (maxpos - 1)) && (pos % 2 == 0)) {posoffset.x = brdTexSize.X / 4;}
 			int pos2 = pos / 2;
 			posoffset.y = pos2 * 24;
 			
