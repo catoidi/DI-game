@@ -50,3 +50,55 @@ Class DIExitPopup_Quest : DIExitPopup
 		return Super.ShopUIText(plr);
 	}
 }
+
+Class DIProgressPopup : DIFakeShop
+{
+	//Requires that your level has an ACS Script named "CheckShopLevel" to work properly.
+
+	int user_maxlevel;
+	string user_shoptext2; //the text that gets displayed in the Shop UI. accepts LANGUAGE lumps.
+
+	property ShopText2 : user_shoptext2;
+	property MaxLevel : user_maxlevel;
+	
+	Default
+	{
+		Height 32;
+		DIFakeShop.ShopText "$DISHOP_PROGRESS_1";
+		Self.ShopText2 "$DISHOP_PROGRESS_2A"; //Shop Text is split into 2 portions to support displaying the shop level number in between.
+		Self.MaxLevel 7;
+		+BRIGHT;
+		+FLOATBOB;
+		+NOGRAVITY;
+	}
+	
+	int curlevel;
+	int timer;
+	override void Tick()
+	{
+		Super.Tick();
+		
+		++timer;
+		if (timer >= 35)
+		{
+			curlevel = CallACS("CheckShopLevel");
+			if (curlevel >= user_maxlevel)
+			{
+				Destroy();
+			}
+			timer = 0;
+		}
+	}
+	
+	override string ShopUIText(DI_PlayerBase plr)
+	{
+		return String.Format("%s%d%s", StringTable.Localize(user_shoptext), user_maxlevel, StringTable.Localize(user_shoptext2));
+	}
+	
+	States
+	{
+		Spawn:
+			LOOK A -1;
+			Loop;
+	}
+}
