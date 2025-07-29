@@ -4,13 +4,15 @@
 
 class DI_GhostShop : DI_Actor
 {	
+	mixin DIShop_TeleportFix;
+	
 	Default
 	{
 		RenderStyle "Translucent";
 		Radius 20;
 		Height 96;
 		+VISIBILITYPULSE;
-		-SOLID;
+		+SOLID;
 		//$Category "DI/Shops/"
 		//$Title "Ghost Shop (Decor)"
 		//$Color 4

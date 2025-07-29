@@ -1,6 +1,52 @@
+mixin class DIShop_TeleportFix
+{
+	bool clipplayer; //allow player to phase through this shop.
+	bool teleportfix; //prevent shops from telefragging players, and vice versa.
+	int teleporttic; //timer for teleportfix.
+	
+	property TeleportFix: teleportfix;
+	
+	Default
+	{
+		Self.TeleportFix true; //implies that the shop is SOLID.
+	}
+	
+	override bool PreTeleport(Vector3 destpos, double destangle, int flags)
+	{
+		if (teleportfix) {clipplayer = true;}
+		return Super.PreTeleport(destpos, destangle, flags);
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "DI_PlayerBase") {return !clipplayer;}
+		return Super.CanCollideWith(other, passive);
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		TeleportCheck();
+	}
+	
+	virtual void TeleportCheck()
+	{
+		if (teleportfix && clipplayer)
+		{
+			++teleporttic;
+			if (teleporttic >= 5)
+			{
+				if (CheckRange(((radius + 32) * 2), true)) {clipplayer = false;}
+				teleporttic = 0;
+			}
+		}
+	}
+}
+
 Class DIShop_Base : SwitchableDecoration abstract
 {
 	mixin DI_ActorMixin;
+	mixin DIShop_TeleportFix;
 	
 	string user_currentsprite, shop_currentsprite; //the sprite of the current item.
 	int user_itemstock, shop_itemstock; //how many items this shop can sell per round. set to -1 for unlimited stock. defaults to 1.
@@ -11,8 +57,6 @@ Class DIShop_Base : SwitchableDecoration abstract
 	int user_displayoffset; //add/reduce the Z offset for the displays above the shop.
 	float user_salemin; //minimum sale amount. default is 25%. sale chance also increases sale amount.
 	float user_salemax; //maximum sale amount. default is 60%. rarely reaches this number.
-	bool teleportfix; //prevent shops from telefragging players, and vice versa.
-	int teleporttic; //timer for teleportfix.
 	
 	property AllowDebt: user_allowdebt;
 	property DebtHP: user_debthp;
@@ -21,7 +65,6 @@ Class DIShop_Base : SwitchableDecoration abstract
 	property DisplayOffset: user_displayoffset;
 	property MinSale: user_salemin;
 	property MaxSale: user_salemax;
-	property TeleportFix: teleportfix;
 	
 	int currentprice; //how much the price has increased.
 	int lastpurchased; //checks how many rounds ago the last purchase was.
@@ -160,38 +203,6 @@ Class DIShop_Base : SwitchableDecoration abstract
 		return false;
 	}
 	
-	override bool PreTeleport(Vector3 destpos, double destangle, int flags)
-	{
-		if (teleportfix) {bSOLID = false;}
-		return Super.PreTeleport(destpos, destangle, flags);
-	}
-	
-	override void PostTeleport(Vector3 destpos, double destangle, int flags)
-	{
-		//if (teleportfix) {bSOLID = true;}
-		Super.PostTeleport(destpos, destangle, flags);
-	}
-	
-	override void Tick()
-	{
-		Super.Tick();
-		TeleportCheck();
-	}
-	
-	virtual void TeleportCheck()
-	{
-		if (teleportfix)
-		{
-			++teleporttic;
-			if (teleporttic >= 35)
-			{
-				if (!bSOLID && CheckRange(128.0, true)) {bSOLID = true;}
-				
-				teleporttic = 0;
-			}
-		}
-	}
-	
 	Default
 	{
 		Radius 20;
@@ -203,7 +214,6 @@ Class DIShop_Base : SwitchableDecoration abstract
 		//+USESPECIAL;
 		DIShop_Base.MinSale 0.1;
 		DIShop_Base.MaxSale 0.3;
-		DIShop_Base.TeleportFix true; //implies that the shop is SOLID.
 		//$Category "DI/Shops/"
 		//$Color 14
 	}
