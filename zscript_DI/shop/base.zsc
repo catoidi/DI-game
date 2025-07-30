@@ -117,6 +117,8 @@ Class DIShop_Base : SwitchableDecoration abstract
 	
 	abstract void GetSalePercent(); //returns a multiplier for the sale price. 1.0 means there's no sale. below 1.0 means the price is marked down, and vice versa.
 	
+	clearscope virtual string SimpleShopPopup(DI_PlayerBase curplr) {return "";}
+	
 	clearscope float CheckSaleNum() 
 	{
 		//if (salenum == 0.0) {return 1.0;}

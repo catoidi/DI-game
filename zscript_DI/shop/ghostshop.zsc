@@ -2,20 +2,23 @@
 
 //this is not a shop. this is used to show which shops will appear on the next shop upgrade.
 
-class DI_GhostShop : DI_Actor
+class DI_GhostShop : DIFakeShop
 {	
 	mixin DIShop_TeleportFix;
 	
 	Default
 	{
 		RenderStyle "Translucent";
-		Radius 20;
-		Height 96;
 		+VISIBILITYPULSE;
 		+SOLID;
 		//$Category "DI/Shops/"
 		//$Title "Ghost Shop (Decor)"
 		//$Color 4
+	}
+	
+	override string ShopUIText(DI_PlayerBase plr)
+	{
+		return "\n\n\cfUpgrade the shop to reveal this item.";
 	}
 	
 	States

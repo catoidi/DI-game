@@ -115,10 +115,10 @@ Class DI_ArmorPickup : Inventory
 		plr = DI_PlayerBase(owner);
 		if (plr)
 		{
-			console.printf("found player");
+			//console.printf("found player");
 			if (plr.curarmor)
 			{
-				console.printf("found armor");
+				//console.printf("found armor");
 				plr.curarmor.GiveArmor(givedurability, maxarmor);
 			}
 			else if (fallbackarmor != "")

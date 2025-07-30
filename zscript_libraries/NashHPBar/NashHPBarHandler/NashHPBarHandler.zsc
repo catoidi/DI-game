@@ -358,9 +358,15 @@ class NashHPBarHandler : EventHandler
 				
 				int simplepopups = 0;
 				int maxpopups = 0;
+				if (prevShop.SimpleShopPopup(plr) != "") {++maxpopups;}
 				for (int i = 0; i < prevShop.shopinv.Size(); ++i) 
 				{
 					if (prevShop.shopinv[i].SimpleShopPopup() != "") {++maxpopups;}
+				}
+				if (prevShop.SimpleShopPopup(plr) != "")
+				{
+					DoSimpleShopPopup(prevShop.SimpleShopPopup(plr), simplepopups, maxpopups, e, baseYpos, healthBarAlpha);
+					++simplepopups;
 				}
 				for (int i = 0; i < prevShop.shopinv.Size(); ++i)
 				{

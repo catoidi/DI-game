@@ -53,4 +53,5 @@ DoomEdNums
 	20050 = DIExitPopup
 	20051 = DIExitPopup_Quest
 	20052 = DIProgressPopup
+	20053 = DISingleShop
 }

@@ -665,3 +665,58 @@ Class DIConsumableShop : DIShop
 			Stop;
 	}
 }
+
+Class DISingleShop : DIShop
+{
+	//for items like Armor, where you cannot buy a new item without first removing the old one.
+	
+	string user_itemtype;
+	
+	property ItemType : user_itemtype;
+	
+	Default
+	{
+		Self.ItemType "DI_Armor";
+		//$Title "Shop (Single)"
+	}
+	
+	override string SimpleShopPopup(DI_PlayerBase curplr)
+	{
+		let inv = curplr.FindInventory(user_itemtype, true);
+		if (inv) //remove existing armor before doing any purchases
+		{
+			return "\cfUse this shop to remove\nyour current Armor.";
+		}
+		return "";
+	}
+	
+	override void PurchaseShopItem()
+	{
+		if (target is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(target);
+			
+			let inv = plr.FindInventory(user_itemtype, true);
+			if (inv) //remove existing armor before doing any purchases
+			{
+				A_ResetScale();
+				A_DIScale(0.25, -0.25);
+				
+				plr.TakeInventory(inv.GetClassName(), 9999999);
+				ItemRemovedMessage(inv.GetTag());
+				
+				A_StartSound("switches/normbutn");
+				A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+			}
+			else
+			{
+				Super.PurchaseShopItem();
+			}
+		}
+	}
+	
+	virtual void ItemRemovedMessage(string aname)
+	{
+		console.printf("\cfRemoved %s from your inventory.", aname);
+	}
+}
