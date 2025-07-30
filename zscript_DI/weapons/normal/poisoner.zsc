@@ -2,7 +2,7 @@
 
 Class PoisonGun : DI_Weapon
 {
-	mixin DI_Spray_Progressive;
+	mixin DI_Spray_PureRandom;
 	
 	Default
 	{

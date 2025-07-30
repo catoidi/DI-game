@@ -74,12 +74,14 @@ mixin class DI_Spray_PureRandom
 
 mixin class DI_Spray_Progressive
 {
+	//Meant for weapons that start with 1 projectile and 0 maxspread.
+
 	//Bullets start at 0% spread, and get progressively more spread the higher the startspray value is.
 	//It's important that the spread does not go above wpn_spread_XY * wpn_maxspread * spreadscale, or crosshair accuracy will be displayed incorrectly.
 	override vector2 DI_SprayPattern(uint startspray, double spreadscale)
 	{
 		if (wpn_projectiles < 1) {return (0, 0);}
-		double progscale = (1.0 * startspray) / (1.0 * wpn_projectiles);
+		double progscale = (1.0 * (startspray + 1)) / (1.0 * wpn_projectiles);
 		vector2 totalspread = (wpn_spread_x * wpn_maxspread * spreadscale * progscale, wpn_spread_y * wpn_maxspread * spreadscale * progscale);
 		return (frandom(-totalspread.x, totalspread.x), frandom(-totalspread.y, totalspread.y));
 	}
