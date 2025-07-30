@@ -67,6 +67,7 @@ Class PoisonGun : DI_Weapon
 			#### # 0 {invoker.shootcount = 0;}
 			PPIS BBBB 2 BRIGHT 
 			{
+				if (DI_FireCheck()) {return ResolveState("FireEmpty");}
 				switch(invoker.shootcount)
 				{
 					case 0: A_Overlay(-2, "Flash0"); break;
@@ -77,13 +78,9 @@ Class PoisonGun : DI_Weapon
 				DI_FireProjectile("DI_Tracer_PoisonGun", spawnofs_xy: -4);
 				A_StartSound("pistpow");
 				++invoker.shootcount;
-			}
-			PPIS B 5 BRIGHT;
-			#### # 0
-			{
-				if (countinv("PoisonGunAmmo") == 0) {return ResolveState("FireEmpty");}
 				return ResolveState(null);
 			}
+			PPIS B 5 BRIGHT;
 			PPIS E 5;
 			PPIS A 0 A_Refire;
 			PPIS AA 1;
