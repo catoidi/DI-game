@@ -189,16 +189,16 @@ SHOPTYPE_DI_MINIGUN = "\cb[SUPERWEAPON] \ck[Very Rare]";
 
 //Armor
 SHOPITEM_DI_TOPHAT = "Top Hat";
-SHOPDESC_DI_TOPHAT = "+100 Armor Points.\n40% Damage Protection.";
+SHOPDESC_DI_TOPHAT = "+25% DMG Protection. +50 Durability.\n\nthe most basic armor you can get.";
 SHOPTYPE_DI_TOPHAT = "\cq[Armor] \cc[Common]";
 SHOPITEM_DI_TOPHAT2 = "Top Hat :)";
-SHOPDESC_DI_TOPHAT2 = "+150 Armor Points.\n60% Damage Protection.";
+SHOPDESC_DI_TOPHAT2 = "+50% DMG Protection. +35 Durability.\nFresh Kills grant +1 Durability.";
 SHOPTYPE_DI_TOPHAT2 = "\cq[Armor] \cd[Uncommon]";
 SHOPITEM_DI_PARTYHAT = "Party Hat";
-SHOPDESC_DI_PARTYHAT = "+200 Armor Points.\n80% Damage Protection.";
+SHOPDESC_DI_PARTYHAT = "+75% DMG Protection. +150 Durability.\n\ca-0.3 Durability every second that\nenemies are still alive.";
 SHOPTYPE_DI_PARTYHAT = "\cq[Armor] \cv[Rare]";
 SHOPITEM_DI_BOWTIE = "Bow Tie";
-SHOPDESC_DI_BOWTIE = "+50 Armor Points.\n100% Damage Protection.";
+SHOPDESC_DI_BOWTIE = "+50% DMG Protection. +35 Durability.\nGrants up to +13% Weapon Speed\nbased on current Durability.";
 SHOPTYPE_DI_BOWTIE = "\cq[Armor] \cd[Uncommon]";
 
 //Health

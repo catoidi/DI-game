@@ -211,6 +211,11 @@ version "4.14"
 #include "zscript_DI/items/passives/modifiedstomach.zsc"
 #include "zscript_DI/items/passives/quantumbullet.zsc"
 #include "zscript_DI/items/passives/freshfrenzy.zsc"
+//armors
+#include "zscript_DI/items/armors/tophat.zsc"
+#include "zscript_DI/items/armors/tophat2.zsc"
+#include "zscript_DI/items/armors/partyhat.zsc"
+#include "zscript_DI/items/armors/bowtie.zsc"
 //consumable items
 #include "zscript_DI/items/consumables/health.zsc"
 #include "zscript_DI/items/consumables/bomb.zsc"
