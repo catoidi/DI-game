@@ -5,7 +5,7 @@ Class DI_ModifiedStomach : DIPassiveInventory
 	Default
 	{
 		Tag "Modified Stomach";
-		Inventory.Icon "POW2Q0";
+		Inventory.Icon "POW3Q0";
 		Inventory.PickupMessage "Modified Stomach acquired! (+20% Max Health. Healing is 5% worse, and regen is 5% slower.)";
 		Inventory.MaxAmount 10;
 	}
@@ -31,7 +31,7 @@ Class DI_ModifiedStomach : DIPassiveInventory
 	States
 	{
 		Spawn:
-			POW2 Q -1;
+			POW3 Q -1;
 			Stop;
 	}
 }
