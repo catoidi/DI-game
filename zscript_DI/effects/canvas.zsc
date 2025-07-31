@@ -2,8 +2,10 @@
 
 Class DI_WaveCanvas : DI_Actor
 {
+	mixin DI_CanvasMixin;
+
 	//displays the current wave as a texture.
-	TextureID tid;
+	TextureID texid;
 	Canvas cv;
 	int w, h;
 	int wavenum;
@@ -20,11 +22,11 @@ Class DI_WaveCanvas : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		tid = TexMan.CheckForTexture("CanvasTest");
+		texid = TexMan.CheckForTexture("CanvasTest");
 
 		cv = TexMan.GetCanvas("CanvasTest");
 
-		[w, h] = TexMan.GetSize(tid);
+		[w, h] = TexMan.GetSize(texid);
 	}
 	
 	virtual void DoWaveCheck()
@@ -32,6 +34,7 @@ Class DI_WaveCanvas : DI_Actor
 		if (cv)
 		{
 			cv.Clear(0, 0, w, h, 0);
+			DrawStars(cv, (w, h), starsize: 0.125);
 			
 			string curwave = string.format("%s", "Next Wave:");
 			int x = (w - bigFont.StringWidth(curwave)) / 2;
@@ -48,11 +51,11 @@ Class DI_WaveCanvas : DI_Actor
 	override void Tick()
 	{
 		Super.Tick();
+		DoWaveCheck();
 		++ticktime;
 		if (ticktime >= 35)
 		{
 			wavenum = ACS_ScriptCall("DICheckWave");
-			DoWaveCheck();
 			ticktime = 0;
 		}
 	}
@@ -62,9 +65,10 @@ Class DI_DI01Canvas : DI_Actor
 {
 	//this one is designed specifically for DI01.
 	//this will display both the wave and the shop level progress.
+	mixin DI_CanvasMixin;
 	
 	//displays the current wave as a texture.
-	TextureID tid;
+	TextureID texid;
 	Canvas cv;
 	int w, h;
 	int wavenum;
@@ -83,11 +87,11 @@ Class DI_DI01Canvas : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		tid = TexMan.CheckForTexture("LVL1SHOP");
+		texid = TexMan.CheckForTexture("LVL1SHOP");
 
 		cv = TexMan.GetCanvas("LVL1SHOP");
 
-		[w, h] = TexMan.GetSize(tid);
+		[w, h] = TexMan.GetSize(texid);
 	}
 	
 	virtual void DoWaveCheck()
@@ -95,6 +99,7 @@ Class DI_DI01Canvas : DI_Actor
 		if (cv)
 		{
 			cv.Clear(0, 0, w, h, 0);
+			DrawStars(cv, (w, h), starsize: 0.125);
 			
 			string curwave = string.format("%s%d", "Next Wave: ", wavenum);
 			int x = (w - (bigFont.StringWidth(curwave) * 1.5)) / 2;
@@ -115,13 +120,13 @@ Class DI_DI01Canvas : DI_Actor
 	override void Tick()
 	{
 		Super.Tick();
+		DoWaveCheck();
 		++ticktime;
 		if (ticktime >= 35)
 		{
 			wavenum = ACS_ScriptCall("DICheckWave");
 			shoplvl = ACS_ScriptCall("GetShopLvl");
 			shopprogress = ACS_ScriptCall("GetShopXP");
-			DoWaveCheck();
 			ticktime = 0;
 		}
 	}
@@ -129,11 +134,12 @@ Class DI_DI01Canvas : DI_Actor
 
 Class DI_DI02Canvas : DI_Actor
 {
-	//this one is designed specifically for DI01.
-	//this will display both the wave and the shop level progress.
+	//this one is designed specifically for DI02.
+	//this will display the wave, shop level, and arena.
+	mixin DI_CanvasMixin;
 	
 	//displays the current wave as a texture.
-	TextureID tid;
+	TextureID texid;
 	Canvas cv;
 	int w, h;
 	int wavenum;
@@ -152,11 +158,11 @@ Class DI_DI02Canvas : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		tid = TexMan.CheckForTexture("LVL2SHOP");
+		texid = TexMan.CheckForTexture("LVL2SHOP");
 
 		cv = TexMan.GetCanvas("LVL2SHOP");
 
-		[w, h] = TexMan.GetSize(tid);
+		[w, h] = TexMan.GetSize(texid);
 	}
 	
 	virtual void DoWaveCheck()
@@ -164,45 +170,54 @@ Class DI_DI02Canvas : DI_Actor
 		if (cv)
 		{
 			cv.Clear(0, 0, w, h, 0);
+			DrawStars(cv, (w, h), starsize: 0.125);
 			
 			string curwave = string.format("%s%d", "Next Wave: ", wavenum);
 			int x = (w - (bigFont.StringWidth(curwave) * 1.5)) / 2;
-			int y = (bigFont.GetHeight() * 1.5) - 8;
+			int y = 0;
 			string curwave2 = string.format("* %s%d *", "Shop Level: ", shoplvl);
 			int xtwo = (w - bigFont.StringWidth(curwave2)) / 2;
-			int ytwo = (h - bigFont.GetHeight()) / 2;
+			int ytwo = 32;
 			
 			string arena = "";
+			string image = "";
 			switch(shopprogress)
 			{
-				case 0: arena = "House"; break;
-				case 1: arena = "Volcano"; break;
-				case 2: arena = "Underwater"; break;
-				case 3: arena = "Elevator"; break;
-				case 4: arena = "Jump Room"; break;
-				case 5: arena = "Boss Arena"; break;
+				case 0: arena = "House"; image = "graphics/DI02_A0.png"; break;
+				case 1: arena = "Volcano"; image = "graphics/DI02_A1.png"; break;
+				case 2: arena = "Underwater"; image = "graphics/DI02_A2.png"; break;
+				case 3: arena = "Elevator"; image = "graphics/DI02_A3.png"; break;
+				case 4: arena = "Jump Room"; image = "graphics/DI02_A4.png"; break;
+				case 5: arena = "Boss Arena"; image = "graphics/DI02_A5.png"; break;
 			}
 			
 			string curwave3 = string.format("%s%s", "Arena: ", arena);
 			int xthree = (w - bigFont.StringWidth(curwave3)) / 2;
-			int ythree = h - (bigFont.GetHeight() * 2.5);
+			int ythree = 64;
 
 			cv.DrawText(bigFont, Font.CR_RED, x, y, curwave, DTA_ScaleX, 1.5, DTA_ScaleY, 1.5);
 			cv.DrawText(bigFont, Font.CR_GOLD, xtwo, ytwo, curwave2);
 			cv.DrawText(bigFont, Font.CR_CYAN, xthree, ythree, curwave3);
+			
+			let tex = TexMan.CheckForTexture(image);
+			vector2 texsize;
+			[texsize.x, texsize.y] = TexMan.GetSize(tex);
+			int xfour = (w - (texsize.x / 2)) / 2;
+			int yfour = 80;
+			cv.DrawTexture(tex, false, xfour, yfour, DTA_ScaleX, 0.5, DTA_ScaleY, 0.5); 
 		}
 	}
 	
 	override void Tick()
 	{
 		Super.Tick();
+		DoWaveCheck();
 		++ticktime;
 		if (ticktime >= 35)
 		{
 			wavenum = ACS_ScriptCall("DICheckWave");
 			shoplvl = ACS_ScriptCall("GetShopLvl");
 			shopprogress = ACS_ScriptCall("GetCurrentSection");
-			DoWaveCheck();
 			ticktime = 0;
 		}
 	}

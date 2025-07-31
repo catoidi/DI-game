@@ -30,3 +30,36 @@ mixin class DI_UIMixin
 		}
 	}
 }
+
+mixin class DI_CanvasMixin
+{
+	virtual void DrawStars(canvas cv, vector2 csize, string stars = "starback", float starsize = 0.5, float staralpha = 0.025)
+	{
+		//generate animated tiled background
+		TextureID back = TexMan.CheckForTexture(stars);
+		int backsize, backsizey;
+		[backsize, backsizey] = TexMan.GetSize(back);
+		backsize *= CleanXFac * starsize;
+		backsizey *= CleanYFac * starsize;
+		int backX = csize.x / backsize;
+		int backY = csize.y / backsizeY;
+		int curbackX;
+		int curbackY;
+		bool donebackground;
+		while (donebackground == false)
+		{
+			cv.DrawTexture(back, true, curbackX * backsize, curbackY * backsizeY,
+				DTA_ScaleX, CleanXFac * starsize,
+				DTA_ScaleY, CleanYFac * starsize,
+				DTA_Alpha, staralpha
+			);
+			++curbackX;
+			if (curbackX > backX) 
+			{
+				++curbackY;
+				curbackX = 0;
+			}
+			if (curbackY > backY) {donebackground = true;}
+		}
+	}
+}
