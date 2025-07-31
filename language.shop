@@ -8,6 +8,7 @@ DISHOP_PROGRESS_2A = " to unlock this door.";
 DISHOP_PROGRESS_2B = " to unlock this path.";
 WARN_NOWEAPONS = "\caWarning: You only have 1 weapon equipped.";
 WARN_NOQUEST = "\caWarning: You do not have a Side Quest.";
+WARN_NOARMOR = "\caWarning: You do not have any armor equipped.";
 
 //Quest Objectives.
 DIQUEST_DI_QUESTOBJECTIVE_FRESH = "You have 7 seconds. Getting Fresh Weapon\nBonuses adds more time. Don't run out.";

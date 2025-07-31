@@ -38,6 +38,30 @@ Class DIExitPopup : DIFakeShop
 	}
 }
 
+Class DIExitPopup_Armor : DIExitPopup
+{
+	int timer;
+	int shoplvl;
+	override void Tick()
+	{
+		++timer;
+		if (timer >= 35)
+		{
+			shoplvl = ACS_ScriptCall("GetShopLvl");
+		}
+	}
+	
+	override string ShopUIText(DI_PlayerBase plr)
+	{
+		if ((shoplvl >= 2) && (!plr.curarmor))
+		{
+			string warntxt = stringtable.localize("$WARN_NOARMOR");
+			return string.format("%s\n%s", StringTable.Localize(Super.ShopUIText(plr)), warntxt);
+		}
+		return Super.ShopUIText(plr);
+	}
+}
+
 Class DIExitPopup_Quest : DIExitPopup
 {
 	override string ShopUIText(DI_PlayerBase plr)
