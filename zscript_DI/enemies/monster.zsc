@@ -53,6 +53,7 @@ Class DI_Monster : DI_Actor abstract
 		DeathSound "dipain";
 		Species "Enemy";
 		MaxDropOffHeight 32;
+		DI_Actor.NoHPBar false;
 		DI_Monster.DIDrop "DI_Coin";
 		DI_Monster.DIDropNum -1;
 		DI_Monster.DISpeedMult 1.0;

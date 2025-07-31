@@ -10,6 +10,7 @@ Class DI_Actor : Actor abstract
 	
 	Default
 	{
+		Self.NoHPBar true;
 		//$Category "DI"
 	}
 }

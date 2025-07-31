@@ -118,8 +118,9 @@ class NashHPBarPlugin : Inventory
 		double vh = (cam is "PlayerPawn" && cam.player) ? cam.player.viewheight : cam.CameraHeight;
 		FLineTraceData t;
 		int flags = TRF_ALLACTORS;
-		cam.LineTrace(cam.Angle, 0x7FFFFFFF, cam.Pitch, flags, vh, data: t);
-		at = t.HitActor;
+		//cam.LineTrace(cam.Angle, 0x7FFFFFFF, cam.Pitch, flags, vh, data: t);
+		//at = t.HitActor;
+		/*
 		if (t.HitActor is "DIFakeShop") {}
 		else
 		{
@@ -127,6 +128,7 @@ class NashHPBarPlugin : Inventory
 			cam.LineTrace(cam.Angle, 0x7FFFFFFF, cam.Pitch, flags, vh, data: t);
 			at = t.HitActor;
 		}
+		*/
 		targetDistance = t.Distance;
 
 		if (at != currentAimTarget) 
@@ -155,5 +157,19 @@ class NashHPBarPlugin : Inventory
 		{
 			currentAimTarget = at;
 		}
+	}
+}
+
+Class HPBarTracer : LineTracer
+{
+	override ETraceStatus TraceCallback()
+    {
+		if (results.HitType == TRACE_HitActor && results.HitActor is "DI_Actor")
+        {
+			let dihit = DI_Actor(results.HitActor);
+			if (dihit.di_nohpbar) {return TRACE_Skip;}
+			else {return TRACE_Stop;}
+		}
+		return Super.TraceCallback();
 	}
 }

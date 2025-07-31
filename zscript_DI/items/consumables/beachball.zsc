@@ -71,6 +71,7 @@ Class DI_BeachBall_Actor : DI_Actor
 		DamageType "Melee";
 		BloodType "ProjectileSmoke";
 		DI_Actor.IgnoreWeapon true;
+		DI_Actor.NoHPBar false;
 		+SOLID;
 		+SHOOTABLE;
 		+PUSHABLE;

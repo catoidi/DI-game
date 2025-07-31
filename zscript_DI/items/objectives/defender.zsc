@@ -75,6 +75,7 @@ Class DI_QuestObjective_Defender_NPC : DI_Actor
 		DeathSound "dipain";
 		Tag "Mini Box";
 		DI_Actor.NoDrops true;
+		DI_Actor.NoHPBar false;
 		+SHOOTABLE;
 		+FRIENDLY;
 		+NOBLOOD;

@@ -10,6 +10,9 @@ mixin class DI_ActorMixin
 	bool di_dontscale;
 	property DontScale: di_dontscale; //prevents A_DIScale and similar functions from activating, meant for rotating sprites, which may look incorrect when scaled.
 	
+	bool di_nohpbar;
+	property NoHPBar: di_nohpbar;
+	
 	action void A_DIScale (double ScaleAmountX, double ScaleAmountY, bool IsMultiply = false, bool DoSize = false)
 	{
 	

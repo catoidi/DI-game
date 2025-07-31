@@ -54,6 +54,7 @@ Class DITurret_Actor : DI_Actor
 		Radius 11;
 		Height 22;
 		Tag "Turret";
+		DI_Actor.NoHPBar false;
 		+SOLID;
 		+SHOOTABLE;
 		+FRIENDLY;
