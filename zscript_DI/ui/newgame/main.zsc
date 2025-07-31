@@ -126,8 +126,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		{
 			float barscale = mainFrame.GetScale();
 			
-			int startx3 = (Screen.GetWidth() / 3.275) - (80 * barscale);
-			int starty = 346 * barscale;
+			int startx3 = (Screen.GetWidth() / 2) - (224 * barscale);
+			int starty = (Screen.GetHeight() / 2) + 146 * barscale;
 			string fill1 = "9999ea";
 			string fill2 = "000073";
 			string dim1 = "404040";
