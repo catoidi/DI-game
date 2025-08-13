@@ -165,6 +165,7 @@ server cheat bool di_unlock_item_swagshells = false; //swag 10.
 server cheat bool di_unlock_item_modifiedstomach = false;
 server cheat bool di_unlock_item_quantumbullets = false;
 server cheat bool di_unlock_item_freshfrenzy = false;
+server cheat bool di_unlock_item_goldhat = false;
 
 //DI crosshair
 user int di_xhair_toggle = 1; //0 is disabled. 1 is simple crosshair. 2 is detailed crosshair.

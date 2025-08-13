@@ -201,6 +201,9 @@ SHOPTYPE_DI_PARTYHAT = "\cq[Armor] \cv[Rare]";
 SHOPITEM_DI_BOWTIE = "Bow Tie";
 SHOPDESC_DI_BOWTIE = "+50% DMG Protection. +35 Durability.\nGrants up to +13% Weapon Speed\nbased on current Durability.";
 SHOPTYPE_DI_BOWTIE = "\cq[Armor] \cd[Uncommon]";
+SHOPITEM_DI_GOLDHAT = "Golden Hat";
+SHOPDESC_DI_GOLDHAT = "+50% DMG Protection. +3 Durability.\nGain +0.1 Durability for every dollar you earn.";
+SHOPTYPE_DI_GOLDHAT = "\cq[Armor] \cv[Rare] \ct[Unbreakable]";
 
 //Health
 SHOPITEM_DI_FULLHEAL = "Burger";

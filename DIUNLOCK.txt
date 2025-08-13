@@ -128,3 +128,4 @@ di_unlock_item_swagshells DI_SwagShells 2 di_swaglevel 1000010;
 di_unlock_item_modifiedstomach DI_ModifiedStomach 2  9999999;
 di_unlock_item_quantumbullets DI_QuantumBullets 2  9999999;
 di_unlock_item_freshfrenzy DI_FreshFrenzy 2  9999999;
+di_unlock_item_goldhat DI_GoldHat 3  9999999;

@@ -50,6 +50,7 @@ Armor DI_TopHat ARMOA 20;
 Armor DI_TopHat2 ARMOB 40 192;
 Armor DI_PartyHat ARMOC 40 128;
 Armor DI_BowTie ARMOD 40 192 di_unlock_item_bowtie;
+Armor DI_GoldHat ARMOF 40 128 di_unlock_item_goldhat;
 >>Health...
 Health DI_FullHeal HEALA 12;
 Health DI_Melon HEALE 16 256 di_unlock_item_melon;
