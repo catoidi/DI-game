@@ -97,3 +97,4 @@ DI_QuantumBullets;
 DI_JumpShot;
 DI_FreshFrenzy;
 DI_ModifiedStomach;
+DI_MiniOnion;

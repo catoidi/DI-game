@@ -78,6 +78,7 @@ Class DIUnlockHandler : EventHandler
 				else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
 				else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
 				else if (e.Thing is "THEHAMMER") {listkills.Push("di_hammercount");}
+				else if (e.Thing is "OnionTurret" || "RedOnion") {listkills.Push("di_onioncount");}
 			}
 			else if (e.Thing is "DI_PlayerBase")
 			{
@@ -396,6 +397,11 @@ Class DIUnlockHandler : EventHandler
 		{
 			let melon = cvar.getcvar("di_unlock_item_melon");
 			if ((killnum >= 100) && (melon.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_melon");}
+		}
+		else if (killtracker == cvar.getcvar("di_onioncount"))
+		{
+			let onion = cvar.getcvar("di_unlock_item_onion");
+			if ((killnum >= 100) && (onion.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_onion");}
 		}
 		else if (killtracker == cvar.getcvar("di_hammercount"))
 		{

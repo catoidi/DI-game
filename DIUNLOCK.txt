@@ -55,6 +55,7 @@ di_unlock_item_partyshotty PartyShotty 1 di_sidequests 2;
 di_unlock_item_popcorngun PopcornGun 1 di_sidequests 2;
 di_unlock_item_questbook DI_QuestBook 3 di_sidequests 2;
 di_unlock_item_melon DI_Melon 3 di_meloncount 2;
+di_unlock_item_minionion DI_MiniOnion 2 di_onioncount 2;
 di_unlock_item_toaster DI_Toaster 2 di_hammercount 2;
 di_unlock_item_tomato DI_Tomato 3  2;
 di_unlock_item_trailblazer DI_Trailblazer 2  2;

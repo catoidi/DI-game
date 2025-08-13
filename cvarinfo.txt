@@ -125,6 +125,8 @@ server cheat bool di_unlock_item_partyshotty2 = false; //not used ingame.
 server cheat bool di_unlock_item_tomato = false; //defeat the big melon boss.
 server cheat bool di_unlock_item_trailblazer = false; //max out level 2's shop.
 server cheat bool di_unlock_item_questbook = false; //25 side quests in level 2.
+server cheat int di_onioncount = 0;
+server cheat bool di_unlock_item_minionion = false; //kill 100 onions.
 //weapon mastery unlocks
 server cheat bool di_unlock_item_raspberry = false; //star pistol mastery.
 server cheat bool di_unlock_item_compactgunpowder = false; //green shotgun.

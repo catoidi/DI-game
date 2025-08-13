@@ -592,6 +592,10 @@ SHOPITEM_DI_MODIFIEDSTOMACH = "Modified Stomach";
 SHOPDESC_DI_MODIFIEDSTOMACH = "+20% Max HP. \caReduces Healing Power\nand Regeneration Speed by 5%.\n\clScales with borrowed health.";
 SHOPDESC2_DI_MODIFIEDSTOMACH = "Heals 20% of your HP upon pickup. Item stacks increase both the health buff and the healing debuffs. Note: Max HP buffs will also retroactively scale all borrowed HP from debts.";
 SHOPTYPE_DI_MODIFIEDSTOMACH = "\cd[Passive] \cc[Common] \cl[Max: 10]";
+SHOPITEM_DI_MINIONION = "Mini Onion";
+SHOPDESC_DI_MINIONION = "Summons a mini Onion to assist you in combat.";
+SHOPDESC2_DI_MINIONION = "The onion will hover nearby you and fire a ring of projectiles when it detects enemies within sight. The damage of the projectiles starts at 2, and scales directly with item stacks. The onion will phase through enemies and walls, which can be used to maximize damage upon a single target if positioned correctly.";
+SHOPTYPE_DI_MINIONION = "\cd[Passive] \cc[Common] \cl[Max: 10]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
