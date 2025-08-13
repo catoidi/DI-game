@@ -1,0 +1,32 @@
+//zscript_DI/items/armors/combohat.zsc
+
+Class DI_ComboHat : DI_Armor
+{
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "Combo Hat equipped! (+120 Durability. Grants +10% Protection multiplied by your current combo.)";
+		Inventory.Icon "ARMOB0";
+		DI_Armor.Protection 0.10;
+		DI_Armor.Durability 1200;
+		DI_Armor.MaxDurability 1200;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen()) 
+		{
+			protection = 0.1 * plr.combonum;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO B -1;
+			Stop;
+	}
+}
