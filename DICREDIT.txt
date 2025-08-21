@@ -53,9 +53,9 @@ Page 4;
 	Subtitle ;
 	Credit , Glace, Muffins;
 	Credit , Veldt, Meowsers;
-	Credit , TheNancho, Baehemoth;
-	Credit , TheatreHeathen20, mr.casual;
-	Credit , Nuts, Merci;
+	Credit , Merci, TheNancho;
+	Credit , Baehemoth, TheatreHeathen20;
+	Credit , mr.casual, Nuts;
 	Credit , Gabriel, Tayette;
 	Image creditimage1.png, 0, 0, 960;
 }
