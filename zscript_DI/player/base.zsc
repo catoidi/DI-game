@@ -316,11 +316,30 @@ Class DI_PlayerBase : PlayerPawn abstract
 		EventHandler.SendInterfaceEvent(plrnum, uncvar);
 	}
 	
-	clearscope virtual bool CanFreshKill(string freshweapon = "")
+	clearscope virtual int CalculateKillBonus(DI_Weapon curwpn, bool notweapon = false)
 	{
-		if (!player.ReadyWeapon) {return false;}
-		if (freshweapon == "") {freshweapon = player.ReadyWeapon.GetClassName();}
-		if ((LastWeaponKill != freshweapon) && (LastKillTimer < 1)) {return true;}
+		int freshnum = 1;
+		int freshcharge = 1;
+		int islastweapon = 1;
+	
+		if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
+		if (notweapon == true) {freshnum = 0;}
+		
+		freshcharge += curwpn.wpn_freshcharge;
+		
+		if (curwpn.GetClassName() == LastWeaponKill) {islastweapon = 2;}
+		
+		return ((combonum * 10) + (freshnum * 3) * islastweapon) + (freshcharge * 15);
+	}
+	
+	clearscope virtual bool CanFreshKill(DI_Weapon curwpn = null, bool notweapon = false)
+	{
+		if (!player.ReadyWeapon || !wpn) {return false;}
+		if (!curwpn) {curwpn = wpn;}
+		
+		int killbonus = CalculateKillBonus(curwpn, notweapon);
+		
+		if ((LastWeaponKill != curwpn.GetClassName()) && (LastKillTimer <= killbonus)) {return true;}
 		else if (JustKilled == true) {return true;}
 		else {return false;}
 	}
@@ -356,9 +375,9 @@ Class DI_PlayerBase : PlayerPawn abstract
 	{
 		++killcounter;
 		
-		int freshnum = 1;
-		int freshcharge = 1;
-		int islastweapon = 1;
+		//int freshnum = 1;
+		//int freshcharge = 1;
+		//int islastweapon = 1;
 		
 		DI_Weapon curwpn;
 		if (player.ReadyWeapon)
@@ -374,21 +393,19 @@ Class DI_PlayerBase : PlayerPawn abstract
 				curwpn = wpn;
 			}
 			
-			if (curwpn.wpn_freshbonus) {freshnum = curwpn.wpn_freshbonus;}
-			if (notweapon == true) {freshnum = 0;}
-			else {++killtic;}
+			if (!curwpn.wpn_freshbonus && !notweapon) {++killtic;}
 			
-			freshcharge += curwpn.wpn_freshcharge;
+			//freshcharge += curwpn.wpn_freshcharge;
 			
-			if (CurrentWeaponKill == LastWeaponKill) {islastweapon = 2;}
+			//if (CurrentWeaponKill == LastWeaponKill) {islastweapon = 2;}
 		}
 		
-		int killbonus = ((combonum * 10) + (freshnum * 3) * islastweapon) + (freshcharge * 15);
+		//int killbonus = ((combonum * 10) + (freshnum * 3) * islastweapon) + (freshcharge * 15);
 			
-		LastKillTimer -= killbonus;
-		if (LastKillTimer < 1) {LastKillTimer = 0;}
+		//LastKillTimer -= killbonus;
+		//if (LastKillTimer < 1) {LastKillTimer = 0;}
 
-		if (curwpn && CanFreshKill(CurrentWeaponKill) && !notweapon) 
+		if (curwpn && CanFreshKill(curwpn, notweapon) && !notweapon) 
 		{
 			IsFreshKill(curwpn);
 			mon.wasfreshkilled = true;
