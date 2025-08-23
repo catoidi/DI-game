@@ -142,6 +142,7 @@ version "4.14"
 #include "zscript_DI/items/modifiers/doubletrouble.zsc"
 #include "zscript_DI/items/modifiers/debilitated.zsc"
 #include "zscript_DI/items/modifiers/weaponized.zsc"
+#include "zscript_DI/items/modifiers/swagremover.zsc"
 //passive items
 #include "zscript_DI/items/passives/9dollarbill.zsc"
 #include "zscript_DI/items/passives/bigbullets.zsc"
