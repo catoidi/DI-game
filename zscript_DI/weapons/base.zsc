@@ -150,6 +150,20 @@ Class DI_Weapon : Weapon abstract
 		if (plr) {--plr.weaponnum;}
 	}
 	
+	override state GetDownState()
+	{
+		for (int i = 0; i < plr.knownpassives.Size(); ++i)
+		{
+			DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+			if (curinv)
+			{
+				curinv.SwappedWeapons();
+			}
+		}
+		
+		return Super.GetDownState();
+	}
+	
 	override void tick(void)
 	{
 		super.tick();

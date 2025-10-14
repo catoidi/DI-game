@@ -130,6 +130,9 @@ class DIPassiveInventory : Inventory
 	//Ran once upon the player dying, to calculate Final Score with.
 	clearscope virtual double MultiplyFinalScore() {return 1.0;}
 	
+	//Called by the current weapon instantly the moment a new weapon is selected, meaning that this function is called before the new weapon is ready. Can be useful for functions that need to clear weapon-specific data before switching to new weapons.
+	virtual void SwappedWeapons() {}
+	
 	//Allows any passive item to get a random Side Quest Objective and Debuff, without calling the rest of the Side Quest code in the process.
 	virtual string, string GetSideQuest()
 	{

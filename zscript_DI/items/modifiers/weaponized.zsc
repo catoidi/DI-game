@@ -210,6 +210,11 @@ Class DI_Weaponized : DIPassiveInventory
 		DoWeaponEffects();
 	}
 	
+	override void SwappedWeapons()
+	{
+		ResetWeaponEffects();
+	}
+	
 	virtual void NewWeapon(string newwpn, string buff, string nerf)
 	{
 		int oldpos = wpns.Find(newwpn);
