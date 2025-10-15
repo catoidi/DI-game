@@ -410,6 +410,10 @@ Class DI_PlayerBase : PlayerPawn abstract
 			IsFreshKill(curwpn);
 			mon.wasfreshkilled = true;
 		}
+		else
+		{
+			LastKillTimer -= CalculateKillBonus(curwpn, notweapon);
+		}
 	}
 	
 	virtual void BoxAmmoChecker(void)
