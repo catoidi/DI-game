@@ -393,7 +393,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 				curwpn = wpn;
 			}
 			
-			if (!curwpn.wpn_freshbonus && !notweapon) {++killtic;}
+			if (!notweapon) {++killtic;}
 			
 			//freshcharge += curwpn.wpn_freshcharge;
 			
