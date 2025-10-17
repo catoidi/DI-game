@@ -414,8 +414,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				let playerfinder = string.format("%s", currentline[0].MakeLower());
 				if ((findplayer != "*") && (currentline[0] != findplayer)) {continue;}
 				if ((findlevel != "*") && (levelfinder != findlevel)) {continue;}
-				if (levelpool.Find(levelfinder) == levelpool.Size()) {console.printf("invalid level %s found, skipping score.", levelfinder); continue;}
-				if (playerpool.Find(playerfinder) == playerpool.Size()) {console.printf("invalid player %s found, skipping score.", playerfinder); continue;}
+				if (levelpool.Find(levelfinder) == levelpool.Size()) {continue;}
+				if (playerpool.Find(playerfinder) == playerpool.Size()) {continue;}
 				
 				if (findlevel == "*") {combinescore = true;}
 				int lsize = currentline[2].Length();
