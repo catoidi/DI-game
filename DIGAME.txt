@@ -33,6 +33,8 @@ Add, Level, di01;
 Add, Level, di02, di_unlock_lvl_di02;
 >>Castle Level.
 Add, Level, di03, di_unlock_lvl_di03;
+>>Sectors.
+Add, Level, bonus01, di_unlock_lvl_bonus01;
 >>
 >>[MODIFIERS]
 >>Double Trouble.

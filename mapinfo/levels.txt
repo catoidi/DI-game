@@ -36,7 +36,12 @@ Episode di02
 
 Episode di03
 {
+	Name = "castlephobia"
+}
 
+Episode bonus01
+{
+	Name = "Nine Sectors"
 }
 
 //Levels:
@@ -62,7 +67,7 @@ Map "di03" "castlephobia"
 	Sky1 = "textures/sky1.png"
 }
 
-Map "bonus01" "My first death"
+Map "bonus01" "Nine Sectors"
 {
-	Sky1 = "textures/sky1.png"
+	Sky1 = "textures/boxsky1.png"
 }

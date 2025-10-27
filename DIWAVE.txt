@@ -493,3 +493,37 @@ Level DI03;
 		Cap 4;
 	}
 }
+
+Level BONUS01;
+{
+	Wave 1;
+	{
+		Cap 8;
+		Rate 8;
+		Time 1;
+		Spawn Fred, 8;
+		Wait 4;
+		Spawn Fred2, 1;
+	}
+	
+	Wave 2;
+	{
+		Cap 10;
+		Rate 2;
+		Time 70;
+		Spawn Fred, 10;
+		Wait 1;
+		Spawn Fred, 2;
+		Spawn Fred2, 1;
+		Wait 4;
+		Spawn Fred, 2;
+		Spawn Fred2, 1;
+		Wait 7;
+		Spawn Fred, 2;
+		Spawn Fred2, 2;
+	}
+	
+	Endless Restart;
+	{
+	}
+}

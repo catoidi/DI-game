@@ -19,6 +19,7 @@ DIMENU_SELECT_DI00 = "Tutorial";
 DIMENU_SELECT_DI01 = "\cfLVL 1: \cbur 1st death";
 DIMENU_SELECT_DI02 = "\cfLVL 2: \cbthe afterparty";
 DIMENU_SELECT_DI03 = "\cfLVL 3: \cbcastlephobia";
+DIMENU_SELECT_BONUS01 = "\cy???: \cbnine sectors";
 DIMENU_SELECT_DI_PLAYERFREDRICK = "Fredrick";
 DIMENU_SELECT_DI_PLAYERBOX = "Box Partyer";
 DIMENU_SELECT_DI_PLAYERBURGER = "Cheeseburger";
@@ -28,6 +29,7 @@ DIMENU_LOCKED_DI_PLAYERBURGER = "\ccunlocked by consuming 5 burgers in 1 run.";
 DIMENU_LOCKED_DI_PLAYERHAM = "\ccunlocked by completing 5 Side Quests in a row in Level 2.";
 DIMENU_LOCKED_LEVEL_DI02 = "\ccunlocked by completing Wave 10 on Level 1.";
 DIMENU_LOCKED_LEVEL_DI03 = "\ccthis level will be added in a future update.";
+DIMENU_LOCKED_LEVEL_BONUS01 = "\ccunlocked by unlocking 15 or more \cfShop Items.";
 
 //Modifiers
 DI_MOD_DOUBLETROUBLE = "Double Trouble";
