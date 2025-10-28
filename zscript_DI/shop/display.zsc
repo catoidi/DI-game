@@ -129,6 +129,13 @@ Class DIShop_Number : DIShop_Display
 	{
 		DIShop_Display.DisplayOffset 60;
 	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		if (numbersprite == "") {numbersprite = "TNT1";}
+	}
 
 	override void DisplayTick()
 	{
