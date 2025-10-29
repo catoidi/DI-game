@@ -369,7 +369,8 @@ Class DIShop : DIShop_Base
 			{
 				//might've been causing VM aborts, idk...
 				if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
-				else {shop_currentsprite = currentitem[2];}
+				else if (currentitem.Size() >= 3) {shop_currentsprite = currentitem[2];}
+				else {ThrowAbortException("\caError loading shop items: \cl%s \caattempted to read invalid item \cl'%s'.", GetClassName(), itempool[chosenitem]);}
 			}
 			else
 			{
