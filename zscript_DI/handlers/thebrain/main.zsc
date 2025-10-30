@@ -56,4 +56,6 @@ class DIHandler : EventHandler
 	int floortic;
 	
 	DI_WaveSpawnTimer wavetimeractor;
+	
+	bool dontremovecoins;
 }

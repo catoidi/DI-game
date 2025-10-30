@@ -312,7 +312,16 @@ extend class DIHandler
 		}
 		else if (e.Name == "DI_RemoveAllCoins")
 		{
-			Thing_Remove(7499);
+			if (!dontremovecoins) 
+			{
+				//console.printf("removing coins :3");
+				Thing_Remove(7499);
+			}
+		}
+		else if (e.Name == "DI_ToggleCoinRemoval")
+		{
+			//console.printf("coin removal has been toggled.");
+			dontremovecoins = !dontremovecoins;
 		}
 	}
 }
