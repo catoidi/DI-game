@@ -129,7 +129,8 @@ Class DIShop_Base : SwitchableDecoration abstract
 	
 	clearscope virtual double GetDebtMult(DI_PlayerBase diplr)
 	{
-		return diplr.wpn.shop_debtmult;
+		if (diplr && diplr.wpn) {return diplr.wpn.shop_debtmult;}
+		else return 1.0;
 	}
 	
 	clearscope virtual int GetDebt(PlayerPawn buyer, int buyprice = -999999)
