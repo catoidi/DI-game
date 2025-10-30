@@ -1,0 +1,229 @@
+Level DI02;
+{
+	Wave 1;
+	{
+		Cap 3;
+		Rate 3;
+		Time 1;
+		Spawn FruitPuncher, 3;
+		Wait 1;
+		Cap 6;
+		Time 70;
+		Spawn FruitPuncher, 5;
+	}
+	Wave 2;
+	{
+		Cap 6;
+		Rate 5;
+		Time 1;
+		Spawn FruitPuncher, 4;
+		Wait 3;
+		Spawn FruitPuncher, 4;
+		Wait 3;
+		Spawn FruitPuncher, 4;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
+		Wait 3;
+		Spawn FruitPuncher, 2;
+		Wait 2;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
+	}
+	Wave 3;
+	{
+		Cap 8;
+		Rate 2;
+		Time 45;
+		Spawn FruitPuncher, 20;
+		Wait 6;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 6;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+	}
+	Wave 4;
+	{
+		Cap 3;
+		Rate 9;
+		Time 1;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Wait 3;
+		Cap 5;
+		Spawn FruitPuncher, 5;
+		Wait 5;
+		Cap 7;
+		Spawn FruitPuncher, 6;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		Wait 7;
+		Cap 9;
+		Spawn FruitPuncher, 8;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		Wait 7;
+		Cap 7;
+		Spawn FruitPuncher, 4;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+	}
+	Wave 5;
+	{
+		Cap 11;
+		Rate 2;
+		Time 70;
+		Spawn FruitPuncher, 11;
+		Wait 4;
+		Spawn FruitPuncher, 3;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+		Wait 4;
+		Spawn FruitPuncher, 2;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Wait 4;
+		Spawn FruitPuncher, 3;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+		Wait 8;
+		Spawn Lemon, 3;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+	}
+	Wave 6;
+	{
+		Cap 3;
+		Rate 3;
+		Time 1;
+		Spawn Pepper, 3;
+		Wait 3;
+		Cap 6;
+		Time 70;
+		Spawn FruitPuncher, 10;
+		Wait 5;
+		Cap 9;
+		Spawn FruitPuncher, 7;
+		Spawn Lemon, 2;
+		Spawn Pepper, 1;
+		Wait 5;
+		Cap 12;
+		Spawn FruitPuncher, 5;
+		Spawn Lemon, 3;
+		Spawn Pepper, 2;
+		Wait 10;
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+	}
+	Wave 7;
+	{
+		Cap 6;
+		Rate 1;
+		Time 35;
+		Spawn Pepper, 6;
+		Wait 2;
+		Cap 12;
+		Spawn FruitPuncher, 12;
+		Spawn Lemon, 3;
+		Wait 6;
+		Spawn FruitPuncher, 3;
+		Spawn Lemon, 4;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 8;
+		Cap 14;
+		Spawn Pepper, 2;
+		Spawn FruitPuncher, 2;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+	}
+	Wave 8;
+	{
+		Cap 10;
+		Rate 10;
+		Time 35;
+		Spawn Pepper, 2, DISpawnerSpot_Big;
+		Spawn FruitPuncher, 15;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 5;
+		Rate 1;
+		Time 70;
+		Cap 12;
+		Spawn THEHAMMER, 4, DISpawnerSpot_Big;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
+		Wait 4;
+		Cap 14;
+		Spawn Lemon, 4;
+		Spawn Pepper, 5, DISpawnerSpot_Big;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 6;
+		Rate 2;
+		Cap 16;
+		Spawn THEHAMMER, 3, DISpawnerSpot_Big;
+		Spawn Pizzaulter, 4, DISpawnerSpot_Flying;
+	}
+	Wave 9;
+	{
+		Cap 20;
+		Rate 1;
+		Time 30;
+		Spawn FruitPuncher, 30;
+		Wait 10;
+		Spawn Lemon, 5;
+		Wait 5;
+		Spawn RedOnion, 5, DISpawnerSpot_Turret;
+		Wait 10;
+		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
+		Wait 15;
+		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
+		Spawn OnionTurret, 3, DISpawnerSpot_Turret;
+	}
+	Wave 10;
+	{
+		Cap 20;
+		Rate 1;
+		Time 35;
+		Spawn FruitPuncher, 25;
+		Spawn Pepper, 10, DISpawnerSpot_Big;
+		Wait 15;
+		Spawn RedOnion, 1, DISpawnerSpot_Turret;
+		Spawn OnionTurret, 2, DISpawnerSpot_Turret;
+		Wait 15;
+		Spawn Lemon, 5;
+		Spawn OnionTurret, 2, DISpawnerSpot_Turret;
+		Wait 10;
+		Spawn Pizzaulter, 3, DISpawnerSpot_Flying;
+		Spawn OnionTurret, 2, DISpawnerSpot_Turret;
+		Wait 10;
+		Spawn Pizzaulter, 3, DISpawnerSpot_Flying;
+		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
+	}
+	Wave 11;
+	{
+		Cap 100;
+		Rate 1;
+		Time 20;
+		Spawn FruitPuncher, 100;
+	}
+	Wave 12;
+	{
+		Cap 25;
+		Rate 5;
+		Time 15;
+		Spawn THEHAMMER, 2, DISpawnerSpot_Big;
+		Spawn Pepper, 3;
+		Spawn RedOnion, 2, DISpawnerSpot_Turret;
+		Wait 3;
+		Spawn FruitPuncher, 10;
+		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
+		Wait 15;
+		Spawn RedOnion, 3, DISpawnerSpot_Turret;
+		Spawn Pizzaulter, 5, DISpawnerSpot_Flying;
+		Wait 15;
+		Spawn THEHAMMER, 5, DISpawnerSpot_Big;
+		Spawn Pepper, 5;
+		Spawn FruitPuncher, 15;
+		Spawn Lemon, 5;
+		Spawn Pizzaulter, 10, DISpawnerSpot_Flying;
+		Spawn OnionTurret, 5, DISpawnerSpot_Turret;
+		Wait 40;
+		Spawn PizzaSlicer, 25, DISpawnerSpot_Flying;
+	}
+	Endless Restart;
+	{
+		Spawn THEHAMMER, 1, DISpawnerSpot_Big;
+		MultCap 1;
+		MultRate 1;
+		MultSpawn 1;
+		MultHealth 1;
+		MultDamage 1;
+		MultSpeed 0.2;
+		MultPrice 1;
+		EndScript endless_dejavu, 0, 0, 0, 0;
+	}
+}

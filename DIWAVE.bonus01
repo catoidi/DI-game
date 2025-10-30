@@ -1,0 +1,47 @@
+Level BONUS01;
+{
+	Wave 1;
+	{
+		Cap 8;
+		Rate 8;
+		Time 1;
+		Spawn NME_Tier1, 8;
+		Wait 4;
+		Spawn NME_Tier2, 1;
+	}
+	
+	Wave 2;
+	{
+		Cap 9;
+		Rate 2;
+		Time 70;
+		Spawn NME_Tier1, 9;
+		Wait 1;
+		Spawn NME_Tier1, 2;
+		Spawn NME_Tier2, 1;
+		Wait 4;
+		Spawn NME_Tier1, 2;
+		Spawn NME_Tier2, 1;
+		Wait 4;
+		Spawn NME_Tier1, 1;
+		Spawn NME_Tier2, 2;
+	}
+	
+	Wave 3;
+	{
+		Cap 12;
+		Rate 3;
+		Time 80;
+		Spawn NME_Tier1, 6;
+		Spawn NME_Tier2, 6;
+		Wait 3;
+		Spawn NME_Tier1, 5;
+		Wait 9;
+		Spawn NME_Tier1, 7;
+		Spawn NME_Tier2, 3;
+	}
+	
+	Endless Restart;
+	{
+	}
+}
