@@ -1,0 +1,136 @@
+//zscript_DI/effects/nme.zsc
+
+class DI_NME : Actor
+{
+	DIHandler handler;
+	Actor newnme;
+	
+	int nmetier;
+	string nmetype;
+	
+	bool nmespawned;
+	
+	property NMETier : nmetier;
+	property NMEType : nmetype;
+	
+	Default
+	{
+		Self.NMETier -1;
+		Self.NMEType "Default";
+		+NOBLOCKMAP;
+		+NOSECTOR;
+		+NOGRAVITY;
+		+THRUACTORS;
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (!nmespawned) {SpawnNME();}
+		else {Destroy();}
+	}
+	
+	virtual void SpawnNME()
+	{
+		if (!handler) {Spawn('Unknown', pos, NO_REPLACE);}	
+		else 
+		{
+			newnme = Spawn(handler.ChooseNME(nmetier, nmetype), pos, NO_REPLACE);
+			
+			//following code is copy/pasted from gzdoom.pk3/zscript/actors/shared/randomspawner.zsc.
+			
+			// copy everything relevant
+			newnme.SpawnAngle = SpawnAngle;
+			newnme.Angle		= Angle;
+			newnme.Pitch		= Pitch;
+			newnme.Roll		= Roll;
+			newnme.SpawnPoint = SpawnPoint;
+			newnme.special    = special;
+			newnme.args[0]    = args[0];
+			newnme.args[1]    = args[1];
+			newnme.args[2]    = args[2];
+			newnme.args[3]    = args[3];
+			newnme.args[4]    = args[4];
+			newnme.special1   = special1;
+			newnme.special2   = special2;
+			newnme.SpawnFlags = SpawnFlags & ~MTF_SECRET;	// MTF_SECRET needs special treatment to avoid incrementing the secret counter twice. It had already been processed for the spawner itself.
+			newnme.HandleSpawnFlags();
+			newnme.SpawnFlags = SpawnFlags;
+			newnme.bCountSecret = SpawnFlags & MTF_SECRET;	// "Transfer" count secret flag to spawned actor
+			newnme.ChangeTid(tid);
+			newnme.Vel	= Vel;
+			newnme.master = master;	// For things such as DamageMaster/DamageChildren, transfer mastery.
+			newnme.target = target;
+			newnme.tracer = tracer;
+			newnme.CopyFriendliness(self, false);
+			// This handles things such as projectiles with the MF4_SPECTRAL flag that have
+			// a health set to -2 after spawning, for internal reasons.
+			if (health != SpawnHealth()) newnme.health = health;
+			if (!bDropped) newnme.bDropped = false;
+			// Handle special altitude flags
+			if (newnme.bSpawnCeiling)
+			{
+				newnme.SetZ(newnme.ceilingz - newnme.Height - SpawnPoint.Z);
+			}
+			else if (newnme.bSpawnFloat) 
+			{
+				double space = newnme.ceilingz - newnme.Height - newnme.floorz;
+				if (space > 48)
+				{
+					space -= 40;
+					newnme.SetZ((space * random[randomspawn]()) / 256. + newnme.floorz + 40);
+				}
+				newnme.AddZ(SpawnPoint.Z);
+			}
+			if (newnme.bMissile && !(newnme is 'RandomSpawner'))
+				newnme.CheckMissileSpawn(0);
+			// Bouncecount is used to count how many recursions we're in.
+			if (newnme is 'RandomSpawner')
+				newnme.bouncecount = ++bouncecount;
+		}
+		nmespawned = true;
+	}	
+}
+
+Class NME_Tier1 : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 1;
+	}
+}
+
+Class NME_Tier2 : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 2;
+	}
+}
+
+Class NME_Tier3 : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 3;
+	}
+}
+
+Class NME_Tier3_Large : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 3;
+		DI_NME.NMEType "Large";
+	}
+}
+
+Class NME_Tier3_Turret : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 3;
+		DI_NME.NMEType "Turret";
+	}
+}
