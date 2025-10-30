@@ -101,6 +101,9 @@ SHOPTYPE_REMOVEDEBUFF = "[Instant Use]";
 SHOPITEM_BUYNEWSECTION = "\ctLevel Reroll";
 SHOPDESC_BUYNEWSECTION = "Replaces the next wave's arena with a new one.\n\caAvailable arenas depend on current wave.";
 SHOPTYPE_BUYNEWSECTION = "[Instant Use]";
+SHOPITEM_OPENNEWSECTOR = "\ctOpen New Sector";
+SHOPDESC_OPENNEWSECTOR = "Expands the arena, granting access to more\nroom to dodge enemies and new shops.";
+SHOPTYPE_OPENNEWSECTOR = "[Instant Use]";
 
 //Starting Weapons
 SHOPITEM_STARPISTOL = "Star Pistol";
