@@ -5,9 +5,10 @@ Level BONUS01;
 		Cap 8;
 		Rate 8;
 		Time 1;
-		Spawn NME_Tier1, 8;
-		Wait 4;
-		Spawn NME_Tier2, 1;
+		Spawn NME_Tier1_Melee, 6;
+		Spawn NME_Tier1, 2;
+		Wait 8;
+		Spawn NME_Tier1, 1;
 	}
 	
 	Wave 2;
@@ -15,30 +16,44 @@ Level BONUS01;
 		Cap 9;
 		Rate 2;
 		Time 70;
-		Spawn NME_Tier1, 9;
+		Spawn NME_Tier1_Melee, 9;
 		Wait 1;
-		Spawn NME_Tier1, 2;
-		Spawn NME_Tier2, 1;
+		Spawn NME_Tier1, 3;
 		Wait 4;
 		Spawn NME_Tier1, 2;
-		Spawn NME_Tier2, 1;
+		Spawn NME_Tier2_Melee, 1;
 		Wait 4;
-		Spawn NME_Tier1, 1;
-		Spawn NME_Tier2, 2;
+		Spawn NME_Tier1_Melee, 1;
+		Spawn NME_Tier2_Melee, 2;
 	}
 	
 	Wave 3;
 	{
 		Cap 12;
 		Rate 3;
-		Time 80;
-		Spawn NME_Tier1, 6;
-		Spawn NME_Tier2, 6;
+		Time 90;
+		Spawn NME_Tier1_Melee, 6;
+		Spawn NME_Tier2_Melee, 6;
 		Wait 3;
 		Spawn NME_Tier1, 5;
 		Wait 9;
 		Spawn NME_Tier1, 7;
 		Spawn NME_Tier2, 3;
+	}
+	
+	Wave 4;
+	{
+		Cap 15;
+		Rate 4;
+		Time 110;
+		Spawn NME_Tier2, 4;
+		Spawn NME_Tier1_Melee, 8;
+		Wait 3;
+		Spawn NME_Tier1, 6;
+		Wait 9;
+		Spawn NME_Tier2_Melee, 9;
+		Wait 3;
+		Spawn NME_Tier2, 9;
 	}
 	
 	Endless Restart;
