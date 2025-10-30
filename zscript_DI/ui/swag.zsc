@@ -118,7 +118,7 @@ Class SwagHandler : EventHandler
 		{
 			if (msgrng == 0)
 			{
-				msgrng = random[die](0, 100);
+				msgrng = random[die](0, 200);
 			}
 			
 			if ((DeathTimer == 0) && (di_musicloaded == true))
@@ -525,7 +525,20 @@ Class SwagHandler : EventHandler
 			if (DeathTimer > 35)
 			{
 				string died = "DEATH IS INEVITABLE";
-				if (plr.Score < 0) {died = "DEBT IS INEVITABLE";}
+				if (plr.Score < 0) 
+				{
+					died = "DEBT IS INEVITABLE";
+					switch(msgrng)
+					{
+						case 1: died = "debt was inevitable";
+						case 2: died = "try going more in debt next time"; break;
+						case 3: died = "failed to repay debts"; break;
+						case 4: died = "should've bought less items"; break;
+						case 5: died = "life borrowed (permanently)"; break;
+						case 6: died = "you were used up"; break;
+						case 7: died = "pleasure doing business with you"; break;
+					}
+				}
 				else switch(msgrng)
 				{
 					case 1: died = "MEMENTO MORI"; break;
@@ -535,6 +548,23 @@ Class SwagHandler : EventHandler
 					case 5: died = "unlucky"; break;
 					case 6: died = "99% of players died here"; break;
 					case 7: died = "your life has expired"; break;
+					case 8: died = "welp that didn't work"; break;
+					case 9: died = "that's gotta hurt"; break;
+					case 10: died = "the future refused to change"; break;
+					case 11: died = "have you tried not doing that"; break;
+					case 12: died = "bones removed"; break;
+					case 13: died = "just 1 more run"; break;
+					case 14: died = "cleanup on aisle 3"; break;
+					case 15: died = "press E to not die"; break;
+					case 16: died = "your death has arrived"; break;
+					case 17: died = "should've bought more items"; break;
+					case 18: died = "try spending more money"; break;
+					case 19: died = "blood removed"; break;
+					case 20: died = "organs removed"; break;
+					case 21: died = "error: soul not found"; break;
+					case 22: died = "MORTIS"; break;
+					case 23: died = ":("; break;
+					case 24: died = "death was inevitable"; break;
 				}
 				int scaley = (bigfont.GetHeight() * (CleanYFac * 1.3)) / 2;
 				Screen.DrawText(bigfont, Font.CR_BRICK,
