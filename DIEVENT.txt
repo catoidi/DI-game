@@ -36,3 +36,15 @@ DI02, Event, dievent_riskreward, 60, 1;
 DI02, Event, dievent_speedrun, 60, 1;
 DI02, Event, dievent_slowhealing, 120, 3;
 DI02, Event, dievent_fatigue, 50, 3;
+>>BONUS LEVEL ONE EVENTS:
+BONUS01, Event, dievent_bulletdeath, 150, 1;
+BONUS01, Event, dievent_iamrisen, 150, 1;
+BONUS01, Event, dievent_brokenglasses, 75, 1;
+BONUS01, Event, dievent_oldmagazine, 150, 1;
+BONUS01, Event, dievent_hyperfocusing, 75, 1;
+BONUS01, Event, dievent_cursed, 75, 1;
+BONUS01, Event, dievent_payday, 150, 1;
+BONUS01, Event, dievent_riskreward, 75, 1;
+BONUS01, Event, dievent_speedrun, 75, 1;
+BONUS01, Event, dievent_slowhealing, 150, 3;
+BONUS01, Event, dievent_fatigue, 75, 3;
