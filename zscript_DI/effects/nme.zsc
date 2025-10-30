@@ -101,6 +101,15 @@ Class NME_Tier1 : DI_NME
 	}
 }
 
+Class NME_Tier1_Melee : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 1;
+		DI_NME.NMEType "Melee";
+	}
+}
+
 Class NME_Tier2 : DI_NME
 {
 	Default
@@ -109,11 +118,29 @@ Class NME_Tier2 : DI_NME
 	}
 }
 
+Class NME_Tier2_Melee : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 2;
+		DI_NME.NMEType "Melee";
+	}
+}
+
 Class NME_Tier3 : DI_NME
 {
 	Default
 	{
 		DI_NME.NMETier 3;
+	}
+}
+
+Class NME_Tier3_Melee : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 3;
+		DI_NME.NMEType "Melee";
 	}
 }
 
