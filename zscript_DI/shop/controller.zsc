@@ -95,8 +95,9 @@ Class DIShopController : DIShop_Base
 			
 			int buyprice = GetShopPrice();
 			plr = PlayerPawn(target);
+			bool shopblocked = (plr.CountInv("DI_ShopBlocker") >= 1);
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
-			if ((canafford == true) && (canshop == true) && (CanDoDebt(plr) == true) && (CanPurchase(plr) == true))
+			if ((canafford == true) && (canshop == true) && (shopblocked == false) && (CanDoDebt(plr) == true) && (CanPurchase(plr) == true))
 			{
 				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
@@ -109,6 +110,7 @@ Class DIShopController : DIShop_Base
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this while in debt.";}
 				else if (CanDoDebt(plr) == false) {failmsg = "\cryou don't have enough HP to buy this.";}
 				else if (CanPurchase(plr) == false) {failmsg = CantPurchase();}
+				else if (shopblocked) {failmsg = "\cryour ability to purchase items has been temporarily disabled.";}
 				else {failmsg = "\cra mysterious force prevents you from buying this.";}
 				
 				console.printf("%s", failmsg);

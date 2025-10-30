@@ -995,3 +995,5 @@ Class DI_TokenComboTimer : DI_Token //the player's current combo timer.
 }
 
 Class DI_TokenComboFreeze : DI_Token {}
+
+Class DI_ShopBlocker : DI_Token {}

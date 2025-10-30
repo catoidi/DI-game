@@ -424,6 +424,7 @@ Class DIShop : DIShop_Base
 			
 			bool hasroom = true;
 			bool canafford = false;
+			bool shopblocked = false;
 			itemmax = 0;
 		
 			int buyprice = GetShopPrice();
@@ -442,7 +443,8 @@ Class DIShop : DIShop_Base
 				if (plr.CountInv(itemactor.getclassname()) >= itemmax) {hasroom = false;}
 			}
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
-			if ((canafford == true) && (canshop == true) && (hasroom == true) && (CanDoDebt(plr) == true))
+			shopblocked = (plr.CountInv("DI_ShopBlocker") >= 1);
+			if ((canafford == true) && (canshop == true) && (hasroom == true) && (shopblocked == false) && (CanDoDebt(plr) == true))
 			{
 				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
@@ -464,6 +466,7 @@ Class DIShop : DIShop_Base
 				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this item.";}
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this item while in debt.";}
 				else if (CanDoDebt(plr) == false) {failmsg = "\cryou don't have enough HP to buy this.";}
+				else if (shopblocked) {failmsg = "\cryour ability to purchase items has been temporarily disabled.";}
 				else {failmsg = "\cra mysterious force prevents you from buying this item.";}
 				
 				console.printf("%s", failmsg);
