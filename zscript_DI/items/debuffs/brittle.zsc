@@ -1,0 +1,17 @@
+//zscript_DI/items/debuffs/brittle.zsc
+
+Class DI_QuestDebuff_Brittle : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Brittle)";
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		double itemnum = 0.2 * amount;
+		double newheal = 1.00001 - (itemnum / (0.8 + itemnum));
+		return newheal;
+	}
+}

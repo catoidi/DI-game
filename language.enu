@@ -345,3 +345,5 @@ dievent_slowhealing = "\cgWorse Healing";
 dievent_slowhealing_desc = "\caRegen Speed is 50% slower.\nHealing Items heal 50% less.";
 dievent_fatigue = "\cgFatigue";
 dievent_fatigue_desc = "\caEach Fresh Kill grants -1.5% Weapon Speed.";
+dievent_incremental = "\cgIncremental Injuries";
+dievent_incremental_desc = "\caEach point of DMG reduces\nyour Max HP by -0.2%, capped at -75%.";
