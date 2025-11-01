@@ -130,7 +130,7 @@ extend class DIHandler
 					if (e.Thing.target is "DI_PlayerBase")
 					{
 						DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
-						BoxDrops(e, plr, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
+						BoxDrops(dimon, plr, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
 						BonusArmorDrop(e, plr);
 						BonusAmmoGiver(e, plr); //used for DI_LeadRecycling.
 					}

@@ -82,15 +82,15 @@ extend class DIHandler
 		}
 	}
 	
-	virtual void BoxDrops(WorldEvent e, DI_PlayerBase plr, bool notweapon = false)
+	virtual void BoxDrops(DI_Monster dimon, DI_PlayerBase plr, bool notweapon = false)
 	{
 		if (notweapon == false)
 		{
-			if (plr.CanFreshKill())
+			if (dimon.wasfreshkilled)
 			{
 				if (plr.boxammonum > 0)
 				{
-					e.Thing.A_SpawnItemEX("BoxAmmo", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+					dimon.A_SpawnItemEX("BoxAmmo", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 				}
 			}
 			if (plr.CountInv("Glowstick") > 0)
@@ -102,12 +102,12 @@ extend class DIHandler
 					if (plr.health * 4 < plr.DIMaxHealth()) {++glowamount;}
 					for (int i = 0; i < glowamount; ++i)
 					{
-						e.Thing.A_SpawnItemEx("GlowstickHealthDrop", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+						dimon.A_SpawnItemEx("GlowstickHealthDrop", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 					}
 				}
-				if (plr.CanFreshKill() == true)
+				if (dimon.wasfreshkilled)
 				{
-					e.Thing.A_SpawnItemEx("GlowstickAmmoDrop", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+					dimon.A_SpawnItemEx("GlowstickAmmoDrop", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
 				}
 			}
 		}
