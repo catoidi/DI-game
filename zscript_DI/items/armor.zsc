@@ -62,6 +62,13 @@ Class DI_Armor : DIPassiveInventory abstract
 			}
 		}
 	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (canbreak && (durability <= 0)) {ArmorDestroyed();}
+	}
+	
 	virtual void ArmorDamaged(int damage) {}
 	virtual void ArmorDestroyed() {plr.TakeInventory(self.GetClassName(), 1);}
 	virtual void GiveArmor(int giveamount, float maxarmor = 1.0)

@@ -17,6 +17,8 @@ Class DI_PartyHat : DI_Armor
 	
 	override void DoEffect()
 	{
+		Super.DoEffect();
+	
 		if (plr && plr.inwave && !plr.IsFrozen() && (Level.Killed_Monsters < Level.Total_Monsters))
 		{
 			++timer;
