@@ -114,7 +114,7 @@ mixin class DI_FiendishMixin
 	
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) 
 	{
-		if ((source is "PlayerPawn") && (damage > 0)) {dofienddodge = true;}
+		if ((source is "PlayerPawn") && (damage > 0) && (mod != 'Lightning') && (mod != 'Melee') && (mod != 'FakeLightning')) {dofienddodge = true;}
 		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
 }
