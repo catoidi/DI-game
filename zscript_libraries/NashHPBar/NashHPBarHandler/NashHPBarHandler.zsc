@@ -320,7 +320,7 @@ class NashHPBarHandler : EventHandler
 				bool isPerma = false;
 				if (prevShop is "DIPermaShop") {isPerma = true;}
 				if (isPerma) {txt = String.Format("%s\cz[PERMANENT] ", txt);}
-				if (plr && prevShop.GetDebt(CPlayer.mo) > 0) 
+				if (plr && plr.wpn && prevShop.GetDebt(CPlayer.mo) > 0) 
 				{
 					txt = String.Format("%s\ca[-%.1f HP] ", txt, 0.1 * prevShop.GetDebt(CPlayer.mo) * plr.wpn.plr_maxhp);
 				}
