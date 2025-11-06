@@ -16,7 +16,7 @@ Class SwagHandler : EventHandler
 	ui bool canprogress;
 	ui int prevscore;
 	ui int finalscore; //prevent extra score from being calculated after death.
-	ui float exp1, exp2, exp3, lvl1, lvl2, lvlover, lvlmax, lvlguess;
+	ui float exp1, exp2, exp3, exp4, lvl1, lvl2, lvlover, lvlmax, lvlguess;
 	
 	//from newgamemenu
 	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
@@ -412,11 +412,11 @@ Class SwagHandler : EventHandler
 		int overlvl = overlevel.getint();
 		
 		int newexp = newscore;
-		int bonusexp = (newscore - prevscore) * 2; //give +200% exp for high score.
-		if (bonusexp > 0) {newexp += bonusexp;}
+		int bonusexp = (newscore - prevscore); //give +100% exp for high score.
 		
 		//insert DIUNLOCK cvar search here
 		newexp *= 1.0 + (0.01 * ((GetUnlockNum() * 2) + GetScoreBonus()));
+		if (bonusexp > 0) {newexp += bonusexp;}
 		
 		curexp += newexp;
 		int expmax = 2500 * (1 + curlvl + overlvl);
@@ -438,7 +438,8 @@ Class SwagHandler : EventHandler
 		
 		exp1 = curexp;
 		exp2 = expmax;
-		exp3 = newexp;
+		exp3 = newexp - bonusexp;
+		exp4 = bonusexp;
 		lvl1 = curlvl;
 		lvl2 = newlvl;
 		lvlover = overlvl;
@@ -713,7 +714,7 @@ Class SwagHandler : EventHandler
 					);
 					
 					float remainder = ((exp2 - exp1) / exp2) * (160.0 * CleanXFac);
-					float gained = ((exp2 - (exp1 - exp3)) / exp2) * (160.0 * CleanXFac);
+					float gained = ((exp2 - (exp1 - exp3 - exp4)) / exp2) * (160.0 * CleanXFac);
 					if (remainder > (160 * CleanXFac)) {remainder = 160 * CleanXFac;}
 					if (gained > (160 * CleanXFac)) {gained = 160 * CleanXFac;}
 					
@@ -742,6 +743,7 @@ Class SwagHandler : EventHandler
 					}
 					
 					string expstring = string.format("\cnExp: \cb%d\cn/\cb%d \cf(+%d)", exp1, exp2, exp3);
+					if (exp4 > 0) {expstring.AppendFormat(" \ct(+%d BONUS)", exp4);}
 					Screen.DrawText(smallfont, Font.CR_WHITE,
 						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(expstring) / 2) * CleanXFac),
 						starty + (12 * CleanYFac),
