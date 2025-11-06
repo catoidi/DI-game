@@ -32,7 +32,7 @@ Class DI_LongMagazine : DIPassiveInventory
 	{
 		if (!wpn || !plr) {return 0;}
 		if (!wpn.Ammo1 && !wpn.Ammo2) {return 0;}
-		else return amount * 0.25;
+		else return amount * 0.1;
 	}
 	
 	States
