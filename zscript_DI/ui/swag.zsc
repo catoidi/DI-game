@@ -417,6 +417,7 @@ Class SwagHandler : EventHandler
 		//insert DIUNLOCK cvar search here
 		newexp *= 1.0 + (0.01 * ((GetUnlockNum() * 2) + GetScoreBonus()));
 		if (bonusexp > 0) {newexp += bonusexp;}
+		else {bonusexp = 0;}
 		
 		curexp += newexp;
 		int expmax = 2500 * (1 + curlvl + overlvl);
