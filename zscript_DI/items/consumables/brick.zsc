@@ -89,7 +89,7 @@ Class DI_Brick_Projectile : DI_Actor
 			{
 				A_SpawnItemEX("SledgePuff", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 				string item = "DI_Brick";
-				if (random(0, 4) == 0) {item = "DI_Brick2";}
+				if (random(0, 11) == 0) {item = "DI_Brick2";}
 				A_SpawnItemEX(item, 0, 0, 4, random(-2, 2), random(-2, 2), random(2, 0));
 				
 				for (int i = 0; i < 3; ++i) {invoker.DI_BoxGib("BRIKC0", 16.0);}
