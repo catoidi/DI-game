@@ -6,7 +6,7 @@ Class DI_PiercingBullets : DIPassiveInventory
 	{
 		Tag "Armor-Piercing Bullets";
 		Inventory.Icon "POW2U0";
-		Inventory.PickupMessage "Armor-Piercing Bullets acquired! (Bullets gain +0.25 Piercing, but Base DMG is reduced by 1.)";
+		Inventory.PickupMessage "Armor-Piercing Bullets acquired! (Bullets gain +0.25 Piercing, but Base DMG is reduced by 0.5.)";
 		Inventory.MaxAmount 10;
 	}
 
@@ -19,7 +19,7 @@ Class DI_PiercingBullets : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return -amount * 10;
+		return -amount * 5;
 	}
 	
 	States
