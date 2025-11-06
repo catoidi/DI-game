@@ -186,6 +186,7 @@ DIPOPUP_di_unlock_item_sesameseeds = "Sesame Seeds";
 DIPOPUP_di_unlock_item_speeddemon = "Speed Fiend";
 DIPOPUP_di_unlock_item_minionion = "Mini Onion";
 DIPOPUP_di_unlock_item_goldhat = "Golden Hat";
+DIPOPUP_di_unlock_lvl_bonus01 = "nine sectors";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";

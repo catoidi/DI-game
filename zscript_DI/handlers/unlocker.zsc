@@ -740,6 +740,7 @@ Class DIUnlockHandler : EventHandler
 		{
 			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletmitosis");
 			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_weaponized");
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_lvl_bonus01");
 		}
 		if (unlockcount >= 30)
 		{
