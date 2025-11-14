@@ -13,12 +13,6 @@ Class DI_BeachBall : Inventory
 		+INVENTORY.INVBAR;
 	}
 	
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		ChangeTID(7499); //removed on wave completion
-	}
-	
 	override bool Use(bool pickup)
 	{
 		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
@@ -92,6 +86,12 @@ Class DI_BeachBall_Actor : DI_Actor
 	double newvelx;
 	double newvely;
 	int velodam;
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		ChangeTID(7499); //removed on wave completion
+	}
 	
 	override bool CanCollideWith(Actor other, bool passive)
 	{
