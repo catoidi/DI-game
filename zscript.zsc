@@ -51,6 +51,7 @@ version "4.14"
 #include "zscript_DI/ui/credits.zsc"
 
 //decoration
+#include "zscript_DI/decoration/mixin.zsc"
 #include "zscript_DI/decoration/painting.zsc"
 #include "zscript_DI/decoration/beam.zsc"
 #include "zscript_DI/decoration/glass.zsc"

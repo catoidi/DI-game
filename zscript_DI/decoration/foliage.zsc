@@ -119,6 +119,8 @@ CLASS TallGrass2 : TallGrass
 
 CLASS TallerGrass : DI_Actor
 {
+	mixin DI_TallDecor;
+
 	Default
 	{
 		Radius 20;
@@ -140,6 +142,8 @@ CLASS TallerGrass : DI_Actor
 
 CLASS TallerGrass2 : DI_Actor
 {
+	mixin DI_TallDecor;
+	
 	Default
 	{
 		Radius 20;

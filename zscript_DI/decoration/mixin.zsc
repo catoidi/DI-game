@@ -1,0 +1,12 @@
+//zscript_DI/decoration/mixin.zsc
+
+mixin class DI_TallDecor
+{
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (CheckRange(64)) {A_FadeTo(1.0, 0.15);}
+		else {A_FadeTo(0.25, 0.15);}
+	}
+}
