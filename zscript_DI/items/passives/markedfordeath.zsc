@@ -45,7 +45,7 @@ Class DI_DeathMark_Enemy : Inventory
 	{
 		if (passive == true)
 		{
-			newdamage = damage * 1.5; //enemy takes 50% more damage.
+			newdamage = damage * 1.2; //enemy takes 50% more damage.
 			if (owner)
 			{
 				if (newdamage + 1 >= owner.health)
