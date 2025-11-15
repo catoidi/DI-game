@@ -1,25 +1,58 @@
 //zscript_DI/inventory/health.zsc
 
-Class DI_Pizza : DIConsumable
+Class DIHealthItem : DIConsumable abstract
 {
+	int healamount;
+	float maxheal;
+	bool doregen;
+	
+	property HealAmount : healamount;
+	property MaxHeal : maxheal;
+	property DoRegen : doregen;
+	
 	Default
 	{
-		Tag "Pizza Slice";
-		DIConsumable.CooldownTics 350;
-		Inventory.MaxAmount 5;
-		Inventory.Icon "HEALB0";
-		Inventory.PickupMessage "Acquired a Pizza Slice. (+20 Health on Usage)";
+		DIConsumable.CooldownTics 175;
+		DIHealthItem.HealAmount 1;
+		DIHealthItem.MaxHeal 1.0;
+		DIHealthItem.DoRegen false;
 	}
-	
+
 	override bool DIUse(bool pickup) 
 	{
 		if (owner is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(owner);
-			plr.DI_HealSelf(200);
+			plr.DI_HealSelf(healamount, maxheal, doregen);
 			return true;
 		}
 		else {return false;}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && (currentcooldown > 0))
+		{
+			let plr = DI_PlayerBase(owner);
+			if (plr && !plr.inwave)
+			{
+				currentcooldown = 0; //health items have no cooldown in shops.
+			}
+		}
+	}
+}
+
+Class DI_Pizza : DIHealthItem
+{
+	Default
+	{
+		Tag "Pizza Slice";
+		DIHealthItem.HealAmount 200;
+		Inventory.MaxAmount 5;
+		Inventory.Icon "HEALB0";
+		Inventory.PickupMessage "Acquired a Pizza Slice. (+20 Health on Usage)";
 	}
 	
 	States
@@ -30,26 +63,17 @@ Class DI_Pizza : DIConsumable
 	}
 }
 
-Class DI_JuiceBox : DIConsumable
+Class DI_JuiceBox : DIHealthItem
 {
 	Default
 	{
 		Tag "Juice Box";
-		DIConsumable.CooldownTics 350;
+		DIHealthItem.HealAmount 300;
+		DIHealthItem.MaxHeal 2.0;
+		DIHealthItem.DoRegen true;
 		Inventory.MaxAmount 4;
 		Inventory.Icon "HEALD0";
 		Inventory.PickupMessage "Acquired a Juice Box. (+30 Health Regen on Usage)";
-	}
-	
-	override bool DIUse(bool pickup)
-	{
-		let plr = DI_PlayerBase(owner);
-		if (plr)
-		{
-			plr.DI_HealSelf(300, 2.0, true);
-			return true;
-		}
-		else {return false;}
 	}
 	
 	States

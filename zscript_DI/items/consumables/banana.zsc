@@ -5,9 +5,24 @@ Class DI_Banana : DI_ThrowBomb
 	Default
 	{
 		Tag "Banana";
+		DICustomConsumable.CooldownTics 175;
 		Inventory.MaxAmount 4;
 		Inventory.Icon "BANAA0";
 		Inventory.PickupMessage "Got a banana. (Gives +15 HP. Can go up to 200% Max Health. Drops a banana peel on the ground.)";
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && (currentcooldown > 0))
+		{
+			let plr = DI_PlayerBase(owner);
+			if (plr && !plr.inwave)
+			{
+				currentcooldown = 0; //health items have no cooldown in shops.
+			}
+		}
 	}
 	
 	States
