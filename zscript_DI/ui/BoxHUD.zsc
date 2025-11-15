@@ -495,7 +495,7 @@ class DI_HUD : BaseStatusBar
 			if (CPlayer.mo.InvSel is "DIConsumable") 
 			{
 				let con = DIConsumable(CPlayer.mo.InvSel);
-				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse);
+				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse) || (con.amount <= 0);
 				if (useblocked) {cooldownalpha = 1.0;}
 				else if (con.currentcooldown > 0) 
 				{
@@ -506,7 +506,7 @@ class DI_HUD : BaseStatusBar
 			else if (CPlayer.mo.InvSel is "DICustomConsumable") 
 			{
 				let con = DICustomConsumable(CPlayer.mo.InvSel);
-				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse);
+				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse) || (con.amount <= 0);
 				if (useblocked) {cooldownalpha = 1.0;}
 				else if (con.currentcooldown > 0) 
 				{
