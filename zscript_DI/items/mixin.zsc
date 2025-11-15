@@ -29,7 +29,7 @@ mixin class DI_ConsumableMixin
 		if (used)
 		{
 			if (isconsumable) {DIItemConsumed();}
-			//currentcooldown = cooldowntics;
+			currentcooldown = cooldowntics;
 		}
 		return used;
 	}

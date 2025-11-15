@@ -490,17 +490,37 @@ class DI_HUD : BaseStatusBar
 		if (CPlayer.mo.InvSel != null && !Level.NoInventoryBar && isInventoryBarVisible() == false)
 		{
 			float invalpha = 1.0;
+			float concooldown, concooldown_max;
+			float cooldownalpha = 0.0;
 			if (CPlayer.mo.InvSel is "DIConsumable") 
 			{
 				let con = DIConsumable(CPlayer.mo.InvSel);
-				if (con.currentcooldown > 0) {invalpha = 0.5;}
+				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse);
+				if (useblocked) {cooldownalpha = 1.0;}
+				else if (con.currentcooldown > 0) 
+				{
+					concooldown_max = con.cooldowntics;
+					concooldown = con.currentcooldown;
+				}
 			}
 			else if (CPlayer.mo.InvSel is "DICustomConsumable") 
 			{
 				let con = DICustomConsumable(CPlayer.mo.InvSel);
-				if (con.currentcooldown > 0) {invalpha = 0.5;}
+				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse);
+				if (useblocked) {cooldownalpha = 1.0;}
+				else if (con.currentcooldown > 0) 
+				{
+					concooldown_max = con.cooldowntics;
+					concooldown = con.currentcooldown;
+				}
 			}
+			if ((concooldown > 0) && (concooldown_max > 0))
+			{
+				cooldownalpha = 0.25 + (concooldown / concooldown_max);
+			}
+			if (cooldownalpha > 0.0) {invalpha = 0.5;}
 			DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED, invalpha);
+			DrawImage("graphics/boxhud/NOITEM.png", GlobalOffset + (-164, -12), DI_ITEM_OFFSETS, cooldownalpha);
 			string invnum = FormatNumber(CPlayer.mo.InvSel.Amount);
 			int permnum = diplayer.GetPermaItemAmount(CPlayer.mo.InvSel.GetClassName());
 			int invx = -149;
