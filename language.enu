@@ -1,5 +1,10 @@
 [enu default]
 
+DI_ITEM_BLOCKWAVE = "\cgYou cannot use this item while you're in a wave!";
+DI_ITEM_BLOCKSHOP = "\cgYou can only use this item while a wave is active!";
+DI_ITEM_COOLDOWN = "\cgThis item is still on cooldown!";
+DI_ITEM_FORCEBLOCK = "\cgThis item cannot be used right now!";
+
 TXT_GAME_NAME = "DI";
 PRESSANYKEY = "Press any key to begin.";
 

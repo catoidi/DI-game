@@ -236,3 +236,24 @@ class DIBundle : Inventory
 		}
 	}
 }
+
+class DIConsumable : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	override bool Use(bool pickup)
+	{
+		return ConsumableChecks(pickup);
+	}
+}
+
+class DICustomConsumable : CustomInventory
+{
+	mixin DI_ConsumableMixin;
+	
+	override bool Use(bool pickup)
+	{
+		if (ConsumableChecks(pickup)) {return Super.Use(pickup);}
+		return false;
+	}
+}

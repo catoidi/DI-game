@@ -1,26 +1,18 @@
 //zscript_DI/items/consumables/beachball.zsc
 
-Class DI_BeachBall : Inventory
+Class DI_BeachBall : DIConsumable
 {
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "Beach Ball";
+		DIConsumable.BlockInShop true;
 		Inventory.MaxAmount 5;
 		Inventory.Icon "POW3J0";
 		Inventory.PickupMessage "Got a Beach Ball. Once placed, can be smacked around to deal ridiculous damage to enemies.";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
-		}
-		
 		bool spawned = false;
 		if (owner) 
 		{
@@ -28,7 +20,6 @@ Class DI_BeachBall : Inventory
 			{
 				owner.A_SpawnItemEX("DI_Teleport", 32);
 				spawned = true;
-				DIUsed();
 			}
 			else
 			{

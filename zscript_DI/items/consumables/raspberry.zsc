@@ -1,39 +1,28 @@
 //zscript_DI/items/consumables/raspberry.zsc
 
-Class DI_Raspberry : Inventory
+Class DI_Raspberry : DIConsumable
 {
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "Raspberry";
+		DIConsumable.CooldownTics 1050;
+		DIConsumable.BlockInShop true;
 		Inventory.MaxAmount 3;
 		Inventory.Icon "POW2J0";
 		Inventory.PickupMessage "Got a Raspberry! (Upon use, get +3 coins for every Fresh Weapon Kill for 30 seconds.)";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
+		if (owner is "DI_PlayerBase")
+		{	
+			let plr = DI_PlayerBase(owner);
+			plr.ACS_NamedExecuteAlways("DoLeafFlash");
+			plr.A_GiveInventory("DI_Raspberry_Powerup", 30);
+		
+			return true;
 		}
-		else 
-		{
-			if (owner is "DI_PlayerBase")
-			{	
-				let plr = DI_PlayerBase(owner);
-				plr.ACS_NamedExecuteAlways("DoLeafFlash");
-				plr.A_GiveInventory("DI_Raspberry_Powerup", 30);
-			
-				DIUsed(); 
-				Super.Use(pickup); 
-				return true;
-			}
-			else {return false;}
-		}
+		else {return false;}
 	}
 	
 	States

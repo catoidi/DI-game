@@ -1,26 +1,15 @@
 //zscript_DI/items/consumables/brick.zsc
 
-Class DI_Brick : CustomInventory
+Class DI_Brick : DICustomConsumable
 {
-	mixin DI_ConsumableMixin;
 
 	Default
 	{
 		Tag "Brick";
+		DICustomConsumable.BlockInShop true;
 		Inventory.MaxAmount 3;
 		Inventory.Icon "BRIKA0";
 		Inventory.PickupMessage "Got a brick. Has a chance to crack on use.";
-		+INVENTORY.INVBAR;
-	}
-	
-	override bool Use(bool pickup)
-	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
-		}
-		else {DIUsed(); Super.Use(pickup); return true;} //call DIUsed() either standalone or as a replacement for "return true;" so that EventHandler's can track consumable item usage.
 	}
 	
 	States

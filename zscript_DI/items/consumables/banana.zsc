@@ -8,7 +8,6 @@ Class DI_Banana : DI_ThrowBomb
 		Inventory.MaxAmount 4;
 		Inventory.Icon "BANAA0";
 		Inventory.PickupMessage "Got a banana. (Gives +15 HP. Can go up to 200% Max Health. Drops a banana peel on the ground.)";
-		+INVENTORY.INVBAR;
 	}
 	
 	States

@@ -5,6 +5,7 @@ Class DI_CheeseArtifact : DI_ThrowBomb
 	Default
 	{
 		Tag "Cheese Artifact";
+		DICustomConsumable.CooldownTics 105;
 		Inventory.MaxAmount 10;
 		Inventory.Icon "ARTIA0";
 		Inventory.PickupMessage "Got the Cheese Artifact... It seems pleased to meet you.";

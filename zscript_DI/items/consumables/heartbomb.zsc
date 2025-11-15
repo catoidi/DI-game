@@ -8,7 +8,6 @@ Class DI_HeartBomb : DI_ThrowBomb
 		Inventory.MaxAmount 16;
 		Inventory.Icon "GRENF0";
 		Inventory.PickupMessage "Got a heart bomb. Use this to win the hearts of your enemies.";
-		+INVENTORY.INVBAR;
 	}
 	
 	States

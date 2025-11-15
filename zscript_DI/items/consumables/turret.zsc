@@ -1,24 +1,16 @@
-Class DITurret : Inventory
+Class DITurret : DIConsumable
 {	
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "Turret";
+		DIConsumable.BlockInShop true;
 		Inventory.MaxAmount 5;
 		Inventory.Icon "TURRC0";
 		Inventory.PickupMessage "Got a turret. Use the turret to place it.";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
-		}
-		
 		bool spawned = false;
 		if (owner) 
 		{
@@ -26,7 +18,6 @@ Class DITurret : Inventory
 			{
 				owner.A_SpawnItemEX("DI_Teleport", 24);
 				spawned = true;
-				DIUsed();
 			}
 			else
 			{

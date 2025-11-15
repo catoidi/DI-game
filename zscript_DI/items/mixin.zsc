@@ -2,15 +2,41 @@
 
 mixin class DI_ConsumableMixin
 {
-	bool dopermacheck;
+	bool dopermacheck, blockinwave, blockinshop, isconsumable, forceblockuse;
+	uint cooldowntics, currentcooldown;
 	
-	bool DIUsed(void)
+	property DoPermaCheck : dopermacheck;
+	property BlockInWave : blockinwave;
+	property BlockInShop : blockinshop;
+	property IsConsumable : isconsumable;
+	property CooldownTics : cooldowntics;
+	
+	void DIItemConsumed(void)
 	{
 		//allows eventhandlers to track consumable item usage.
 		string command = string.format("%s", "diplayeritemused ");
 		EventHandler.SendNetworkEvent(command);
-		return true;
 	}
+	
+	private bool ConsumableChecks(bool pickup)
+	{
+		if (forceblockuse) {console.printf(ForceBlockString()); return false;}
+		bool inwave = ACS_ScriptCall("DICheckWaveProgress");
+		if (inwave && blockinwave) {console.printf(StringTable.Localize("$DI_ITEM_BLOCKWAVE")); return false;}
+		if (!inwave && blockinshop) {console.printf(StringTable.Localize("$DI_ITEM_BLOCKSHOP")); return false;}
+		if (currentcooldown > 0) {console.printf(StringTable.Localize("$DI_ITEM_COOLDOWN")); return false;}
+		bool used = DIUse(pickup);
+		if (used)
+		{
+			if (isconsumable) {DIItemConsumed();}
+			//currentcooldown = cooldowntics;
+		}
+		return used;
+	}
+	
+	virtual bool DIUse(bool pickup) {return true;}
+	
+	virtual string ForceBlockString() {return StringTable.Localize("$DI_ITEM_FORCEBLOCK");}
 	
 	virtual void PermaCheck(DI_PlayerBase plr)
 	{
@@ -20,14 +46,26 @@ mixin class DI_ConsumableMixin
 	
 	override void DepleteOrDestroy()
 	{
-		if (owner is "DI_PlayerBase") {PermaCheck(DI_PlayerBase(owner));}
-		
+		if ((owner is "DI_PlayerBase") && dopermacheck) {PermaCheck(DI_PlayerBase(owner));}
 		Super.DepleteOrDestroy();
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && !owner.IsFrozen() && (currentcooldown > 0)) {--currentcooldown;}
 	}
 	
 	default
 	{
+		Self.IsConsumable true;
+		Self.DoPermaCheck true;
+		Self.BlockInWave false;
+		Self.BlockInShop false;
+		Self.CooldownTics 35;
 		+BRIGHT;
 		+FLOATBOB;
+		+INVENTORY.INVBAR;
 	}
 }

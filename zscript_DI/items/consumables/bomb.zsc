@@ -1,26 +1,14 @@
 //zscript_DI/items/consumables/bomb.zsc
 
-Class DI_ThrowBomb : CustomInventory
+Class DI_ThrowBomb : DICustomConsumable
 {
-	mixin DI_ConsumableMixin;
-
 	Default
 	{
 		Tag "Throwable Bomb";
+		DICustomConsumable.BlockInShop true;
 		Inventory.MaxAmount 100;
 		Inventory.Icon "GRENA0";
-		Inventory.PickupMessage "Got a throwable cartoon bomb.";
-		+INVENTORY.INVBAR;
-	}
-	
-	override bool Use(bool pickup)
-	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
-		}
-		else {DIUsed(); Super.Use(pickup); return true;} //call DIUsed() either standalone or as a replacement for "return true;" so that EventHandler's can track consumable item usage.
+		Inventory.PickupMessage "Got a throwable bomb.";
 	}
 	
 	States

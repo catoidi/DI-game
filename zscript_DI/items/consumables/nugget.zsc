@@ -1,39 +1,28 @@
 //zscript_DI/items/consumables/nugget.zsc
 
-Class DI_Nugget : Inventory
+Class DI_Nugget : DIConsumable
 {
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "chicken nugget";
+		DIConsumable.CooldownTics 1575;
+		DIConsumable.BlockInShop true;
 		Inventory.MaxAmount 3;
 		Inventory.Icon "POW2Y0";
 		Inventory.PickupMessage "got a chicken nugget. (upon use, every enemy killed instantly gives you +2 HP for 45 seconds, up to 200% Health.)";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
+		if (owner is "DI_PlayerBase")
+		{	
+			let plr = DI_PlayerBase(owner);
+			plr.ACS_NamedExecuteAlways("DoLeafFlash");
+			plr.A_GiveInventory("DI_Nugget_Powerup", 45);
+		
+			return true;
 		}
-		else 
-		{
-			if (owner is "DI_PlayerBase")
-			{	
-				let plr = DI_PlayerBase(owner);
-				plr.ACS_NamedExecuteAlways("DoLeafFlash");
-				plr.A_GiveInventory("DI_Nugget_Powerup", 45);
-			
-				DIUsed(); 
-				Super.Use(pickup); 
-				return true;
-			}
-			else {return false;}
-		}
+		else {return false;}
 	}
 	
 	States

@@ -1,28 +1,23 @@
 //zscript_DI/items/consumables/questbook.zsc
 
-Class DI_QuestBook : Inventory
+Class DI_QuestBook : DIConsumable
 {
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "Quest Book";
+		DIConsumable.BlockInWave true;
+		DIConsumable.IsConsumable false;
+		DIConsumable.CooldownTics 0;
 		Inventory.MaxAmount 1;
 		Inventory.Icon "BOOKA0";
 		Inventory.PickupMessage "Got the Quest Book. Use it while in the shop to get a random Side Quest.";
-		+INVENTORY.INVBAR;
 	}
 	
 	string objective, debuff;
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == true) 
-		{
-			console.printf("%s", "\cgCannot use this while a wave is in progress!");
-			return false; //can't be used if a wave is in progress.
-		}
-		else if (owner is "DI_PlayerBase")
+		if (owner is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(owner);
 			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
@@ -30,16 +25,14 @@ Class DI_QuestBook : Inventory
 			{
 				[debuff, objective] = plr.popuphandler.ChooseQuestAlt();
 			}
-			//if (plrquest || (objective != "") || (debuff != "")) {CantQuest(plr);}
 			if (plrquest) {console.printf("%s", "You already have a quest!");}
 			else if (objective == "") {console.printf("%s", "Quest Book is missing an objective!");}
 			else if (debuff == "") {console.printf("%s", "Quest Book is missing a debuff!");}
 			else 
 			{
 				GiveQuest(plr);
-				return DIUsed();
+				return true;
 			}
-			//returnvalue = true;
 		}
 		return false;
 	}
@@ -79,27 +72,22 @@ Class DI_QuestBook : Inventory
 	}
 }
 
-Class DI_QuestBook_Remover : Inventory
+Class DI_QuestBook_Remover : DIConsumable
 {
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "(Cancel Side Quest?)";
+		DIConsumable.BlockInWave true;
+		DIConsumable.IsConsumable false;
+		DIConsumable.CooldownTics 0;
 		Inventory.MaxAmount 1;
 		Inventory.Icon "BOOKB0";
 		Inventory.PickupMessage "Using this item will cancel the current quest.";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == true) 
-		{
-			console.printf("%s", "\cgCannot use this while a wave is in progress!");
-			return false; //can't be used if a wave is in progress.
-		}
-		else if (owner is "DI_PlayerBase")
+		if (owner is "DI_PlayerBase")
 		{
 			let plr = DI_PlayerBase(owner);
 			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
@@ -112,7 +100,7 @@ Class DI_QuestBook_Remover : Inventory
 				plr.TakeInventory(curdebuff, 1);
 				plr.ACS_ScriptCall("QuestBookCancel");
 				console.printf("%s", "Side Quest has been cancelled.");
-				return DIUsed();
+				return true;
 			}
 		}
 		return false;
