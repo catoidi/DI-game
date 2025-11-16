@@ -2,6 +2,8 @@
 
 mixin class DI_ConsumableMixin
 {
+	DI_PlayerBase plr;
+
 	bool dopermacheck, blockinwave, blockinshop, isconsumable, forceblockuse;
 	uint cooldowntics, currentcooldown;
 	
@@ -26,10 +28,10 @@ mixin class DI_ConsumableMixin
 		if (!inwave && blockinshop) {console.printf(StringTable.Localize("$DI_ITEM_BLOCKSHOP")); return false;}
 		if (currentcooldown > 0) {console.printf(StringTable.Localize("$DI_ITEM_COOLDOWN")); return false;}
 		bool used = DIUse(pickup);
-		if (used)
+		if (used && plr && plr.wpn)
 		{
 			if (isconsumable) {DIItemConsumed();}
-			currentcooldown = cooldowntics;
+			currentcooldown = cooldowntics * plr.wpn.item_cooldown;
 		}
 		return used;
 	}
@@ -38,15 +40,25 @@ mixin class DI_ConsumableMixin
 	
 	virtual string ForceBlockString() {return StringTable.Localize("$DI_ITEM_FORCEBLOCK");}
 	
-	virtual void PermaCheck(DI_PlayerBase plr)
+	virtual void PermaCheck()
 	{
 		if ((plr.GetPermaItemAmount(self.GetClassName()) > 0) && (di_depletedperma == true)) {bKEEPDEPLETED = true;}
 		else {bKEEPDEPLETED = false;}
 	}
 	
+	override void AttachToOwner(Actor other)
+	{
+		if (other is "DI_PlayerBase")
+		{
+			plr = DI_PlayerBase(other);
+		}
+		
+		Super.AttachToOwner(other);
+	}
+	
 	override void DepleteOrDestroy()
 	{
-		if ((owner is "DI_PlayerBase") && dopermacheck) {PermaCheck(DI_PlayerBase(owner));}
+		if (plr && dopermacheck) {PermaCheck();}
 		Super.DepleteOrDestroy();
 	}
 	
