@@ -71,7 +71,7 @@ Consumable DI_Brick BRIKA 5;
 Consumable DI_9LeafClover LEAFA 36 64 di_unlock_item_9leafclover;
 Consumable DI_FastForward POW1O 10 192;
 Consumable DI_CheeseArtifact ARTIA 20 192 di_unlock_item_cheeseartifact;
-Consumable DI_Tomato_Bundle POW1Z 5 192 di_unlock_item_tomato;
+Consumable DI_Tomato_Bundle POW3S 5 192 di_unlock_item_tomato;
 Consumable DI_Banana_Bundle BANAC 18 128 di_unlock_item_banana;
 Consumable DI_QuestBook BOOKA 20 128 di_unlock_item_questbook;
 Consumable DI_Raspberry POW2J 14 128 di_unlock_item_raspberry;

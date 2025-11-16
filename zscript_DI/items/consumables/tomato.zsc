@@ -78,7 +78,7 @@ Class DI_Tomato_Bundle : DIBundle
 	States
 	{
 		Spawn:
-			POW1 Z -1;
+			POW3 S -1;
 			Stop;
 	}
 }
