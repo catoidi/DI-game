@@ -5,7 +5,7 @@ Class DI_Tomahawk : DI_ThrowBomb
 	Default
 	{
 		Tag "Tomahawk";
-		Inventory.MaxAmount 10;
+		Inventory.MaxAmount 24;
 		Inventory.Icon "HAWKA0";
 		Inventory.PickupMessage "Got a throwable tomahawk.";
 	}
@@ -79,6 +79,24 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 					eventhandler.sendnetworkevent("di_tomahawkkill");
 				}
 			}
+			Stop;
+	}
+}
+
+Class DI_Tomahawk_Bundle : DIBundle
+{
+	Default
+	{
+		Tag "Handful of Tomahawks";
+		DIBundle.BundleItem "DI_Tomahawk";
+		DIBundle.BundleAmount 8;
+		Inventory.PickupMessage "Got a handful of tomahawks, pre-coated in blood for your convenience.";
+	}
+	
+	States
+	{
+		Spawn:
+			HAWK B -1;
 			Stop;
 	}
 }
