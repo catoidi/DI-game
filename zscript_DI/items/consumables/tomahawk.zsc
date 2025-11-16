@@ -5,6 +5,7 @@ Class DI_Tomahawk : DI_ThrowBomb
 	Default
 	{
 		Tag "Tomahawk";
+		DICustomConsumable.CooldownTics 105;
 		Inventory.MaxAmount 24;
 		Inventory.Icon "HAWKA0";
 		Inventory.PickupMessage "Got a throwable tomahawk.";
