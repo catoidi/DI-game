@@ -489,6 +489,7 @@ class DI_HUD : BaseStatusBar
 		//inventory bar
 		if (CPlayer.mo.InvSel != null && !Level.NoInventoryBar && isInventoryBarVisible() == false)
 		{
+			bool canshowitem = true;
 			float invalpha = 1.0;
 			float concooldown, concooldown_max;
 			float cooldownalpha = 0.0;
@@ -502,6 +503,7 @@ class DI_HUD : BaseStatusBar
 					concooldown_max = con.cooldowntics;
 					concooldown = con.currentcooldown;
 				}
+				if ((con.amount < 1) && !con.PermaCheck()) {canshowitem = false;}
 			}
 			else if (CPlayer.mo.InvSel is "DICustomConsumable") 
 			{
@@ -513,23 +515,27 @@ class DI_HUD : BaseStatusBar
 					concooldown_max = con.cooldowntics;
 					concooldown = con.currentcooldown;
 				}
+				if ((con.amount < 1) && !con.PermaCheck()) {canshowitem = false;}
 			}
 			if ((concooldown > 0) && (concooldown_max > 0))
 			{
 				cooldownalpha = 0.25 + (concooldown / concooldown_max);
 			}
 			if (cooldownalpha > 0.0) {invalpha = 0.5;}
-			DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED, invalpha);
-			DrawImage("graphics/boxhud/NOITEM.png", GlobalOffset + (-164, -12), DI_ITEM_OFFSETS, cooldownalpha);
-			string invnum = FormatNumber(CPlayer.mo.InvSel.Amount);
-			int permnum = diplayer.GetPermaItemAmount(CPlayer.mo.InvSel.GetClassName());
-			int invx = -149;
-			if (permnum > 0) 
+			if (canshowitem)
 			{
-				invnum.AppendFormat("\cu/\c-%d", permnum);
-				//invx += 4;
+				DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED, invalpha);
+				DrawImage("graphics/boxhud/NOITEM.png", GlobalOffset + (-164, -12), DI_ITEM_OFFSETS, cooldownalpha);
+				string invnum = FormatNumber(CPlayer.mo.InvSel.Amount);
+				int permnum = diplayer.GetPermaItemAmount(CPlayer.mo.InvSel.GetClassName());
+				int invx = -149;
+				if (permnum > 0) 
+				{
+					invnum.AppendFormat("\cu/\c-%d", permnum);
+					//invx += 4;
+				}
+				DrawString(SmallFont, invnum, GlobalOffset + (invx, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			}
-			DrawString(SmallFont, invnum, GlobalOffset + (invx, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		}
 		if (isInventoryBarVisible())
 		{
