@@ -7,6 +7,7 @@ Class DI_Brick : DICustomConsumable
 	{
 		Tag "Brick";
 		DICustomConsumable.BlockInShop true;
+		DICustomConsumable.CooldownTics 105;
 		Inventory.MaxAmount 3;
 		Inventory.Icon "BRIKA0";
 		Inventory.PickupMessage "Got a brick. Has a chance to crack on use.";
