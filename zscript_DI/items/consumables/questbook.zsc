@@ -17,9 +17,8 @@ Class DI_QuestBook : DIConsumable
 	
 	override bool DIUse(bool pickup)
 	{
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			let plr = DI_PlayerBase(owner);
 			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
 			if (plr.popuphandler)
 			{
@@ -87,9 +86,8 @@ Class DI_QuestBook_Remover : DIConsumable
 	
 	override bool DIUse(bool pickup)
 	{
-		if (owner is "DI_PlayerBase")
+		if (plr)
 		{
-			let plr = DI_PlayerBase(owner);
 			DI_MainQuest plrquest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
 			if (plrquest)
 			{
@@ -108,11 +106,9 @@ Class DI_QuestBook_Remover : DIConsumable
 	
 	override void DoEffect()
 	{
-		if (owner is "DI_PlayerBase")
-		{
-			let plr = DI_PlayerBase(owner);
-			if (plr.inwave) {plr.TakeInventory(self.GetClassName(), 1);}
-		}
+		Super.DoEffect();
+	
+		if (plr && plr.inwave) {plr.TakeInventory(self.GetClassName(), 1);}
 	}
 	
 	States
