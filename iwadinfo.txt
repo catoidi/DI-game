@@ -13,7 +13,7 @@ IWad
 	LoadWidescreen = 0
 	Mapinfo = "mapinfo/mindefaults.txt"
     BannerColors = "FFFFFF", "000000"
-	//StartupType = "Hexen"
+	StartupType = "Hexen"
 	DiscordAppID = "1073483426872709191"
 	SteamAppID = "2318300"
 	NoKeyboardCheats
