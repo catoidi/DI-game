@@ -6,7 +6,7 @@ Class DI_ThrowBomb : DICustomConsumable
 	{
 		Tag "Throwable Bomb";
 		DICustomConsumable.BlockInShop true;
-		Inventory.MaxAmount 100;
+		Inventory.MaxAmount 25;
 		Inventory.Icon "GRENA0";
 		Inventory.PickupMessage "Got a throwable bomb.";
 	}
