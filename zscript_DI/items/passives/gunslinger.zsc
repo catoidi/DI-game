@@ -6,14 +6,14 @@ Class DI_Gunslinger : DIPassiveInventory
 	{
 		Tag "Gunslinger";
 		Inventory.Icon "POWRK0";
-		Inventory.PickupMessage "Gunslinger Acquired! (Gain +1 DMG for every weapon you own.)";
+		Inventory.PickupMessage "Gunslinger Acquired! (Gain +0.9 Base DMG for every extra weapon you own.)";
 		Inventory.MaxAmount 3;
 	}
 	
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		return 10 * plr.weaponnum * amount;
+		return 9 * (plr.weaponnum - 1) * amount;
 	}
 	
 	States
