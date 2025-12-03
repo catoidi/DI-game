@@ -185,8 +185,8 @@ Class SwagHandler : EventHandler
 			unlockdata[i].Split(currentline, " ");
 			if (currentline.Size() != 4) {continue;}
 			
-			if (currentline[0] != Level.MapName) {continue;}
-			if (currentline[1] != plr.GetClassName()) {continue;}
+			if ((currentline[0] != Level.MapName) && (currentline[0] != "*")) {continue;}
+			if ((currentline[1] != plr.GetClassName()) && (currentline[1] != "*")) {continue;}
 			if (currentline[2].ToInt(10) > finalscore) {continue;}
 			
 			EventHandler.SendInterfaceEvent(consoleplayer, string.format("diunlock_%s", currentline[3]));
