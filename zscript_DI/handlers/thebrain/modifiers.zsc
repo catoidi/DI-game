@@ -3,6 +3,7 @@
 extend class DIHandler
 {
 	array<string> weaponized_file;
+	array<string> sp_filedata, sp_itempool, sp_groupdata, sp_blacklist, sp_itempool_blacklist;
 
 	virtual void DIModifierHandler(DI_PlayerBase plr)
 	{
@@ -21,6 +22,113 @@ extend class DIHandler
 			Weaponized_Init();
 			plr.GiveInventory("DI_Weaponized", 1);
 		}
+		if (di_mod_starterpack)
+		{
+			StarterPack_Init();
+			StarterPack_GiveItems(plr);
+		}
+	}
+	
+	virtual void StarterPack_Init()
+	{
+		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
+		sp_filedata.Clear();
+		sp_itempool.Clear();
+		sp_groupdata.Clear();
+		
+		cvar listcvar = cvar.getcvar("di_unlock_sp_blacklist");
+		if (listcvar)
+		{
+			sp_blacklist.Clear();
+			sp_itempool_blacklist.Clear();
+			string fulllist = listcvar.getstring();
+			fulllist.Split(sp_blacklist, ",", TOK_SKIPEMPTY);
+		}
+	
+		int ThisLump = Wads.FindLump("DISHOP", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISHOP", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(sp_filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISHOP", ThisLump + 1, 1);
+		}
+		
+		//check for category grouping. identified by the presence of "[".
+		for (int i = 0; i < sp_filedata.Size(); i++)
+		{
+			if (sp_filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (sp_filedata[i].Length() < 3) {continue;}
+			sp_filedata[i] = sp_filedata[i].Left(sp_filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			sp_filedata[i].Split(currentline, " ", TOK_SKIPEMPTY);
+			
+			if (currentline[0] == "[PermaPassive]") //This is case sensitive!
+			{
+				sp_groupdata.Push(currentline[1]); //add this category to the group.
+			}
+		}
+		
+		//add valid items to this shop's pool
+		for (int i = 0; i < sp_filedata.Size(); i++)
+		{
+			if (sp_filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (sp_filedata[i].Length() < 3) {continue;}
+			sp_filedata[i] = sp_filedata[i].Left(sp_filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			sp_filedata[i].Split(currentline, " ", TOK_SKIPEMPTY);
+			
+			int pushchance = 256;
+			if (currentline.Size() >= 5) {pushchance = currentline[4].ToInt(10);}
+			
+			cvar cheatmode = cvar.getcvar("di_unlock_cheat");
+			bool docheat = cheatmode.getbool();
+			
+			for (int j = 0; j < sp_groupdata.Size(); j++)
+			{
+				bool correctgroup = false;
+				bool singleitemmode = false;
+				if (currentline[0] == sp_groupdata[j]) {correctgroup = true;} //case sensitive cuz i didnt make it a name instead of a string for some reason!
+				
+				if (correctgroup)
+				{
+					if (random[dishop](0, 255) > pushchance) 
+					{
+						continue; //random chance to not add item to array.
+					}
+					if ((currentline.Size() > 5) && (docheat == false))
+					{
+						cvar curcvar = cvar.getcvar(currentline[5]);
+						if ((curcvar) && (curcvar.getbool() == false)) 
+						{
+							continue; //dont add item if it's still locked.
+						}
+					}
+					if (sp_blacklist.Find(currentline[1]) != sp_blacklist.Size())
+					{
+						sp_itempool_blacklist.Push(sp_filedata[i]);
+						continue;
+					}
+					sp_itempool.Push(currentline[1]); //only add relevant item pool data to this array.
+				}
+			}
+		}
+	}
+	
+	virtual void StarterPack_GiveItems(DI_PlayerBase plr, int amount = 3)
+	{
+		int chosenitem = -1;
+		for (int i = 0; i < amount; ++i)
+		{
+			chosenitem = random[dishop](0, sp_itempool.Size() - 1);
+			plr.BuyPermaItem(sp_itempool[chosenitem]);
+			plr.A_SpawnItemEX(sp_itempool[chosenitem], flags: SXF_NOCHECKPOSITION);
+			SendNetworkCommand(string.format("autoblacklist %s", sp_itempool[chosenitem]));
+		}
+		plr.Thrust(0.01);
 	}
 	
 	virtual void Weaponized_Init()
@@ -61,12 +169,12 @@ extend class DIHandler
 		return returnvalue;
 	}
 	
-	virtual string, double Weaponized_RandomTrait(string wpn, bool nerf = false, string blacklist = "")
+	virtual string, double Weaponized_RandomTrait(string wpn, bool nerf = false, string sp_blacklist = "")
 	{
 		int bracket = 0;
 		bool foundwpn = false;
 		bool foundtraits = false;
-		int blacklist_length = blacklist.Length();
+		int sp_blacklist_length = sp_blacklist.Length();
 		array<string> validlines;
 		for (int i = 0; i < weaponized_file.Size(); ++i)
 		{
@@ -94,7 +202,7 @@ extend class DIHandler
 					case 2:
 						if (foundwpn && foundtraits)
 						{
-							if ((weaponized_file[i].Left(blacklist_length) != blacklist) || (blacklist ~== ""))
+							if ((weaponized_file[i].Left(sp_blacklist_length) != sp_blacklist) || (sp_blacklist ~== ""))
 							{
 								int randomchance = 256;
 								array<string> curtrait;

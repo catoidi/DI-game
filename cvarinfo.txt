@@ -29,6 +29,8 @@ server noarchive bool di_mod_debilitated = false; //yea.
 server cheat bool di_unlock_mod_debilitated = false; //yea.
 server noarchive bool di_mod_weaponized = false;
 server cheat bool di_unlock_mod_weaponized = false;
+server noarchive bool di_mod_starterpack = false;
+server cheat bool di_unlock_mod_starterpack = false;
 
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
