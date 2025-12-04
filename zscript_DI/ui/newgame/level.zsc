@@ -94,7 +94,7 @@ extend class DINewGameMenu
 				);
 				// Add the box image element into the main frame.
 				aBoxImage.Pack (mainFrame);
-				lvlboximages.Push(aBoxImage);
+				lvllockimages.Push(aBoxImage);
 			}
 			
 			//Get the level's high score for the current player.
@@ -219,6 +219,14 @@ extend class DINewGameMenu
             boximage.Unpack();
             boximage.Destroy();
         }
+		while (lvllockimages.Size() > 0)
+		{
+			let boximage = lvllockimages[0];
+            lvllockimages.Delete(0, 1);
+
+            boximage.Unpack();
+            boximage.Destroy();
+		}
 		while (heartboximages.Size() > 0)
 		{
 			let heartbox = heartboximages[0];

@@ -28,7 +28,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	string TopLabel_text, TopLabel2_text;
 	boxparty_ZF_Label TopLabel, TopLabel2, swaglevel, explabel, unlocklabel, modlabel;
 	//the arrays are split up for each page to prevent the chance of data from 1 page overflowing into another.
-	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, heartboximages, sklboximages;
+	Array<boxparty_ZF_BoxImage> tutboximages, plrboximages, lvlboximages, lvllockimages, heartboximages, sklboximages;
 	Array<boxparty_ZF_Label> tutlabels, plrlabels, lvllabels, skllabels;
     Array<boxparty_ZF_Button> tutbuttons, plrbuttons, lvlbuttons, sklbuttons;
 	

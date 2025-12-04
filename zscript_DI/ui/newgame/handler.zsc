@@ -265,6 +265,22 @@ Class DINewGameHandler : boxparty_ZF_Handler
 						//link.UpdateKeySelect();
 						stayonpage = false;
 						break;
+					case dimenu_key_left:
+						link.keypos -= 3;
+						if (link.keypos < 0) {link.keypos += link.lvlbuttons.Size();}
+						stayonpage = true;
+						buttonClickCommand(link.lvlbuttons[link.keypos], link.lvlbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
+					case dimenu_key_right:
+						link.keypos += 3;
+						if (link.keypos > link.lvlbuttons.Size() - 1) {link.keypos -= link.lvlbuttons.Size();}
+						stayonpage = true;
+						buttonClickCommand(link.lvlbuttons[link.keypos], link.lvlbuttons[link.keypos].getcommand());
+						//link.UpdateKeySelect();
+						stayonpage = false;
+						break;
 					case dimenu_key_enter:
 						buttonClickCommand(link.lvlbuttons[link.keypos], link.lvlbuttons[link.keypos].getcommand());
 						break;
