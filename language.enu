@@ -48,6 +48,7 @@ DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave\nthat you're 
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DEBILITATED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DEBILITATED = "Debilitated";
 DI_MOD_DAILYRUN = "Daily Challenge";
+DI_UNLOCK_MOD_DAILYRUN = "\cbYou can only play this once a day.";
 DIMODDESC_DI_MOD_DAILYRUN = "A new run everyday.\n\cnForce enables ALL shop items.\n\caProgression is disabled.";
 DI_MOD_WEAPONIZED = "Weaponized";
 DI_UNLOCK_MOD_WEAPONIZED = "\ccUnlock 15 \cfShop Items \ccto unlock this modifier.";

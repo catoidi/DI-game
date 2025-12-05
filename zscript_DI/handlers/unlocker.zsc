@@ -92,13 +92,21 @@ Class DIUnlockHandler : EventHandler
 				if (deathnum >= 5) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_starterpack");}
 			}
 		}
-		if ((e.Thing is "DI_PlayerBase") && diplr && (e.Thing == diplr) && (diplr.GetScore() >= 10000))
+		if (e.Thing is "DI_PlayerBase")
 		{
-			if (di_mod_dailyrun) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_goldhat", 1);}
-			if (di_mod_starterpack) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_quantumbullets");}
-			if (di_mod_weaponized) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_freshfrenzy");}
-			if (di_mod_doubletrouble) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_toomanybullets");}
-			if (di_mod_debilitated) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_modifiedstomach");}
+			if (di_mod_dailyrun)
+			{
+				cvar playnum = cvar.getcvar("di_dailyrun_played");
+				playnum.SetInt(di_dailyrun_played + 1);
+			}
+			if (diplr && (e.Thing == diplr) && (diplr.GetScore() >= 10000))
+			{
+				if (di_mod_dailyrun) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_goldhat", 1);}
+				if (di_mod_starterpack) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_quantumbullets");}
+				if (di_mod_weaponized) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_freshfrenzy");}
+				if (di_mod_doubletrouble) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_toomanybullets");}
+				if (di_mod_debilitated) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_modifiedstomach");}
+			}
 		}
 	}
 	

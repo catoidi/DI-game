@@ -23,6 +23,8 @@ user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (no
 //Difficulty Modifiers
 server noarchive bool di_mod_dailyrun = false; //Enables the "Daily Run" mode.
 server cheat bool di_unlock_mod_dailyrun = true;
+server cheat int di_dailyrun_prevday = 0; //tracks the last daily seed that was played. prevents you from playing the same run multiple times in one day.
+server cheat int di_dailyrun_played = 0; //tracks how many times you've died in a daily run.
 server noarchive bool di_mod_doubletrouble = false; //Enables the "Double Trouble" mode.
 server cheat bool di_unlock_mod_doubletrouble = false; //grants the player access to the Double Trouble difficulty modifier.
 server noarchive bool di_mod_debilitated = false; //yea.

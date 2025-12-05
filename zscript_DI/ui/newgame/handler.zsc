@@ -125,6 +125,11 @@ Class DINewGameHandler : boxparty_ZF_Handler
 			{
 				if (currentskill == 1) {currentskill = 2;}
 				CheatModCheck();
+				if (di_mod_dailyrun)
+				{
+					cvar prevday = cvar.getcvar("di_dailyrun_prevday");
+					prevday.setint(di_dailyseed);
+				}
 				PlayDI(currentclass, currentlvl, currentskill);
 			} //{link.pagenum = 2;}
 			else {link.SetKeyPos(sklnum);}

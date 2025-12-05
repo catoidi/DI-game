@@ -4,9 +4,13 @@ extend class DINewGameMenu
 {
 	virtual void DIUpdater()
 	{
+		cvar dailyrun_enabled = cvar.getcvar("di_unlock_mod_dailyrun");
 		cvar dailyseed = cvar.getcvar("di_dailyseed");
 		string today = SystemTime.Format("%Y%m%d", SystemTime.Now());
 		dailyseed.SetInt(today.ToInt(10));
+		
+		if (today.ToInt(10) == di_dailyrun_prevday) {console.printf("Daily Run is disabled."); dailyrun_enabled.SetBool(false);}
+		else {console.printf("Daily Run is enabled."); dailyrun_enabled.SetBool(true);}
 	
 		//console.printf("attempting to run cvar updater script...");
 		cvar prevversion = cvar.getcvar("di_version");
