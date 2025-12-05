@@ -219,7 +219,7 @@ SHOPLOCK_DI_CREDITFREEZE = "\cbReach a combo of 5 or higher to unlock this item.
 SHOPLOCK_DI_9LEAFCLOVER = "\cbReach a combo of 9 to unlock this item.";
 SHOPLOCK_DI_BLOODYHEART = "\cbGet 10 Tomahawk kills to unlock this item.";
 SHOPLOCK_DI_BULLETMITOSIS = "\cbUnlock 15 shop items to unlock this item.";
-SHOPLOCK_DI_TOOMANYBULLETS = "\cbGet 3 bullet splitters at once to unlock this item.";
+SHOPLOCK_DI_TOOMANYBULLETS = "\cbReach 10k score with the \cvDouble Trouble Modifier \cbenabled to unlock this item.";
 SHOPLOCK_DI_STARFRUIT = "\cbUnlock 30 shop items to unlock this item.";
 SHOPLOCK_DI_EXPLOSIVEROUNDS = "\cbUnlock 45 shop items to unlock this item.";
 SHOPLOCK_DI_COMBODAMAGEMULT = "\cbGain +100% DMG Mult at once to unlock this item.";
@@ -280,10 +280,10 @@ SHOPLOCK_DI_PROCESSEDORE = "\cbGet 256 kills with the \cvOre Drill \cbto unlock 
 SHOPLOCK_DI_PARTYPOPPER = "\cbGet 256 kills with the \cvParty Shotgun \cbto unlock this item.";
 SHOPLOCK_DI_ONIONRING = "\cbGet 256 kills with the \cvStun Crossbow \cbto unlock this item.";
 SHOPLOCK_DI_RUINEDHAT = "\cbGet 256 kills with the \cvP.P.D.S. \cbto unlock this item.";
-SHOPLOCK_DI_QUANTUMBULLETS = "\cbThis item is currently only available in Daily Runs.";
-SHOPLOCK_DI_FRESHFRENZY = "\cbThis item is currently only available in Daily Runs.";
-SHOPLOCK_DI_MODIFIEDSTOMACH = "\cbThis item is currently only available in Daily Runs.";
-SHOPLOCK_DI_GOLDHAT = "\cbThis item is currently only available in Daily Runs.";
+SHOPLOCK_DI_QUANTUMBULLETS = "\cbReach 10k score with the \cvStarter Pack Modifier \cbenabled to unlock this item.";
+SHOPLOCK_DI_FRESHFRENZY = "\cbReach 10k score with the \cvWeaponized Modifier \cbenabled to unlock this item.";
+SHOPLOCK_DI_MODIFIEDSTOMACH = "\cbReach 10k score with the \cvDebilitated Modifier \cbenabled to unlock this item.";
+SHOPLOCK_DI_GOLDHAT = "\cbReach 10k score in a \cvDaily Challenge \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";

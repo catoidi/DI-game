@@ -43,16 +43,6 @@ Class DI_BulletMitosis : DIPassiveInventory
 		return returnvalue;
 	}
 	
-	override void Tick()
-	{
-		super.tick();
-		
-		if (plr && plr.canprogress && (amount >= 3))
-		{
-			plr.PlayerDoUnlock("di_unlock_item_toomanybullets");
-		}
-	}
-	
 	States
 	{
 		Spawn:
