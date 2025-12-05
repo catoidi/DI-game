@@ -6,8 +6,8 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 	{
 		Tag "Ice Bullets";
 		Inventory.Icon "POWRN0";
-		Inventory.PickupMessage "Acquired Bullet Freezer! (Chance for weapons to do Ice damage. Enemies take 20% more ice damage.)";
-		Inventory.MaxAmount 10;
+		Inventory.PickupMessage "Acquired Bullet Freezer! (Chance for weapons to do Ice damage. Non-ice attacks deal -20% DMG.)";
+		Inventory.MaxAmount 5;
 		DIPassiveInventory.DIHidden true;
 	}
 	
@@ -31,8 +31,8 @@ Class DI_StatusGiver_Ice : DIPassiveInventory
 	{
 		if ((passive == false) && (owner))
 		{
-			if ((damageType == 'Ice') || (damageType == 'FakeIce'))
-			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
+			if ((damageType != 'Ice') && (damageType != 'FakeIce') && (amount > rainbownum))
+			newdamage = damage * 0.8;
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -51,8 +51,8 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 	{
 		Tag "Fire Bullets";
 		Inventory.Icon "POWRO0";
-		Inventory.PickupMessage "Acquired Bullet Burner! (Small chance for all weapons to do Fire damage.)";
-		Inventory.MaxAmount 10;
+		Inventory.PickupMessage "Acquired Bullet Burner! (Small chance for all weapons to do Fire damage. Non-fire attacks deal -20% DMG.)";
+		Inventory.MaxAmount 5;
 		DIPassiveInventory.DIHidden true;
 	}
 	
@@ -76,8 +76,8 @@ Class DI_StatusGiver_Fire : DIPassiveInventory
 	{
 		if ((passive == false) && (owner))
 		{
-			if ((damageType == 'Fire') || (damageType == 'FakeFire'))
-			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
+			if ((damageType != 'Fire') && (damageType != 'FakeFire') && (amount > rainbownum))
+			newdamage = damage * 0.8;
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -96,8 +96,8 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 	{
 		Tag "Shock Bullets";
 		Inventory.Icon "POWRP0";
-		Inventory.PickupMessage "Acquired Bullet Shocker! (Small chance for all weapons to do Shock damage.)";
-		Inventory.MaxAmount 10;
+		Inventory.PickupMessage "Acquired Bullet Shocker! (Small chance for all weapons to do Shock damage. Non-shock attacks do -20% DMG.)";
+		Inventory.MaxAmount 5;
 		DIPassiveInventory.DIHidden true;
 	}
 	
@@ -121,8 +121,8 @@ Class DI_StatusGiver_Lightning : DIPassiveInventory
 	{
 		if ((passive == false) && (owner))
 		{
-			if ((damageType == 'Lightning') || (damageType == 'FakeLightning'))
-			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
+			if ((damageType != 'Lightning') && (damageType != 'FakeLightning') && (amount > rainbownum))
+			newdamage = damage * 0.8;
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -141,8 +141,8 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 	{
 		Tag "Poison Bullets";
 		Inventory.Icon "POWRQ0";
-		Inventory.PickupMessage "Acquired Bullet Poisoner! (Small chance for all weapons to do Poison damage.)";
-		Inventory.MaxAmount 10;
+		Inventory.PickupMessage "Acquired Bullet Poisoner! (Small chance for all weapons to do Poison damage. Non-poison attacks do -20% DMG.)";
+		Inventory.MaxAmount 5;
 		DIPassiveInventory.DIHidden true;
 	}
 	
@@ -166,8 +166,8 @@ Class DI_StatusGiver_Poison : DIPassiveInventory
 	{
 		if ((passive == false) && (owner))
 		{
-			if ((damageType == 'Poison') || (damageType == 'FakePoison'))
-			newdamage = damage * (1.0 + (0.2 * amount - rainbownum));
+			if ((damageType != 'Poison') && (damageType != 'FakePoison') && (amount > rainbownum))
+			newdamage = damage * 0.8;
 		}
 		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
 	}
@@ -189,7 +189,7 @@ Class DI_StatusGiver_Rainbow : DIPassiveInventory
 	{
 		Tag "Rainbow Bullets";
 		Inventory.Icon "POWRV0";
-		Inventory.PickupMessage "Acquired Rainbow Bullets! (Chance for all weapons to do fire/ice/poison/shock damage.)";
+		Inventory.PickupMessage "Acquired Rainbow Bullets! (Chance for all weapons to do fire/ice/poison/shock damage. Reduces Firerate by 50%.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -212,6 +212,8 @@ Class DI_StatusGiver_Rainbow : DIPassiveInventory
 		}
 		else {statusgiven = false;}
 	}
+	
+	override double GiveFirerate() {return 0.5;}
 	
 	States
 	{
