@@ -54,6 +54,11 @@ DI_UNLOCK_MOD_WEAPONIZED = "\ccUnlock 15 \cfShop Items \ccto unlock this modifie
 DIMODDESC_DI_MOD_WEAPONIZED = "All shop weapons gain a random \cdpositive \cland \canegative \clattribute.\n";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_WEAPONIZED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_WEAPONIZED = "Weaponized";
+DI_MOD_STARTERPACK = "Starter Pack";
+DI_UNLOCK_MOD_STARTERPACK = "\ccDie 5 times to unlock this modifier.";
+DIMODDESC_DI_MOD_STARTERPACK = "Get 3 random passives, permanently.\n\caReduces EXP by 40%.";
+DIUNLOCKTYPE_DI_UNLOCK_MOD_STARTERPACK = "NEW MODIFIER:";
+DIPOPUP_DI_UNLOCK_MOD_STARTERPACK = "Starter Pack";
 
 //Credits
 DI_CREDIT_TITLE = "\cbCredits:";

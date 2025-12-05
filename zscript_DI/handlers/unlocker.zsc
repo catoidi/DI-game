@@ -89,6 +89,7 @@ Class DIUnlockHandler : EventHandler
 				if (deathnum >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_painstar");}
 				if (deathnum >= 20) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_acidblood");}
 				if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
+				if (deathnum >= 5) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_starterpack");}
 			}
 		}
 	}
