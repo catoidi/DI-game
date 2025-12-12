@@ -6,14 +6,34 @@ Class DI_ModifiedStomach : DIPassiveInventory
 	{
 		Tag "Modified Stomach";
 		Inventory.Icon "POW3Q0";
-		Inventory.PickupMessage "Modified Stomach acquired! (+20% Max Health. Healing is 5% worse, and regen is 5% slower.)";
+		Inventory.PickupMessage "Modified Stomach acquired! (+35% Max Health. Healing is 5% worse, and regen is 5% slower.)";
 		Inventory.MaxAmount 10;
+	}
+	
+	bool doheal;
+	
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		
+		doheal = true;
+	}	
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && doheal)
+		{
+			plr.DI_HealSelf(plr.DIMaxHealth() * 0.35);
+			doheal = false;
+		}
 	}
 	
 	override double GiveMaxHealth()
 	{
 		if (!plr) {return 1.0;}
-		return 1.000001 + (0.2 * amount);
+		return 1.000001 + (0.35 * amount);
 	}
 	
 	override double GiveHealingPower()
