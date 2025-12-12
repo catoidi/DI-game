@@ -218,6 +218,7 @@ version "4.14"
 #include "zscript_DI/items/passives/quantumbullet.zsc"
 #include "zscript_DI/items/passives/freshfrenzy.zsc"
 #include "zscript_DI/items/passives/minionion.zsc"
+#include "zscript_DI/items/passives/dishard.zsc"
 //armors
 #include "zscript_DI/items/armors/tophat.zsc"
 #include "zscript_DI/items/armors/tophat2.zsc"

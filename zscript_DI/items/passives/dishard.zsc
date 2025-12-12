@@ -1,0 +1,10 @@
+//zscript_DI/items/passives/dishard.zsc
+
+//Grants 1 extra life. Reduces your Max HP by 30% while equipped.
+//Upon taking fatal damage, the player is granted invulnerability for 3 seconds and 25% of their Max HP back.
+//The item is removed upon activation, therefore removing the Max HP debuff.
+
+Class DI_DIShard : DIPassiveInventory
+{
+	
+}
