@@ -6,5 +6,43 @@
 
 Class DI_DIShard : DIPassiveInventory
 {
+	Default
+	{
+		Tag "DI Shard";
+		Inventory.Icon "POW3T0";
+		Inventory.PickupMessage "DI Shard acquired! (Gain an extra life. Reduce Max HP by 30% while equipped.)";
+		Inventory.MaxAmount 3;
+	}
 	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		if (plr && (damage > plr.health) && (plr.CountInv("DI_DIShard_Powerup") < 1))
+		{
+			newdamage = plr.health - 1;
+			plr.GiveInventory("DI_DIShard_Powerup", 3);
+			plr.DI_HealSelf((plr.DIMaxHealth() / 2) - 1, 1.0, true);
+			plr.TakeInventory(self.GetClassName(), 1);
+		}
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 - (0.3 * amount);
+	}
+}
+
+Class DI_DIShard_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvDI Shard (Active)";
+		Inventory.MaxAmount 3;
+		Inventory.Icon "POW3T0";
+	}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		newdamage = 0;
+	}
 }
