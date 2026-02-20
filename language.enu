@@ -39,17 +39,17 @@ DIMENU_LOCKED_LEVEL_BONUS01 = "\ccunlocked by unlocking 15 or more \cfShop Items
 //Modifiers
 DI_MOD_DOUBLETROUBLE = "Double Trouble";
 DI_UNLOCK_MOD_DOUBLETROUBLE = "\ccunlocked by reaching \cfSwag Level 5\cc.";
-DIMODDESC_DI_MOD_DOUBLETROUBLE = "\cbDoubles enemies.\nIncreases Shop Prices by 70%.\n\caReduces EXP by 40%.";
+DIMODDESC_DI_MOD_DOUBLETROUBLE = "\cbDoubles enemies.\nIncreases Shop Prices by 70%.\n\caReduces score by 40%.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DOUBLETROUBLE = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DOUBLETROUBLE = "Double Trouble";
 DI_MOD_DEBILITATED = "Debilitated";
 DI_UNLOCK_MOD_DEBILITATED = "\ccunlocked by failing 5 \cfSide Quests \ccon \cfLevel 2 \ccin a single run.";
-DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave\nthat you're not in debt.\n\cnImproves EXP by 5% per debuff.";
+DIMODDESC_DI_MOD_DEBILITATED = "\cbGain a random debuff every wave\nthat you're not in debt.\n\cnEach debuff grants +5% score.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_DEBILITATED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_DEBILITATED = "Debilitated";
-DI_MOD_DAILYRUN = "Daily Challenge";
+DI_MOD_DAILYRUN = "Free Trial";
 DI_UNLOCK_MOD_DAILYRUN = "\cbYou can only play this once a day.";
-DIMODDESC_DI_MOD_DAILYRUN = "A new run everyday.\n\cnForce enables ALL shop items.\n\caProgression is disabled.";
+DIMODDESC_DI_MOD_DAILYRUN = "Full access, only once a day.\n\cnEvery item unlocked. Custom seed.\n\caProgression is disabled.";
 DI_MOD_WEAPONIZED = "Weaponized";
 DI_UNLOCK_MOD_WEAPONIZED = "\ccUnlock 15 \cfShop Items \ccto unlock this modifier.";
 DIMODDESC_DI_MOD_WEAPONIZED = "All shop weapons gain a random \cdpositive \cland \canegative \clattribute.\n";
@@ -57,7 +57,7 @@ DIUNLOCKTYPE_DI_UNLOCK_MOD_WEAPONIZED = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_WEAPONIZED = "Weaponized";
 DI_MOD_STARTERPACK = "Starter Pack";
 DI_UNLOCK_MOD_STARTERPACK = "\ccDie 5 times to unlock this modifier.";
-DIMODDESC_DI_MOD_STARTERPACK = "Get 3 random passives, permanently.\n\caReduces EXP by 40%.";
+DIMODDESC_DI_MOD_STARTERPACK = "Get 3 random passives, permanently.\n\caReduces score by 40%.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_STARTERPACK = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_STARTERPACK = "Starter Pack";
 
@@ -284,7 +284,7 @@ SHOPLOCK_DI_RUINEDHAT = "\cbGet 256 kills with the \cvP.P.D.S. \cbto unlock this
 SHOPLOCK_DI_QUANTUMBULLETS = "\cbReach 10k score with the \cvStarter Pack Modifier \cbenabled to unlock this item.";
 SHOPLOCK_DI_FRESHFRENZY = "\cbReach 10k score with the \cvWeaponized Modifier \cbenabled to unlock this item.";
 SHOPLOCK_DI_MODIFIEDSTOMACH = "\cbReach 10k score with the \cvDebilitated Modifier \cbenabled to unlock this item.";
-SHOPLOCK_DI_GOLDHAT = "\cbReach 10k score in a \cvDaily Challenge \cbto unlock this item.";
+SHOPLOCK_DI_GOLDHAT = "\cbReach 10k score in a \cvFree Trial \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
