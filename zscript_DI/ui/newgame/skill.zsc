@@ -270,7 +270,7 @@ extend class DINewGameMenu
                 48 + 126 - ((smallFont.StringWidth(swagstring) * 1.5) / 2),
                 // Calculate the vertical position.
                 // Initial offset + ((label text height + spacing) * label count)
-                330
+                314
             ),
             // Size.
             (
@@ -303,7 +303,7 @@ extend class DINewGameMenu
                 48 + 126 - (smallFont.StringWidth(expstring) / 2),
                 // Calculate the vertical position.
                 // Initial offset + ((label text height + spacing) * label count)
-                358
+                342
             ),
             // Size.
             (
@@ -326,8 +326,7 @@ extend class DINewGameMenu
 		explabel.Pack(mainFrame);
 		
 		//Add unlock bonus exp info here as well.
-		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum() * 2);
-		unlockstring.appendformat("\n\cc+%d%% EXP from high scores", GetHighScore() / 1000);
+		string unlockstring = CreateUnlockString();
 		unlocklabel = boxparty_ZF_Label.Create(
 			// Position.
             (
@@ -335,14 +334,14 @@ extend class DINewGameMenu
                 48 + 126 - (smallFont.StringWidth(unlockstring) / 2),
                 // Calculate the vertical position.
                 // Initial offset + ((label text height + spacing) * label count)
-                370
+                354
             ),
             // Size.
             (
                 // Calculate the horizontal size of the text.
                 smallFont.StringWidth (unlockstring),
                 // Get the font's height.
-                smallFont.GetHeight() * 2.5
+                smallFont.GetHeight() * 4.5
             ),
             // The label's text.
             text: unlockstring,
@@ -439,5 +438,24 @@ extend class DINewGameMenu
 			++bigswag;
 		}
 		return bigswag;
+	}
+	
+	virtual string CreateUnlockString(float skillmult = 1.0)
+	{
+		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum() * 2);
+		unlockstring.appendformat("\n\cc+%d%% EXP from high scores", GetHighScore() / 1000);
+		string scoremultstring;
+		float newscoremult = GetScoreMult(skillmult);
+		if (newscoremult <= 0.0)
+		{
+			unlockstring = "\n\caScores are currently disabled.";
+		}
+		if (newscoremult != 1.0)
+		{
+			if (newscoremult > 1.0) {scoremultstring = "v+";}
+			else if (newscoremult < 1.0) {scoremultstring = "a";}
+			unlockstring.appendformat("\n\n\c%s%.1f%% bonus to final score", scoremultstring, (newscoremult * 100) - 100.0);
+		}
+		return unlockstring;
 	}
 }

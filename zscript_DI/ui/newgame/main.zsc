@@ -15,6 +15,8 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 	cvar curlvl_cvar, curplr_cvar, curskl_cvar;
 	
+	cvar expmult_cvar;
+	
 	bool pageupdate, justkeyed, cheatmode;
 	
 	int pagenum, pagenum_tick, keypos, curkey;
@@ -35,7 +37,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	boxparty_ZF_BoxImage keyboardselect, modselect;
 	
 	Array<String> filedata; //all the lines from DIGAME.
-	Array<String> playerpool, playerlock, levelpool, levellock, modpool, modlock, cheatmodpool; //all available players. does not include players that are locked.
+	Array<String> playerpool, playerlock, levelpool, levellock, modpool, modlock, cheatmodpool, activemods;
 	
 	transient cvar currentcvar;
 	
@@ -127,7 +129,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 			float barscale = mainFrame.GetScale();
 			
 			int startx3 = (Screen.GetWidth() / 2) - (224 * barscale);
-			int starty = (Screen.GetHeight() / 2) + 146 * barscale;
+			int starty = (Screen.GetHeight() / 2) + 130 * barscale;
 			string fill1 = "9999ea";
 			string fill2 = "000073";
 			string dim1 = "404040";
@@ -343,14 +345,14 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				if ((currentline[1] == "player") && (currentline[2]))
 				{
 					playerpool.Push(currentline[2]);
-					if (currentline.Size() == 4) {playerlock.Push(currentline[3]);}
+					if (currentline.Size() >= 4) {playerlock.Push(currentline[3]);}
 					else {playerlock.Push("u");}
 					//console.printf("%s", currentline[2]);
 				}
 				else if ((currentline[1] == "level") && (currentline[2]))
 				{
 					levelpool.Push(currentline[2]);
-					if (currentline.Size() == 4) {levellock.Push(currentline[3]);}
+					if (currentline.Size() >= 4) {levellock.Push(currentline[3]);}
 					else {levellock.Push("u");}
 					//console.printf("%s", currentline[2]);
 				}
@@ -358,7 +360,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				{
 					if (currentline[1] == "cheatmod") {cheatmodpool.Push(currentline[2]);}
 					modpool.Push(currentline[2]);
-					if (currentline.Size() == 4) 
+					if (currentline.Size() >= 4) 
 					{
 						modlock.push(currentline[3]);
 						
@@ -434,6 +436,48 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 			}
 		}
 		return currentscore;
+	}
+	
+	virtual float GetScoreMult(float skillmult = 1.0)
+	{
+		//console.printf("checking finalmult...");
+	
+		float finalmult = skillmult;
+		
+		if (cheatmodsactive > 0) {return 0.0;}
+	
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			
+			Array<String> currentline;
+			filedata[i] = filedata[i].MakeLower();
+			filedata[i].Split(currentline, ", ", TOK_SKIPEMPTY);
+			if ((currentline[0] ~== "add") && (currentline.size() > 4))
+			{
+				//find player mult
+				if ((currentline[1] ~== "player") && (currentline[2] ~== playerpool[curplr_cvar.getint()]))
+				{
+					finalmult *= currentline[4].ToDouble();
+					//console.printf("finalmult is now %.1f", finalmult);
+				}
+				else if ((currentline[1] ~== "level") && (currentline[2] == playerpool[curplr_cvar.getint()]))
+				{
+					finalmult *= currentline[4].ToDouble();
+					//console.printf("finalmult is now %.1f", finalmult);
+				}
+				else if ((currentline[1] ~== "modifier") && (activemods.find(currentline[2]) < activemods.size()))
+				{
+					//console.printf("debug:\n%d\n%d", activemods.find(currentline[2]), activemods.size());
+					finalmult *= currentline[4].ToDouble();
+					//console.printf("finalmult is now %.1f", finalmult);
+				}
+			}
+		}
+		
+		//console.printf("all lines checked. finalmult is now %.1f.", finalmult);
+		return finalmult;
 	}
 	
 	virtual void UpdateKeySelect(bool newpage = false)

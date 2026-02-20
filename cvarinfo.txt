@@ -17,8 +17,9 @@ user bool di_menu_asktutorial = false; //check if the player has been asked abou
 server noarchive bool di_menu_forcelock = false; //use this when using difficulty modifiers that affect cvars like "di_unlock_cheat".
 user noarchive int di_menu_current_plr = 0; //currently selected player. remembers the selection even after closing/reopening the menu.
 user noarchive int di_menu_current_lvl = 0; //same as above, but for level.
-user noarchive int di_menu_current_skl = 0; //same as above, but for skill.
+user noarchive int di_menu_current_skl = 1; //same as above, but for skill.
 user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (not implemented yet.)
+server noarchive cheat float di_expmult = 1.0;
 
 //Difficulty Modifiers
 server noarchive bool di_mod_dailyrun = false; //Enables the "Daily Run" mode.

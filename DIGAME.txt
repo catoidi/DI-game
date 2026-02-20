@@ -1,4 +1,5 @@
 >>It's VERY IMPORTANT that this 100% matches the players/episodes listed in the default New Game Menu, or this won't work right.
+>>This is due to the *very* hacky way I am hijacking the newgame menu.
 >>#1: Command
 >>	[Add]: adds this line to the menu.
 >>	[Delete]: removes this line from the menu. (4th argument not necessary for this command.)
@@ -6,13 +7,20 @@
 >>	[Player]: this line is referring to a player class. MUST match the order of players added in MAPINFO's "gameinfo" section.
 >>	[Level]: this line is referring to an episode. MUST match the order the episodes are added in MAPINFO.
 >>  [Modifier]: this is is referring to a difficulty modifier.
->>  [CheatModifier]: same as Modifier, but force enables all cheats (and disables progression!) while active.
+>>  [CheatMod]: same as Modifier, but force enables all cheats (and disables progression!) while active.
 >>#3: Item
 >>	(tells the menu which player/level's info to display. purely cosmetic.)
 >>  (for Modifiers, this controls the CVAR that actually toggles the modifier itself.)
 >>#4: CVAR
 >>	(if this argument is used, this option will be locked unless this CVAR (must be a bool!) is set to TRUE.)
 >>	(if "di_unlock_cheat" is enabled, these options will always be enabled.)
+>>#5: Swag Multiplier
+>> (range: 0.0 - infinity)
+>> (default: 1.0)
+>> (if used, applies a multiplier to the final score if this option is selected.)
+>> (can be used to make certain options easier/harder to get high scores with.)
+>> (can be used by any command types, except for "CheatMod", as a 0% score is already implied.) 
+>> (stacks exponentially.)
 >>
 >>[PLAYERS]
 >>Player 1, Fredrick, always unlocked.
@@ -39,7 +47,7 @@ Add, Level, bonus01, di_unlock_lvl_bonus01;
 >>[MODIFIERS]
 >>Double Trouble.
 Add, CheatMod, di_mod_dailyrun, di_unlock_mod_dailyrun;
-Add, Modifier, di_mod_starterpack, di_unlock_mod_starterpack;
+Add, Modifier, di_mod_starterpack, di_unlock_mod_starterpack, 0.6;
 Add, Modifier, di_mod_weaponized, di_unlock_mod_weaponized;
-Add, Modifier, di_mod_doubletrouble, di_unlock_mod_doubletrouble;
+Add, Modifier, di_mod_doubletrouble, di_unlock_mod_doubletrouble, 0.6;
 Add, Modifier, di_mod_debilitated, di_unlock_mod_debilitated;

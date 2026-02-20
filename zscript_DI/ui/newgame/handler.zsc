@@ -117,6 +117,8 @@ Class DINewGameHandler : boxparty_ZF_Handler
 		{
 			let sklstr = cmd.Mid(5);
 			let sklnum = sklstr.ToInt(10);
+			if (sklnum == 0) {link.unlocklabel.SetText(link.CreateUnlockString(0.25));}
+			else {link.unlocklabel.SetText(link.CreateUnlockString());}
 			string sklclass = link.skllabels[sklnum].GetText();
 			link.UpdateTopLabel(String.Format("\cnselected Difficulty: %s", sklclass)); 
 			//console.printf("%s", lvlclass);
@@ -154,12 +156,16 @@ Class DINewGameHandler : boxparty_ZF_Handler
 					curmod.SetBool(false);
 					--link.modsactive;
 					if (ischeatmod) {--link.cheatmodsactive;}
+					link.activemods.delete(link.activemods.find(link.modpool[modnum]));
+					link.unlocklabel.SetText(link.CreateUnlockString());
 				}
 				else 
 				{
 					curmod.SetBool(true);
 					++link.modsactive;
 					if (ischeatmod) {++link.cheatmodsactive;}
+					link.activemods.push(link.modpool[modnum]);
+					link.unlocklabel.SetText(link.CreateUnlockString());
 				}
 				
 				string labeltxt = stringtable.localize(link.modpool[modnum], false);
