@@ -11,7 +11,6 @@ extend class DIHandler
 		{
 			plr.GiveInventory("di_enemydoubler", 1);
 			plr.GiveInventory("di_pricedoubler", 1);
-			plr.GiveInventory("di_doubletroubleswag", 1);
 		}
 		if (di_mod_debilitated)
 		{
