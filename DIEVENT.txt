@@ -36,8 +36,8 @@ DI02, Event, dievent_payday, 120, 1;
 DI02, Event, dievent_riskreward, 60, 1;
 DI02, Event, dievent_speedrun, 60, 1;
 DI02, Event, dievent_slowhealing, 120, 3;
-DI02, Event, dievent_fatigue, 50, 3;
-DI02, Event, dievent_incremental, 100, 5;
+DI02, Event, dievent_fatigue, 60, 3;
+DI02, Event, dievent_incremental, 120, 5;
 >>BONUS LEVEL ONE EVENTS:
 BONUS01, Event, dievent_bulletdeath, 150, 1;
 BONUS01, Event, dievent_iamrisen, 150, 1;
