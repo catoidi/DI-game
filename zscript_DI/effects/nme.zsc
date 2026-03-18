@@ -127,6 +127,15 @@ Class NME_Tier2_Melee : DI_NME
 	}
 }
 
+Class NME_Tier2_Large : DI_NME
+{
+	Default
+	{
+		DI_NME.NMETier 2;
+		DI_NME.NMEType "Large";
+	}
+}
+
 Class NME_Tier3 : DI_NME
 {
 	Default
