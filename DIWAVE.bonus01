@@ -70,8 +70,10 @@ Level BONUS01;
 		Time 130;
 		Spawn NME_Tier1_Melee, 24;
 		Wait 19;
-		Spawn NME_Tier2, 10;
+		Spawn NME_Tier2, 9;
 		Spawn NME_Tier1, 10;
+		Wait 19;
+		Spawn NME_Tier2_Large, 1, DISpawnerSpot_Big;
 	}
 	
 	Wave 6;
@@ -93,8 +95,92 @@ Level BONUS01;
 		Spawn NME_Tier1_Melee, 6;
 		Spawn NME_Tier1, 6;
 		Wait 12;
-		Spawn NME_Tier2, 4;
+		Spawn NME_Tier2, 3;
+		Spawn NME_Tier2_Large, 1, DISpawnerSpot_Big;
 		Spawn NME_Tier3, 2;
+	}
+	
+	Wave 7;
+	{
+		Cap 1;
+		Rate 1;
+		Time 35;
+		Spawn NME_Tier3, 1;
+		Wait 1;
+		Cap 15;
+		Spawn NME_Tier3, 10;
+		Spawn NME_Tier2, 19;
+		Spawn NME_Tier2_Large, 1, DISpawnerSpot_Big;
+		Spawn NME_Tier1, 10;
+		Wait 38;
+		Rate 2;
+		Cap 20;
+		Spawn NME_Tier2, 8;
+		Spawn NME_Tier1, 10;
+		Spawn NME_Tier2_Large, 2, DISpawnerSpot_Big;
+	}
+	
+	Wave 8;
+	{
+		Cap 8;
+		Rate 1;
+		Time 36;
+		Spawn NME_Tier1, 24;
+		Spawn NME_Tier2, 16;
+		Spawn NME_Tier3, 6;
+		Wait 12;
+		Cap 10;
+		Time 32;
+		Spawn NME_Tier1, 8;
+		Spawn NME_Tier3, 2;
+		Wait 12;
+		Cap 12;
+		Time 28;
+		Spawn NME_Tier1, 8;
+		Spawn NME_Tier3, 2;
+		Wait 12;
+		Cap 14;
+		Time 24;
+		Spawn NME_Tier1, 8;
+		Spawn NME_Tier3, 2;
+		Wait 12;
+		Cap 16;
+		Time 20;
+		Spawn NME_Tier2, 6;
+		Spawn NME_Tier2_Large, 2, DISpawnerSpot_Big;
+		Spawn NME_Tier3, 2;
+		Wait 12;
+		Cap 18;
+		Time 16;
+		Spawn NME_Tier2, 6;
+		Spawn NME_Tier2_Large, 2, DISpawnerSpot_Big;
+		Spawn NME_Tier3, 1;
+		Spawn NME_Tier3_Large, 1, DISpawnerSpot_Big;
+	}
+	
+	Wave 9;
+	{
+		Cap 9;
+		Rate 9;
+		Time 1;
+		Spawn NME_Tier1, 9;
+		Wait 6;
+		Cap 18;
+		Rate 3;
+		Time 70;
+		Spawn NME_Tier1, 18;
+		Spawn NME_Tier2, 15;
+		Spawn NME_Tier2_Large, 3, DISpawnerSpot_Big;
+		Wait 27;
+		Cap 27;
+		Spawn NME_Tier1, 9;
+		Spawn NME_Tier2, 12;
+		Spawn NME_Tier2_Large, 6, DISpawnerSpot_Big;
+		Spawn NME_Tier3, 9;
+		Wait 27;
+		Cap 36;
+		Spawn NME_Tier3, 15;
+		Spawn NME_Tier3_Large, 3, DISpawnerSpot_Big;
 	}
 	
 	Endless Restart;
@@ -106,5 +192,6 @@ Level BONUS01;
 		MultDamage 1;
 		MultSpeed 0.2;
 		MultPrice 1;
+		Spawn NME_Tier3_Large, 1, DISpawnerSpot_Big;
 	}
 }
