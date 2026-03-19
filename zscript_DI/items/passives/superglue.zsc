@@ -6,7 +6,7 @@ Class DI_SuperGlue : DIPassiveInventory
 	{
 		Tag "Super Glue";
 		Inventory.Icon "POW2B0";
-		Inventory.PickupMessage "Acquired Super Glue! (Improves Accuracy and Recoil amount/recovery, but switching weapons temporarily reduces weapon speed.)";
+		Inventory.PickupMessage "Acquired Super Glue! (Improves Accuracy and Recoil amount/recovery, but switching weapons temporarily reduces reload speed.)";
 		Inventory.MaxAmount 5;
 	}
 	
@@ -21,8 +21,8 @@ Class DI_SuperGlue : DIPassiveInventory
 		{
 			if (prevwpn != plr.player.ReadyWeapon)
 			{
-				gluetimer = 35 * amount;
-				plr.A_SetInventory("DI_SuperGlue_Powerup", amount);
+				gluetimer = 175;
+				plr.A_SetInventory("DI_SuperGlue_Powerup", 5);
 			}
 			prevwpn = plr.player.ReadyWeapon;
 			
@@ -65,14 +65,14 @@ Class DI_SuperGlue_Powerup : DIPowerup
 	{
 		Tag "\cgSuper Glue (Active)";
 		Inventory.Icon "POW2C0";
-		Inventory.MaxAmount 4;
+		Inventory.MaxAmount 5;
 		DIPowerup.PauseInShops false;
 	}
 	
-	override double GiveWeaponSpeed()
+	override double GiveReloadSpeed()
 	{
 		if (!plr) {return 0;}
-		return 0.35;
+		return 0.35 * owner.countinv("DI_SuperGlue");
 	}
 	
 	States
