@@ -40,17 +40,27 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		else if (e.Name == "dievent_addron")
 		{
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
-			AddRonEvent(eventnum);
+			SimpleMonsterEvent("RonSpawner2", eventnum * 2);
 		}
 		else if (e.Name == "dievent_hammertime")
 		{
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
-			HammerTime(eventnum);
+			SimpleMonsterEvent("THEHAMMER", eventnum);
 		}
 		else if (e.Name == "dievent_pepperparty")
 		{
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
-			PepperParty(eventnum);
+			SimpleMonsterEvent("Pepper", eventnum);
+		}
+		else if (e.Name == "dievent_tier2enemies")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			SimpleMonsterEvent("NME_Tier2", eventnum);
+		}
+		else if (e.Name == "dievent_tier3enemies")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			SimpleMonsterEvent("NME_Tier3", eventnum / 2);
 		}
 		else if (e.Name == "dievent_pizzahorde")
 		{
@@ -243,24 +253,9 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		mon.A_SpawnItemEX("DI_BulletSpawner", 0, 0, mon.Height / 2, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
 	}
 	
-	virtual void AddRonEvent(int wavenum)
+	virtual void SimpleMonsterEvent(string enemy, int count)
 	{
-		//example script to add new enemies to a wave.
-		int ronnum = wavenum * 2;
-		string cmd = string.format("addwaveenemy RonSpawner2 %d", ronnum);
-		//console.printf("%s", cmd);
-		SendNetworkEvent(cmd);
-	}
-	
-	virtual void HammerTime(int wavenum)
-	{
-		string cmd = string.format("addwaveenemy THEHAMMER %d", wavenum);
-		SendNetworkEvent(cmd);
-	}
-	
-	virtual void PepperParty(int wavenum)
-	{
-		string cmd = string.format("addwaveenemy Pepper %d", wavenum);
+		string cmd = string.format("addwaveenemy %s %d", enemy, count);
 		SendNetworkEvent(cmd);
 	}
 	

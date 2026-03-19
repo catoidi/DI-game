@@ -22,6 +22,8 @@ DI01, Event, dievent_speedrun, 50, 1;
 DI01, Event, dievent_slowhealing, 100, 3;
 DI01, Event, dievent_fatigue, 50, 3;
 DI01, Event, dievent_incremental, 100, 5;
+DI01, Event, dievent_tier2enemies, 50, 3;
+DI01, Event, dievent_tier3enemies, 100, 5;
 >>LEVEL TWO EVENTS:
 DI02, Event, dievent_bulletdeath, 120, 1;
 DI02, Event, dievent_iamrisen, 120, 1;
@@ -38,6 +40,8 @@ DI02, Event, dievent_speedrun, 60, 1;
 DI02, Event, dievent_slowhealing, 120, 3;
 DI02, Event, dievent_fatigue, 60, 3;
 DI02, Event, dievent_incremental, 120, 5;
+DI02, Event, dievent_tier2enemies, 60, 3;
+DI02, Event, dievent_tier3enemies, 120, 5;
 >>BONUS LEVEL ONE EVENTS:
 BONUS01, Event, dievent_bulletdeath, 150, 1;
 BONUS01, Event, dievent_iamrisen, 150, 1;
@@ -51,3 +55,6 @@ BONUS01, Event, dievent_speedrun, 75, 1;
 BONUS01, Event, dievent_slowhealing, 150, 3;
 BONUS01, Event, dievent_fatigue, 75, 3;
 BONUS01, Event, dievent_incremental, 150, 5;
+BONUS01, Event, dievent_tier2enemies, 75, 3;
+BONUS01, Event, dievent_tier3enemies, 150, 5;
+BONUS01, Event, dievent_thebigguy, 150, 8;

@@ -359,3 +359,7 @@ dievent_fatigue = "\cgFatigue";
 dievent_fatigue_desc = "\caEach Fresh Kill grants -1.5% Weapon Speed.";
 dievent_incremental = "\cgIncremental Injuries";
 dievent_incremental_desc = "\caEach point of DMG reduces\nyour Max HP by -0.2%, capped at -75%.";
+dievent_tier2enemies = "\cgsome extra foes";
+dievent_tier2enemies_desc = "\caA group of various enemies are spawning.";
+dievent_tier3enemies = "\cgdanger approaches";
+dievent_tier3enemies_desc = "\caA group of highly dangerous enemies are approaching!\nProceed with caution.";
