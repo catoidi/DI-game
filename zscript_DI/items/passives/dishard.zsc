@@ -19,6 +19,8 @@ Class DI_DIShard : DIPassiveInventory
 		if (plr && (damage > plr.health) && (plr.CountInv("DI_DIShard_Powerup") < 1))
 		{
 			newdamage = plr.health - 1;
+			plr.ACS_NamedExecuteAlways("DoLeafFlash");
+			plr.A_Quake(3, 35, 0, 64);
 			plr.GiveInventory("DI_DIShard_Powerup", 3);
 			plr.DI_HealSelf((plr.DIMaxHealth() / 2) - 1, 1.0, true);
 			plr.TakeInventory(self.GetClassName(), 1);
