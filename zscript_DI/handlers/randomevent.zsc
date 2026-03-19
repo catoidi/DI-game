@@ -140,7 +140,10 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		}
 		if (e.Thing is "DI_Monster")
 		{
-			//stuff
+			if (dobulletdeath && (random(0, 1) == 1))
+			{
+				e.Thing.GiveInventory("DI_BulletDeathGiver", 1);
+			}
 		}
 		if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
 		{
@@ -153,7 +156,6 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		if (e.Thing is "DI_Monster")
 		{
 			DI_Monster thingy = DI_Monster(e.Thing);
-			if (dobulletdeath) {BulletDeath(thingy);}
 			if (dopizzahorde) {PizzaHorde(thingy);}
 			if (doiamrisen) {IAmRisen(thingy);}
 		}
@@ -246,11 +248,6 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 			doincremental = false;
 			plr.TakeInventory("DI_IncrementalInjuries", 1);
 		}
-	}
-	
-	virtual void BulletDeath(DI_Monster mon)
-	{
-		mon.A_SpawnItemEX("DI_BulletSpawner", 0, 0, mon.Height / 2, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
 	}
 	
 	virtual void SimpleMonsterEvent(string enemy, int count)
