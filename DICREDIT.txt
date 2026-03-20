@@ -52,10 +52,11 @@ Page 4;
 	Subtitle $DI_CREDIT_SUPPORTERS;
 	Subtitle ;
 	Credit , Glace, Muffins;
-	Credit , Veldt, Meowsers;
-	Credit , Merci, TheNancho;
-	Credit , Baehemoth, TheatreHeathen20;
-	Credit , mr.casual, Nuts;
-	Credit , Gabriel, Tayette;
-	Image creditimage1.png, 0, 0, 960;
+	Credit , TheNancho, Meowsers;
+	Credit , Gabriel, Veldt;
+	Credit , Merci, kuneeee;
+	Credit , Baehemoth, mr.casual;
+	Credit , TheatreHeathen20, Nuts;
+	Credit , , Tayette;
+	Image creditimage1.png, 0, 0, 980;
 }
