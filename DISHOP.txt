@@ -230,3 +230,4 @@ FakeShopItem DI_QuestDebuff_Debase BOOKB 1;
 FakeShopItem DI_QuestDebuff_WideAngleLens BOOKB 1;
 FakeShopItem DI_QuestDebuff_PointBlank BOOKB 1;
 FakeShopItem DI_QuestDebuff_ShieldedFoes BOOKB 1;
+FakeShopItem DI_QuestDebuff_Martyr BOOKB 1;
