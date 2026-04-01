@@ -60,6 +60,11 @@ DI_UNLOCK_MOD_STARTERPACK = "\ccDie 5 times to unlock this modifier.";
 DIMODDESC_DI_MOD_STARTERPACK = "Get 3 random passives, permanently.\n\caReduces score by 40%.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_STARTERPACK = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_STARTERPACK = "Starter Pack";
+DI_MOD_BLINDBOX = "Blind Box";
+DI_UNLOCK_MOD_BLINDBOX = "\ccBuy 10 items from chests to unlock this modifier.";
+DIMODDESC_DI_MOD_BLINDBOX = "\caItem descriptions are hidden.\nIncreases score by 15%.";
+DIUNLOCKTYPE_DI_UNLOCK_MOD_BLINDBOX = "NEW MODIFIER:";
+DIPOPUP_DI_UNLOCK_MOD_BLINDBOX = "Blind Box";
 
 //Credits
 DI_CREDIT_TITLE = "\cbCredits:";
@@ -68,7 +73,7 @@ DI_CREDIT_CATOIDI_2 = "developer";
 DI_CREDIT_FOREVERHOME_1 = "foreverhome";
 DI_CREDIT_FOREVERHOME_2 = "musician";
 DI_CREDIT_OPENSOURCE = "\ckOpen source code libraries used:";
-DI_CREDIT_GZDOOM = "\ckThis game was made in the GZDoom engine.";
+DI_CREDIT_GZDOOM = "\ckThis game was made in the UZDoom engine.";
 DI_CREDIT_SLADE = "\ckMost of the coding was done in Slade3,";
 DI_CREDIT_UDB = "\ckand the levels were made in Ultimate Doom Builder.";
 DI_CREDIT_NASHHPBAR_1 = "NashHPBar";

@@ -1,0 +1,21 @@
+//zscript_DI/items/modifiers/blindbox.zsc
+
+Class DI_BlindBox_Shop : DIShopInventory
+{
+	Default
+	{
+		DIShopInventory.AddController false;
+	}
+	
+	override void ShopInit()
+	{
+		super.ShopInit();
+		
+		if (shop && !shop.user_hideitem)
+		{
+			shop.user_hideitem = true;
+			//shop.user_displayoffset -= 16;
+			shop.shop_currentsprite = "LOOKB";
+		}
+	}
+}

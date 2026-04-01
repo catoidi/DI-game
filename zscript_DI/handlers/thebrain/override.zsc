@@ -79,6 +79,10 @@ extend class DIHandler
 				{
 					Weaponized_AddShop(DIShop(e.Thing));
 				}
+				if (di_mod_blindbox)
+				{
+					AddShopInventoryItem(DIShop(e.Thing), "DI_BlindBox_Shop");
+				}
 			}
 			if (e.Thing is "DIShopController")
 			{

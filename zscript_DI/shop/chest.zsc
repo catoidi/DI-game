@@ -33,6 +33,21 @@ Class DIChest : DIPermaShop
 	}
 	
 	override bool IsPriceDecreased() {return false;}
+	
+	override void DoPurchase(int buyprice)
+	{
+		Super.DoPurchase(buyprice);
+		
+		if (di_progression && !di_unlock_mod_blindbox)
+		{
+			cvar chestpurchases = cvar.findcvar("di_chestpurchases");
+			chestpurchases.setint(di_chestpurchases + 1);
+			if (di_chestpurchases >= 9)
+			{
+				eventhandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_blindbox");
+			}
+		}
+	}
 
 	States
 	{

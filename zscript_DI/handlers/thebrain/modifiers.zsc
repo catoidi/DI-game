@@ -154,11 +154,22 @@ extend class DIHandler
 	
 	virtual void Weaponized_AddShop(DIShop shop)
 	{
+		//gives the shopinventory item to all valid shops and sets the necessary pointers.
 		shop.GiveInventory("DI_Weaponized_Shop", 1);
 		let item = DI_Weaponized_Shop(shop.FindInventory("DI_Weaponized_Shop"));
 		if (!item) {ThrowAbortException("Failed to find DI_Weaponized_Shop!");}
 		item.shop = shop;
 		item.thebrain = self;
+	}
+	
+	virtual void AddShopInventoryItem(DIShop shop, string itemname)
+	{
+		//generic version of weaponized_addshop that does not use a pointer to thebrain.
+		//item must be the name of a valid DIShopInventory object for this to work.
+		shop.GiveInventory(itemname, 1);
+		let item = DIShopInventory(shop.FindInventory(itemname));
+		if (!item) {ThrowAbortException("Failed to grant %s to shops!", item);}
+		item.shop = shop;
 	}
 	
 	clearscope virtual bool Weaponized_CheckWeapon(name wpn)
