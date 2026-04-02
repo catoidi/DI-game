@@ -62,7 +62,7 @@ DIUNLOCKTYPE_DI_UNLOCK_MOD_STARTERPACK = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_STARTERPACK = "Starter Pack";
 DI_MOD_BLINDBOX = "Blind Box";
 DI_UNLOCK_MOD_BLINDBOX = "\ccBuy 10 items from chests to unlock this modifier.";
-DIMODDESC_DI_MOD_BLINDBOX = "\caItem descriptions are hidden.\nIncreases score by 15%.";
+DIMODDESC_DI_MOD_BLINDBOX = "\caItem descriptions are hidden.\ndIncreases score by 15%.";
 DIUNLOCKTYPE_DI_UNLOCK_MOD_BLINDBOX = "NEW MODIFIER:";
 DIPOPUP_DI_UNLOCK_MOD_BLINDBOX = "Blind Box";
 
