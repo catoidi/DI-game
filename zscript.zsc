@@ -221,6 +221,7 @@ version "4.14"
 #include "zscript_DI/items/passives/freshfrenzy.zsc"
 #include "zscript_DI/items/passives/minionion.zsc"
 #include "zscript_DI/items/passives/dishard.zsc"
+#include "zscript_DI/items/passives/equalizer.zsc"
 //armors
 #include "zscript_DI/items/armors/tophat.zsc"
 #include "zscript_DI/items/armors/tophat2.zsc"

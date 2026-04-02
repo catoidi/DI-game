@@ -1,0 +1,57 @@
+//zscript_DI/items/passives/equalizer.zsc
+
+//-0.5 base DMG. enemies will take extra damage from attacks that scales based on 4% of their current health.
+
+Class DI_Equalizer : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Equalizer";
+		Inventory.Icon "POW3U0";
+		Inventory.PickupMessage "Equalizer Acquired! (Reduces Base DMG by 0.5, but enemies lose up to 3% of their current HP from all attacks.";
+		Inventory.MaxAmount 3;
+	}
+
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return -amount * 5;
+	}
+	
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			return "DI_Equalizer_Enemy", amount;
+		}
+
+		return "", 0;
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 U -1;
+			Stop;
+	}
+}
+
+Class DI_Equalizer_Enemy : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 3;
+	}
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if ((passive == true) && (owner) && (owner.target))
+		{
+			int bonusdmg = 0.03 * amount * owner.health;
+			if (bonusdmg < 0) {bonusdmg = 0;}
+			if (bonusdmg > damage) {bonusdmg = damage;}
+			newdamage = damage + bonusdmg;
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+}

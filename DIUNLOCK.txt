@@ -71,6 +71,7 @@ di_unlock_item_beachball DI_BeachBall 3  6;
 di_unlock_item_spring DI_Spring 2  6;
 >>BONUS LEVEL ONE ITEMS:
 di_unlock_item_dishard DI_DIShard 2  21;
+di_unlock_item_equalizer DI_Equalizer 2  21;
 >>MODIFIER ITEMS:
 di_unlock_item_goldhat DI_GoldHat 3  300;
 di_unlock_item_quantumbullets DI_QuantumBullets 2  300;

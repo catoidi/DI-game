@@ -124,7 +124,6 @@ server cheat int di_heartcount = 0;
 server cheat bool di_unlock_item_freshbullets = false; //get 10 fresh bonuses without reloading.
 server cheat bool di_unlock_item_freshcharger = false; //get 40 fresh bonuses in 1 run.
 server cheat bool di_unlock_item_bulletmitosis = false; //unlock 15 items.
-server cheat bool di_unlock_item_toomanybullets = false; //get 3 bullet splitters.
 server cheat bool di_unlock_item_glassgem = false; //own at least $1200 at once.
 //shop unlocks (LEVEL 2)
 server cheat int di_sidequests = 0; //how many side quests you've completed.
@@ -138,6 +137,7 @@ server cheat int di_onioncount = 0;
 server cheat bool di_unlock_item_minionion = false; //kill 100 onions.
 //Bonus Level 1 unlocks
 server cheat bool di_unlock_item_dishard = false;
+server cheat bool di_unlock_item_equalizer = false;
 //weapon mastery unlocks
 server cheat bool di_unlock_item_raspberry = false; //star pistol mastery.
 server cheat bool di_unlock_item_compactgunpowder = false; //green shotgun.
@@ -172,11 +172,12 @@ server cheat bool di_unlock_item_stunbow = false; //swag 6.
 server cheat bool di_unlock_item_speeddemon = false; //swag 7.
 server cheat bool di_unlock_item_poisongun = false; //swag 7.
 server cheat bool di_unlock_item_swagshells = false; //swag 10.
-//unimplemented unlocks
+//modifier unlocks
 server cheat bool di_unlock_item_modifiedstomach = false;
 server cheat bool di_unlock_item_quantumbullets = false;
 server cheat bool di_unlock_item_freshfrenzy = false;
 server cheat bool di_unlock_item_goldhat = false;
+server cheat bool di_unlock_item_toomanybullets = false;
 
 //DI crosshair
 user int di_xhair_toggle = 1; //0 is disabled. 1 is simple crosshair. 2 is detailed crosshair.
