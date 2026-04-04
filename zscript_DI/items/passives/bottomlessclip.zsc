@@ -6,8 +6,8 @@ Class DI_BottomlessClip : DIPassiveInventory
 	{
 		Tag "Bottomless Clip";
 		Inventory.Icon "POW2N0";
-		Inventory.PickupMessage "Bottomless Clip acquired! (-2 Base DMG, +15% chance to not consume ammo.)";
-		Inventory.MaxAmount 3;
+		Inventory.PickupMessage "Bottomless Clip acquired! (-1 Base DMG, +15% chance to not consume ammo.)";
+		Inventory.MaxAmount 4;
 	}
 	
 	bool clipactive;
@@ -29,7 +29,7 @@ Class DI_BottomlessClip : DIPassiveInventory
 	override int GiveBaseDamage()
 	{
 		if (!plr) {return 0;}
-		else {return -20 * amount;}
+		else {return -10 * amount;}
 	}
 	
 	override int GiveAmmoUse1()
