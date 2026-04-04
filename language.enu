@@ -203,6 +203,8 @@ DIPOPUP_di_unlock_item_speeddemon = "Speed Fiend";
 DIPOPUP_di_unlock_item_minionion = "Mini Onion";
 DIPOPUP_di_unlock_item_goldhat = "Golden Hat";
 DIPOPUP_di_unlock_lvl_bonus01 = "nine sectors";
+DIPOPUP_di_unlock_item_sawblade = "Sawblade";
+DIPOPUP_di_unlock_item_equalizer = "Equalizer";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -215,6 +217,8 @@ SHOPLOCK_DI_BLOODMONEY = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 3 \cbto
 SHOPLOCK_DI_SESAMESEEDS = "\cbReach 10k score as \cvCheeseburger \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_DI_BEACHBALL = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_DI_SPRING = "\cbReach 10k score as \cvHamill \cbon \cfLVL 3 \cbto unlock this item.";
+SHOPLOCK_DI_EQUALIZER = "\cbReach 10k score as \cvFredrick \cbon \cfnine sectors \cbto unlock this item.";
+SHOPLOCK_DI_SAWBLADE = "\cbReach 10k score as \cvHamill \cbon \cfnine sectors \cbto unlock this item.";
 SHOPLOCK_PARTYSHOTTY = "\cbComplete 3 side quests in \cvLevel 2 \cbto unlock this weapon.";
 SHOPLOCK_POPCORNGUN = "\cbComplete 10 side quests in \cvLevel 2 \cbto unlock this weapon.";
 SHOPLOCK_DI_QUESTBOOK = "\cbComplete 25 side quests in \cvLevel 2 \cbto unlock this item.";

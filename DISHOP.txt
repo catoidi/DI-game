@@ -174,6 +174,7 @@ ComboPassive DI_OrganDonor POW2T 5 192 di_unlock_item_organdonor;
 ComboPassive DI_ProcessedOre POW3B 15 192 di_unlock_item_processedore;
 ComboPassive DI_OnionRing POW3D 5 192 di_unlock_item_onionring;
 ComboPassive DI_SesameSeeds POW3L 5 256 di_unlock_item_sesameseeds;
+ComboPassive DI_Sawblade POW3V 5 192 di_unlock_item_sawblade;
 >>Status Passives...
 StatusPassive DI_StatusGiver_Ice POWRN 10 128 di_unlock_item_icebullet;
 StatusPassive DI_StatusGiver_Fire POWRO 10 128 di_unlock_item_firebullet;

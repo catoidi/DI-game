@@ -1,0 +1,150 @@
+//zscript_DI/items/passives/sawblade.zsc
+
+Class DI_Sawblade : DIPassiveInventory
+{
+	//summons the sawblade objects and assigns their positions and damage.
+	
+	Array<DI_Sawblade_Object> saws;
+	
+	int timer;
+	
+	Default
+	{
+		Tag "Sawblade";
+		Inventory.Icon "POW3V0";
+		Inventory.PickupMessage "Acquired Sawblade! (Rotates around the player dealing contact damage to any enemies.)";
+		Inventory.MaxAmount 8;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!plr.IsFrozen()) {++timer;}
+		
+		if (plr)
+		{
+			if (amount < saws.Size()) {DeleteSaw();}
+			else if (amount > saws.Size()) {SpawnSaw();}
+		}
+	}
+	
+	override void DetachFromOwner()
+	{
+		while (saws.Size() > 0)
+		{
+			DeleteSaw();
+		}
+		Super.DetachFromOwner();
+	}
+	
+	virtual void SpawnSaw()
+	{
+		//console.printf("spawning saw");
+		bool spawned;
+		actor thing;
+		[spawned, thing] = plr.A_SpawnItemEX("DI_Sawblade_Object", flags: SXF_NOCHECKPOSITION | SXF_ISTARGET);
+		if (thing is "DI_Sawblade_Object")
+		{
+			DI_Sawblade_Object blade = DI_Sawblade_Object(thing);
+			saws.push(blade);
+			UpdateSawPos();
+		}
+	}
+	
+	virtual void DeleteSaw()
+	{
+		if (saws.Size() > 0)
+		{
+			//console.printf("deleting saw");
+			saws[saws.Size() - 1].target = null;
+			saws[saws.Size() - 1].A_Die();
+			saws.Pop();
+			UpdateSawPos();
+		}
+	}
+	
+	virtual void UpdateSawPos()
+	{
+		for (int i = 0; i < saws.Size(); ++i)
+		{
+			//console.printf("updating saw pos");
+			float percent = (saws.Size() > 0) ? ((1.0 * i) / saws.Size()) : 0;
+			int newpos = 72 * percent;
+			console.printf("percent: %.2f\nnewpos: %d", percent, newpos);
+			saws[i].sawpos = newpos;
+			saws[i].timer = timer;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 V -1;
+			Stop;
+	}
+}
+
+Class DI_Sawblade_Object : DI_Actor
+{
+	//orbits around the player and deals constant contact damage to enemies.
+	
+	int timer;
+	int sawpos;
+	
+	Default
+	{
+		Radius 20;
+		Height 64;
+		Damage 10;
+		DI_Actor.IgnoreWeapon true;
+		+SOLID;
+		+FLATSPRITE;
+		+INTERPOLATEANGLES;
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (!other.bISMONSTER) {return false;}
+		return super.CanCollideWith(other, passive);
+	}
+	
+	override void CollidedWith(Actor other, bool passive)
+	{
+		if (target && other.bISMONSTER && other.bSHOOTABLE && (other.health > 0))
+		{
+			tracer = other;
+			A_DamageTracer(10, "Melee", src: AAPTR_TARGET);
+			other.SpawnBlood(pos, random(0, 359), 1);
+		}
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		if (target && !target.IsFrozen())
+		{
+			double sideoffset = target.radius + 48;
+			Vector3 offset = (sideoffset * sin(5 * (timer + sawpos)), sideoffset * cos(5 * (timer + sawpos)), target.height / 3);
+			Quat base = Quat.FromAngles(target.angle, 0, target.roll);
+			 
+			Vector3 rotated = base * offset;
+			Vector3 newPos = level.Vec3Offset(target.pos, rotated);
+			newPos.Z = FloorZ + 4;
+			SetOrigin(newpos, true);
+			A_SetRoll(roll + (timer * 10));
+			if (timer % 5 == 0) {A_SpawnParticle("f8e63d", SPF_FULLBRIGHT | SPF_RELVEL, 24, 2, random(0, 359), 0, 0, 0, random(0, 2), 0, random(0, 2), 0, 0, -0.33);}
+			++timer;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			SAWB A -1;
+			Loop;
+		Death:
+			TNT1 A 5;
+			Stop;
+	}
+}

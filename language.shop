@@ -612,6 +612,14 @@ SHOPITEM_DI_MINIONION = "Mini Onion";
 SHOPDESC_DI_MINIONION = "Summons a mini Onion to assist you in combat.";
 SHOPDESC2_DI_MINIONION = "The onion will hover nearby you and fire a ring of projectiles when it detects enemies within sight. The damage of the projectiles starts at 2, and scales directly with item stacks. The onion will phase through enemies and walls, which can be used to maximize damage upon a single target if positioned correctly.";
 SHOPTYPE_DI_MINIONION = "\cd[Passive] \cc[Common] \cl[Max: 10]";
+SHOPITEM_DI_EQUALIZER = "Equalizer";
+SHOPDESC_DI_EQUALIZER = "-0.5 Base DMG, but all attacks now deal\nup to 3% of the enemy's current hp.";
+SHOPDESC2_DI_EQUALIZER = "\cbWhile basically useless against weaker foes, this does wonders against tankier enemies. Benefits diminish as the enemy loses health. Also works with non-weapon based attacks, like from consumables.";
+SHOPTYPE_DI_EQUALIZER = "\cd[Passive] \cv[Rare] \cl[Max: 3]";
+SHOPITEM_DI_SAWBLADE = "Sawblade";
+SHOPDESC_DI_SAWBLADE = "Orbits around you, dealing up to 35 DMG per second\nto any enemies unfortunate enough to contact it.";
+SHOPDESC2_DI_SAWBLADE = "\cbItem stacks increases the number of sawblades orbiting around you, but does not affect the damage of each blade. Can easily stunlock enemies if enough blades are acquired.";
+SHOPTYPE_DI_SAWBLADE = "\cd[Passive] \cc[Common] \cl[Max: 8]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";
