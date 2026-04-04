@@ -6,7 +6,7 @@ Class DI_FreshSpray : DIPassiveInventory
 	{
 		Tag "Fresh Spray";
 		Inventory.Icon "POW2V0";
-		Inventory.PickupMessage "Acquired Fresh Spray! (Gain +15% Firerate upon getting a Fresh Weapon Bonus. Lose the buff upon switching weapons.)";
+		Inventory.PickupMessage "Acquired Fresh Spray! (Gain +25% Firerate upon getting a Fresh Weapon Bonus. Lose the buff upon switching weapons.)";
 		Inventory.MaxAmount 3;
 	}
 	
@@ -51,6 +51,6 @@ Class DI_FreshSpray_Powerup : DIPowerup
 	override double GiveFirerate()
 	{
 		if (!plr) {return 0.0;}
-		return -0.15 * plr.CountInv("DI_FreshSpray");
+		return -0.25 * plr.CountInv("DI_FreshSpray");
 	}
 }
