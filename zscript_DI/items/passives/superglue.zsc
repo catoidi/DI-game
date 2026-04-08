@@ -72,7 +72,7 @@ Class DI_SuperGlue_Powerup : DIPowerup
 	override double GiveReloadSpeed()
 	{
 		if (!plr) {return 0;}
-		return 0.35 * owner.countinv("DI_SuperGlue");
+		return 0.15 * owner.countinv("DI_SuperGlue");
 	}
 	
 	States
