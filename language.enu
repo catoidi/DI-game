@@ -205,6 +205,7 @@ DIPOPUP_di_unlock_item_goldhat = "Golden Hat";
 DIPOPUP_di_unlock_lvl_bonus01 = "nine sectors";
 DIPOPUP_di_unlock_item_sawblade = "Sawblade";
 DIPOPUP_di_unlock_item_equalizer = "Equalizer";
+DIPOPUP_di_unlock_item_dishard = "DI Shard";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -294,6 +295,7 @@ SHOPLOCK_DI_QUANTUMBULLETS = "\cbReach 10k score with the \cvStarter Pack Modifi
 SHOPLOCK_DI_FRESHFRENZY = "\cbReach 10k score with the \cvWeaponized Modifier \cbenabled to unlock this item.";
 SHOPLOCK_DI_MODIFIEDSTOMACH = "\cbReach 10k score with the \cvDebilitated Modifier \cbenabled to unlock this item.";
 SHOPLOCK_DI_GOLDHAT = "\cbReach 10k score in a \cvFree Trial \cbto unlock this item.";
+SHOPLOCK_DI_DISHARD = "\cbComplete Wave 9 on \cfnine sectors \cbto unlock this item.";
 
 //NashHPBar
 OPTMNU_NASHHPBAR = "Customize HP Bar";
