@@ -6,8 +6,8 @@ Class DI_ShellSling : DIPassiveInventory
 	{
 		Tag "Shell Sling";
 		Inventory.Icon "POW2M0";
-		Inventory.PickupMessage "Shell Sling acquired! (Reloading is 30% faster if you have at least 60% ammo remaining.)";
-		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "Shell Sling acquired! (-5% Reload Speed, then gain up to 25% Reload Speed the more ammo you currently have remaining.)";
+		Inventory.MaxAmount 4;
 	}
 	
 	override int ItemPriority() {return 1;}
@@ -15,25 +15,21 @@ Class DI_ShellSling : DIPassiveInventory
 	override double GiveReloadSpeed()
 	{
 		if (!plr || !wpn) {return 0.0;}
-		bool givespeed = true;
-		if (!wpn.Ammo1 && !wpn.Ammo2) {givespeed = false;}
-		if (wpn.wpn_dontgiveammo1 && wpn.wpn_dontgiveammo2) {givespeed = false;}
-		if (wpn.Ammo1)
+		double speedboost = 0.0;
+		double ammo1boost = -1.0;
+		if ((wpn.Ammo1) && (!wpn.wpn_dontgiveammo1) && (wpn.Ammo1.MaxAmount > 0))
 		{
-			if ((plr.CountInv(wpn.Ammo1.GetClassName()) < 0.6 * wpn.Ammo1.MaxAmount) && (!wpn.wpn_dontgiveammo1))
-			{
-				givespeed = false;
-			}
+			ammo1boost = (0.3 * wpn.Ammo1.amount) / wpn.Ammo1.MaxAmount;
+			speedboost = ammo1boost;
 		}
-		if (wpn.Ammo2)
+		if ((wpn.Ammo2) && (!wpn.wpn_dontgiveammo2) && (wpn.Ammo2.MaxAmount > 0))
 		{
-			if ((plr.CountInv(wpn.Ammo2.GetClassName()) < 0.6 * wpn.Ammo2.MaxAmount) && (!wpn.wpn_dontgiveammo2))
-			{
-				givespeed = false;
-			}
+			let curboost = (0.3 * wpn.Ammo2.amount) / wpn.Ammo2.MaxAmount;
+			if (ammo1boost == -1.0) {speedboost = curboost;}
+			else if (speedboost > curboost) {speedboost = curboost;}
+			
 		}
-		if (givespeed) {return -0.3 * amount;}
-		else {return  0.0;}
+		return (-speedboost + 0.05) * amount;
 	}
 	
 	States
