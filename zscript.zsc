@@ -249,6 +249,7 @@ version "4.14"
 #include "zscript_DI/items/consumables/raspberry.zsc"
 #include "zscript_DI/items/consumables/nugget.zsc"
 #include "zscript_DI/items/consumables/beachball.zsc"
+#include "zscript_DI/items/consumables/stopwatch.zsc"
 
 //weapons
 #include "zscript_DI/weapons/base.zsc" //not a weapon
