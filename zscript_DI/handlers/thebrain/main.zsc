@@ -6,6 +6,7 @@ class DIHandler : EventHandler
 	
 	int curseed;
 	
+	Array<DI_Monster> monsters; //list of all alive monsters.
 	Array<Actor> spotarray; //list of available spawn spots.
 	Array<String> spawnqueue; //list of enemies waiting to spawn.
 	Array<String> spawnqueue_spawner; //what spawner each enemy in the spawnqueue can spawn from.

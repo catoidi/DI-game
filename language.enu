@@ -207,6 +207,7 @@ DIPOPUP_di_unlock_item_sawblade = "Sawblade";
 DIPOPUP_di_unlock_item_equalizer = "Equalizer";
 DIPOPUP_di_unlock_item_dishard = "DI Shard";
 DIPOPUP_di_unlock_item_socialsecurity = "Social Security";
+DIPOPUP_di_unlock_item_stopwatch = "Stopwatch";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -221,6 +222,7 @@ SHOPLOCK_DI_BEACHBALL = "\cbReach 10k score as \cvBox Partyer \cbon \cfLVL 3 \cb
 SHOPLOCK_DI_SPRING = "\cbReach 10k score as \cvHamill \cbon \cfLVL 3 \cbto unlock this item.";
 SHOPLOCK_DI_EQUALIZER = "\cbReach 10k score as \cvFredrick \cbon \cfnine sectors \cbto unlock this item.";
 SHOPLOCK_DI_SOCIALSECURITY = "\cbReach 10k score as \cvCheeseburger \cbon \cfnine sectors \cbto unlock this item.";
+SHOPLOCK_DI_STOPWATCH = "\cbReach 10k score as \cvBox Partyer \cbon \cfnine sectors \cbto unlock this item.";
 SHOPLOCK_DI_SAWBLADE = "\cbReach 10k score as \cvHamill \cbon \cfnine sectors \cbto unlock this item.";
 SHOPLOCK_PARTYSHOTTY = "\cbComplete 3 side quests in \cvLevel 2 \cbto unlock this weapon.";
 SHOPLOCK_POPCORNGUN = "\cbComplete 10 side quests in \cvLevel 2 \cbto unlock this weapon.";

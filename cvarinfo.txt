@@ -76,6 +76,10 @@ server cheat bool di_unlock_item_bloodmoney = false; //10k points, fred, level 3
 server cheat bool di_unlock_item_sesameseeds = false; //10k points, burger, level 3.
 server cheat bool di_unlock_item_beachball = false; //10k points, box, level 3.
 server cheat bool di_unlock_item_spring = false; //10k points, hamill, level 3.
+server cheat bool di_unlock_item_equalizer = false; //10k points, fred, bonus 1.
+server cheat bool di_unlock_item_socialsecurity = false; //10k points, burger, bonus 1.
+server cheat bool di_unlock_item_stopwatch = false; //10k points, box, bonus 1.
+server cheat bool di_unlock_item_sawblade = false; //10k points, hamill, bonus 1.
 //DI shop item unlocks (LEVEL 1)
 user bool di_unlock_tutorial = false; //do a menu tutorial the first time you open it.
 user bool di_unlock_morebuttons = true; //show 60 buttons at once instead of 15.
@@ -138,9 +142,6 @@ server cheat int di_onioncount = 0;
 server cheat bool di_unlock_item_minionion = false; //kill 100 onions.
 //Bonus Level 1 unlocks
 server cheat bool di_unlock_item_dishard = false; //beat wave 9.
-server cheat bool di_unlock_item_equalizer = false; //fredrick score unlock
-server cheat bool di_unlock_item_socialsecurity = false; //cheeseburger score unlock
-server cheat bool di_unlock_item_sawblade = false; //hamill score unlock
 //weapon mastery unlocks
 server cheat bool di_unlock_item_raspberry = false; //star pistol mastery.
 server cheat bool di_unlock_item_compactgunpowder = false; //green shotgun.

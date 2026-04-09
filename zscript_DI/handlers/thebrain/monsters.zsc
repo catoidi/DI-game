@@ -45,6 +45,7 @@ extend class DIHandler
 				//console.printf("%s %d %d %d", "wave is still going,", currentspawners, spawnqueue.Size(), Level.Total_Monsters - (Level.Killed_Monsters + 1));
 			}
 		}
+		monsters.Delete(monsters.Find(DI_Monster(e.Thing)));
 	}
 	
 	virtual void DIMonsterHandler(WorldEvent e)
@@ -95,6 +96,8 @@ extend class DIHandler
 				}
 			}
 		}
+		
+		monsters.push(mon);
 	}
 	
 	virtual void DIBossHandler(WorldEvent e)

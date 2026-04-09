@@ -77,6 +77,7 @@ Consumable DI_QuestBook BOOKA 20 128 di_unlock_item_questbook;
 Consumable DI_Raspberry POW2J 14 128 di_unlock_item_raspberry;
 Consumable DI_Nugget POW2Y 8 128 di_unlock_item_nugget;
 Consumable DI_BeachBall POW3J 8 256 di_unlock_item_beachball;
+Consumable DI_Stopwatch POW3X 10 128 di_unlock_item_stopwatch;
 >>Permanent Consumables...
 PermaConsumable DI_ThrowBomb_Bundle GRENG 5 256 di_unlock_item_bombbundle;
 PermaConsumable DI_Pizza HEALB 6 128;
@@ -213,6 +214,7 @@ FakeShopItem DI_QuestDebuff_MoreOnions BOOKB 1;
 FakeShopItem DI_QuestDebuff_Rotten BOOKB 1;
 FakeShopItem DI_CheeseArtifact_Timer ARTID 1;
 FakeShopItem DI_SuperGlue_Powerup POW2C 1;
+FakeShopItem DI_Stopwatch_Powerup POW3Y 1;
 FakeShopItem DI_Brick2 BRIKB 1;
 FakeShopItem DI_CreditFreeze_Powerup POW2H 1;
 FakeShopItem DI_Raspberry_Powerup POW2K 1;

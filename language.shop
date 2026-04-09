@@ -318,6 +318,10 @@ SHOPITEM_DI_BEACHBALL = "Beach Ball";
 SHOPDESC_DI_BEACHBALL = "Spawns a ball. Smack the ball to deal extreme damage\nto any enemy that makes contact with it.";
 SHOPDESC2_DI_BEACHBALL = "Once mobile, the ball will bounce around everywhere and deal 100 DMG to any non-player actor it touches. The ball despawns at the end of a wave.";
 SHOPTYPE_DI_BEACHBALL = "\ct[Consumable] \cc[Common] \cl[Max: 5]";
+SHOPITEM_DI_STOPWATCH = "Stopwatch";
+SHOPDESC_DI_STOPWATCH = "Immobilizes all living enemies for 10 seconds.";
+SHOPDESC2_DI_STOPWATCH = "\cbOnly stops things classified as monsters, does not freeze projectiles or pickups. Has a cooldown of 20 seconds.";
+SHOPTYPE_DI_STOPWATCH = "\ct[Consumable] \cv[Rare] \cl[Max: 3]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";
@@ -689,3 +693,7 @@ SHOPITEM_DI_FRESHFRENZY_BUFF = "\cvFresh Frenzy (Buff)";
 SHOPDESC_DI_FRESHFRENZY_BUFF = "Grants a \czPERMANENT \cl+0.1% Max HP buff per item stack.";
 SHOPDESC2_DI_FRESHFRENZY_BUFF = "\cbCapped at +100.0% Max HP. This buff will not be removed even if the original Fresh Frenzy item is lost.";
 SHOPTYPE_DI_FRESHFRENZY_BUFF = "\cd[Passive] \cl[Max: 10000]";
+SHOPITEM_DI_STOPWATCH_POWERUP = "\cvTime Freeze (Active)";
+SHOPDESC_DI_STOPWATCH_POWERUP = "All enemies are immobile while this powerup is active.";
+SHOPDESC2_DI_STOPWATCH_POWERUP = "\cfThis is a powerup. The timer is visible on the passive item HUD at the top right.";
+SHOPTYPE_DI_STOPWATCH_POWERUP = "\cv[Powerup] \cl[Max Timer: 30]";
