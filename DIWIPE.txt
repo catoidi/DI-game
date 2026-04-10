@@ -101,3 +101,4 @@ DI_MiniOnion;
 DI_Equalizer;
 DI_Sawblade;
 DI_SocialSecurity;
+DI_DIShard;
