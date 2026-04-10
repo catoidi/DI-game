@@ -13,6 +13,9 @@ mixin class DI_ActorMixin
 	bool di_nohpbar;
 	property NoHPBar: di_nohpbar;
 	
+	int di_hpbardistance;
+	property HPBarDistance: di_hpbardistance;
+	
 	action void A_DIScale (double ScaleAmountX, double ScaleAmountY, bool IsMultiply = false, bool DoSize = false)
 	{
 	

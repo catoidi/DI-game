@@ -10,6 +10,8 @@ Class DIFakeShop : DI_Actor
 	{
 		Radius 20;
 		Height 96;
+		DI_Actor.nohpbar false;
+		DI_Actor.hpbardistance 128;
 		-SOLID;
 	}
 	
@@ -24,6 +26,7 @@ Class DIExitPopup : DIFakeShop
 	Default
 	{
 		DIFakeShop.ShopText "$DISHOP_EXIT";
+		DI_Actor.hpbardistance 1024;
 	}
 
 	override string ShopUIText(DI_PlayerBase plr)
@@ -89,6 +92,7 @@ Class DIProgressPopup : DIFakeShop
 	{
 		Height 32;
 		DIFakeShop.ShopText "$DISHOP_PROGRESS_1";
+		DI_Actor.hpbardistance 1024;
 		Self.ShopText2 "$DISHOP_PROGRESS_2A"; //Shop Text is split into 2 portions to support displaying the shop level number in between.
 		Self.MaxLevel 7;
 		+BRIGHT;

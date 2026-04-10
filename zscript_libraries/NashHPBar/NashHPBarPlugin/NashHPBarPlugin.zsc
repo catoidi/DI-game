@@ -148,29 +148,70 @@ class NashHPBarPlugin : Inventory
 			currentAimTarget = NULL;
 			return;
 		}
-
-		let at = GetAimTarget(Owner.player.camera);
-		bool isLiveTarget = (at && at.bIsMonster) || (at && at.bFriendly) || at is "PlayerPawn" || (at is "DIShop_Base" && targetDistance <= 128) || (at is "DI_QuestGiver" && targetDistance <= 128) || (at is "DIFakeShop" && targetDistance <= 128);
-		if (isLiveTarget || at == NULL)
-		{
-			currentAimTarget = at;
-		}
+		
+		let tracer = new('HPBarTracer');
+		if (!tracer) {return;}
+		Vector3 dir = (AngleToVector(owner.player.camera.angle, cos(owner.player.camera.pitch)), -sin(owner.player.camera.pitch));
+		Vector3 start = (owner.player.camera.pos.xy, owner.player.viewz);
+		
+		tracer.Trace(start, owner.player.camera.CurSector, dir, PLAYERMISSILERANGE, 0, 0, false, owner.player.camera);
+		currentAimTarget = tracer.hitactor;
+		
+		//let at = GetAimTarget(Owner.player.camera);
+		//bool isLiveTarget = (at && at.bIsMonster) || (at && at.bFriendly) || at is "PlayerPawn" || (at is "DIShop_Base" && targetDistance <= 128) || (at is "DI_QuestGiver" && targetDistance <= 128) || (at is "DIFakeShop" && targetDistance <= 128);
+		//if (isLiveTarget || at == NULL)
+		//{
+			//currentAimTarget = at;
+		//}
 	}
 }
 
-//save this for v0.13.1
-/*
 Class HPBarTracer : LineTracer
 {
+	bool targethit;
+	actor hitactor;
+
 	override ETraceStatus TraceCallback()
-    {
-		if (results.HitType == TRACE_HitActor && results.HitActor is "DI_Actor")
-        {
-			let dihit = DI_Actor(results.HitActor);
-			if (dihit.di_nohpbar) {return TRACE_Skip;}
-			else {return TRACE_Stop;}
+	{
+		if (results.HitType == TRACE_HitActor)
+		{
+			if (results.HitActor is "DI_Actor")
+			{
+				let dihit = DI_Actor(results.HitActor);
+				if (dihit.di_nohpbar || (results.Distance > dihit.di_hpbardistance)) 
+				{
+					//console.printf("%d: \cfhidden actor skipped", level.time);
+					return TRACE_Skip;
+				}
+				else 
+				{
+					hitactor = results.HitActor;
+					targethit = true;
+					//console.printf("%d: \cfactor found: '%s'", level.time, results.HitActor.GetClassName());
+					return TRACE_Stop;
+				}
+			}
+			else if (results.HitActor is "DI_PlayerBase")
+			{
+				hitactor = results.HitActor;
+				targethit = true;
+				//console.printf("%d: \cfactor found: '%s'", level.time, results.HitActor.GetClassName());
+				return TRACE_Stop;
+			}
+			else if ((results.Distance <= 128) && (results.HitActor is "DIShop_Base"))
+			{
+				hitactor = results.HitActor;
+				targethit = true;
+				//console.printf("%d: \cfactor found: '%s'", level.time, results.HitActor.GetClassName());
+				return TRACE_Stop;
+			}
+			else 
+			{
+				//console.printf("%d: \cfinvalid actor skipped", level.time);
+				return TRACE_Skip; //dont show hpbar for non-DI_Actors.
+			}
 		}
-		return Super.TraceCallback();
+		//console.printf("%d: \cfno targets found. stopping...", level.time);
+		return TRACE_Stop;
 	}
 }
-*/
