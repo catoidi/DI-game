@@ -132,6 +132,9 @@ Class DINewGameHandler : boxparty_ZF_Handler
 					cvar prevday = cvar.getcvar("di_dailyrun_prevday");
 					prevday.setint(di_dailyseed);
 				}
+				double skillmult = 1.0;
+				if (currentskill == 0) {skillmult = 0.25;}
+				link.expmult_cvar.setfloat(link.GetScoreMult(skillmult));
 				PlayDI(currentclass, currentlvl, currentskill);
 			} //{link.pagenum = 2;}
 			else {link.SetKeyPos(sklnum);}

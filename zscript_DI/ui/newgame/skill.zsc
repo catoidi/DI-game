@@ -148,6 +148,7 @@ extend class DINewGameMenu
 			{
 				labeltxt.AppendFormat("%s", ": \cd[ON]");
 				++modsactive;
+				activemods.push(modpool[i]);
 				if (ischeatmod) {++cheatmodsactive;}
 			}
 			else {labeltxt.AppendFormat("%s", ": \ca[OFF]");}

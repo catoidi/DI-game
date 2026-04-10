@@ -17,6 +17,7 @@ Class SwagHandler : EventHandler
 	ui int prevscore;
 	ui int finalscore; //prevent extra score from being calculated after death.
 	ui float exp1, exp2, exp3, exp4, lvl1, lvl2, lvlover, lvlmax, lvlguess;
+	ui double scoremult;
 	
 	//from newgamemenu
 	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
@@ -506,6 +507,7 @@ Class SwagHandler : EventHandler
 			{
 				prevscore = GetHighScore();
 				finalscore = plr.GetScore();
+				scoremult = plr.GetScoreMult();
 				if (canprogress)
 				{
 					int prevdeaths = GetHighScore("di_playerdeaths");
@@ -655,6 +657,7 @@ Class SwagHandler : EventHandler
 				string totalcolor = "\cf";
 				if (finalscore < 0) {totalcolor = "\ca";}
 				string died = string.format("%s%sFinal Rating: %d", spacing, totalcolor, finalscore);
+				if (scoremult != 1.0) {died.AppendFormat("\n\cw(Score Mult: %.1f%%)", scoremult * 100);}
 				int scaley = (32 * (CleanYFac * 2)) / 2;
 				Screen.DrawText(smallfont, Font.CR_WHITE,
 					startx - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),

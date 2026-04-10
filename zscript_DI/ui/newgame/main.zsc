@@ -56,6 +56,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 		curlvl_cvar = cvar.findcvar("di_menu_current_lvl");
 		curplr_cvar = cvar.findcvar("di_menu_current_plr");
 		curskl_cvar = cvar.findcvar("di_menu_current_skl");
+		expmult_cvar = cvar.findcvar("di_expmult");
 		
         handler = new('DINewGameHandler');
         handler.link = self;
@@ -460,23 +461,23 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 				if ((currentline[1] ~== "player") && (currentline[2] ~== playerpool[curplr_cvar.getint()]))
 				{
 					finalmult *= currentline[4].ToDouble();
-					//console.printf("finalmult is now %.1f", finalmult);
+					//console.printf("finalmult is now %.2f", finalmult);
 				}
 				else if ((currentline[1] ~== "level") && (currentline[2] == levelpool[curlvl_cvar.getint()]))
 				{
 					finalmult *= currentline[4].ToDouble();
-					//console.printf("finalmult is now %.1f", finalmult);
+					//console.printf("finalmult is now %.2f", finalmult);
 				}
 				else if ((currentline[1] ~== "modifier") && (activemods.find(currentline[2]) < activemods.size()))
 				{
 					//console.printf("debug:\n%d\n%d", activemods.find(currentline[2]), activemods.size());
 					finalmult *= currentline[4].ToDouble();
-					//console.printf("finalmult is now %.1f", finalmult);
+					//console.printf("finalmult is now %.2f", finalmult);
 				}
 			}
 		}
 		
-		//console.printf("all lines checked. finalmult is now %.1f.", finalmult);
+		//console.printf("all lines checked. finalmult is now %.2f.", finalmult);
 		return finalmult;
 	}
 	
