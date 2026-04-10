@@ -462,7 +462,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 					finalmult *= currentline[4].ToDouble();
 					//console.printf("finalmult is now %.1f", finalmult);
 				}
-				else if ((currentline[1] ~== "level") && (currentline[2] == playerpool[curplr_cvar.getint()]))
+				else if ((currentline[1] ~== "level") && (currentline[2] == levelpool[curlvl_cvar.getint()]))
 				{
 					finalmult *= currentline[4].ToDouble();
 					//console.printf("finalmult is now %.1f", finalmult);
