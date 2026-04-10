@@ -443,7 +443,7 @@ extend class DINewGameMenu
 	
 	virtual string CreateUnlockString(float skillmult = 1.0)
 	{
-		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum() * 2);
+		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum());
 		unlockstring.appendformat("\n\cc+%d%% EXP from high scores", GetHighScore() / 1000);
 		string scoremultstring;
 		float newscoremult = GetScoreMult(skillmult);
