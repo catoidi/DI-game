@@ -1,0 +1,93 @@
+//zscript_DI/items/consumables.zsc
+
+Class DI_Stopwatch : DIConsumable
+{
+	Default
+	{
+		Tag "Stopwatch";
+		DIConsumable.BlockInShop true;
+		DIConsumable.CooldownTics 700;
+		Inventory.MaxAmount 3;
+		Inventory.Icon "POW3X0";
+		Inventory.PickupMessage "Got a stopwatch. (Completely freezes all living enemies for 10 seconds.)";
+	}
+	
+	override bool DIUse(bool pickup)
+	{
+		if (owner) 
+		{
+			owner.ACS_NamedExecuteAlways("DoLeafFlash");
+			owner.A_GiveInventory("DI_Stopwatch_Powerup", 10);
+		}
+		return true;
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 X -1;
+			Stop;
+	}
+}
+
+Class DI_Stopwatch_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvTime Freeze";
+		Inventory.MaxAmount 30;
+		Inventory.Icon "POW3Y0";
+	}
+	
+	FSpawnParticleParams fp;
+	int parttimer;
+	
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		
+		fp.color1 = "FFFFFF";
+		fp.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE;
+		fp.lifetime = 35;
+		fp.size = 8;
+		fp.style = STYLE_Normal;
+		fp.startalpha = 1.0;
+		fp.fadestep = -1.0;
+		fp.vel.z = -0.25;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		++parttimer;
+		if (plr && plr.thebrain)
+		{
+			for (int i = 0; i < plr.thebrain.monsters.Size(); ++i)
+			{
+				if (plr.thebrain.monsters[i].health > 0)
+				{
+					plr.thebrain.monsters[i].freezetics = amount;
+					if ((amount > 1) && (parttimer % 5 == 0)) {SpawnFreezeParticle(plr.thebrain.monsters[i]);}
+				}
+			}
+		}
+	}
+	
+	virtual void SpawnFreezeParticle(DI_Monster mon)
+	{
+		fp.pos = mon.pos;
+		fp.pos.x += random(-mon.radius, mon.radius);
+		fp.pos.y += random(-mon.radius, mon.radius);
+		fp.pos.z += random(0, mon.height);
+		
+		Level.SpawnParticle(fp);
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 Y -1;
+			Stop;
+	}
+}

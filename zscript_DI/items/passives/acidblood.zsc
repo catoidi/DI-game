@@ -16,13 +16,11 @@ Class DI_AcidBlood : DIPassiveInventory
 	
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
-		int dropnum = 1;
 		if ((damage >= 1) && (owner) && (passive == true))
 		{
-			dropnum = owner.CountInv("DI_AcidBlood");
-			for (int i = 0; i < dropnum; ++i) 
+			acidstrength = amount;
+			for (int i = 0; i < amount; ++i) 
 			{
-				acidstrength = owner.CountInv("DI_AcidBlood");
 				owner.A_SpawnItemEX("DI_AcidBlood_Drop", 0, 0, owner.Height / 2, random(-4, 4), random(-4, 4), flags: SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
 			}
 		}
@@ -120,6 +118,7 @@ Class DI_AcidBlood_Pool : DI_Actor
 		}
 		
 		A_DIScale(0.1, 0.1, true);
+		ChangeTID(7499);
 	}
 
 	States
@@ -136,7 +135,7 @@ Class DI_AcidBlood_Pool : DI_Actor
 				}
 				else 
 				{
-					A_Explode(acidstrength, 40, XF_NOSPLASH | XF_THRUSTLESS | XF_CIRCULAR, fulldamagedistance: 40);
+					A_Explode(acidstrength * 10, 40, XF_NOSPLASH | XF_THRUSTLESS | XF_CIRCULAR, fulldamagedistance: 40);
 				}
 				return ResolveState(null);
 			}
@@ -167,7 +166,7 @@ Class DI_AcidBlood_PoolAlt : DI_AcidBlood_Pool
 				}
 				else 
 				{
-					A_Explode(acidstrength, 40, XF_NOSPLASH | XF_HURTSOURCE | XF_THRUSTLESS | XF_CIRCULAR | XF_EXPLICITDAMAGETYPE, fulldamagedistance: 40, damagetype: "FakePoison");
+					A_Explode(acidstrength * 10, 40, XF_NOSPLASH | XF_HURTSOURCE | XF_THRUSTLESS | XF_CIRCULAR | XF_EXPLICITDAMAGETYPE, fulldamagedistance: 40, damagetype: "FakePoison");
 				}
 				return ResolveState(null);
 			}

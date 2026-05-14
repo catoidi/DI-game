@@ -1,0 +1,252 @@
+//zscript_DI/items/passives/minionion.zsc
+
+//copies a lot of code from Mini Freds.
+//may consider consolidating some stuff into an abstract actor if i make more of these type of items in the future.
+
+Class DI_MiniOnion : DIPassiveInventory
+{
+	DI_MiniOnion_Actor onion;
+	
+	Default
+	{
+		Tag "Mini Onion";
+		Inventory.Icon "POW3R0";
+		Inventory.PickupMessage "Mini Onion Acquired! (Summons a miniature onion to shoot rings of projectiles near you.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	virtual void SpawnOnion()
+	{
+		actor thing;
+		bool check;
+		[check, thing] = plr.A_SpawnItemEX("DI_MiniOnion_Actor", flags: SXF_NOCHECKPOSITION);
+		
+		if (thing)
+		{
+			let newonion = DI_MiniOnion_Actor(thing);
+			newonion.plr = plr;
+			newonion.inv = self;
+			
+			onion = newonion;
+		}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !Level.IsFrozen())
+		{
+			if (!onion) {SpawnOnion();}
+		}
+	}
+	
+	override void DetachFromOwner()
+	{
+		if (onion)
+		{
+			onion.inv = null;
+			onion.plr = null;
+			onion = null;
+		}
+		
+		Super.DetachFromOwner();
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 R -1;
+			Stop;
+	}
+}
+
+Class DI_MiniOnion_Actor : DI_Actor
+{
+	DI_MiniOnion inv;
+	DI_Playerbase plr;
+	
+	Default
+	{
+		Radius 9;
+		Height 20;
+		Scale 0.25;
+		MinMissileChance 1;
+		MeleeThreshold 0;
+		Tag "Mini Onion";
+		DI_Actor.NoDrops true;
+		+FRIENDLY;
+		+THRUACTORS;
+		+NOGRAVITY;
+	}
+	
+	bool trackfail;
+	int teletime;
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (plr == DI_PlayerBase(other)) {return false;}
+		if (other.bFRIENDLY == true) {return false;}
+		
+		return Super.CanCollideWith(other, passive);
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		A_AttachLightDef("glower", "GLOWWHITE");
+		
+		if (!plr) {trackfail = true;}
+	}
+	
+	
+	
+	action void A_OnionAttack (int Angled, int Offseted)
+	{
+		//Shoots 8 water projectiles in a circle around the calling actor.
+		for (int i = 0; i < 8; ++i)
+		{
+			A_SpawnParticle("00efff", SPF_FULLBRIGHT | SPF_RELVEL, 48, 4, random(0, 359), 0, 0, 4, random(0, 4), 0, random(0, 2), 0, 0, -0.33, 1.0, -1, -0.15);
+		}
+		A_StartSound("onion2", pitch: 1.5);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, Angled, CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 45), CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 90), CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 135), CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 180), CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 225), CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 270), CMF_OFFSETPITCH, Offseted);
+		A_SpawnProjectile("OnionBullet_Mini", 8, 0, (Angled + 315), CMF_OFFSETPITCH, Offseted);
+		//A_BoxParticle("00 ef ff", 12, 24, 60, PBright: true);
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (!plr) {Destroy();}
+		else if (level.IsFrozen() == false)
+		{
+			bool dontmove;
+			int distance = Distance3D(Actor(plr));
+			++teletime;
+			if (teletime >= 35)
+			{	
+				if (distance >= 512)
+				{
+					SetOrigin(plr.Pos, false);
+					A_ClearTarget();
+					dontmove = true;
+				}
+				
+				teletime = 0;
+			}
+			
+			if (!dontmove && (distance > 96))
+			{
+				vector3 dest = plr.pos;
+				dest.z += (plr.height / 2);
+				
+				vector3 diff = ((pos.x - dest.x) / 40, (pos.y - dest.y) / 40, (pos.z - dest.z) / 40);
+				vector3 newpos = (pos.x - diff.x, pos.y - diff.y, pos.z - diff.z);
+				
+				SetOrigin(newpos, true);
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			ONIO A 0 NoDelay A_FadeOut(0.9);
+			#### #### 1 A_FadeIn(0.1);
+			#### # 10 A_Look;
+			Wait;
+		See:
+			#### AAAAAAAABBBBBBBB 1 A_Chase;
+			Loop;
+		Missile:
+			ONIO C 0 A_RemoveLight("Shocking");
+			ONIO C 0 A_FaceTarget;
+			ONIO CCC 5 A_DIScale(-0.05, 0.05);
+			ONIO D 0 A_OnionAttack(0, 0);
+			ONIO DDD 3 A_DIScale(0.1, -0.1);
+			ONIO D 1 A_Jump(96, "Missile2");
+			ONIO BBB 3 A_DIScale(-0.05, 0.05);
+			Goto See;
+		Pain:
+			#### # 10 A_Pain();
+			Goto See;
+		Death:
+			#### # 0 A_DIDie();
+			#### # 1 
+			{
+				A_DIScale(1.01, 0.95, true);
+				A_FadeOut(0.03);
+			}
+			Wait;
+	}
+}
+
+Class OnionBullet_Mini : DI_Projectile
+{
+	Default
+	{
+		Radius 2;
+		Height 4;
+		Scale 0.5;
+		Speed 5;
+		DI_Actor.IgnoreWeapon true;
+		+NOGRAVITY;
+		+ROLLSPRITE;
+		+SPRITEANGLE;
+		+INTERPOLATEANGLES;
+	}
+	
+	DI_MiniOnion_Actor onion;
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		if (!onion && target is "DI_MiniOnion_Actor")
+		{
+			onion = DI_MiniOnion_Actor(target);
+		}
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other.bSHOOTABLE && other.bISMONSTER) {return true;}
+		else {return false;}
+	}
+	
+	override int GetWeaponDamage()
+	{
+		if (onion && onion.inv) {return onion.inv.amount * 20;}
+		return 20;
+	}
+	
+	virtual void WaterSpout()
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			A_SpawnParticle("00efff", SPF_FULLBRIGHT | SPF_RELVEL, 48, 4, random(0, 359), 0, 0, 4, random(0, 4), 0, random(0, 2), 0, 0, -0.33, 1.0, -1, -0.15);
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			ONIO J 1 A_SetRoll(roll + 8);
+			Wait;
+		Death.Sky:
+		Death:
+			TNT1 A 5 
+			{
+				A_ProjectileSmoke();
+				invoker.WaterSpout();
+			}
+			Stop;
+	}
+}

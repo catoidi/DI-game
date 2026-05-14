@@ -11,6 +11,20 @@ Class DI_DeathMark : DIPassiveInventory
 		Inventory.PickupMessage "Marked for Death Acquired! (Enemies have a 15% chance to be marked. Marked enemies take extra damage and always gib.)";
 		Inventory.MaxAmount 5;
 	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			int chance = amount * 3;
+			if (random(1, 20) <= chance)
+			{
+				return "DI_DeathMark_Enemy", 1;
+			}
+		}
+		
+		return "", 0;
+	}
 	
 	States
 	{
@@ -22,16 +36,21 @@ Class DI_DeathMark : DIPassiveInventory
 
 Class DI_DeathMark_Enemy : Inventory
 {
+	default
+	{
+		inventory.maxamount 1;
+	}
+
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
 		if (passive == true)
 		{
-			newdamage = damage * 1.5; //enemy takes 50% more damage.
+			newdamage = damage * 1.2; //enemy takes 50% more damage.
 			if (owner)
 			{
 				if (newdamage + 1 >= owner.health)
 				{
-					newdamage += 100; //enemy will always gib on death.
+					newdamage += owner.GibHealth + 1; //enemy will always gib on death.
 				}
 			}
 		}
@@ -51,10 +70,11 @@ Class DI_DeathMark_Enemy : Inventory
 	}
 }
 
-Class DI_DeathMark_Puff : DI_BloodPuff_GibBig
+Class DI_DeathMark_Puff : DI_BloodPuff_Gib
 {
 	Default
 	{
+		Scale 1.0;
 		Renderstyle "Translucent";
 		//Alpha 0.25;
 	}

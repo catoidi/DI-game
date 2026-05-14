@@ -31,7 +31,7 @@ Class DI_Consumer_Powerup : DIPowerup
 	
 	override double GiveDamageMult()
 	{
-		return 0.25;
+		return 1.25;
 	}
 	
 	States

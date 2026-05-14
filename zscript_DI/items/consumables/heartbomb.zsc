@@ -8,7 +8,6 @@ Class DI_HeartBomb : DI_ThrowBomb
 		Inventory.MaxAmount 16;
 		Inventory.Icon "GRENF0";
 		Inventory.PickupMessage "Got a heart bomb. Use this to win the hearts of your enemies.";
-		+INVENTORY.INVBAR;
 	}
 	
 	States
@@ -27,6 +26,7 @@ Class DI_HeartBomb_Projectile : DI_ThrowBomb_Projectile
 	Default
 	{
 		+FORCEPAIN;
+		-EXTREMEDEATH;
 	}
 
 	States
@@ -37,8 +37,13 @@ Class DI_HeartBomb_Projectile : DI_ThrowBomb_Projectile
 		Death:
 			TNT1 F 1 
 			{
-				A_Explode(1, 192, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 64, damagetype: "Heart");
 				A_SpawnItemEX("SafeBoom", frandom(-4, 4), frandom(-4, 4), frandom(0, 8), frandom(-4, 4), frandom(-4, 4), frandom(0, 4), 0, SXF_NOCHECKPOSITION);
+				int heartnum = A_Explode(100, 192, XF_EXPLICITDAMAGETYPE, fulldamagedistance: 96, damagetype: "Heart");
+				heartnum *= 3;
+				for (int i = 0; i < (heartnum * 2); ++i)
+				{
+					A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 0, random(-heartnum, heartnum), random(-heartnum, heartnum), random(2, 12), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION, 64);
+				}
 			}
 			Stop;
 	}

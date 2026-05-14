@@ -1,30 +1,21 @@
 //zscript_DI/items/consumables/reroll.zsc
 
-Class DI_Dice : Inventory
+Class DI_Dice : DIConsumable
 {
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "Instant Reroll";
+		DIConsumable.CooldownTics 15;
+		DIConsumable.BlockInWave true;
 		Inventory.MaxAmount 3;
 		Inventory.Icon "DICEA0";
 		Inventory.PickupMessage "Got an instant reroll! Use while in the shop to reroll all shop items.";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == true) 
-		{
-			console.printf("%s", "\cgCannot use this while a wave is in progress!");
-			return false; //can't be used if a wave is in progress.
-		}
-		else
-		{
-			EventHandler.SendNetworkEvent("DIRerollShops");
-			return DIUsed();
-		}
+		EventHandler.SendNetworkEvent("DIRerollShops");
+		return true;
 	}
 	
 	States

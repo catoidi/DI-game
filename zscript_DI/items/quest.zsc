@@ -1,0 +1,177 @@
+//zscript_DI/items/quest.zsc
+
+Class DI_QuestItem : Inventory abstract
+{
+	//base actor for all quests.
+	
+	DI_PlayerBase plr;
+	bool ismainquest;
+	property MainQuest : ismainquest;
+	
+	override void attachtoowner(actor other)
+	{
+		super.attachtoowner(other);
+		if (other is "DI_PlayerBase") {plr = DI_PlayerBase(other);}
+		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
+	}
+	
+	//some tips for making quests:
+	//1. an easy way to check wave status is by checking for "plr.inwave".
+	//2. levels that use quests will create their own "DI_QuestComplete" and "DI_QuestFailed" scripts.
+	//3. the Side Quest UI is only used if the quest is set to be the "main" quest.
+	//4. only 1 Main Quest will be active at once.
+	//5. no "doeffect" or related functions are pre-assigned, as some quests may not use it.
+	
+	//these functions are needed for all types of quests.
+	virtual void QuestCompleted() //must be called upon successful completion of this quest.
+	{
+		plr.ACS_ScriptCall("DI_QuestComplete", ismainquest, 0, 0, 0);
+		plr.TakeInventory(self.GetClassName(), 999999);
+	}
+	virtual void QuestFailed() //must be called if for whatever reason the player is to fail the quest.
+	{
+		plr.ACS_ScriptCall("DI_QuestFailed", ismainquest, 0, 0, 0);
+		plr.TakeInventory(self.GetClassName(), 999999);
+	}
+}
+
+Class DI_MainQuest : DI_QuestItem
+{
+	//MUST BE SPAWNED IN THE WORLD, CANNOT BE DIRECTLY ADDED TO THE PLAYER'S INVENTORY!!!!!!!!!!!!
+
+	DI_QuestDebuff debuff;
+	DI_QuestObjective objective;
+	string debuff_name, objective_name;
+	bool questinit;
+	
+	Default
+	{
+		Inventory.Icon "BOOKA0";
+		DI_QuestItem.MainQuest true;
+	}
+	
+	override void doeffect()
+	{
+		if ((plr) && (!questinit))
+		{
+			//prevent quest from activating if there's no objective or debuff!
+			if ((debuff_name == "") || (objective_name == "")) {plr.TakeInventory(self.GetClassName(), 999999);}
+			else
+			{
+				GiveDebuff(plr);
+				GiveObjective(plr);
+				questinit = true;
+			}
+		}
+		super.doeffect();
+	}
+	
+	virtual void GiveDebuff(DI_PlayerBase plr)
+	{
+		//give debuff item and assign pointers
+		plr.GiveInventory(debuff_name, 1);
+		debuff = DI_QuestDebuff(plr.FindInventory(debuff_name));
+		if (!debuff) {ThrowAbortException("\caSide Quest Error: Tried to give '%s', an invalid debuff, to the player!", debuff_name);}
+		debuff.itemdesc = "$shopdesc2_sidequestdebuff";
+	}
+	
+	virtual void GiveObjective(DI_PlayerBase plr)
+	{
+		//give objective item and assign pointers
+		plr.GiveInventory(objective_name, 1);
+		objective = DI_QuestObjective(plr.FindInventory(objective_name));
+		if (!objective) {ThrowAbortException("\caSide Quest Error: Tried to give '%s', an invalid objective, to the player!", objective_name);}
+		objective.quest = self;
+	}
+	
+	override void QuestCompleted()
+	{
+		console.printf("%s", "QUEST COMPELTED!!!!");
+		plr.TakeInventory(debuff.GetClassName(), 1);
+		plr.TakeInventory(objective.GetClassName(), 1);
+		Super.QuestCompleted();
+	}
+	
+	override void QuestFailed()
+	{
+		console.printf("%s", "quest failed :(");
+		plr.TakeInventory(objective.GetClassName(), 1);
+		Super.QuestFailed();
+	}
+	
+	States
+	{
+		Spawn:
+			BOOK A -1;
+			Stop;
+	}
+}
+
+Class DI_QuestDebuff : DIPassiveInventory abstract
+{
+	Default
+	{
+		Inventory.Icon "BOOKB0";
+		Inventory.MaxAmount 999999;
+		//DIPassiveInventory.DIHidden true;
+	}
+	
+	override string CatalogueDescription()
+	{
+		if (itemdesc ~== "") {return "$SHOPDESC2_GENERICDEBUFF";}
+		else return Super.CatalogueDescription();
+	}
+}
+
+Class DI_QuestObjective : Inventory abstract
+{
+	DI_MainQuest quest; //assigned by main quest object. throws error if this were to fail for some reason.
+	DI_PlayerBase plr; //just a little timesaver for making new objectives.
+	bool failed; //used when item is detached to see if it was caused by objective failure or not.
+	
+	clearscope abstract string QuestName(); //name of the quest to display in the Side Quest UI.
+	clearscope virtual string QuestDescription() //a small 2 line description of what you're supposed to do to complete the quest.
+	{
+		return string.format("$diquest_%s", self.getclassname());
+	}
+	clearscope abstract string QuestProgress(); //something to tell how much progress the player has made in the quest.
+	
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+	
+	override void attachtoowner(actor other)
+	{
+		super.attachtoowner(other);
+		if (other is "DI_PlayerBase") {plr = DI_PlayerBase(other);}
+		if (!plr) {other.TakeInventory(self.GetClassName(), 999999);}
+	}
+	
+	override void detachfromowner()
+	{
+		if (!failed) {ObjectiveCancelled();}
+	}
+	
+	override void ownerdied()
+	{
+		ObjectiveFailed();
+		super.ownerdied();
+	}
+	
+	virtual void ObjectiveComplete()
+	{
+		if (quest) {quest.QuestCompleted();}
+	}
+	
+	virtual void ObjectiveFailed()
+	{
+		failed = true;
+		if (quest) {quest.QuestFailed();}
+	}
+	
+	virtual void ObjectiveCancelled()
+	{
+		//just in case you don't want your objective to leave any loose ends behind.
+	}
+}

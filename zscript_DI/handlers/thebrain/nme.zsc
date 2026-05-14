@@ -1,0 +1,73 @@
+//zscript_DI/handlers/thebrain/nme.zsc
+
+extend class DIHandler
+{
+	array<string> nmes;
+	
+	virtual void DINMEHandler(DI_NME nme)
+	{
+		nme.handler = self;
+	}
+	
+	virtual void ListNMEs()
+	{
+		array<string> rawnmes;
+	
+		int ThisLump = Wads.FindLump("DINME", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DINME", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(rawnmes, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DINME", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < rawnmes.Size(); ++i)
+		{
+			if (rawnmes[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			//if (rawnmes[i].Length() < 3) {continue;}
+			rawnmes[i].Replace("	", "");
+			rawnmes[i].Replace(" ", "");
+			rawnmes[i] = rawnmes[i].Left(rawnmes[i].IndexOf(";"));
+			
+			array<string> nmelines;
+			rawnmes[i].Split(nmelines, ",", TOK_SKIPEMPTY);
+			
+			if (nmelines.size() != 4) {ThrowAbortException("\caError in DINME script file: Invalid amount of arguments found on line '%s'.", nmes[i]);}
+			
+			if (random[dihandler](1, 256) > nmelines[2].ToInt(10)) {continue;}
+			
+			nmes.push(rawnmes[i]);
+		}
+	}
+	
+	virtual string ChooseNME(int tier, string nmetype = "Default")
+	{
+		array<string> validnmes;
+	
+		for (int i = 0; i < nmes.size(); ++i)
+		{
+			array<string> nmelines;
+			nmes[i].Split(nmelines, ",", TOK_SKIPEMPTY);
+			
+			if (nmelines.size() != 4) {ThrowAbortException("\caError in DINME script file: Invalid amount of arguments found on line '%s'.", nmes[i]);}
+			
+			if (nmelines[0].ToInt(10) != tier) {continue;}
+			
+			if (nmetype ~== "Default")
+			{
+				if (nmelines[3] ~== "Turret") {continue;}
+				if (nmelines[3] ~== "Large") {continue;}
+				else {validnmes.push(nmelines[1]);}
+			}
+			if (nmetype ~== nmelines[3])
+			{
+				validnmes.push(nmelines[1]);
+			}
+		}
+		
+		if (validnmes.Size() > 0) {return validnmes[random[dihandler](0, validnmes.Size() - 1)];}
+		return "";
+	}
+}

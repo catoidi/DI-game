@@ -7,7 +7,7 @@ Class Fred : DI_Monster
 	Default
 	{
 		Speed 4;
-		Health 30;
+		Health 300;
 		Radius 17;
 		Height 39;
 		BloodColor "Red";
@@ -20,9 +20,10 @@ Class Fred : DI_Monster
 		{
 			bSPRITEFLIP = true;
 			SetTag("Derf");
-			Health = 120;
-			StartHealth = 120;
+			Health *= 4;
+			StartHealth *= 4;
 			SpeedMult = 4.0;
+			coindrop = "DI_Gem";
 		}
 		Super.PostBeginPlay();
 	}
@@ -39,7 +40,7 @@ Class Fred : DI_Monster
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(3, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(30, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash", 6, 0, 18);
 				A_DIScale(0.1, -0.1);
 			}
@@ -86,12 +87,14 @@ Class Fred_Slash5 : Fred_Slash4 {Default {+SPRITEFLIP;}} //for fred5.
 Class Fred2 : Fred
 {
 	//fiendish fred. moves faster, does more damage, gets knockbacked more. very fiendish.
+	
+	mixin DI_FiendishMixin;
 
 	Default
 	{
-		Mass 5;
+		Mass 1500;
 		Scale 1.25;
-		Health 75;
+		Health 750;
 		Speed 12;
 		Radius 21;
 		Height 49;
@@ -113,7 +116,7 @@ Class Fred2 : Fred
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(6, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(60, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash", 6, 0, 22);
 				A_DIScale(0.05, -0.05);
 			}
@@ -121,7 +124,7 @@ Class Fred2 : Fred
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(6, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(60, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash2", 6, 0, 22);
 				A_DIScale(0.05, -0.05);
 			}
@@ -137,9 +140,9 @@ Class Fred3 : Fred
 
 	Default
 	{
-		Mass 1000;
+		Mass 10000;
 		Speed 6;
-		Health 600;
+		Health 6000;
 		Radius 34;
 		Height 78;
 		Tag "Giant Fred";
@@ -160,7 +163,7 @@ Class Fred3 : Fred
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(45, "melee", "whiff", "Melee", true);
+				A_CustomMeleeAttack(450, "melee", "whiff", "Melee", true);
 				A_SpawnItemEX("Fred_Slash3", 9, 0, 36);
 				A_DIScale(0.1, -0.1);
 			}
@@ -179,8 +182,8 @@ Class Fred4 : Fred
 	Default
 	{
 		Speed 4;
-		Mass 10000;
-		Health 210;
+		Mass 2000;
+		Health 1800;
 		Tag "Robot Fred";
 		DI_Monster.DIDrop "DI_Money";
 	}
@@ -197,7 +200,7 @@ Class Fred4 : Fred
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(3, "melee", "whiff", "Lightning", true);
+				A_CustomMeleeAttack(30, "melee", "whiff", "Lightning", true);
 				A_SpawnItemEX("Fred_Slash4", 6, 0, 18);
 				A_DIScale(0.1, -0.1);
 			}
@@ -209,11 +212,13 @@ Class Fred4 : Fred
 
 Class Fred5 : Fred4
 {	
+	mixin DI_FiendishMixin;
+
 	Default
 	{
-		Mass 500;
+		Mass 3000;
 		Scale 1.25;
-		Health 375;
+		Health 2800;
 		Speed 15;
 		Radius 21;
 		Height 49;
@@ -235,7 +240,7 @@ Class Fred5 : Fred4
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(6, "melee", "whiff", "Lightning", true);
+				A_CustomMeleeAttack(60, "melee", "whiff", "Lightning", true);
 				A_SpawnItemEX("Fred_Slash4", 6, 0, 22);
 				A_DIScale(0.05, -0.05);
 			}
@@ -243,7 +248,7 @@ Class Fred5 : Fred4
 			#### # 0 
 			{
 				A_FaceTarget();
-				A_CustomMeleeAttack(6, "melee", "whiff", "Lightning", true);
+				A_CustomMeleeAttack(60, "melee", "whiff", "Lightning", true);
 				A_SpawnItemEX("Fred_Slash5", 6, 0, 22);
 				A_DIScale(0.05, -0.05);
 			}

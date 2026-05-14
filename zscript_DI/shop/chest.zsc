@@ -17,6 +17,7 @@ Class DIChest : DIPermaShop
 		DIShop.ReducePriceRound 0;
 		DIShop.ReducePriceBase 0;
 		DIShop.ReducePriceMult 1.0;
+		//$Title "Chest Shop (Reusable)"
 	}
 	
 	override void ChooseNewShopItem()
@@ -32,6 +33,21 @@ Class DIChest : DIPermaShop
 	}
 	
 	override bool IsPriceDecreased() {return false;}
+	
+	override void DoPurchase(int buyprice)
+	{
+		Super.DoPurchase(buyprice);
+		
+		if (di_progression && !di_unlock_mod_blindbox)
+		{
+			cvar chestpurchases = cvar.findcvar("di_chestpurchases");
+			chestpurchases.setint(di_chestpurchases + 1);
+			if (di_chestpurchases >= 9)
+			{
+				eventhandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_blindbox");
+			}
+		}
+	}
 
 	States
 	{
@@ -52,6 +68,11 @@ Class DIChest : DIPermaShop
 Class DIChest_Single : DIChest
 {
 	//can only be opened once, then it's done.
+	
+	Default
+	{
+		//$Title "Chest Shop (Single Use)"
+	}
 	
 	override void RestockShop() {}
 	

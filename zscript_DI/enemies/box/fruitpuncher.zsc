@@ -6,13 +6,12 @@ CLASS FruitPuncher : DI_Monster //20007
 {
 	Default
 	{
-		Speed 20;
-		Health 40;
+		Speed 15;
+		Health 360;
 		Radius 16;
 		Height 40;
-		Mass 200;
+		Mass 1300;
 		BloodType "DI_FruitBlood";
-		Species "Melon";
 		Tag "Fruit Puncher";
 		Obituary "$BOX_DIE_FRUIT";
 		DI_Monster.GibType "DI_FruitExplosion";
@@ -35,7 +34,7 @@ CLASS FruitPuncher : DI_Monster //20007
 			#### C 0 A_FaceTarget;
 			#### CC 5 A_DIScale(-0.025, 0.05);
 			#### D 0 A_Recoil(-10);
-			#### D 0 A_CustomMeleeAttack(6, "melee", "whiff", "Melee", false);
+			#### D 0 A_CustomMeleeAttack(60, "melee", "whiff", "Melee", false);
 			#### D 10 A_DIScale(0.05, -0.1);
 			Goto See;
 	}
@@ -75,6 +74,16 @@ CLASS DI_FruitBlood : DI_Blood
 	}
 }
 
+Class DI_FruitBlood_Gib : DI_BloodPuff_Gib
+{
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			BLDR A 1 DoGibPuff(3);
+	}
+}
+
 Class DI_FruitExplosion : DI_GibExplosion
 {
 	override void postbeginplay()
@@ -106,6 +115,8 @@ Class DI_FruitExplosion : DI_GibExplosion
 
 Class DI_FruitGib : DI_GibBloody
 {
+	Default {DI_GibBloody.TrailActor "DI_FruitBlood_Gib";}
+
 	States
 	{
 		Roller:

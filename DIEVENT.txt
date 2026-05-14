@@ -4,9 +4,57 @@
 >>Argument 3: The name of the event you want to activate. Make sure your EventHandler's network code is not case sensitive.
 >>Argument 4: Random chance of the event being added to the event pool. Only 1 event in the pool will be activated per wave. Setting this to 0 means this event will always be added to the pool.
 >>Argument 5: The minimum wave required for this event. The event won't be added to the pool if the player has not reached this wave yet.
-DI01, Event, dievent_bulletdeath, 50, 1;
-DI01, Event, dievent_fredpuncher, 30, 1;
-DI01, ACS, dievent_spawnwalltraps, 8, 1;
-DI01, Event, dievent_hammertime, 30, 1;
->>DI01, Event, dievent_addron, 0, 1;
-DI02, Event, FakeEventPLSIgnore, 1, 1;
+>>LEVEL ONE EVENTS:
+DI01, Event, dievent_bulletdeath, 100, 1;
+DI01, ACS, dievent_spawnwalltraps, 50, 1;
+DI01, Event, dievent_iamrisen, 100, 3;
+DI01, Event, dievent_brokenglasses, 50, 1;
+DI01, Event, dievent_fredpuncher, 25, 1;
+DI01, Event, dievent_hammertime, 50, 1;
+DI01, Event, dievent_pepperparty, 50, 1;
+DI01, Event, dievent_fiendfolio, 50, 5;
+DI01, Event, dievent_oldmagazine, 100, 1;
+DI01, Event, dievent_hyperfocusing, 50, 1;
+DI01, Event, dievent_cursed, 50, 1;
+DI01, Event, dievent_payday, 100, 1;
+DI01, Event, dievent_riskreward, 50, 1;
+DI01, Event, dievent_speedrun, 50, 1;
+DI01, Event, dievent_slowhealing, 100, 3;
+DI01, Event, dievent_fatigue, 50, 3;
+DI01, Event, dievent_incremental, 100, 5;
+DI01, Event, dievent_tier2enemies, 50, 3;
+DI01, Event, dievent_tier3enemies, 100, 5;
+>>LEVEL TWO EVENTS:
+DI02, Event, dievent_bulletdeath, 120, 1;
+DI02, Event, dievent_iamrisen, 120, 1;
+DI02, Event, dievent_thebigguy, 120, 8;
+DI02, Event, dievent_brokenglasses, 60, 1;
+DI02, Event, dievent_addron, 60, 2;
+DI02, Event, dievent_pizzahorde, 120, 6;
+DI02, Event, dievent_oldmagazine, 120, 1;
+DI02, Event, dievent_hyperfocusing, 60, 1;
+DI02, Event, dievent_cursed, 60, 1;
+DI02, Event, dievent_payday, 120, 1;
+DI02, Event, dievent_riskreward, 60, 1;
+DI02, Event, dievent_speedrun, 60, 1;
+DI02, Event, dievent_slowhealing, 120, 3;
+DI02, Event, dievent_fatigue, 60, 3;
+DI02, Event, dievent_incremental, 120, 5;
+DI02, Event, dievent_tier2enemies, 60, 3;
+DI02, Event, dievent_tier3enemies, 120, 5;
+>>BONUS LEVEL ONE EVENTS:
+BONUS01, Event, dievent_bulletdeath, 150, 1;
+BONUS01, Event, dievent_iamrisen, 150, 1;
+BONUS01, Event, dievent_brokenglasses, 75, 1;
+BONUS01, Event, dievent_oldmagazine, 150, 1;
+BONUS01, Event, dievent_hyperfocusing, 75, 1;
+BONUS01, Event, dievent_cursed, 75, 1;
+BONUS01, Event, dievent_payday, 150, 1;
+BONUS01, Event, dievent_riskreward, 75, 1;
+BONUS01, Event, dievent_speedrun, 75, 1;
+BONUS01, Event, dievent_slowhealing, 150, 3;
+BONUS01, Event, dievent_fatigue, 75, 3;
+BONUS01, Event, dievent_incremental, 150, 5;
+BONUS01, Event, dievent_tier2enemies, 75, 3;
+BONUS01, Event, dievent_tier3enemies, 150, 5;
+BONUS01, Event, dievent_thebigguy, 150, 8;

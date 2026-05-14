@@ -1,0 +1,28 @@
+//zscript_DI/items/armors/bowtie.zsc
+
+Class DI_BowTie : DI_Armor
+{
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "Bow Tie equipped! (+40% Protection, +40 Durability. Gain up to +13% Weapon Speed based on Durability.)";
+		Inventory.Icon "ARMOD0";
+		DI_Armor.Protection 0.4;
+		DI_Armor.Durability 400;
+		DI_Armor.MaxDurability 400;
+	}
+	
+	override double GiveWeaponSpeed()
+	{
+		if (!plr) {return 0.0;}
+		return -0.000333 * durability;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO D -1;
+			Stop;
+	}
+}

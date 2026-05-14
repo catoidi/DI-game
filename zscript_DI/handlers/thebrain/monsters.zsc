@@ -1,0 +1,131 @@
+extend class DIHandler
+{
+	virtual void DIMonsterDied(WorldEvent e)
+	{
+		--enemycount;
+		e.Thing.ACS_ScriptCall("EnemyCount", enemycount);
+		currentspawners = e.Thing.ACS_ScriptCall("CheckSpawner", spawnamount, spawntime);
+		bool queuefinished = e.Thing.ACS_ScriptCall("CheckSpawnQueue"); //this is to fix a bug when you kill the 2nd to last enemy on the same frame the last enemy starts spawning.
+		if (waveinprogress == true)
+		{
+			if ((currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1))
+			{
+				if ((waitnum == 0) && (enemycount <= 0))
+				{
+					//console.printf("%s", "wave is over!");
+					++wavenum;
+					++fakewavenum;
+					e.Thing.ACS_NamedExecuteAlways("DIWaveFinished", 0, wavenum, 0, 0);
+					eventhandler.sendnetworkevent("DIWaveFinished", wavenum, 0, 0);
+					waveinprogress = false;
+					//GetWaveData(e);
+					//ParseWaveData(e);
+				}
+				else if ((waitnum != 0) && (waitnum != waitcurrent) && (enemycount > 0))
+				{
+					//bypass wait quota if all queued monsters have been killed.
+					waitnum = 0;
+					waitcurrent = 0;
+					++batchnum;
+					ParseWaveData(e);
+				}
+			}
+			else 
+			{
+				++waitcurrent;
+				//console.printf("%d, %d", waitnum, waitcurrent);
+				if ((waitnum != 0) && (waitcurrent == waitnum))
+				{
+					waitnum = 0;
+					waitcurrent = 0;
+					++batchnum;
+					ParseWaveData(e);
+					//console.printf("%s", "activating next batch...");
+				}
+				//console.printf("%s %d %d %d", "wave is still going,", currentspawners, spawnqueue.Size(), Level.Total_Monsters - (Level.Killed_Monsters + 1));
+			}
+		}
+		monsters.Delete(monsters.Find(DI_Monster(e.Thing)));
+	}
+	
+	virtual void DIMonsterHandler(WorldEvent e)
+	{	
+		DI_Monster mon = DI_Monster(e.Thing);
+		
+		if (endless_healthmult != 1.0)
+		{
+			int starthp = mon.Health * endless_healthmult;
+			if (starthp < 1) {starthp = 1;}
+			mon.Health = starthp;
+			mon.StartHealth = starthp  / G_SkillPropertyFloat(SKILLP_MonsterHealth);
+		}
+		if (endless_damagemult != 1.0)
+		{
+			double startdmg = mon.DamageMultiply * endless_damagemult;
+			mon.DamageMultiply = startdmg;
+		}
+		if (endless_speedmult != 1.0)
+		{
+			mon.speedmult *= endless_speedmult;
+		}
+
+		//Parsing data from GiveEnemyItem, found in DIPassiveInventory items.
+		//AKA items to give to enemies from passive items the player owns.
+		//Idk if this will impact performance in any meaningful way, but if you notice freezing when enemies spawn, this is probably why.
+		for (int i = 0; i < players.Size(); ++i) 
+		{
+			if (playeringame[i])
+			{
+				let plr = DI_PlayerBase(players[i].mo);
+				if (plr)
+				{
+					for (int i = 0; i < plr.knownpassives.Size(); ++i)
+					{
+						DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+						if (curinv)
+						{
+							string returnstring;
+							int returnnum;
+							[returnstring, returnnum] = curinv.GiveEnemyItem();
+							if (returnstring != "")
+							{
+								mon.GiveInventory(returnstring, returnnum);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		monsters.push(mon);
+	}
+	
+	virtual void DIBossHandler(WorldEvent e)
+	{
+		//this script is called after the default monster handler.
+		//as of this writing, bosses are currently used for side quests.
+		//with that in mind, this will help the quests keep track of which boss they spawned.
+		
+		let curboss = DI_Boss(e.Thing);
+		
+		for (int i = 0; i < players.Size(); ++i)
+		{
+			if (playeringame[i])
+			{
+				let bossplr = DI_PlayerBase(players[i].mo);
+				if (bossplr)
+				{
+					let sidequest = DI_QuestObjective_Kill(bossplr.FindInventory("DI_QuestObjective_Kill", true));
+					if (sidequest)
+					{
+						if (!sidequest.boss) 
+						{
+							sidequest.boss = curboss;
+							curboss.sidequest = sidequest;
+						}
+					}
+				}
+			}
+		}
+	}
+}

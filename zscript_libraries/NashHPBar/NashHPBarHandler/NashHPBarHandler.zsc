@@ -153,6 +153,38 @@ class NashHPBarHandler : EventHandler
 		int smax = max(vmax, hmax);
 		return max(1, min(scaleval, smax));
 	}
+	
+	ui void DoSimpleShopPopup(string txt, int pos, int maxpos, RenderEvent e, double baseYPos, double baralpha)
+	{
+		let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+		if (brdTex.IsValid())
+		{
+			Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+			
+			vector2 posoffset = (0, 0);
+			posoffset.x = (pos % 2 == 0) ? (brdTexSize.X / 2) : 0;
+			if ((pos >= (maxpos - 1)) && (pos % 2 == 0)) {posoffset.x = brdTexSize.X / 4;}
+			int pos2 = pos / 2;
+			posoffset.y = pos2 * 24;
+			
+			
+			Screen.DrawTexture(brdTex, false,
+				(Screen.GetWidth() / 2) - (posoffset.x * CleanXFac),
+				((baseYPos + posoffset.y + 59.0) * CleanYFac),
+				DTA_KeepRatio, true,
+				DTA_Alpha, baralpha,
+				DTA_ScaleX, 0.5 * CleanXFac,
+				DTA_ScaleY, 0.3 * CleanYFac);
+			
+			Screen.DrawText(smallFont, Font.CR_WHITE,
+				(Screen.GetWidth() / 2) - (((-brdTexSize.X / 4) + posoffset.x + (smallFont.StringWidth(txt) / 2)) * CleanXFac),
+				((baseYPos + posoffset.y) * CleanYFac) + (smallFont.GetHeight() * CleanYFac) - (smallFont.GetHeight() * CleanYFac) + (67 * CleanYFac),
+				txt,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, baralpha);
+		}
+	}
 
 	ui void DrawNashHPBar(RenderEvent e)
 	{
@@ -207,6 +239,8 @@ class NashHPBarHandler : EventHandler
 			double baseYPos = (SmallFont.GetHeight() * scale) * con_notifylines;
 			baseYPos /= CleanYfac;
 			baseYPos += SmallFont.GetHeight();
+			
+			let plr = DI_PlayerBase(CPlayer.mo);
 
 			if (prevAimTarget is "DIShop_Base")
 			{
@@ -249,7 +283,7 @@ class NashHPBarHandler : EventHandler
 					
 				// draw target base price
 				txt = String.Format("\cfBase Price: %d", prevShop.GetShopBasePrice());
-				if (prevShop.saleamount > 0) {txt = String.Format("%s \cd[50%% off!]", txt);}
+				if (prevShop.dosale) {txt = String.Format("%s \cd[%d%% off!]", txt, 100 - (prevShop.CheckSaleNum() * 100));}
 				else if (prevShop.GetShopPrice() > prevShop.GetShopBasePrice())
 				{
 					if (prevShop.IsPriceDecreased() == true) {txt = String.Format("%s \ci[Depreciating]", txt);}
@@ -273,7 +307,7 @@ class NashHPBarHandler : EventHandler
 				if (prevShop.user_hideitem == true) {txt = "\caWho knows what riches this holds?";}
 				Screen.DrawText(fnt, normalTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
-					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (19 * CleanYFac),
+					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (15 * CleanYFac),
 					txt,
 					DTA_CleanNoMove, true,
 					DTA_KeepRatio, true,
@@ -283,13 +317,164 @@ class NashHPBarHandler : EventHandler
 				txt = String.Format("$shoptype_%s", targName);
 				txt = Stringtable.Localize(txt);
 				txt = String.Format("%s\n", txt);
-				if (prevShop is "DIPermaShop") {txt = String.Format("%s\cz[PERMANENT] ", txt);}
-				if (prevShop.GetDebt(CPlayer.mo) > 0) {txt = String.Format("%s\ca[-%d HP] ", txt, prevShop.GetDebt(CPlayer.mo));}
+				bool isPerma = false;
+				if (prevShop is "DIPermaShop") {isPerma = true;}
+				if (isPerma) {txt = String.Format("%s\cz[PERMANENT] ", txt);}
+				if (plr && plr.wpn && prevShop.GetDebt(CPlayer.mo) > 0) 
+				{
+					txt = String.Format("%s\ca[-%.1f HP] ", txt, 0.1 * prevShop.GetDebt(CPlayer.mo) * plr.wpn.plr_maxhp);
+				}
 				else if ((prevShop.user_allowdebt == false) && (CPlayer.mo.score < prevShop.GetShopPrice())) {txt = String.Format("%s\ca[Can't Afford] ", txt);}
-				if (CPlayer.mo.CountInv(targName) > 0) {txt = String.Format("%s\cn[Have: %d] ", txt, CPlayer.mo.CountInv(targName));}
+				int havenum = 0;
+				let desc2 = String.Format("$shopdesc2_%s", targName); //GROSS HACK !!!!!!!!!!
+				let realitem = CPlayer.mo.FindInventory(targName);
+				desc2 = StringTable.Localize(desc2);
+				if (desc2.Left(9) ~== "IsBundle ")
+				{
+					let itemname = desc2.Mid(9);
+					if (IsPerma && plr)
+					{
+						havenum = plr.GetPermaItemAmount(itemname);
+					}
+					else
+					{
+						realitem = CPlayer.mo.FindInventory(itemname);
+						if (realitem) {havenum = CPlayer.mo.CountInv(itemname);}
+					}
+				}
+				else if (realitem && (!isPerma)) {havenum = CPlayer.mo.CountInv(targName);}
+				else if (isPerma && plr)
+				{
+					havenum = plr.GetPermaItemAmount(targName);
+				}
+				if (havenum > 0) {txt = String.Format("%s\cn[Have: %d] ", txt, havenum);}
 				Screen.DrawText(fnt, normalTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
 					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (43 * CleanYFac),
+					txt,
+					DTA_CleanNoMove, true,
+					DTA_KeepRatio, true,
+					DTA_Alpha, healthBarAlpha);
+				
+				int simplepopups = 0;
+				int maxpopups = 0;
+				if (prevShop.SimpleShopPopup(plr) != "") {++maxpopups;}
+				for (int i = 0; i < prevShop.shopinv.Size(); ++i) 
+				{
+					if (prevShop.shopinv[i].SimpleShopPopup() != "") {++maxpopups;}
+				}
+				if (prevShop.SimpleShopPopup(plr) != "")
+				{
+					DoSimpleShopPopup(prevShop.SimpleShopPopup(plr), simplepopups, maxpopups, e, baseYpos, healthBarAlpha);
+					++simplepopups;
+				}
+				for (int i = 0; i < prevShop.shopinv.Size(); ++i)
+				{
+					if (prevShop.shopinv[i].SimpleShopPopup() != "")
+					{
+						DoSimpleShopPopup(prevShop.shopinv[i].SimpleShopPopup(), simplepopups, maxpopups, e, baseYpos, healthBarAlpha);
+						++simplepopups;
+					}
+					prevShop.shopinv[i].CustomShopPopup(self, e, baseYPos, healthBarAlpha);
+				}
+			}
+			else if (prevAimTarget is "DI_QuestGiver")
+			{
+				String txt;
+				DI_QuestGiver prevQuest = DI_QuestGiver(prevAimTarget);
+				
+				// get font colours
+				int normalTxtColor = plugin.GetNormalTextColor();
+				int nameTxtColor = normalTxtColor;
+				
+				// draw background for target text
+				let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+				if (brdTex.IsValid())
+				{
+					Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+					Screen.DrawTexture(brdTex, false,
+						(Screen.GetWidth() / 2) - ((brdTexSize.X / 2) * CleanXFac),
+						((baseYPos - 24.0) * CleanYFac),
+						DTA_CleanNoMove, true,
+						DTA_KeepRatio, true,
+						DTA_Alpha, healthBarAlpha);
+				}
+
+				// get quest info
+				bool questavailable = true;
+				inventory curquest = pmo.FindInventory("DI_MainQuest", true);
+				if ((curquest) || (prevQuest.cangivequest == false)) {questavailable = false;}
+				if (questavailable) {txt = "\cvSide Quest Available!";}
+				Screen.DrawText(fnt, nameTxtColor,
+					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+					(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (1 * CleanYFac),
+					txt,
+					DTA_CleanNoMove, true,
+					DTA_KeepRatio, true,
+					DTA_Alpha, healthBarAlpha);
+				
+				// draw quest objective
+				txt = "";
+				if (questavailable)
+				{
+					txt = string.format("$diquest_%s", prevQuest.objective);
+					txt = stringtable.localize(txt);
+					txt = string.format("\cf> Objective:\n\cb%s", txt);
+				}
+				else if (curquest) {txt = "\cfInteract with this NPC\nto cancel your current quest.";}
+				else {txt = "\caSorry, I don't have any\nquests available right now.";}
+				Screen.DrawText(fnt, normalTxtColor,
+					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+					(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (13 * CleanYFac),
+					txt,
+					DTA_CleanNoMove, true,
+					DTA_KeepRatio, true,
+					DTA_Alpha, healthBarAlpha);
+				
+				// draw quest debuff
+				txt = "";
+				if (questavailable)
+				{
+					txt = string.format("$shopdesc_%s", prevQuest.debuff);
+					txt = stringtable.localize(txt);
+					txt = string.format("\ca> Debuff:\n\cb%s", txt);
+					
+					Screen.DrawText(fnt, normalTxtColor,
+						(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+						(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (45 * CleanYFac),
+						txt,
+						DTA_CleanNoMove, true,
+						DTA_KeepRatio, true,
+						DTA_Alpha, healthBarAlpha);
+				}
+			}
+			else if (prevAimTarget is "DIFakeShop")
+			{
+				String txt;
+				DIFakeShop prevFake = DIFakeShop(prevAimTarget);
+				
+				// get font colours
+				int normalTxtColor = plugin.GetNormalTextColor();
+				int nameTxtColor = normalTxtColor;
+				
+				// draw background for target text
+				let brdTex = TexMan.CheckForTexture("graphics/hpbar/SHOPBAR.png");
+				if (brdTex.IsValid())
+				{
+					Vector2 brdTexSize = TexMan.GetScaledSize(brdTex);
+					Screen.DrawTexture(brdTex, false,
+						(Screen.GetWidth() / 2) - ((brdTexSize.X / 2) * CleanXFac),
+						((baseYPos - 24.0) * CleanYFac),
+						DTA_CleanNoMove, true,
+						DTA_KeepRatio, true,
+						DTA_Alpha, healthBarAlpha);
+				}
+
+				// display fakeshop's text
+				txt = StringTable.Localize(prevFake.ShopUIText(plr));
+				Screen.DrawText(fnt, nameTxtColor,
+					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
+					(baseYPos * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (1 * CleanYFac),
 					txt,
 					DTA_CleanNoMove, true,
 					DTA_KeepRatio, true,
@@ -360,10 +545,10 @@ class NashHPBarHandler : EventHandler
 				String targName = prevAimTarget.GetCharacterName();
 				if (prevAimTarget is "PlayerPawn")
 				{
-					PlayerInfo plr = prevAimTarget.player;
-					if (plr)
+					PlayerInfo plrinfo = prevAimTarget.player;
+					if (plrinfo)
 					{
-						targName = plr.GetUserName();
+						targName = plrinfo.GetUserName();
 					}
 				}
 				txt = String.Format("%s", targName);
@@ -376,7 +561,7 @@ class NashHPBarHandler : EventHandler
 					DTA_Alpha, healthBarAlpha);
 
 				// draw target health in numbers
-				txt = String.Format("%d/%d", health, maxHealth);
+				txt = String.Format("%.1f/%.1f", 0.1 * health, 0.1 * maxHealth);
 				Screen.DrawText(fnt, normalTxtColor,
 					(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
 					(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (2 * CleanYFac),

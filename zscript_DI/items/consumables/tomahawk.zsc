@@ -5,7 +5,8 @@ Class DI_Tomahawk : DI_ThrowBomb
 	Default
 	{
 		Tag "Tomahawk";
-		Inventory.MaxAmount 10;
+		DICustomConsumable.CooldownTics 105;
+		Inventory.MaxAmount 24;
 		Inventory.Icon "HAWKA0";
 		Inventory.PickupMessage "Got a throwable tomahawk.";
 	}
@@ -27,7 +28,7 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 
 	Default
 	{
-		DamageFunction (256);
+		DamageFunction (5120);
 		+NOGRAVITY;
 		+BLOODSPLATTER;
 		//+EXTREMEDEATH;
@@ -70,7 +71,7 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 				{
 					for (int i = 0; i < 6; ++i)
 					{
-						A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 0, random(-6, 6), random(-6, 6), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
+						A_SpawnItemEX("DI_BloodyHeart_Drop", 0, 0, 0, random(-3, 3), random(-3, 3), random(2, 6), 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
 						if (hearted.bNOBLOOD == false)
 						{
 							hearted.BloodSplatter(invoker.Pos, invoker.Angle);
@@ -79,6 +80,24 @@ Class DI_Tomahawk_Projectile : DI_ThrowBomb_Projectile
 					eventhandler.sendnetworkevent("di_tomahawkkill");
 				}
 			}
+			Stop;
+	}
+}
+
+Class DI_Tomahawk_Bundle : DIBundle
+{
+	Default
+	{
+		Tag "Handful of Tomahawks";
+		DIBundle.BundleItem "DI_Tomahawk";
+		DIBundle.BundleAmount 8;
+		Inventory.PickupMessage "Got a handful of tomahawks, pre-coated in blood for your convenience.";
+	}
+	
+	States
+	{
+		Spawn:
+			HAWK B -1;
 			Stop;
 	}
 }

@@ -1,0 +1,38 @@
+//zscript_DI/items/armors/goldhat.zsc
+
+Class DI_GoldHat : DI_Armor
+{
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "Golden Hat equipped! (+50% Protection, +3 Durability. Unbreakable. Gain +0.1 Durability for every coin you pickup.)";
+		Inventory.Icon "ARMOF0";
+		DI_Armor.Protection 0.50;
+		DI_Armor.Durability 30;
+		DI_Armor.MaxDurability 30;
+		DI_Armor.CanBreak false;
+	}
+	
+	int oldscore;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen()) 
+		{
+			int gained = plr.score - oldscore;
+			if (gained > 0) {GiveArmor(gained);}
+			
+			oldscore = plr.score;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO F -1;
+			Stop;
+	}
+}

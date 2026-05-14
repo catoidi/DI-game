@@ -1,0 +1,14 @@
+//zscript_DI/items/debuffs/motionblur.zsc
+
+Class DI_QuestDebuff_MotionBlur : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Motion Blur)";
+	}
+	override double GiveAccuracy() 
+	{
+		if (!plr) {return 0.0;}
+        return 0.3 * plr.vel.length() * amount;
+	}
+}

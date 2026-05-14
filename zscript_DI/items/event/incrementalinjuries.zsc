@@ -1,0 +1,22 @@
+
+Class DI_IncrementalInjuries : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+	
+	int dmg;
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		if (damage > 0) {dmg += damage;}
+		if (dmg > 3750) {dmg = 3750;}
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.000001 - (0.0002 * dmg);
+	}
+}

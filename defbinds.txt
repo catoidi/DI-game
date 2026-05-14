@@ -17,12 +17,15 @@ unbind MWheelRight
 unbind MWheelLeft
 unbind [
 unbind ]
+unbind t
 unbind DPadDown
 unbind DPadRight
 unbind DPadLeft
 unbind RShoulder
 unbind LShoulder
 unbind Pad_Y
+unbind tab
+bind enter togglemap
 bind f5 chase
 bind r +reload
 bind Pad_B +jump

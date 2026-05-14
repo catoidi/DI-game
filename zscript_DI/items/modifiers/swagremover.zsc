@@ -1,0 +1,17 @@
+//zscript_DI/items/modifiers/swagremover.zsc
+
+Class DI_SwagRemover : DIPassiveInventory
+{
+	//This is meant to be used by custom maps that want to reward less Swag XP than regular levels.
+
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+		Inventory.MaxAmount 100;
+	}
+	
+	override double MultiplyFinalScore()
+	{
+		return 1.0 - (amount * 0.01);
+	}
+}

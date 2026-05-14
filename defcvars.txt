@@ -105,5 +105,6 @@ set am_unexploredsecretcolor "66 52 00"
 set am_wallcolor "77 77 77"
 set am_xhaircolor "ff 66 00"
 set am_yourcolor "ff ff ff"
+set blood_fade_scalar "0.0"
 
 set i_discordrpc "1"

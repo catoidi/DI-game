@@ -13,20 +13,27 @@ Class DIShop : DIShop_Base
 	string user_currentitem, shop_currentitem; //what item is currently available at this shop.
 	int user_baseprice, shop_baseprice; //the base price of the user_currentitem.
 	string user_shoptype; //for use with random shops, this tells the shop which item pool to look through.
-	int user_pricemult, extra_pricemult, default_pricemult; //multiplier for the base price.
+	double user_pricemult, extra_pricemult, default_pricemult; //multiplier for the base price.
+	double item_pricemult; //another multiplier for the base price. controlled by Passive items.
 	bool user_alwaysreroll; //forces the shop to always reroll their item upon every restock.
 	string user_blacklist; //map editor defined item blacklist. can be used to fine-tune your item shops. uses same format as regular blacklist.
 	
+	Actor spawnedactor; //points to the spawned item from DoPurchase.
 	Inventory itemactor; //points to the inventory class for the current item, but only if the player already has the item.
 	int itemmax; //the item's built in max amount value. only applies if the player already has the item.
 	
 	int user_pricedown_round; //how many rounds until the price can decrease. default is 2.
 	int user_pricedown_base; //when price can decrease, decrease by this amount.
 	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
+	int LevelSale; //extra sale percentage added from level scripts.
 	
 	bool user_dontprogress; //dont progress the shop level, if applicable.
 	
 	bool user_debugpool; //prints the itempool to the console.
+	
+	bool canprogress; //di_progression check. not related to DontProgress/user_dontprogress.
+	
+	bool shopinv_init; //runs the Init function on shopinv items once the shop is ready to sell items.
 	
 	Property AlwaysReroll : user_alwaysreroll;
 	Property ReducePriceRound : user_pricedown_round;
@@ -41,11 +48,14 @@ Class DIShop : DIShop_Base
 		DIShop.ReducePriceRound 2;
 		DIShop.ReducePriceBase 5;
 		DIShop.ReducePriceMult 0.95;
+		//$Title "Shop (Instant Use)"
 	}
 	
 	override void PostBeginPlay()
 	{	
-		ParseBlacklist();
+		canprogress = di_progression;
+	
+		if (canprogress) {ParseBlacklist();} //disable user-made blacklist if progression is turned off.
 		ParseDISHOP();
 		
 		if (user_pricemult < 1) {user_pricemult = 1;}
@@ -60,6 +70,8 @@ Class DIShop : DIShop_Base
 		
 		SpawnShopExtras();
 		if (IsBlacklisted(shop_currentitem) == false) {canshop = true;}
+		
+		if (!plr) {plr = players[consoleplayer].mo;} //NOT MULTIPLAYER COMPATIBLE!!!!!!!!!!!!
 	}
 	
 	override void tick(void)
@@ -79,6 +91,8 @@ Class DIShop : DIShop_Base
 				RestockShop();
 			
 				if ((canshop == true) || (user_alwaysreroll == true)) {ChooseNewShopItem();} //previously used shops do not reroll, unless marked to always reroll.
+				
+				AddPriceMult(0); //refresh price mult to allow passive items to work.
 			
 				if (itempool.Size() > 0)
 				{
@@ -93,11 +107,16 @@ Class DIShop : DIShop_Base
 					//sale can only occur on items with a base price of at least 2.
 					//sale chance increases based on how long since the last sale 
 					//and also how long since the player last purchased from this shop.
-					int extrasale = newround - lastpurchased;
-					if (extrasale > 14) {extrasale = 14;}
-					if ((random(1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {saleamount = 1; lastsale = 0;}
-					else {saleamount = 0; ++lastsale;}
+					extrasale = newround - lastpurchased;
+					if ((random[dishop](1, 30) <= 1 + extrasale + lastsale) && (shop_baseprice >= 2)) {dosale = true; lastsale = 0;}
+					else {dosale = false; ++lastsale;}
+					GetSalePercent();
 					if (shop_itemstock > 0) {canshop = true;} //if shop is restocked, reenable shopping.
+					if (!shopinv_init)
+					{
+						for (int i = 0; i < shopinv.Size(); ++i) {shopinv[i].ShopInit();}
+						shopinv_init = true;
+					}
 					curround = newround;
 				}
 			}
@@ -267,7 +286,7 @@ Class DIShop : DIShop_Base
 					{
 						if (user_currentitem != currentline[1]) {continue;} 
 					}
-					else if (random(0, 255) > pushchance) 
+					else if (random[dishop](0, 255) > pushchance) 
 					{
 						if (debugline > 0) 
 						{
@@ -339,7 +358,7 @@ Class DIShop : DIShop_Base
 		}
 		else if ((canshop == true) || (user_alwaysreroll == true))
 		{
-			int chosenitem = random(0, itempool.Size() - 1);
+			int chosenitem = random[dishop](0, itempool.Size() - 1);
 		
 			Array<String> currentitem;
 			itempool[chosenitem].Split(currentitem, " ", TOK_SKIPEMPTY);
@@ -350,11 +369,37 @@ Class DIShop : DIShop_Base
 			{
 				//might've been causing VM aborts, idk...
 				if ((user_currentsprite != "") && (user_currentsprite != " ")) {shop_currentsprite = user_currentsprite;}
-				else {shop_currentsprite = currentitem[2];}
+				else if (currentitem.Size() >= 3) {shop_currentsprite = currentitem[2];}
+				else {ThrowAbortException("\caError loading shop items: \cl%s \caattempted to read invalid item \cl'%s'.", GetClassName(), itempool[chosenitem]);}
+			}
+			else
+			{
+				newitem_icon = "";
+				newitem_size = 0;
 			}
 			if (user_baseprice > 0) {shop_baseprice = user_baseprice;}
 			else {shop_baseprice = currentitem[3].ToInt(10);}
+			
+			for (int i = 0; i < shopinv.Size(); ++i)
+			{
+				shopinv[i].ChoseNewShopItem(shop_currentitem);
+			}
 		}
+		
+		//compatibility for DI_NewItem ACS Script.
+		if (!user_hideitem) 
+		{
+			newitem_icon = string.Format("%s0", shop_currentsprite);
+			let realicon = TexMan.CheckForTexture(newitem_icon);
+			int realicon_x, realicon_y;
+			[realicon_x, realicon_y] = TexMan.GetSize(realicon);
+			newitem_size = realicon_x;
+		}
+		newitem_name = GetShopItem();
+		newitem_desc = String.Format("$shopdesc_%s", newitem_name);
+		newitem_desc = Stringtable.Localize(newitem_desc);
+		newitem_name = String.Format("$shopitem_%s", newitem_name);
+		newitem_name = Stringtable.Localize(newitem_name);
 	}
 	
 	override void RerollShopItem(void)
@@ -365,6 +410,7 @@ Class DIShop : DIShop_Base
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		ChooseNewShopItem();
 		RestockShop();
+		AddPriceMult(0);
 		if (shop_itemstock != 0) {canshop = true;}
 		if (IsBlacklisted(shop_currentitem)) {canshop = false;}
 	}
@@ -378,18 +424,27 @@ Class DIShop : DIShop_Base
 			
 			bool hasroom = true;
 			bool canafford = false;
+			bool shopblocked = false;
 			itemmax = 0;
 		
 			int buyprice = GetShopPrice();
 			plr = PlayerPawn(target);
+			let desc2 = String.Format("$shopdesc2_%s", shop_currentitem); //GROSS HACK !!!!!!!!!!
 			itemactor = plr.FindInventory(shop_currentitem);
+			desc2 = StringTable.Localize(desc2);
+			if (desc2.Left(9) ~== "IsBundle ")
+			{
+				let itemname = desc2.Mid(9);
+				itemactor = plr.FindInventory(itemname);
+			}
 			if ((itemactor) && (itemactor.maxamount))
 			{
 				itemmax = itemactor.maxamount;
-				if (plr.CountInv(shop_currentitem) >= itemmax) {hasroom = false;}
+				if (plr.CountInv(itemactor.getclassname()) >= itemmax) {hasroom = false;}
 			}
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
-			if ((canafford == true) && (canshop == true) && (hasroom == true) && (CanDoDebt(plr) == true))
+			shopblocked = (plr.CountInv("DI_ShopBlocker") >= 1);
+			if ((canafford == true) && (canshop == true) && (hasroom == true) && (shopblocked == false) && (CanDoDebt(plr) == true))
 			{
 				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
@@ -411,6 +466,7 @@ Class DIShop : DIShop_Base
 				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this item.";}
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this item while in debt.";}
 				else if (CanDoDebt(plr) == false) {failmsg = "\cryou don't have enough HP to buy this.";}
+				else if (shopblocked) {failmsg = "\cryour ability to purchase items has been temporarily disabled.";}
 				else {failmsg = "\cra mysterious force prevents you from buying this item.";}
 				
 				console.printf("%s", failmsg);
@@ -420,7 +476,7 @@ Class DIShop : DIShop_Base
 	
 	override int GetShopPrice(void)
 	{
-		int getshopprice_int = ((shop_baseprice + currentprice) * user_pricemult) / (saleamount + 1);
+		int getshopprice_int = ((shop_baseprice + currentprice) * user_pricemult) * CheckSaleNum();
 		if (getshopprice_int < 1) {getshopprice_int = 1;}
 		return getshopprice_int;
 	}
@@ -434,6 +490,26 @@ Class DIShop : DIShop_Base
 	override string GetShopItem(void)
 	{
 		return shop_currentitem;
+	}
+	
+	override void GetSalePercent(void)
+	{
+		if (dosale)
+		{
+			float minsale = user_salemin + (0.01 * LevelSale);
+			float maxsale = user_salemax + (0.03 * (extrasale + lastsale)) + (0.01 * LevelSale);
+			int based = shop_baseprice * user_pricemult;
+			if (based <= 0) {based = 1;}
+			float overpricesale = (0.1 * ((currentprice + based) / based)) - 0.1;
+			minsale += overpricesale;
+			maxsale += overpricesale;
+			if (maxsale > 0.9) {maxsale = 0.9;}
+			if (minsale > maxsale) {minsale = maxsale;}
+			float rtn = 1.0 - frandom[dishop](minsale, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
+			salenum = rtn;
+			//console.printf("%.2f", rtn);
+		}
+		else {salenum = 1.0;}
 	}
 	
 	override bool IsPriceDecreased(void)
@@ -451,14 +527,18 @@ Class DIShop : DIShop_Base
 		let diplr = DI_PlayerBase(plr);
 		diplr.buycounter += 1;
 		diplr.moneyspent += buyprice;
-		int priceincrease = shop_baseprice / (saleamount + 1);
+		int priceincrease = shop_baseprice * CheckSaleNum();
 		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;
 		lastpurchased = curround;
 		plr.ACS_ScriptCall("di_shopbought", buyprice, user_dontprogress);
-		plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
+		ACS_ScriptCall("di_newitem", plr.tid, newitem_size);
+		bool spawned = false;
+		[spawned, spawnedactor] = plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
 		plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+		AddPriceMult(0); //refresh price mult for passive items.
+		for (int i = 0; i < shopinv.Size(); ++i) {shopinv[i].DidPurchase(diplr, spawnedactor);}
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
 	}
@@ -470,10 +550,32 @@ Class DIShop : DIShop_Base
 	
 	virtual void AddPriceMult(int addmult)
 	{
+		item_pricemult = 1.0;
+		foreach(mo : shopinv)
+		{
+			if (mo)
+			{
+				item_pricemult *= mo.MultiplyPrice(shop_currentitem);
+			}
+		}
+		DI_PlayerBase diplr = DI_PlayerBase(plr);
+		if (diplr && (diplr.knownpassives.Size() > 0))
+		{
+			foreach(mo : diplr.knownpassives)
+			{
+				DIPassiveInventory passive = DIPassiveInventory(diplr.FindInventory(mo));
+				if (passive)
+				{
+					item_pricemult *= passive.MultiplyShopPrices(self);
+					//console.printf("%s is adding %.1f to the shop", passive.getclassname(), passive.multiplyshopprices(self));
+				}
+			}
+		}
+	
 		if (extra_pricemult < 1) {extra_pricemult = 1;}
 		extra_pricemult += addmult;
-		user_pricemult = default_pricemult * extra_pricemult;
-		console.printf("%d", user_pricemult);
+		user_pricemult = default_pricemult * extra_pricemult * item_pricemult;
+		//console.printf("%.1f", user_pricemult);
 	}
 }
 
@@ -493,6 +595,11 @@ Class DIRentShop : DIShop
 	override void PurchaseMessage(int price)
 	{
 		console.printf("\cfRented an item for %d coins.", price);
+	}
+	
+	Default
+	{
+		//$Title "Shop (Rental)"
 	}
 
 	States
@@ -524,6 +631,11 @@ Class DIPermaShop : DIShop
 	{
 		console.printf("\cfPurchased a \czpermanent \cfitem for %d coins.", price);
 	}
+	
+	Default
+	{
+		//$Title "Shop (Permanent)"
+	}
 
 	States
 	{
@@ -540,6 +652,11 @@ Class DIPermaShop : DIShop
 Class DIConsumableShop : DIShop
 {
 	//set "user_itemstock" to -1 in the map editor to give this shop unlimited stock.
+	
+	Default
+	{
+		//$Title "Shop (Consumables)"
+	}
 
 	States
 	{
@@ -550,5 +667,60 @@ Class DIConsumableShop : DIShop
 		Active:
 			SHOP G 1 A_Jump(256, "Purchase");
 			Stop;
+	}
+}
+
+Class DISingleShop : DIShop
+{
+	//for items like Armor, where you cannot buy a new item without first removing the old one.
+	
+	string user_itemtype;
+	
+	property ItemType : user_itemtype;
+	
+	Default
+	{
+		Self.ItemType "DI_Armor";
+		//$Title "Shop (Single)"
+	}
+	
+	override string SimpleShopPopup(DI_PlayerBase curplr)
+	{
+		let inv = curplr.FindInventory(user_itemtype, true);
+		if (inv) //remove existing armor before doing any purchases
+		{
+			return "\cfUse this shop to remove\nyour current Armor.";
+		}
+		return "";
+	}
+	
+	override void PurchaseShopItem()
+	{
+		if (target is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(target);
+			
+			let inv = plr.FindInventory(user_itemtype, true);
+			if (inv) //remove existing armor before doing any purchases
+			{
+				A_ResetScale();
+				A_DIScale(0.25, -0.25);
+				
+				plr.TakeInventory(inv.GetClassName(), 9999999);
+				ItemRemovedMessage(inv.GetTag());
+				
+				A_StartSound("switches/normbutn");
+				A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
+			}
+			else
+			{
+				Super.PurchaseShopItem();
+			}
+		}
+	}
+	
+	virtual void ItemRemovedMessage(string aname)
+	{
+		console.printf("\cfRemoved %s from your inventory.", aname);
 	}
 }

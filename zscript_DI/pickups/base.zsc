@@ -3,6 +3,7 @@ Class DI_Pickup : ScoreItem abstract
 	string parcolor;
 	
 	bool ispicked;
+	bool directdeposit;
 	
 	Property DespawnColor : parcolor;
 
@@ -17,11 +18,12 @@ Class DI_Pickup : ScoreItem abstract
 		+FLOATBOB;
 		+INVENTORY.NOSCREENFLASH;
 	}
-	
+
 	override void PostBeginPlay()
 	{
 		super.postbeginplay();
 		if (!(target is "DI_PlayerBase")) {A_LookEX(LOF_NOJUMP, 0, 512, 512, 360);}
+		ChangeTID(7499);
 	}
 	
 	override void tick()
@@ -30,6 +32,15 @@ Class DI_Pickup : ScoreItem abstract
 	
 		if ((ispicked == false) && (target is "DI_PlayerBase"))
 		{
+			if (!directdeposit)
+			{
+				if (random(1, 8) <= target.CountInv("DI_DirectDeposit"))
+				{
+					self.touch(target);
+				}
+				directdeposit = true;
+			}
+			
 			int magnetnum = target.CountInv("DI_CoinMagnet");
 			if (magnetnum > 0)
 			{
@@ -138,6 +149,7 @@ Class DI_Pickup : ScoreItem abstract
 				{
 					A_SpawnParticle(parcolor, SPF_FULLBRIGHT | SPF_RELVEL | SPF_NOTIMEFREEZE, 35, 6, random(0, 359), 0, 0, 0, 0, 2, random(-1, 2), 0, 0, 0, 1.0, 0, -0.17);
 				}
+				EventHandler.SendNetworkEvent("DI_CoinDespawned");
 			}
 			Stop;
 	}

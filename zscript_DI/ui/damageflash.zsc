@@ -1,0 +1,54 @@
+//zscript_DI/ui/damageflash.zsc
+
+//Custom Damage Flash code to replace the broken default one included with GZDoom that does not scale nicely with players with health values above 100.
+
+Class DI_DamageFlash : EventHandler
+{
+	ui DI_PlayerBase plr;
+	ui color bcolor;
+	ui double dtick;
+	ui int prevhp;
+	ui bool justdied;
+
+	override void UITick()
+	{
+		plr = DI_PlayerBase(players[consoleplayer].mo);
+		if (plr && !plr.IsFrozen())
+		{
+			bcolor = plr.BloodColor;
+			if (dtick > 0) 
+			{
+				if (dtick > 1.0) {dtick = sqrt(dtick);}
+				dtick -= (dtick >= 0.01) ? 0.01 : dtick;
+			}
+			if (justdied && (plr.health > 0)) {justdied = false;}
+			
+			int dmg = prevhp - plr.health;
+			int maxhp = plr.DIMaxHealth();
+			if (maxhp < 1) {maxhp = 1;}
+			if (dmg > 0)
+			{
+				if (plr.health > 0)
+				{
+					dtick += 2.0 * ((1.0 * dmg) / (1.0 * maxhp));
+				}
+				else if (!justdied)
+				{
+					dtick = 100.0;
+					justdied = true;
+				}
+			}
+			
+			prevhp = plr.health;
+		}
+	}
+	
+	override void RenderUnderlay(RenderEvent e)
+	{
+		if (plr && (dtick > 0))
+		{
+			double realtick = (dtick <= 0.8) ? dtick : 0.8;
+			Screen.Dim(bcolor, realtick, 0, 0, Screen.GetWidth(), Screen.GetHeight());
+		}
+	}
+}

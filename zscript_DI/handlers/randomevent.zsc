@@ -1,7 +1,28 @@
 class DIEventHandler : EventHandler //you see the joke here is that this eventhandler is the one that handles DI's random events.
 {
+	DI_PlayerBase plr;
+	DIHandler thebrain;
+
 	bool dobulletdeath; //enables the bullet death event.
 	bool dofredpunch; //replace freds with fruit punchers.
+	bool dopizzahorde; //spawn a pizza slicer when killing enemies.
+	int pizzanum;
+	bool doiamrisen; //enemies gain a chance to respawn.
+	int risennum;
+	bool dofiendfolio; //Increased chance of fiendish enemy spawns.
+	int folionum;
+	bool dothebigguy; //Spawn a Giant Fred once every minute.
+	int bigguynum, bigguycount;
+	bool dobrokenglasses; //Massively reduce weapon accuracy.
+	bool dooldmagazine; //Gives you a random damage debuff that's rerolled on reloading.
+	bool dohyperfocusing; //Player speed is reduced while reloading.
+	bool dopayday; //Enemies drop +2 coins.
+	bool docursed; //Gives you 2 random debuffs.
+	bool doriskreward; //+50% DMG to enemies, +200% DMG to player.
+	bool dospeedrun; //+30% player/weapon speed. +60% enemy speed.
+	bool doslowheal;
+	bool dofatigue;
+	bool doincremental;
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -19,22 +40,111 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		else if (e.Name == "dievent_addron")
 		{
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
-			AddRonEvent(eventnum);
+			SimpleMonsterEvent("RonSpawner2", eventnum * 2);
 		}
 		else if (e.Name == "dievent_hammertime")
 		{
 			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
-			HammerTime(eventnum);
+			SimpleMonsterEvent("THEHAMMER", eventnum);
+		}
+		else if (e.Name == "dievent_pepperparty")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			SimpleMonsterEvent("Pepper", eventnum);
+		}
+		else if (e.Name == "dievent_tier2enemies")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			SimpleMonsterEvent("NME_Tier2", eventnum);
+		}
+		else if (e.Name == "dievent_tier3enemies")
+		{
+			int eventnum = players[e.player].mo.ACS_ScriptCall("DICheckWave");
+			SimpleMonsterEvent("NME_Tier3", eventnum / 2);
+		}
+		else if (e.Name == "dievent_pizzahorde")
+		{
+			dopizzahorde = true;
+		}
+		else if (e.Name == "dievent_iamrisen")
+		{
+			doiamrisen = true;
+		}
+		else if (e.Name == "dievent_fiendfolio")
+		{
+			dofiendfolio = true;
+			folionum = 3;
+		}
+		else if (e.Name == "dievent_thebigguy")
+		{
+			dothebigguy = true;
+		}
+		else if (e.Name == "dievent_brokenglasses")
+		{
+			dobrokenglasses = true;
+			plr.GiveInventory("DI_BrokenGlasses", 1);
+		}
+		else if (e.Name == "dievent_oldmagazine")
+		{
+			dooldmagazine = true;
+			plr.GiveInventory("DI_OldMagazine", 1);
+		}
+		else if (e.Name == "dievent_hyperfocusing")
+		{
+			dohyperfocusing = true;
+			plr.GiveInventory("DI_Hyperfocusing", 1);
+		}
+		else if (e.Name == "dievent_payday")
+		{
+			dopayday = true;
+			plr.GiveInventory("DI_Payday", 1);
+		}
+		else if (e.Name == "dievent_cursed")
+		{
+			docursed = true;
+			plr.GiveInventory("DI_Cursed", 1);
+		}
+		else if (e.Name == "dievent_riskreward")
+		{
+			doriskreward = true;
+			plr.GiveInventory("DI_RiskReward", 1);
+		}
+		else if (e.Name == "dievent_speedrun")
+		{
+			dospeedrun = true;
+			plr.GiveInventory("DI_Speedrun", 1);
+		}
+		else if (e.Name == "dievent_slowhealing")
+		{
+			doslowheal = true;
+			plr.GiveInventory("DI_SlowHealing", 1);
+		}
+		else if (e.Name == "dievent_fatigue")
+		{
+			dofatigue = true;
+			plr.GiveInventory("DI_Fatigue", 1);
+		}
+		else if (e.Name == "dievent_incremental")
+		{
+			doincremental = true;
+			plr.GiveInventory("DI_IncrementalInjuries", 1);
 		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		if (e.Thing is "DI_PlayerBase")
+		{
+			plr = DI_PlayerBase(e.Thing);
+			thebrain = plr.thebrain;
+		}
 		if (e.Thing is "DI_Monster")
 		{
-			//stuff
+			if (dobulletdeath && (random(0, 1) == 1))
+			{
+				e.Thing.GiveInventory("DI_BulletDeathGiver", 1);
+			}
 		}
-		
 		if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
 		{
 			ResetRandomEvents();
@@ -46,7 +156,8 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 		if (e.Thing is "DI_Monster")
 		{
 			DI_Monster thingy = DI_Monster(e.Thing);
-			if (dobulletdeath) {BulletDeath(thingy);}
+			if (dopizzahorde) {PizzaHorde(thingy);}
+			if (doiamrisen) {IAmRisen(thingy);}
 		}
 	}
 	
@@ -59,31 +170,152 @@ class DIEventHandler : EventHandler //you see the joke here is that this eventha
 				e.Replacement = 'FruitPuncher';
 			}
 		}
+		if (dofiendfolio == true)
+		{
+			FiendFolio(e);
+		}
+	}
+	
+	override void WorldTick()
+	{
+		if (thebrain)
+		{
+			if (!Level.IsFrozen() && thebrain.waveinprogress)
+			{
+				if (dothebigguy) {TheBigGuy();}
+			}
+		}
 	}
 	
 	virtual void ResetRandomEvents()
 	{
 		dobulletdeath = false;
 		dofredpunch = false;
+		dopizzahorde = false;
+		pizzanum = 0;
+		doiamrisen = false;
+		risennum = 0;
+		dofiendfolio = false;
+		dothebigguy = false;
+		bigguynum = 0;
+		if (dobrokenglasses)
+		{
+			dobrokenglasses = false;
+			plr.TakeInventory("DI_BrokenGlasses", 1);
+		}
+		if (dooldmagazine)
+		{
+			dooldmagazine = false;
+			plr.TakeInventory("DI_OldMagazine", 1);
+		}
+		if (dohyperfocusing)
+		{
+			dohyperfocusing = false;
+			plr.TakeInventory("DI_Hyperfocusing", 1);
+		}
+		if (dopayday) 
+		{
+			dopayday = false;
+			plr.TakeInventory("DI_Payday", 1);
+		}
+		if (docursed)
+		{
+			docursed = false;
+			plr.TakeInventory("DI_Cursed", 1);
+		}
+		if (doriskreward)
+		{
+			doriskreward = false;
+			plr.TakeInventory("DI_RiskReward", 1);
+		}
+		if (dospeedrun)
+		{
+			dospeedrun = false;
+			plr.TakeInventory("DI_Speedrun", 1);
+		}
+		if (doslowheal)
+		{
+			doslowheal = false;
+			plr.TakeInventory("DI_SlowHealing", 1);
+		}
+		if (dofatigue)
+		{
+			dofatigue = false;
+			plr.TakeInventory("DI_Fatigue", 1);
+		}
+		if (doincremental)
+		{
+			doincremental = false;
+			plr.TakeInventory("DI_IncrementalInjuries", 1);
+		}
 	}
 	
-	virtual void BulletDeath(DI_Monster mon)
+	virtual void SimpleMonsterEvent(string enemy, int count)
 	{
-		mon.A_SpawnItemEX("DI_BulletSpawner", 0, 0, mon.Height / 2, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS);
-	}
-	
-	virtual void AddRonEvent(int wavenum)
-	{
-		//example script to add new enemies to a wave.
-		int ronnum = wavenum * 2;
-		string cmd = string.format("addwaveenemy Ron %d", ronnum);
-		console.printf("%s", cmd);
+		string cmd = string.format("addwaveenemy %s %d", enemy, count);
 		SendNetworkEvent(cmd);
 	}
 	
-	virtual void HammerTime(int wavenum)
+	virtual void PizzaHorde(DI_Monster thingy)
 	{
-		string cmd = string.format("addwaveenemy THEHAMMER %d", wavenum);
-		SendNetworkEvent(cmd);
+		if (thingy is "PizzaSlicer") {return;}
+		if (random[dihandler](0, pizzanum) == 0) 
+		{
+			SendNetworkEvent("addwaveenemy PizzaSlicer 3 DISpawnerSpot_Flying");
+			++pizzanum;
+		}
+	}
+	
+	virtual void IAmRisen(DI_Monster thingy)
+	{
+		if (thingy is "DI_Boss") {return;}
+		if (thingy.spawnspotted = "") {return;}
+		if (random[dihandler](0, risennum) == 0) 
+		{
+			string cmd = string.format("addwaveenemy %s 1 %s", thingy.getclassname(), thingy.spawnspotted);
+			SendNetworkEvent(cmd);
+			++risennum;
+		}
+	}
+	
+	virtual void FiendFolio(ReplaceEvent e)
+	{
+		if (e.Replacee.GetClassName() == "Fred")
+		{
+			if (random[dihandler](0, folionum) == 0)
+			{
+				e.Replacement = 'Fred2';
+				++folionum;
+			}
+		}
+		else if (e.Replacee.GetClassName() == "Ron")
+		{
+			if (random[dihandler](0, folionum) == 0)
+			{
+				e.Replacement = 'Ron2';
+				++folionum;
+			}
+		}
+	}
+	
+	virtual void TheBigGuy()
+	{
+		if (bigguycount < thebrain.wavenum)
+		{
+			if (bigguynum == 0) 
+			{
+				SendNetworkEvent("addwaveenemy Fred3 1 DISpawnerSpot_Big");
+				++bigguycount;
+			}
+			++bigguynum;
+			if (bigguynum >= 2100) 
+			{
+				if (plr)
+				{
+					plr.ACS_ScriptCall("SpawningTheBigGuy");
+				}
+				bigguynum = 0;
+			}
+		}
 	}
 }

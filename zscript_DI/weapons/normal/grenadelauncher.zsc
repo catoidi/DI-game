@@ -2,21 +2,24 @@
 
 CLASS GrenadeLauncher : DI_Weapon
 {
+	mixin DI_Spray_Progressive;
+
 	Default
 	{
 		DI_Weapon.FreshBonus 1;
-		DI_Weapon.BaseDamage 80; //direct hit does 1/4th of this.
-		DI_Weapon.BaseAccuracy 2;
+		DI_Weapon.BaseDamage 1200; //direct hit does 1/10th of this.
+		DI_Weapon.MaxSpread 10;
+		DI_Weapon.BonusSpread 6;
 		DI_Weapon.PlayerSpeed -0.1;
-		DI_Weapon.Recoil 8.0;
+		DI_Weapon.Recoil 6.0;
 		DI_Weapon.RecoilOffset 2.0;
-		DI_Weapon.RecoilRecover 1.0;
+		DI_Weapon.RecoilRecover 0.5;
 		Weapon.Kickback 0;
 		Weapon.SelectionOrder 10000;
 		Weapon.SlotNumber 5;
 		Weapon.SlotPriority 1;
 		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 4;
+		Weapon.AmmoGive 3;
 		Weapon.AmmoType "GrenadeLauncherAmmo";
 		Inventory.Pickupmessage "Acquired the Grenade Launcher.";
 		Inventory.Icon "GLANZ0";
@@ -51,9 +54,11 @@ CLASS GrenadeLauncher : DI_Weapon
 			{
 				A_SetPitch(pitch - 3);
 				DI_FireProjectile("GrenadeLauncherBullet", invoker.wpn_projectiles, -32768, invoker.AmmoUse1, -4, 4, FPF_AIMATANGLE, isRecoil: true);
-				A_StartSound("pistpow");
+				DI_GunSound("gunpow2", CHAN_AUTO, volume: 0.7, pitch: 0.7);
+				DI_StartSound("weapons/popcorn/poppop", CHAN_AUTO, volume: 0.5, pitch: 0.8);
 				A_Overlay(-10, "PuffSmoke");
 			}
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, volume: 0.5, pitch: 0.8, startTime: 0.15);
 			GLAN # 0 A_JumpIfInventory("GrenadeLauncherAmmo", 2, 2);
 			GLAN # 0 A_Jump(256, "Fire_LowAmmo");
 			GLAN CCDDDD 1;
@@ -75,12 +80,14 @@ CLASS GrenadeLauncher : DI_Weapon
 			Goto ReloadStart;
 		ReloadStart:
 			GLAN # 10 A_Overlay(2, "Reload_Shell");
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.5);
 			GLAN D 4 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
+			#### # 0 DI_StartSound("shell1", CHAN_AUTO, pitch: 0.7);
 			GLAN A 2 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			#### # 0 A_GiveInventory("GrenadeLauncherAmmo", 1);
 			GLAN A 0 A_GiveInventory("GrenadeLauncherReload", 1);
 			GLAN A 2 A_JumpIfInventory("GrenadeLauncherAmmo", invoker.Ammo1.MaxAmount, "ReloadEnd");
-			GLAN A 2 DI_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH | WRF_ALLOWRELOAD);
+			GLAN A 2 DI_ContinueReload();
 			Goto ReloadEnd;
 		Reload_Shell:
 			TNT1 A 0 A_OverlayOffset(2, 6, 36, WOF_ADD);
@@ -93,8 +100,8 @@ CLASS GrenadeLauncher : DI_Weapon
 			GLAN AAAAAA 1 A_OverlayOffset(PSP_WEAPON, -10, 2, WOF_ADD);
 			Goto Ready;
 		NoReload:
-			#### # 0 A_StartSound("noammo", starttime: 0.1);
 			#### # 0 WeaponMode(0);
+			#### # 0 DI_StartSound("noammo", CHAN_AUTO, starttime: 0.1);
 			GLAN # 1 A_OverlayOffset(PSP_WEAPON, 0, 4, WOF_ADD);
 			GLAN #### 1 A_OverlayOffset(PSP_WEAPON, 0, -1, WOF_ADD);
 			GLAN # 4;
@@ -107,10 +114,8 @@ CLASS GrenadeLauncher : DI_Weapon
 
 CLASS GrenadeLauncherReload : GreenShotgunReload {}
 
-CLASS GrenadeLauncherBullet : DI_Actor
+CLASS GrenadeLauncherBullet : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -120,9 +125,11 @@ CLASS GrenadeLauncherBullet : DI_Actor
 		Speed 20;
 		DamageFunction impactdam;
 		Projectile;
+		DI_Projectile.FlatBullet true;
 		-NOGRAVITY;
 		+BLOODSPLATTER;
 		+FLATSPRITE;
+		+EXTREMEDEATH;
 	}
 	
 	int basedam;
@@ -130,8 +137,6 @@ CLASS GrenadeLauncherBullet : DI_Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
 		
 		if (damagetype == "Lightning") {A_AttachLightDef("stunner", "SHOCKER2");}
 		else if (damagetype == "Ice") {A_AttachLightDef("stunner", "FREEZER2");}
@@ -141,12 +146,9 @@ CLASS GrenadeLauncherBullet : DI_Actor
 		if ((target is "PlayerPawn") && (target.player.ReadyWeapon is "GrenadeLauncher"))
 		{
 			GrenadeLauncher tarwpn = GrenadeLauncher(target.player.ReadyWeapon);
-			basedam = tarwpn.wpn_damage;
-			basedam *= tarwpn.damagemult;
-			impactdam = basedam / 4;
-			if (basedam < 1) {basedam = 1;}
-			if (impactdam < 1) {impactdam = 1;}
-			pitch = target.pitch;
+			int dmgcheck = tarwpn.CheckDamage();
+			basedam = 0.8 * dmgcheck;
+			impactdam = 0.2 * dmgcheck;
 		}
 	}
 	
@@ -159,10 +161,10 @@ CLASS GrenadeLauncherBullet : DI_Actor
 		Crash:
 		Death.Sky:
 		Death:
-			TNT1 A 0
+			TNT1 A 5
 			{
-				A_SpawnItemEx("SafeBoomSmall", 0, 0, 0, 0, 0, 0);
-				A_Explode(invoker.basedam, 64, XF_HURTSOURCE | XF_CIRCULAR, fulldamagedistance: 32);
+				A_SpawnItemEx("SafeBoom", 0, 0, 0, 0, 0, 0);
+				A_Explode(invoker.basedam, 64, XF_HURTSOURCE | XF_CIRCULAR, fulldamagedistance: 64);
 				if (invoker.damagetype != invoker.default.damagetype) {DIProjectileTrail(6.0);}
 			}
 			Stop;
@@ -176,8 +178,8 @@ Class GrenadeLauncherAmmo : Ammo
 	{
 		Radius 20;
 		Height 24;
-		Inventory.Amount 4;
-		Inventory.MaxAmount 4;
+		Inventory.Amount 3;
+		Inventory.MaxAmount 3;
 		+CASTSPRITESHADOW;
 	}
 }

@@ -2,49 +2,28 @@ class THEHAMMER : DI_Monster
 {
 	Default
 	{
-		Speed 16;
-		Health 200;
+		Speed 12;
+		Health 1800;
 		Radius 32;
 		Height 48;
-		Mass 2000;
+		Mass 4000;
 		MeleeRange 72;
-		MeleeThreshold 200;
+		MeleeThreshold 180;
+		MissileChanceMult 0.0625;
 		DamageFactor "Enemy", 0.0;
 		DamageFactor "Lightning", 1.6;
 		DamageFactor "FakeLightning", 1.6;
 		BloodType "DI_HammerBlood";
 		DI_Monster.GibType "DI_HammerExplosion";
 		DI_Monster.DIDrop "DI_Money";
-		Species "Ham";
 		Tag "THE HAMMER";
 		Obituary "$BOX_DIE_HAMMER";
 		+FLOORCLIP;
 		+NOBLOODDECALS;
-		+MISSILEMORE;
-		+MISSILEEVENMORE;
 		+SLIDESONWALLS;
 		//$Category "Box Party/Enemies/"
 		//$Title "THE HAMMER"
 		//$Color 4
-	}
-	
-	action bool BoxHammerCheck(void)
-	{
-		//used to check if there is room to dash before dashing.
-	
-		//this is probably really inefficient.
-		
-		double radnum = self.radius;
-		
-		if 
-		(
-			(CheckBlock(0, AAPTR_DEFAULT, radnum, 0, 0, 0) == true) || 
-			(CheckBlock(0, AAPTR_DEFAULT, (radnum * 2.0), 0, 0, 0) == true)
-		)
-		{
-			return true;
-		}
-		else {return false;}
 	}
 	
 	States
@@ -66,7 +45,7 @@ class THEHAMMER : DI_Monster
 			HAMM D 0 A_Recoil(3);
 			HAMM D 0 ThrustThingZ(0, 15, 0, 1);
 			HAMM D 0 A_StartSound("slam2");
-			HAMM D 0 A_CustomMeleeAttack(1, " ", " ", "Melee", false);
+			HAMM D 0 A_CustomMeleeAttack(10, " ", " ", "Melee", false);
 			//HAMM DDDDDDDDDDDDDDDD 0 A_SpawnItemEX("BoomSmoke", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-8, 8), frandom(-8, 8), frandom(4, 8), 0, SXF_NOCHECKPOSITION, 64);
 			HAMM D 0 {
 				A_SpawnItemEX("HammerSlam", 48, 0, 0, 0, 0, 0, 0, SXF_ABSOLUTEVELOCITY | SXF_NOCHECKPOSITION);
@@ -79,7 +58,7 @@ class THEHAMMER : DI_Monster
 			HAMM F 0 A_FaceTarget;
 			HAMM FF 5 Slow A_DIScale(-0.025, 0.05);
 			HAMM G 0 A_Recoil(-16);
-			HAMM G 0 A_CustomMeleeAttack(20, "slam", "whiff2", "Melee", false);
+			HAMM G 0 A_CustomMeleeAttack(200, "slam", "whiff2", "Melee", false);
 			HAMM G 10 A_DIScale(0.05, -0.1);
 			Goto See;
 		Missile:
@@ -89,15 +68,11 @@ class THEHAMMER : DI_Monster
 				if (BoxHammerCheck() == true) {SetStateLabel("NoMissile", false);}
 			}
 			HAMM A 10 Slow A_FaceTarget;
-			//HAMM B 0 A_SpawnItemEX("BoxSlamWall", 0, 0, 28, -4, 0, 0, 0, SXF_NOCHECKPOSITION);
+			HAMM B 0 A_StartSound("whiff2");
+			HAMM B 0 A_SpawnItemEX("BoxSlamWall", 0, 0, 28, -4, 0, 0, 0, SXF_NOCHECKPOSITION);
 			HAMM B 0 A_Recoil(-20);
 			HAMM B 0 ThrustThingZ(0, 15, 0, 1);
 			HAMM B 16;
-			Goto See;
-		Pain:
-			#### # 0 A_ResetScale();
-			HAMM E 0 A_Pain;
-			HAMM E 10;
 			Goto See;
 		Death:
 			#### # 0 A_DITargetPlayer();
@@ -171,9 +146,10 @@ CLASS HammerHammer : DI_FloorActor //dropped when the hammer dies.
 			}
 			//HAMM QQQQQQQQQQQQQQQQ 0 A_SpawnItemEX("BoomSmoke", frandom(-8, 8), frandom(-8, 8), frandom(0, 8), frandom(-8, 8), frandom(-8, 8), frandom(4, 8), 0, SXF_NOCHECKPOSITION, 64);
 			HAMM Q 0 {bMOVEWITHSECTOR = true;}
-			HAMM Q 1050 A_SetTics(floortic);
+			#### # -1 ReadyToClean();
+		Looper:
 			#### # 1 A_FadeOut(0.05);
-			Wait;
+			Loop;
 	}
 }
 
@@ -197,7 +173,7 @@ CLASS HammerSlam : DI_Actor
 			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
 			SLAM B 0 
 			{	
-				A_Explode(19, 32, XF_THRUSTZ, true, 16, 0, 0, "BulletPuff", "Melee");
+				A_Explode(190, 32, XF_THRUSTZ, true, 16, 0, 0, "BulletPuff", "Melee");
 				A_QuakeEX(3, 3, 3, 35, 0, 128, 0);
 			}
 			Goto Looper;
@@ -251,6 +227,44 @@ CLASS BoxSlamWall : BoxSlam
 	{
 		-FLATSPRITE;
 		+WALLSPRITE;
+	}
+}
+
+CLASS BoxSlamWallBIG : BoxSlamWall
+{
+	Default {Scale 2.0;}
+}
+
+CLASS BoxSlamBig : BoxSlam
+{
+	Default
+	{
+		Scale 3;
+	}
+	
+	States
+	{
+		Looper:
+			SLAM B 1 {
+				A_DIScale(0.15, 0.15);
+				A_FadeOut(0.05);
+			}
+			Loop;
+	}
+}
+
+CLASS BoxSlamSUPER : BoxSlam
+{
+	Default {Scale 10;}
+	
+	States
+	{
+		Looper:
+			SLAM B 1 {
+				A_DIScale(1.5, 1.5, true);
+				A_FadeOut(0.02);
+			}
+			Loop;
 	}
 }
 

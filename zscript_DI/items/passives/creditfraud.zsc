@@ -6,23 +6,20 @@ Class DI_CreditFraud : DIPassiveInventory
 	{
 		Tag "Credit Fraud";
 		Inventory.Icon "POW1H0";
-		Inventory.PickupMessage "Credit Fraud acquired! (+50% DMG, but only if you're in Debt.)";
+		Inventory.PickupMessage "Credit Fraud acquired! (+1% DMG per $40 of debt. Capped at +50%.)";
 		Inventory.MaxAmount 3;
 	}
 	
 	override double GiveDamageMult()
 	{
-		if (!plr) {return 0.0;}
+		if (!plr) {return 1.0;}
 		if (plr.score < 0)
 		{
-			return 0.5 * plr.countinv("DI_CreditFraud");
+			float fraud = 0.00025 * -plr.score; //max dmg is 50% at -2000 or lower score.
+			if (fraud > 0.5) {fraud = 0.5;}
+			return 1.0 + (fraud * amount);
 		}
-		else if (plr.countinv("DI_Degen") > 0)
-		{
-			//still award a smaller amount of damage if the player has lost hp to debt.
-			return 0.15 * plr.countinv("DI_CreditFraud");
-		}
-		else {return 0.0;}
+		else {return 1.0;}
 	}
 	
 	States

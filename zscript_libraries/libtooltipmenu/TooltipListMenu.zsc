@@ -8,6 +8,7 @@
 // For details, see the included README.
 
 class DITF_TooltipListMenu : ListMenu {
+  mixin DI_UIMixin;
   mixin DITF_TooltipMenu;
 
   void InitDynamic(Menu parent, ListMenuDescriptor desc) {

@@ -1,0 +1,78 @@
+//zscript_DI/items/passives/meatcleaver.zsc
+
+Class DI_OrganDonor : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Organ Donor";
+		Inventory.Icon "POW2T0";
+		Inventory.PickupMessage "Organ Donor acquired! (Gibbed enemies drop +1 extra coin and +1 Regen.)";
+		Inventory.MaxAmount 4;
+	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (owner)
+		{
+			return "DI_ExtraBloodCoin", amount;
+		}
+
+		return "", 0;
+	}
+	
+	override string, int, int GiveEnemyDrop(DI_Monster mon)
+	{
+		if (owner && (mon.health <= -100))
+		{
+			return "DI_OrganDonor_Pickup", amount, 0;
+		}
+		return "", 0, 0;
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 T -1;
+			Stop;
+	}
+}
+
+Class DI_OrganDonor_Pickup : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 100;
+		+Inventory.AUTOACTIVATE;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
+	}
+
+	override bool Use(bool pickup)
+	{
+		let plr = DI_PlayerBase(owner);
+		if (plr) {plr.DI_HealSelf(10 * amount, 2.0, true);}
+		return true;
+	}
+
+	States
+	{
+		Spawn:
+			POW2 T -1;
+			Stop;
+	}
+}
+
+Class DI_ExtraBloodCoin : Inventory
+{
+	//token item. used in enemy gib code to add more gib coins.
+
+	Default
+	{
+		Inventory.MaxAmount 100;
+	}
+}

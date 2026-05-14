@@ -1,24 +1,16 @@
-Class DITurret : Inventory
+Class DITurret : DIConsumable
 {	
-	mixin DI_ConsumableMixin;
-	
 	Default
 	{
 		Tag "Turret";
+		DIConsumable.BlockInShop true;
 		Inventory.MaxAmount 5;
 		Inventory.Icon "TURRC0";
 		Inventory.PickupMessage "Got a turret. Use the turret to place it.";
-		+INVENTORY.INVBAR;
 	}
 	
-	override bool Use(bool pickup)
+	override bool DIUse(bool pickup)
 	{
-		if (ACS_ScriptCall("DICheckWaveProgress") == false) 
-		{
-			console.printf("%s", "\cgYou can't use this if you're not in a wave!");
-			return false;
-		}
-		
 		bool spawned = false;
 		if (owner) 
 		{
@@ -26,7 +18,6 @@ Class DITurret : Inventory
 			{
 				owner.A_SpawnItemEX("DI_Teleport", 24);
 				spawned = true;
-				DIUsed();
 			}
 			else
 			{
@@ -49,11 +40,12 @@ Class DITurret_Actor : DI_Actor
 {
 	Default
 	{
-		Mass 200;
-		Health 50;
+		Mass 2000;
+		Health 500;
 		Radius 11;
 		Height 22;
 		Tag "Turret";
+		DI_Actor.NoHPBar false;
 		+SOLID;
 		+SHOOTABLE;
 		+FRIENDLY;
@@ -71,11 +63,15 @@ Class DITurret_Actor : DI_Actor
 	override void tick()
 	{
 		super.tick();
-		++hptime;
-		if (hptime >= 35)
+
+		if (level.IsFrozen() == false)
 		{
-			if (health < default.health) {health += 1;}
-			hptime = 0;
+			++hptime;
+			if (hptime >= 3)
+			{
+				if (health < default.health) {health += 1;}
+				hptime = 0;
+			}
 		}
 	}
 	
@@ -100,7 +96,7 @@ Class DITurret_Actor : DI_Actor
 		else
 		{
 			A_StartSound("bullet");
-			A_CustomBulletAttack(recoil, recoil, 1, 12, "DI_BulletPuff_NoWPN", 1024, CBAF_AIMFACING | CBAF_NORANDOM | CBAF_NORANDOMPUFFZ, spawnheight: 18);
+			A_CustomBulletAttack(recoil, recoil, 1, 120, "DI_BulletPuff_NoWPN", 1024, CBAF_AIMFACING | CBAF_NORANDOM | CBAF_NORANDOMPUFFZ, spawnheight: 18);
 			A_AttachLightDef("shoot", "BULLETSHOOT");
 		}
 		A_DIScale(0.025, -0.025);

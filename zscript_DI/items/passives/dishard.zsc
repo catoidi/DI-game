@@ -1,0 +1,50 @@
+//zscript_DI/items/passives/dishard.zsc
+
+//Grants 1 extra life. Reduces your Max HP by 30% while equipped.
+//Upon taking fatal damage, the player is granted invulnerability for 3 seconds and 25% of their Max HP back.
+//The item is removed upon activation, therefore removing the Max HP debuff.
+
+Class DI_DIShard : DIPassiveInventory
+{
+	Default
+	{
+		Tag "DI Shard";
+		Inventory.Icon "POW3T0";
+		Inventory.PickupMessage "DI Shard acquired! (Gain an extra life. Reduce Max HP by 30% while equipped.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		if (plr && (damage > plr.health) && (plr.CountInv("DI_DIShard_Powerup") < 1))
+		{
+			newdamage = plr.health - 1;
+			plr.ACS_NamedExecuteAlways("DoLeafFlash");
+			plr.A_Quake(3, 35, 0, 64);
+			plr.GiveInventory("DI_DIShard_Powerup", 3);
+			plr.DI_HealSelf((plr.DIMaxHealth() / 2) - 1, 1.0, true);
+			plr.TakeInventory(self.GetClassName(), 1);
+		}
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 - (0.3 * amount);
+	}
+}
+
+Class DI_DIShard_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvDI Shard (Active)";
+		Inventory.MaxAmount 3;
+		Inventory.Icon "POW3T0";
+	}
+	
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		newdamage = 0;
+	}
+}

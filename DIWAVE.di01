@@ -1,0 +1,248 @@
+Level DI01;
+{
+	Wave 1;
+	{
+		Cap 3;
+		Rate 1;
+		Time 1;
+		Spawn Fred, 1;
+		Wait 1;
+		Time 35;
+		Spawn Fred, 7;
+	}
+
+	Wave 2;
+	{
+		Rate 2;
+		Cap 2;
+		Time 35;
+		Spawn Fred, 3;
+		Wait 2;
+		Cap 4;
+		Spawn Fred, 5;
+		Wait 4;
+		Cap 6;
+		Spawn Fred, 5;
+		Wait 7;
+		Spawn Ron, 2;
+	}
+	
+	Wave 3;
+	{
+		Cap 4;
+		Rate 4;
+		Time 1;
+		Spawn Fred, 4;
+		Wait 4;
+		Script wave3_opendoors, 0, 0, 0, 0;
+		Spawn Fred, 3;
+		Spawn Ron, 1;
+		Wait 4;
+		Spawn Fred, 2;
+		Spawn Ron, 2;
+		Wait 4;
+		Spawn Fred, 1;
+		Spawn Ron, 3;
+		Wait 4;
+		Spawn Ron, 4;
+	}
+
+	Wave 4;
+	{
+		Cap 8;
+		Rate 2;
+		Time 90;
+		Spawn Ron, 1;
+		Wait 1;
+		Spawn FredSpawner1, 14;
+		Spawn Ron, 6;
+		Wait 19;
+		Spawn FiendSpawner, 1;
+	}
+	
+	Wave 5;
+	{
+		Cap 10;
+		Rate 4;
+		Time 140;
+		Spawn Fred2, 1;
+		Spawn FredSpawner1, 20;
+		Wait 12;
+		Spawn FiendSpawner, 1;
+		Spawn Ron, 12;
+	}
+	
+	Wave 6;
+	{
+		Cap 12;
+		Rate 4;
+		Time 1;
+		Spawn Fred2, 4;
+		Wait 3;
+		Time 120;
+		Spawn Ron, 16;
+		Wait 10;
+		Spawn FiendSpawner, 2;
+		Spawn FredSpawner1, 24;
+	}
+	
+	Wave 7;
+	{
+		Cap 14;
+		Rate 1;
+		Time 35;
+		Spawn FiendSpawner, 1, DISpawnerSpot_Big;
+		Wait 1;
+		Spawn FredSpawner2, 42;
+		Spawn Ron, 12;
+		Spawn Fred4, 1, DISpawnerSpot_Big;
+		Wait 40;
+		Rate 2;
+		Spawn Fred2, 4;
+		Spawn Fred4, 1, DISpawnerSpot_Big;
+	}
+	
+	Wave 8;
+	{
+		Cap 9;
+		Rate 9;
+		Time 1;
+		Spawn FredSpawner2, 83;
+		Wait 6;
+		Time 350;
+		Cap 12;
+		Spawn Fred2, 6;
+		Wait 9;
+		Cap 15;
+		Script wave8_dospawners, 0, 0, 0, 0;
+		Spawn Fred4, 5, DISpawnerSpot_Big;
+		Wait 9;
+		Cap 18;
+		Spawn Fred2, 6;
+	}
+	
+	Wave 9;
+	{
+		Cap 10;
+		Rate 1;
+		Time 35;
+		Spawn Fred2, 10;
+		Wait 9;
+		Rate 2;
+		Spawn FredSpawner2, 40;
+		Spawn Ron, 20;
+		Wait 40;
+		Cap 20;
+		Rate 1;
+		Time 70;
+		Spawn Fred2, 10;
+		Spawn Fred4, 6, DISpawnerSpot_Big;
+	}
+	
+	Wave 10;
+	{
+		Cap 4;
+		Rate 4;
+		Time 35;
+		Spawn Fred4, 2, DISpawnerSpot_Big;
+		Wait 2;
+		Cap 8;
+		Spawn Fred4, 2, DISpawnerSpot_Big;
+		Spawn Fred2, 8;
+		Wait 8;
+		Cap 12;
+		Spawn Fred4, 2, DISpawnerSpot_Big;
+		Spawn Fred2, 8;
+		Spawn RonSpawner1, 12;
+		Wait 22;
+		Cap 16;
+		Spawn Fred4, 4, DISpawnerSpot_Big;
+		Spawn FiendSpawner, 8;
+		Spawn RonSpawner1, 12;
+		Spawn FredSpawner2, 32;
+		Wait 54;
+		Rate 1;
+		Time 70;
+		Spawn Ron2, 1, DISpawnerSpot_Big;
+	}
+	
+	Wave 11;
+	{
+		Cap 32;
+		Rate 2;
+		Time 15;
+		Spawn FredSpawner3, 128;
+		Wait 96;
+		Time 60;
+		Spawn Ron2, 2, DISpawnerSpot_Big;
+		Wait 32;
+		Spawn Fred3, 1, DISpawnerSpot_Big;
+		Spawn Ron2, 2, DISpawnerSpot_Big;
+	}
+	
+	Wave 12;
+	{
+		Cap 24;
+		Rate 1;
+		Time 40;
+		Spawn Ron2, 1, DISpawnerSpot_Big;
+		Spawn RonSpawner1, 3;
+		Spawn FredSpawner3, 3;
+		Wait 7;
+		Time 35;
+		Spawn Ron2, 1, DISpawnerSpot_Big;
+		Spawn RonSpawner1, 4;
+		Spawn Fred2, 2;
+		Spawn FredSpawner3, 6;
+		Wait 13;
+		Time 30;
+		Spawn Ron2, 1, DISpawnerSpot_Big;
+		Spawn RonSpawner1, 5;
+		Spawn Fred2, 4;
+		Spawn Fred4, 2, DISpawnerSpot_Big;
+		Spawn FredSpawner3, 12;
+		Wait 24;
+		Time 25;
+		Spawn Ron2, 1, DISpawnerSpot_Big;
+		Spawn RonSpawner1, 10;
+		Spawn Fred2, 8;
+		Spawn Fred4, 4, DISpawnerSpot_Big;
+		Spawn FredSpawner3, 24;
+		Wait 47;
+		Time 20;
+		Spawn Ron2, 1, DISpawnerSpot_Big;
+		Spawn RonSpawner1, 20;
+		Spawn Fred2, 16;
+		Spawn Fred4, 8;
+		Spawn Fred3, 3, DISpawnerSpot_Big;
+		Spawn FredSpawner3, 48;
+	}
+	
+	Wave 13;
+	{
+		Cap 20;
+		Rate 1;
+		Time 70;
+		Spawn Fred3, 2, DISpawnerSpot_Big;
+		Wait 2;
+		Rate 4;
+		Spawn Fred3, 2, DISpawnerSpot_Big;
+		Spawn Fred4, 4;
+		Spawn FredSpawner3, 48;
+		Spawn Ron2, 8, DISpawnerSpot_Big;
+		Spawn Fred5, 2, DISpawnerSpot_Big;
+	}
+	
+	Endless Restart;
+	{
+		MultCap 1;
+		MultRate 1;
+		MultSpawn 1;
+		MultHealth 1;
+		MultDamage 1;
+		MultSpeed 0.2;
+		MultPrice 1;
+		Spawn Fred3, 1, DISpawnerSpot_Big;
+		EndScript endless_dejavu, 0, 0, 0, 0;
+	}
+}

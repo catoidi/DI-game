@@ -8,9 +8,9 @@ CLASS LightBeam : Actor
 		Height 28;
 		-SOLID;
 		+NOGRAVITY;
-		//$Category "Box Party/Decor/Lights"
+		//$Category "DI/Decor/Lights"
 		//$Title "Light Beam"
-		//$Color 2
+		//$Color 4
 	}
 	
 	States

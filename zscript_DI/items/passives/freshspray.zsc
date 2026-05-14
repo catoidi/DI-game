@@ -1,0 +1,56 @@
+//zscript_DI/items/passives/freshspray.zsc
+
+Class DI_FreshSpray : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Fresh Spray";
+		Inventory.Icon "POW2V0";
+		Inventory.PickupMessage "Acquired Fresh Spray! (Gain +25% Firerate upon getting a Fresh Weapon Bonus. Lose the buff upon switching weapons.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	DI_Weapon curwpn;
+
+	override void DoEffect(void)
+	{
+		Super.DoEffect();
+		
+		if (plr && wpn)
+		{
+			if (plr.JustKilled == true)
+			{
+				plr.GiveInventory("DI_FreshSpray_Powerup", amount);
+				curwpn = wpn;
+			}
+			else if (curwpn != wpn)
+			{
+				plr.TakeInventory("DI_FreshSpray_Powerup", 15);
+			}
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			POW1 E -1;
+			Stop;
+	}
+}
+
+Class DI_FreshSpray_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvFresh Spray (Powerup)";
+		Inventory.Icon "POW2W0";
+		Inventory.MaxAmount 15;
+		DIPowerup.MaxTimer 10000000;
+	}
+	
+	override double GiveFirerate()
+	{
+		if (!plr) {return 0.0;}
+		return -0.25 * plr.CountInv("DI_FreshSpray");
+	}
+}

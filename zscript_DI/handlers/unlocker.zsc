@@ -14,8 +14,8 @@ Class DIUnlockHandler : EventHandler
 	
 	ui array<string> listunlocks;
 	ui bool isunlocking;
-	ui int unlocktimer;
-	ui double unlockalpha, unlockalpha2;
+	ui int unlocktimer[3];
+	ui double unlockalpha[3];
 	ui int fontcolor;
 	
 	int unlockcount;
@@ -24,6 +24,8 @@ Class DIUnlockHandler : EventHandler
 	int freshwave;
 	int freshreload;
 	
+	bool canprogress;
+	
 	array<string> filedata, shoplist_group, shoplist_item;
 	
 	override void WorldLoaded(WorldEvent e)
@@ -31,6 +33,8 @@ Class DIUnlockHandler : EventHandler
 		consumed = 0;
 		freshreload = 0;
 		freshwave = 0;
+		
+		canprogress = di_progression;
 		
 		//not designed with multiplayer in mind yet :)
 		diplr = DI_PlayerBase(players[consoleplayer].mo);
@@ -65,55 +69,82 @@ Class DIUnlockHandler : EventHandler
 	
 	override void WorldThingDied(WorldEvent e)
 	{
-		if (e.Thing is "DI_Monster")
+		if (canprogress)
 		{
-			//kill tracker (applies to every player currently in game, regardless of how the monster died.)
-			if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
-			else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
-			else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
-			else if (e.Thing is "THEHAMMER") {listkills.Push("di_hammercount");}
+			if (e.Thing is "DI_Monster")
+			{
+				//kill tracker (applies to every player currently in game, regardless of how the monster died.)
+				if (e.Thing is "Fred") {listkills.Push("di_fredcount");}
+				else if (e.Thing is "Ron") {listkills.Push("di_roncount");}
+				else if (e.Thing is "FruitPuncher") {listkills.Push("di_meloncount");}
+				else if (e.Thing is "THEHAMMER") {listkills.Push("di_hammercount");}
+				else if (e.Thing is "OnionTurret" || "RedOnion") {listkills.Push("di_onioncount");}
+			}
+			else if (e.Thing is "DI_PlayerBase")
+			{
+				cvar deathcounter = cvar.getcvar("di_deathcounter");
+				int deathnum = deathcounter.getint() + 1;
+				deathcounter.setint(deathnum);
+				
+				if (deathnum >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_painstar");}
+				if (deathnum >= 20) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_acidblood");}
+				if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
+				if (deathnum >= 5) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_starterpack");}
+			}
 		}
-		else if (e.Thing is "DI_PlayerBase")
+		if (e.Thing is "DI_PlayerBase")
 		{
-			cvar deathcounter = cvar.getcvar("di_deathcounter");
-			int deathnum = deathcounter.getint() + 1;
-			deathcounter.setint(deathnum);
-			
-			if (deathnum >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_painstar");}
-			if (deathnum >= 20) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_acidblood");}
-			if (deathnum >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_deathmark");}
+			if (di_mod_dailyrun)
+			{
+				cvar playnum = cvar.getcvar("di_dailyrun_played");
+				playnum.SetInt(di_dailyrun_played + 1);
+			}
+			if (diplr && (e.Thing == diplr) && (diplr.GetScore() >= 10000))
+			{
+				if (di_mod_dailyrun) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_goldhat", 1);}
+				if (di_mod_starterpack) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_quantumbullets");}
+				if (di_mod_weaponized) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_freshfrenzy");}
+				if (di_mod_doubletrouble) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_toomanybullets");}
+				if (di_mod_debilitated) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_modifiedstomach");}
+			}
 		}
 	}
 	
 	override void WorldThingDamaged(WorldEvent e)
 	{
-		if (e.newdamage >= e.Thing.health)
+		if (canprogress)
 		{
-			if (e.Thing is "DI_Monster")
+			if (e.newdamage >= e.Thing.health)
 			{
-				let mon = DI_Monster(e.Thing);
-				bool multicheck = false;
-				if (mon.icenum > 0) {StatusKill(0, multicheck); multicheck = true;}
-				if (mon.firenum > 0) {StatusKill(1, multicheck); multicheck = true;}
-				if (mon.poisonnum > 0) {StatusKill(2, multicheck); multicheck = true;}
-				if (mon.isshocked == true) {StatusKill(3, multicheck); multicheck = true;}
-				if (mon.hearted == true) {StatusKill(4, multicheck); multicheck = true;}
-				if (mon.CountInv("DI_DeathMark_Enemy") > 0) {StatusKill(5, multicheck); multicheck = true;}
+				if (e.Thing is "DI_Monster")
+				{
+					let mon = DI_Monster(e.Thing);
+					bool multicheck = false;
+					if (mon.icenum > 0) {StatusKill(0, multicheck); multicheck = true;}
+					if (mon.firenum > 0) {StatusKill(1, multicheck); multicheck = true;}
+					if (mon.poisonnum > 0) {StatusKill(2, multicheck); multicheck = true;}
+					if (mon.isshocked == true) {StatusKill(3, multicheck); multicheck = true;}
+					if (mon.hearted == true) {StatusKill(4, multicheck); multicheck = true;}
+					if (mon.CountInv("DI_DeathMark_Enemy") > 0) {StatusKill(5, multicheck); multicheck = true;}
+				}
 			}
 		}
 	}
 	
 	override void WorldTick(void)
 	{
-		KillCounter(); //unlocks related to getting kills.
-		CloverTracker();
-		DMGMultTracker();
-		++boxtimer;
-		if (boxtimer > 35) 
+		if (canprogress)
 		{
-			unlockcount = UnlockCounter();
-			UnlockCountUnlocker();
-			BoxTracker(); //for unlocking the Box Partyer player.
+			KillCounter(); //unlocks related to getting kills.
+			CloverTracker();
+			DMGMultTracker();
+			++boxtimer;
+			if (boxtimer > 35) 
+			{
+				unlockcount = UnlockCounter();
+				UnlockCountUnlocker();
+				BoxTracker(); //for unlocking the Box Partyer player.
+			}
 		}
 	}
 	
@@ -121,149 +152,217 @@ Class DIUnlockHandler : EventHandler
 	{
 		if ((!isunlocking) && (listunlocks.Size() > 0))
 		{
-			unlocktimer = 0;
+			unlocktimer[0] = 0;
+			unlocktimer[1] = 0;
+			unlocktimer[2] = 0;
 			isunlocking = true;
 		}
 		else if ((isunlocking) && (Level.IsFrozen() == false))
 		{
-			++unlocktimer;
-			if (unlocktimer < 7) {unlockalpha = unlocktimer / 7.0;}
-			else if (unlocktimer <= 150) {unlockalpha = 1.0;}
-			else if (unlocktimer <= 185) {unlockalpha = 1.0 - ((unlocktimer - 150) / 35.0);}
-			else {listunlocks.Delete(0); isunlocking = false;}
+			DoUnlockTimer(0);
+			DoUnlockTimer(1);
+			DoUnlockTimer(2);
+			
+			if (CheckUnlockTimer(0) && CheckUnlockTimer(1) && CheckUnlockTimer(2))
+			{
+				listunlocks.Delete(0, 3);
+				isunlocking = false;
+			}
 		}
+	}
+	
+	virtual ui void DoUnlockTimer(uint popupnum)
+	{
+		if (popupnum > 2) {ThrowAbortException("%s", "Unlock Popup Error: Tried to spawn more than 3 popups at once.");}
+		
+		if (listunlocks.Size() > popupnum)
+		{
+			++unlocktimer[popupnum];
+			if (unlocktimer[popupnum] < 7) {unlockalpha[popupnum] = unlocktimer[popupnum] / 7.0;}
+			else if (unlocktimer[popupnum] <= 150) {unlockalpha[popupnum] = 1.0;}
+			else if (unlocktimer[popupnum] <= 185) {unlockalpha[popupnum] = 1.0 - ((unlocktimer[popupnum] - 150) / 35.0);}
+		}
+	}
+	
+	virtual ui bool CheckUnlockTimer(uint popupnum)
+	{
+		if (listunlocks.Size() > popupnum) 
+		{
+			if (unlocktimer[popupnum] > 185) {return true;}
+			else {return false;}
+		}
+		else {return true;}
 	}
 	
 	override void RenderOverlay(RenderEvent e)
 	{
-		if ((isunlocking) && (listunlocks.Size() > 0))
+		let unlockamount = listunlocks.Size();
+		if ((isunlocking) && (unlockamount > 0))
 		{
-			//different modes for different unlocks
-			string unlocktxt = "NEW UNLOCK:";
-			string unlockback_string = "graphics/UNLOCKBOX1.png";
-			if (listunlocks[0].Left(14) == "di_unlock_item")
-			{
-				unlocktxt = "NEW SHOP ITEM:";
-			}
-			if (listunlocks[0].Left(13) == "di_unlock_lvl") 
-			{
-				unlocktxt = "NEW LEVEL:";
-				unlockback_string = "graphics/UNLOCKBOX2.png";
-			}
-			else if (listunlocks[0].Left(13) == "di_unlock_plr") 
-			{
-				unlocktxt = "NEW CHARACTER:";
-				unlockback_string = "graphics/UNLOCKBOX3.png";
-			}
-			
-			//drawing the background texture
-			let unlockback = TexMan.CheckForTexture(unlockback_string);
-			vector2 unlocksize = TexMan.GetScaledSize(unlockback);
-			let startx = ((unlocksize.x * unlockalpha) - unlocksize.x) * CleanXFac;
-			let starty = Screen.GetHeight() - (unlocksize.y * CleanYFac);
-			Screen.DrawTexture(unlockback, false, startx, starty,
-				DTA_CleanNoMove, true,
-				DTA_KeepRatio, true,
-				DTA_Alpha, unlockalpha * 0.8);
-			
-			//drawing the top text
-			if (unlocktimer % 24 == 0) {fontcolor = Font.CR_WHITE;}
-			else if (unlocktimer % 12 == 0) {fontcolor = Font.CR_YELLOW;}
-			let sfont = Font.GetFont("smallFont");
-			Screen.DrawText(sfont, fontcolor, startx + (((unlocksize.x / 2) - (sfont.StringWidth(unlocktxt) / 2)) * CleanXFac), starty, unlocktxt,
-				DTA_CleanNoMove, true,
-				DTA_KeepRatio, true,
-				DTA_Alpha, unlockalpha);
-			
-			//drawing the unlock graphic
-			let graphicstring = String.Format("graphics/unlocks/%s.png", listunlocks[0]); //case sensitive!
-			let realgraphic = TexMan.CheckForTexture(graphicstring);
-			vector2 graphicsize = TexMan.GetScaledSize(realgraphic);
-			double graphicmove = sin(unlocktimer * 10) * 0.5;
-			double xmax = ((unlocksize.x / 3.0) - 16) + graphicmove;
-			double ymax = (unlocksize.y - 20) + graphicmove;
-			//console.printf("before: %.1f, %.1f", graphicsize.x, graphicsize.y);
-			if (graphicsize.x > xmax) {graphicsize *= xmax / graphicsize.x;}
-			if (graphicsize.y > ymax) {graphicsize *= ymax / graphicsize.y;}
-			//console.printf("\cqafter: %.1f, %.1f", graphicsize.x, graphicsize.y);
-			Screen.DrawTexture(realgraphic, false, startx + ((8 + (graphicmove / 4)) * CleanXFac), starty + ((12 + (graphicmove / 4)) * CleanYFac),
-				DTA_DestWidthF, graphicsize.x * CleanXFac,
-				DTA_DestHeightF, graphicsize.y * CleanYFac,
-				DTA_KeepRatio, true,
-				DTA_Alpha, unlockalpha);
-				
-			//drawing the unlock name
-			let unlockname = String.Format("$DIPOPUP_%s", listunlocks[0]);
-			unlockname = StringTable.Localize(unlockname);
-			Screen.DrawText(sfont, Font.CR_UNTRANSLATED, startx + ((graphicsize.x + 16) * CleanXFac), starty + ((unlocksize.y / 2) * CleanYFac), unlockname,
-				DTA_CleanNoMove, true,
-				DTA_KeepRatio, true,
-				DTA_Alpha, unlockalpha);
+			if (unlockamount >= 3) {UnlockPopup(e, 2);}
+			if (unlockamount >= 2) {UnlockPopup(e, 1);}
+			UnlockPopup(e, 0);
 		}
+	}
+	
+	virtual ui void UnlockPopup(RenderEvent e, uint popupnum = 0)
+	{
+		let listunlock = listunlocks[popupnum];
+		let curtimer = unlocktimer[popupnum];
+		let curalpha = unlockalpha[popupnum];
+		
+		//console.printf("%s", listunlock);
+		
+		//different modes for different unlocks
+		string unlocktxt, unlockback_string;
+		if (listunlock.Left(14) ~== "di_unlock_item")
+		{
+			unlocktxt = "NEW SHOP ITEM:";
+			unlockback_string = "graphics/UNLOCKBOX1.png";
+			//console.printf("yeppers");
+		}
+		else if (listunlock.Left(13) ~== "di_unlock_lvl") 
+		{
+			unlocktxt = "NEW LEVEL:";
+			unlockback_string = "graphics/UNLOCKBOX2.png";
+		}
+		else if (listunlock.Left(13) ~== "di_unlock_plr") 
+		{
+			unlocktxt = "NEW CHARACTER:";
+			unlockback_string = "graphics/UNLOCKBOX3.png";
+		}
+		else
+		{
+			//support for custom unlock types
+			unlocktxt = stringtable.localize(string.format("$DIUNLOCKTYPE_%s", listunlock));
+			unlockback_string = "graphics/UNLOCKBOX4.png";
+		}
+		
+		//drawing the background texture
+		let unlockback = TexMan.CheckForTexture(unlockback_string);
+		vector2 unlocksize = TexMan.GetScaledSize(unlockback);
+		let startx = ((unlocksize.x * curalpha) - unlocksize.x) * CleanXFac;
+		let starty = Screen.GetHeight() - ((unlocksize.y * CleanYFac) * (1 + popupnum));
+		Screen.DrawTexture(unlockback, false, startx, starty,
+			DTA_CleanNoMove, true,
+			DTA_KeepRatio, true,
+			DTA_Alpha, curalpha * 0.8);
+		
+		//drawing the top text
+		if (curtimer % 24 == 0) {fontcolor = Font.CR_WHITE;}
+		else if (curtimer % 12 == 0) {fontcolor = Font.CR_YELLOW;}
+		let sfont = Font.GetFont("smallFont");
+		Screen.DrawText(sfont, fontcolor, startx + (((unlocksize.x / 2) - (sfont.StringWidth(unlocktxt) / 2)) * CleanXFac), starty, unlocktxt,
+			DTA_CleanNoMove, true,
+			DTA_KeepRatio, true,
+			DTA_Alpha, curalpha);
+			
+		//drawing the unlock graphic
+		let graphicstring = String.Format("graphics/unlocks/%s.png", listunlock); //case sensitive!
+		let realgraphic = TexMan.CheckForTexture(graphicstring);
+		vector2 graphicsize = TexMan.GetScaledSize(realgraphic);
+		double graphicmove = sin(curtimer * 10) * 0.5;
+		double xmax = ((unlocksize.x / 3.0) - 16) + graphicmove;
+		double ymax = (unlocksize.y - 20) + graphicmove;
+		//console.printf("before: %.1f, %.1f", graphicsize.x, graphicsize.y);
+		if (graphicsize.x > xmax) {graphicsize *= xmax / graphicsize.x;}
+		if (graphicsize.y > ymax) {graphicsize *= ymax / graphicsize.y;}
+		//console.printf("\cqafter: %.1f, %.1f", graphicsize.x, graphicsize.y);
+		Screen.DrawTexture(realgraphic, false, startx + ((8 + (graphicmove / 4)) * CleanXFac), starty + ((12 + (graphicmove / 4)) * CleanYFac),
+			DTA_DestWidthF, graphicsize.x * CleanXFac,
+			DTA_DestHeightF, graphicsize.y * CleanYFac,
+			DTA_KeepRatio, true,
+			DTA_Alpha, curalpha);
+				
+		//drawing the unlock name
+		let unlockname = String.Format("$DIPOPUP_%s", listunlock);
+		unlockname = StringTable.Localize(unlockname);
+		Screen.DrawText(sfont, Font.CR_UNTRANSLATED, startx + ((graphicsize.x + 16) * CleanXFac), starty + ((unlocksize.y / 2) * CleanYFac), unlockname,
+			DTA_CleanNoMove, true,
+			DTA_KeepRatio, true,
+			DTA_Alpha, curalpha);
 	}
 	
 	override void InterfaceProcess(ConsoleEvent e)
 	{
 		if (e.Name.Left(9) == "diunlock_")
 		{
-			let thiscvar = e.Name.Mid(9);
-			DoUnlock(thiscvar);
+			if (canprogress || (e.Args[0] == 1)) //progression check can be bypassed by setting e.Args[0] to 1.
+			{
+				let thiscvar = e.Name.Mid(9);
+				DoUnlock(thiscvar);
+			}
 		}
 	}
 	
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "di_burgerunlock")
+		if (canprogress)
 		{
-			burgertracker = cvar.getcvar("di_unlock_plr_burger");
-			if (burgertracker.getbool() == false)
+			if (e.Name == "di_burgerunlock")
 			{
-				burgercvar = cvar.getcvar("di_burgercount");
-				
-				burgercvar.setint(burgercvar.getint() + 1);
-				
-				if (burgercvar.getint() >= 4)
+				burgertracker = cvar.getcvar("di_unlock_plr_burger");
+				if (burgertracker.getbool() == false)
 				{
-					eventhandler.sendinterfaceevent(consoleplayer, "diunlock_di_unlock_plr_burger");
+					burgercvar = cvar.getcvar("di_burgercount");
+					
+					burgercvar.setint(burgercvar.getint() + 1);
+					
+					if (burgercvar.getint() >= 4)
+					{
+						eventhandler.sendinterfaceevent(consoleplayer, "diunlock_di_unlock_plr_burger");
+					}
+					else if (burgercvar.getint() < 4)
+					{
+						int fakepercent = (burgercvar.getint() + 1) * 20;
+						console.printf("\cvBurger Progress: (%d%%)", fakepercent);
+					}
 				}
-				else if (burgercvar.getint() < 4)
+			}
+			else if (e.Name == "DIWaveFinished") {WaveFinished();}
+			else if (e.Name.Left(17) == "diplayeritemused ")
+			{
+				++consumed;
+				if (consumed >= 25)
 				{
-					int fakepercent = (burgercvar.getint() + 1) * 20;
-					console.printf("\cvBurger Progress: (%d%%)", fakepercent);
+					SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_consumer");
+				}
+			}
+			else if (e.Name == "diplayerfreshbonus") {FreshTracker();}
+			else if (e.Name == "diweaponreload")
+			{
+				freshreload = 0;
+			}
+			else if (e.Name == "DIRerollShops")
+			{
+				cvar reroller = cvar.getcvar("di_rerollshop");
+				int newreroll = reroller.GetInt() + 1;
+				if (newreroll >= 25) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_dice");}
+				
+				reroller.SetInt(newreroll);
+			}
+			else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
+			else if (e.Name == "swagcheck") {DoSwagCheck(e.Args[0]);}
+			else if (e.Name == "doheartpickup")
+			{
+				let heart = cvar.getcvar("di_heartcount");
+				int heartnum = heart.getint() + 1;
+				heart.setint(heartnum);
+				
+				if ((heartnum >= 100) && (di_unlock_item_heartbomb == false))
+				{
+					sendinterfaceevent(consoleplayer, "diunlock_di_unlock_item_heartbomb");
 				}
 			}
 		}
-		else if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
-		else if (e.Name == "DIWaveFinished") {WaveFinished();}
-		else if (e.Name.Left(17) == "diplayeritemused ")
-		{
-			++consumed;
-			if (consumed >= 25)
-			{
-				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_consumer");
-			}
-		}
-		else if (e.Name == "diplayerfreshbonus") {FreshTracker();}
-		else if (e.Name == "diweaponreload")
-		{
-			freshreload = 0;
-		}
-		else if (e.Name == "DIRerollShops")
-		{
-			cvar reroller = cvar.getcvar("di_rerollshop");
-			int newreroll = reroller.GetInt() + 1;
-			if (newreroll >= 25) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_dice");}
-			
-			reroller.SetInt(newreroll);
-		}
-		else if (e.Name == "di_tomahawkkill") {listkills.Push("di_tomahawkcount");}
+		if (e.Name == "di_resetitems") {ResetItems();} //resets ALL unlocks to default.
 	}
 	
 	ui virtual void DoUnlock(string unlockstring)
 	{
 		let unlockcvar = cvar.getcvar(unlockstring);
 	
-		if (unlockcvar && (unlockcvar.getbool() == false))
+		if (unlockcvar && (unlockcvar.getbool() == false) && (listunlocks.Find(unlockstring) == listunlocks.Size()))
 		{
 			listunlocks.push(unlockstring);
 			unlockcvar.setbool(true);
@@ -316,6 +415,11 @@ Class DIUnlockHandler : EventHandler
 			let melon = cvar.getcvar("di_unlock_item_melon");
 			if ((killnum >= 100) && (melon.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_melon");}
 		}
+		else if (killtracker == cvar.getcvar("di_onioncount"))
+		{
+			let onion = cvar.getcvar("di_unlock_item_onion");
+			if ((killnum >= 100) && (onion.getbool() == false)) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_onion");}
+		}
 		else if (killtracker == cvar.getcvar("di_hammercount"))
 		{
 			let hammer = cvar.getcvar("di_unlock_item_toaster");
@@ -330,27 +434,40 @@ Class DIUnlockHandler : EventHandler
 	
 	virtual void CloverTracker()
 	{
-		cvar clovercvar = cvar.getcvar("di_unlock_item_9leafclover");
-		if (diplr && (clovercvar.GetBool() == false))
+		if (diplr)
 		{
-			if (diplr.GetCombo() == 9)
+			cvar cfreezecvar = cvar.getcvar("di_unlock_item_creditfreeze");
+			if (cfreezecvar.GetBool() == false)
 			{
-				SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
+				if (diplr.GetCombo() >= 5)
+				{
+					SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_creditfreeze");
+				}
+			}
+			cvar clovercvar = cvar.getcvar("di_unlock_item_9leafclover");
+			if (clovercvar.GetBool() == false)
+			{
+				if (diplr.GetCombo() == 9)
+				{
+					SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_9leafclover");
+				}
 			}
 		}
 	}
 	
 	virtual void DMGMultTracker()
 	{
+		/*
 		cvar dmgcvar = cvar.getcvar("di_unlock_item_combomult");
 		if (diplr && (dmgcvar.getbool() == false))
 		{
 			let wpn = DI_Weapon(diplr.player.readyweapon);
 			if (wpn)
 			{
-				if (wpn.damagemult >= 2.0) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combomult");}
+				if (wpn.CheckDamageMult() >= 2.0) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combomult");}
 			}
 		}
+		*/
 	}
 	
 	virtual void FreshTracker()
@@ -419,8 +536,43 @@ Class DIUnlockHandler : EventHandler
 			diunlock_filedata[i] = diunlock_filedata[i].Left(linesize); //only use data left of the ;
 			array<string> curline;
 			diunlock_filedata[i].Split(curline, " ");
-			if ((curline.Size() < 3) && (curline.Size() > 4)) {continue;} //each valid line must contain 3 or 4 arguments.
+			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 or 4 arguments.
 			parseddata.Push(diunlock_filedata[i]);
+		}
+	}
+	
+	clearscope virtual void ParseDIGAME(array<string> parseddata)
+	{
+		console.printf("parsing DIGAME data...");
+		array<string> diunlock_filedata;
+	
+		int ThisLump = Wads.FindLump("DIGAME", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIGAME", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(diunlock_filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIGAME", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < diunlock_filedata.Size(); ++i)
+		{
+			if (diunlock_filedata[i].Left(2) == ">>") {continue;} //comment
+			if (diunlock_filedata[i].Length() < 3) {continue;} //too small
+			int linesize = diunlock_filedata[i].IndexOf(";"); //end of line
+			diunlock_filedata[i] = diunlock_filedata[i].Left(linesize); //only use data left of the ;
+			array<string> curline;
+			diunlock_filedata[i].Split(curline, ", ");
+			if (curline.Size() != 4) {continue;}
+			if (curline[0] == "Add") 
+			{
+				if (curline[1] == "Player")	{parseddata.Push(curline[3]);}
+				if (curline[1] == "Level")	{parseddata.Push(curline[3]);}
+				if (curline[1] == "CheatMod")	{parseddata.Push(curline[2]); parseddata.Push(curline[3]);}
+				if (curline[1] == "Modifier")	{parseddata.Push(curline[2]); parseddata.Push(curline[3]);}
+				console.printf(diunlock_filedata[i]);
+			}
 		}
 	}
 	
@@ -431,21 +583,33 @@ Class DIUnlockHandler : EventHandler
 		
 		//parse the DIUNLOCK data for cvars to reset.
 		ParseDIUNLOCK(unlocklines);
+		ParseDIGAME(unlockcvars);
+		
+		//todo: add ability to add non-standard cvars to reset list.
+		unlockcvars.push("di_highscore");
+		unlockcvars.push("di_experience");
+		unlockcvars.push("di_swaglevel");
+		unlockcvars.push("di_swaglevel_over");
 		
 		//get the cvars from the parsed lines.
 		for (int i = 0; i < UnlockLines.Size(); i++)
 		{
 			array<string> curline;
 			unlocklines[i].Split(curline, " ");
+
+			if (curline[0].Left(1) == "!") {continue;}
 			
 			unlockcvars.push(curline[0]);
-			if (curline.size() == 4) {unlockcvars.push(curline[3]);}
+			if (curline.size() >= 4) 
+			{
+				if (curline[3] != "") {unlockcvars.push(curline[3]);}
+			}
 		}
 	
 		//it's time to reset the hats.
 		for (int i = 0; i < UnlockCVARs.Size(); i++)
 		{
-			console.printf("num %d: '%s'", i, unlockcvars[i]);
+			console.printf("num %d: '%s'", i + 1, unlockcvars[i]);
 			cvar CurrentCVAR = cvar.getcvar(UnlockCVARs[i]);
 			if (CurrentCVAR)
 			{
@@ -479,7 +643,7 @@ Class DIUnlockHandler : EventHandler
 			cvar statuskills = cvar.getcvar("di_statuskills");
 			int newstatus = statuskills.GetInt() + 1;
 			statuskills.SetInt(newstatus);
-			if (newstatus >= 100) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_rainbowbullet");}
+			if (newstatus >= 300) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_rainbowbullet");}
 		}
 		switch(whichstatus)
 		{
@@ -487,27 +651,79 @@ Class DIUnlockHandler : EventHandler
 				cvar icekills = cvar.getcvar("di_icekills");
 				int newice = icekills.GetInt() + 1;
 				icekills.SetInt(newice);
-				if (newice >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_icebullet");}
+				if (newice >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_icebullet");}
 				break;
 			case 1:
 				cvar firekills = cvar.getcvar("di_firekills");
 				int newfire = firekills.GetInt() + 1;
 				firekills.SetInt(newfire);
-				if (newfire >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_firebullet");}
+				if (newfire >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_firebullet");}
 				break;
 			case 2:
 				cvar poisonkills = cvar.getcvar("di_poisonkills");
 				int newpoison = poisonkills.GetInt() + 1;
 				poisonkills.SetInt(newpoison);
-				if (newpoison >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_poisonbullet");}
+				if (newpoison >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_poisonbullet");}
 				break;
 			case 3:
 				cvar shockkills = cvar.getcvar("di_shockkills");
 				int newshock = shockkills.GetInt() + 1;
 				shockkills.SetInt(newshock);
-				if (newshock >= 10) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shockbullet");}
+				if (newshock >= 30) {SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_shockbullet");}
 				break;
 		}
+	}
+	
+	virtual void DoSwagCheck(int newlevels)
+	{
+		array<string> swagdata;
+		array<string> lockeditems, unlockeditems;
+	
+		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(swagdata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISWAG", ThisLump + 1, 1);
+		}
+		
+		foreach(swag : swagdata)
+		{
+			if (swag.Left(2) == ">>") {continue;}
+			string realline = swag.Left(swag.IndexOf(";"));
+			array<string> curline;
+			realline.split(curline, " ");
+			if (curline.size() != 2) {ThrowAbortException("DISWAG Error: Expected 2 arguments, found %d in '%s'.", curline.size(), swag);}
+			int swagneed = curline[0].ToInt(10);
+			if (swagneed <= di_swaglevel)
+			{
+				cvar lockcvar = cvar.findcvar(curline[1]);
+				if (lockcvar && (!lockcvar.getbool())) 
+				{
+					lockeditems.push(curline[1]);
+				}
+			}
+		}
+
+			for (int i = 0; i < newlevels; ++i) //unlock 1 item per level increase. overlevels will double the item amount.
+			{
+				if (lockeditems.size() > 0)
+				{
+					int itemnum = random(0, lockeditems.size() - 1); //choose random eligible item cvar
+					string newitem = lockeditems[itemnum]; //make a copy of item name outside of array
+					lockeditems.delete(itemnum); //remove chosen item from array
+
+					cvar swagcvar = cvar.findcvar(newitem); //get the actual item cvar
+					if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected: '%s'.", newitem);} //check if cvar exists
+					else if (!swagcvar.GetBool()) //check if cvar is currently false.
+					{
+						string cmd = string.format("diunlock_%s", newitem);
+						SendInterfaceEvent(consoleplayer, cmd); //unlock item for current consoleplayer.
+					}
+				}
+			}
 	}
 	
 	clearscope virtual int UnlockCounter()
@@ -539,11 +755,17 @@ Class DIUnlockHandler : EventHandler
 		//for items that are unlocked based on how many other unlocks the player has.
 		if (unlockcount >= 15)
 		{
-			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletsplitter");
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_bulletmitosis");
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_weaponized");
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_lvl_bonus01");
 		}
 		if (unlockcount >= 30)
 		{
-			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_combobase");
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_starfruit");
+		}
+		if (unlockcount >= 45)
+		{
+			SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_item_explosiverounds");
 		}
 	}
 }

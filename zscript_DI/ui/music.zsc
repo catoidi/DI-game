@@ -1,0 +1,89 @@
+//zscript_DI/ui/music.zsc
+
+//device meant to smoothly transition from one track to another.
+
+Class DIMusicHandler : EventHandler
+{
+	float mvolume; //music volume controller.
+	string curmusic; //the name of the current track.
+	int musicmode; //0 = idle. -1 = fading out. 1 = fading in. 2 = force play
+	
+	DI_PlayerBase plr;
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		curmusic = "";
+		musicmode = 0;
+		mvolume = 1.0;
+		plr = DI_PlayerBase(players[consoleplayer].mo); //NOT MULTIPLAYER COMPATIBLE.
+	}
+	
+	override void WorldTick()
+	{
+		//console.printf("%s, %.1f, %d", curmusic, mvolume, musicmode);
+	
+		switch(musicmode)
+		{
+			case -1:
+				if (mvolume > 0.02) 
+				{
+					mvolume -= 0.02;
+					SetMusicVolume(mvolume);
+				}
+				else
+				{
+					S_ChangeMusic(curmusic);
+					musicmode = 1;
+				}
+				break;
+			case 1:
+				if (mvolume < 1.0)
+				{
+					mvolume = 1.0;
+					SetMusicVolume(mvolume);
+				}
+				else
+				{
+					musicmode = 0;
+				}
+				break;
+			case 2:
+				S_ChangeMusic(curmusic);
+				mvolume = 1.0;
+				SetMusicVolume(mvolume);
+				musicmode = 0;
+				break;
+		}
+	}
+	
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name.Left(15) ~== "DI_ChangeMusic ")
+		{
+			//console.printf("%s", e.Name);
+		
+			array<string> cmd;
+			
+			e.Name.Split(cmd, " ");
+			
+			if (cmd.Size() != 2) {ThrowAbortException("\caERROR: Expected 1 argument in DI_ChangeMusic command, got %d instead.", cmd.Size() - 1);}
+			
+			if ((curmusic == "") || (e.Args[0] == 1)) 
+			{
+				//console.printf("initializing %s", cmd[1]); 
+				curmusic = cmd[1];
+				mvolume = 1.0;
+				musicmode = 2;
+			}
+			else if (curmusic != cmd[1])
+			{
+				if (plr.health > 0)
+				{
+					//console.printf("changing into %s", cmd[1]);
+					musicmode = -1;
+					curmusic = cmd[1];
+				}
+			}
+		}
+	}
+}

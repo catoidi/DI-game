@@ -1,6 +1,6 @@
 //zscript_DI/items/passives/shoe.zsc
 
-//shooting has a 1% chance to heal you 1 HP.
+//shooting has a 12.5% chance to fire a shoe projectile. projectile DMG and spawn chance scales based on item stacks.
 
 Class DI_Shoe : DIPassiveInventory
 {
@@ -16,12 +16,11 @@ Class DI_Shoe : DIPassiveInventory
 	{
 		Super.DoEffect();
 		
-		if ((owner is "DI_PlayerBase") && (owner.player.ReadyWeapon is "DI_Weapon"))
+		if (plr && wpn)
 		{
-			DI_PlayerBase plr = DI_PlayerBase(owner);
-			if (plr.CurState == plr.ResolveState("Melee"))
+			if (plr.justfired)
 			{
-				if (random(1, 8) <= plr.CountInv("DI_Shoe"))
+				if (random(1, 8) <= amount)
 				{
 					plr.A_SpawnItemEX("DI_Shoe_Throw", 0, 0, plr.Height / 2, cos(plr.pitch - 10)*16, 0, -sin(plr.pitch - 10)*16, 0, SXF_SETTARGET | SXF_TRANSFERPITCH);
 				}
@@ -37,10 +36,8 @@ Class DI_Shoe : DIPassiveInventory
 	}
 }
 
-Class DI_Shoe_Throw : DI_Actor
+Class DI_Shoe_Throw : DI_Projectile
 {
-	mixin DI_ProjectileMixin;
-
 	Default
 	{
 		Mass 0;
@@ -48,41 +45,45 @@ Class DI_Shoe_Throw : DI_Actor
 		Radius 4;
 		Height 8;
 		Speed 16;
-		DamageFunction throwdam;
-		Projectile;
-		-NOGRAVITY;
-		+BLOODSPLATTER;
-		//+INTERPOLATEANGLES;
 		+ROLLSPRITE;
 		+SPRITEANGLE;
-		+FORCEXYBILLBOARD;
 		+INTERPOLATEANGLES;
+		BounceFactor 0.2;
+		WallBounceFactor 0.2;
 	}
-	
-	int throwdam;
+
+	string shoepart;
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		
-		CheckStatusChange();
-		
-		throwdam = 20;
-		if (target is "PlayerPawn")
+		if (plr.CountInv("DI_LavaBoot") > 0) 
 		{
-			throwdam += target.CountInv("DI_Shoe") * 5; //increase dmg for every shoe you have.
-		}
+			shoepart = "BOOTA0";
+			SetStateLabel("Boot");
+		} 
+		else {shoepart = "SHOEA0";}
+	}
+
+	override int GetWeaponDamage()
+	{
+		if (plr) {return 200 + (plr.CountInv("DI_Shoe") * 50) + (plr.CountInv("DI_LavaBoot") * 150);}
+		else return 250;
 	}
 	
 	action void ShoeParticle()
 	{
-		A_SpawnParticleEX("White", TexMan.CheckForTexture("SHOEA0"), 0, SPF_ROLL, 24, 32.0, random(0, 359), 0, 0, 0, random(-1, 1), random(-1, 1), random(1, 3), 0, 0, -0.33, 0.5, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(invoker.shoepart), 0, SPF_ROLL, 24, 32.0, random(0, 359), 0, 0, 0, random(-1, 1), random(-1, 1), random(1, 3), 0, 0, -0.33, 0.5, 0, -0.16, random(0, 359), 3 - (6 * (random(0, 1))));
 	}
 	
 	States
 	{
 		Spawn:
 			SHOE A 1 A_SetRoll(roll + 8);
-			Loop;
+			Wait;
+		Boot:
+			BOOT B 1 A_SetRoll(roll - 8);
+			Wait;
 		Death.Sky:
 		Death:
 			TNT1 A 1 

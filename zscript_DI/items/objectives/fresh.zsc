@@ -1,0 +1,56 @@
+//zscript_DI/items/objectives/fresh.zsc
+
+Class DI_QuestObjective_Fresh : DI_QuestObjective
+{
+	bool queststarted; //checks when the player first enters the next wave.
+	bool chillout; //pause the timer while no monsters are alive.
+	int timer;
+	Property StartTimer : timer;
+	Default {DI_QuestObjective_Fresh.StartTimer 245;} //7 seconds.
+
+	override void doeffect()
+	{
+		super.doeffect();
+		ObjectiveTick();
+	}
+	
+	virtual void ObjectiveTick()
+	{
+		if ((plr) && (plr.inwave))
+		{
+			queststarted = true;
+			if (plr.JustKilled == true) 
+			{
+				float overtime = 0.5;
+				if (timer > 0) {overtime *= (0.0 + default.timer) / (0.0 + timer);}
+				
+				timer += default.timer * overtime; //reduce time given if player is doing too well
+				if (timer > (default.timer * 2)) {timer = default.timer * 2;} //hard cap timer to double the starting time
+			}
+			if (!chillout)
+			{
+				if (timer > 0) 
+				{
+					--timer;
+					if ((timer <= 175) && (timer % 35 == 0)) {plr.A_StartSound("piebomb", slot: CHAN_AUTO, volume: 0.3, pitch: 0.75);}
+				}
+				else {ObjectiveFailed();}
+			}
+		}
+		else if ((queststarted) && (!plr.inwave)) 
+		{
+			ObjectiveComplete();
+		}
+		
+		if (Level.IsFrozen()) {chillout = true;}
+		else if ((level.Total_Monsters > level.Killed_Monsters) && (plr.health > 0)) {chillout = false;}
+		else {chillout = true;}
+	}
+	
+	override string QuestName() {return "Consistently Fresh";}
+	override string QuestProgress()
+	{
+		double clock = timer / 35.0;
+		return string.format("Time Left: %.2fs", clock);
+	}
+}

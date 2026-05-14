@@ -13,6 +13,9 @@ class DI_WallTrap : Actor
 		+THRUACTORS;
 		+WALLSPRITE;
 		+SPRITEANGLE;
+		//$Category "DI/Traps"
+		//$Color 12
+		//$Title "Wall Bullet Trap"
 	}
 	
 	States

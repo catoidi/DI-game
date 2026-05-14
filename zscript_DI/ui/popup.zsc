@@ -1,0 +1,384 @@
+//zscript_DI/ui/questhud.zsc
+
+Class DIPopupHandler : EventHandler
+{
+	//PLAY ELEMENTS
+	Array<String> debuffs;
+	Array<String> objectives;
+	array<string> filedata;
+	
+	DIHandler link;
+	
+	int curwave;
+	
+	override void WorldLoaded(WorldEvent e)
+	{
+		int ThisLump = Wads.FindLump("DIQUEST", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIQUEST", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIQUEST", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i].Split(currentline, " ");
+			if (currentline.Size() < 3) {ThrowAbortException("DIQUEST Error: Tried to add a debuff/objective with less than 3 arguments.\nLine: '%s'\nArguments: %d", filedata[i], currentline.Size());}
+			
+			bool correctlevel = false;
+			if (currentline[0] == "*") {correctlevel = true;}
+			else if (currentline[0] ~== level.MapName) {correctlevel = true;}
+			
+			if (!correctlevel) {continue;}
+			if (currentline[1] ~== "Debuff") 
+			{
+				string pusher = currentline[2];
+				if (currentline.Size() >= 4) {pusher.AppendFormat(",%s", currentline[3]);}
+				else {pusher.AppendFormat("%s", ",256");}
+				
+				if (currentline.Size() == 5) {pusher.AppendFormat(",%s", currentline[4]);}
+				else {pusher.AppendFormat("%s", ",0");}
+			
+				debuffs.push(pusher);
+			}
+			else if (currentline[1] ~== "Objective") 
+			{
+				string pusher = currentline[2];
+				if (currentline.Size() >= 4) {pusher.AppendFormat(",%s", currentline[3]);}
+				else {pusher.AppendFormat("%s", ",256");}
+				
+				if (currentline.Size() == 5) {pusher.AppendFormat(",%s", currentline[4]);}
+				else {pusher.AppendFormat("%s", ",0");}
+				
+				objectives.push(pusher);
+			}
+			else {ThrowAbortException("DIQUEST Error: Expected a debuff or objective, got '%s' instead.\nLine: '%s'", currentline[i], filedata[i]);}
+		}
+	}
+	
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing is "DI_QuestGiver")
+		{
+			let curquest = DI_QuestGiver(e.Thing);
+			curquest.handler = self;
+		}
+		if (e.Thing is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(e.Thing);
+			if (plr.thebrain) {link = plr.thebrain;}
+			plr.popuphandler = self;
+		}
+	}
+	
+	override void WorldTick()
+	{
+		if (link) {curwave = link.wavenum;}
+	}
+	
+	virtual string, string CreateValidQuest()
+	{
+		if ((debuffs.Size() == 0) || (objectives.Size() == 0)) {ThrowAbortException("%s", "Tried to create a new quest, but no debuffs/objectives were found!");}
+		
+		array<string> valid_objectives;
+		array<string> valid_debuffs;
+		
+		for (int i = 0; i < objectives.Size(); ++i)
+		{
+			array<string> currentline;
+			
+			objectives[i].Split(currentline, ",");
+			
+			if (currentline.Size() != 3) {ThrowAbortException("DIQUEST Error: Incorrect data found while generating valid Side Quests.\nCaused by: '%s'", objectives[i]);}
+			
+			if (currentline[2].ToInt(10) > curwave) {continue;}
+			if (random(1, 256) <= (256 - currentline[1].ToInt(10))) {continue;}
+			
+			valid_objectives.Push(currentline[0]);
+			//console.printf("%s", currentline[0]);
+		}
+		
+		for (int i = 0; i < debuffs.Size(); ++i)
+		{
+			array<string> currentline;
+			
+			debuffs[i].Split(currentline, ",");
+			
+			if (currentline.Size() != 3) {ThrowAbortException("DIQUEST Error: Incorrect data found while generating valid Side Quests.\nCaused by: '%s'", debuffs[i]);}
+			
+			if (currentline[2].ToInt(10) > curwave) {continue;}
+			if (random(1, 256) <= (256 - currentline[1].ToInt(10))) {continue;}
+			
+			valid_debuffs.Push(currentline[0]);
+			//console.printf("%s", currentline[0]);
+		}
+		
+		if ((valid_debuffs.Size() == 0) || (valid_objectives.Size() == 0)) {ThrowAbortException("%s", "DIQUEST Error: Failed to generate a valid side quest!");}
+		
+		return valid_debuffs[random(0, valid_debuffs.Size() - 1)], valid_objectives[random(0, valid_objectives.Size() - 1)];
+	}
+	
+	virtual void ChooseQuest(DI_QuestGiver curquest)
+	{
+		//activated by quest givers.
+		//assign a random debuff and objective to quest givers.
+		[curquest.debuff, curquest.objective] = CreateValidQuest();
+		curquest.handler = self;
+	}
+	
+	virtual string, string ChooseQuestAlt()
+	{
+		//allows you to give a random objective and debuff to any actor or script.
+		string return1, return2;
+		[return1, return2] = CreateValidQuest();
+		return return1, return2;
+	}
+
+	//UI ELEMENTS
+	ui DI_PlayerBase plr;
+	ui DI_MainQuest quest;
+	ui string curquest, curdesc, curdebuff, curprogress;
+	ui bool doquest;
+	ui float questalpha, scalenum, eventalpha, finalalpha;
+	transient ui cvar scalefactor, questscale, cvaralpha, photomode;
+	
+	ui string curevent, curevent_desc;
+	
+	ui bool dowavestart, dowaveend;
+	ui int waveuitimer, waveteleporttimer;
+	ui float wavemove, newmove;
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name == "DI_WaveStartUI")
+		{
+			dowavestart = true;
+			dowaveend = false;
+			waveuitimer = 0;
+			wavemove = 0.0;
+			//curwave = e.Args[0];
+		}
+		else if (e.Name == "DI_WaveEndUI")
+		{
+			dowaveend = true;
+			dowavestart = false;
+			waveuitimer = 0;
+			wavemove = 0.0;
+			waveteleporttimer = e.Args[0];
+			if (waveteleporttimer == 0)
+			{
+				waveteleporttimer = 105;
+			}
+			else if (waveteleporttimer <= -1) 
+			{
+				waveteleporttimer = 0;
+			}
+		}
+	}
+	
+	override void UITick()
+	{
+		if (!paused && !menuactive)
+		{
+			PopupTick();
+		}
+	}
+	
+	ui virtual void PopupTick()
+	{
+		//side quest stuff
+		scalefactor = cvar.getcvar("hud_scalefactor", players[consoleplayer]);
+		questscale = cvar.getcvar("di_questscale", players[consoleplayer]);
+		cvaralpha = cvar.getcvar("di_questalpha", players[consoleplayer]);
+		photomode = cvar.getcvar("di_photomode", players[consoleplayer]);
+		scalenum = scalefactor.getfloat() * questscale.getfloat();
+		finalalpha = cvaralpha.getfloat();
+		if (photomode.getbool()) {finalalpha = 0.0;}
+		plr = DI_PlayerBase(players[consoleplayer].mo);
+		if (plr && (plr.health > 0)) 
+		{
+			quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+			if ((quest) && (quest.objective))
+			{
+				curquest = stringtable.localize(quest.objective.QuestName());
+				curdesc = stringtable.localize(quest.objective.QuestDescription());
+				curdebuff = stringtable.localize(string.format("$SHOPDESC_%s", quest.debuff.GetClassName()));
+				curprogress = stringtable.localize(quest.objective.QuestProgress());
+				doquest = true;
+			}
+			else {doquest = false;}
+		}
+		
+		//random event stuff
+		if (doquest) {if (questalpha < 1.0) {questalpha += 0.1;}}
+		else if (questalpha >= 0.04) {questalpha -= 0.04;}
+		else if (questalpha > 0.0) {questalpha = 0.0;}
+		
+		if (plr && (plr.currentevent != ""))
+		{
+			if (eventalpha < 1.0) {eventalpha += 0.1;}
+			curevent = StringTable.Localize(plr.currentevent, false);
+			curevent_desc = StringTable.Localize(String.Format("$%s_desc", plr.currentevent));
+		}	
+		else 
+		{
+			if (eventalpha >= 0.04) {eventalpha -= 0.04;}
+			else if (eventalpha > 0.0) {eventalpha = 0.0;}
+			else
+			{
+				curevent = "";
+				curevent_desc = "";
+			}
+		}
+		
+		//wave stuff
+		if (dowavestart || dowaveend)
+		{
+			++waveuitimer;
+			
+			int wavefinished = 155;
+			if (waveteleporttimer > 0) {wavefinished = waveteleporttimer;}
+			
+			
+			//console.printf("%d/%d", waveuitimer, wavefinished);
+			if (waveuitimer <= 50)
+			{
+				newmove = ((1.59 - wavemove) / 50);
+				wavemove += newmove;
+			}
+			else if ((waveuitimer >= wavefinished) && (waveuitimer <= wavefinished + 50))
+			{
+				newmove = -((1.59 - wavemove) / 50);
+				wavemove += newmove;
+			}
+			if (wavemove >= 1.0) 
+			{
+				wavemove = 1.0;
+				newmove = 0.0;
+			}
+		}
+	}
+	
+	override void RenderUnderlay(RenderEvent e)
+	{
+		//side quest stuff
+		let startx = 2 * scalenum * CleanXFac;
+		let starty = (Screen.GetHeight() / 2) - (32 * scalenum * CleanYFac);
+		let txt = string.format("\cv%s\n\n\cfObjective:\n\cb%s\n\caDebuff:\n\cb%s\n\ctProgress:\n\cb%s", curquest, curdesc, curdebuff, curprogress);
+		
+		textureid back = texman.checkfortexture("graphics/hpbar/shopbar.png");
+		screen.drawtexture(back, false, startx - (25.6 * scalenum * CleanXFac), starty - (12 * scalenum * CleanYFac),
+			DTA_ScaleX, scalenum * CleanXFac * 0.8,
+			DTA_ScaleY, scalenum * CleanYFac * 1.125,
+			DTA_Alpha, questalpha * finalalpha
+		);
+		
+		Screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, startx, starty, txt,
+			DTA_ScaleX, scalenum * CleanXFac,
+			DTA_ScaleY, scalenum * CleanYFac,
+			DTA_Alpha, questalpha * finalalpha,
+			DTA_KeepRatio, true
+		);
+		
+		//random event stuff
+		if (curevent != "")
+		{
+			int backsizex, backsizey;
+			let starty2 = starty;
+			if (questalpha > 0.0)
+			{
+				//move event UI downwards while side quest is active
+				[backsizex, backsizey] = TexMan.GetSize(back);
+				starty2 += backsizey * (scalenum * CleanYFac * 1.125);
+			}
+			
+			screen.drawtexture(back, false, startx - (25.6 * scalenum * CleanXFac), starty2 - (8 * scalenum * CleanYFac),
+				DTA_ScaleX, scalenum * CleanXFac * 0.8,
+				DTA_ScaleY, scalenum * CleanYFac * 0.5,
+				DTA_Alpha, eventalpha * finalalpha
+			);
+			let txt2 = string.format("%s\n\n%s", curevent, curevent_desc);
+			screen.drawtext(SmallFont, Font.CR_UNTRANSLATED, startx, starty2, txt2,
+				DTA_ScaleX, scalenum * CleanXFac,
+				DTA_ScaleY, scalenum * CleanYFac,
+				DTA_Alpha, eventalpha * finalalpha,
+				DTA_KeepRatio, true
+			);
+		}
+		
+		if (dowavestart)
+		{	
+			if (waveuitimer < 205)
+			{	
+				let wavex = Screen.GetWidth() / 2;
+				let wavey = (Screen.GetHeight() * 0.25) * (0.75 + (0.25 * (wavemove + (newmove * e.FracTic))));
+				let wavetxt = string.format("%s", "\cgWave");
+				let wavetxt2 = string.format("\n\n%d/%d", curwave, link.wavemax);
+				
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac * 1.5) / 2), wavey, wavetxt,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5,
+					DTA_Alpha, wavemove,
+					DTA_KeepRatio, true
+				);
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt2) * CleanXFac) / 2), wavey, wavetxt2,
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, wavemove,
+					DTA_KeepRatio, true
+				);
+			}
+		}
+		else if (dowaveend)
+		{
+			if (waveuitimer < 999) //placeholder number
+			{
+				let wavex = Screen.GetWidth() / 2;
+				let wavey = (Screen.GetHeight() * 0.25) * (0.75 + (0.25 * (wavemove + (newmove * e.FracTic))));
+				let wavetxt = string.format("%s", "\cgWave Complete!");
+				let wavetxt2 = string.format("\n\n%d/%d", curwave, link.wavemax);
+				
+				screen.drawtext(bigfont, Font.CR_UNTRANSLATED, wavex - ((bigfont.StringWidth(wavetxt) * CleanXFac * 1.5) / 2), wavey, wavetxt,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5,
+					DTA_Alpha, wavemove,
+					DTA_KeepRatio, true
+				);
+			}
+		}
+	}
+	
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (plr && (plr.deathrestart > 0))
+		{
+			float DeathFade = plr.deathrestart / 35.0;
+		
+			let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
+			Screen.DrawTexture(blackscreen, false,
+				0, 0,
+				DTA_DestWidth, Screen.GetWidth(),
+				DTA_DestHeight, Screen.GetHeight(),
+				DTA_Alpha, 0.5 + (DeathFade / 2)
+			);
+		
+			string restart = "Restarting...";
+			let textx = (Screen.GetWidth() - (bigfont.StringWidth(restart) * CleanXFac * 1.5)) / 2;
+			let texty = Screen.GetHeight() / 2;
+			screen.drawtext(bigfont, Font.CR_UNTRANSLATED, textx, texty, restart,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5,
+					DTA_Alpha, DeathFade,
+					DTA_KeepRatio, true
+				);
+		}
+	}
+}

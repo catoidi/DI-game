@@ -1,0 +1,40 @@
+//zscript_DI/items/passives/lavaboot.zsc
+
+Class DI_LavaBoot : DIPassiveInventory
+{
+    Default
+	{
+		Tag "The Boot";
+		Inventory.Icon "BOOTA0";
+		Inventory.PickupMessage "The Boot Acquired! (Gives you complete Lava damage immunity.)";
+		Inventory.MaxAmount 1;
+	}
+
+    int timer;
+
+    override void DoEffect()
+    {
+        ++timer;
+        if (timer >= 35)
+        {
+            owner.GiveInventory("DI_LavaBoot_Power", 1);
+            timer = 0;
+        }
+    }
+
+    States
+	{
+		Spawn:
+			BOOT A -1;
+			Stop;
+	}
+}
+
+Class DI_LavaBoot_Power : RadSuit
+{
+    Default
+    {
+        Powerup.Duration 36;
+        Powerup.Color "None";
+    }
+}

@@ -6,12 +6,13 @@ class DI_HUD : BaseStatusBar
 	HUDFont SmallFont; //default smallfont font.
 	InventoryBarState invbar;
 	
-	cvar photomode;
+	cvar photomode, detailnum;
+	
+	bool drawAutomap;
 	
 	//stuff
 	bool HasAmmo1;
 	bool HasAmmo2;
-	const ArmorMax = 100;
 	
 	//score
 	double ScoreFadeTime;
@@ -52,6 +53,8 @@ class DI_HUD : BaseStatusBar
 	bool HideAmmo2;
 	
 	int leveltime;
+	
+	DI_Armor curarmor;
 
 	override void Init()
 	{
@@ -64,8 +67,8 @@ class DI_HUD : BaseStatusBar
 		//set max air capacity
 		MaxOxygen = AirAmount * 35;
 		
-		BoxHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
-		BoxArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
+		BoxHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 80);
+		BoxArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 500);
 		BoxAmmoInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
 		BoxAmmo2Interpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 50);
 		BoxScoreInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 9999999);
@@ -76,6 +79,7 @@ class DI_HUD : BaseStatusBar
 		freshtimer = cvar.findcvar("di_showfreshtimer");
 		
 		photomode = cvar.findcvar("di_photomode");
+		detailnum = cvar.findcvar("di_hudnumbers");
 	}
 
 	override void NewGame()
@@ -115,11 +119,11 @@ class DI_HUD : BaseStatusBar
 			if (!OffsetHealth > 0) {OffsetHealth = cplayer.health;} //offsethealth should never reach 0 after start
 			else if (OffsetHealth > cplayer.health) //health lowered, start shaking
 			{
-				if (OffsetHealth > 200 + cplayer.health) {OffsetHealth = 200 + cplayer.health;}
-				OffsetAmount = (((OffsetHealth - cplayer.health) * (shakecvar.GetInt())) / 20); //shakes 1 pixel per 10 damage
+				if (OffsetHealth > 2000 + cplayer.health) {OffsetHealth = 2000 + cplayer.health;}
+				OffsetAmount = (((OffsetHealth - cplayer.health) * (shakecvar.GetInt())) / 200); //shakes 1 pixel per 10 damage
 				if (OffsetAmount > 9) {OffsetAmount = 9;} //cap shake amount
 				ShakeOffset = (randompick[boxhud](-OffsetAmount, OffsetAmount), randompick[boxhud](-OffsetAmount, OffsetAmount));
-				OffsetHealth += -1;
+				OffsetHealth -= 10;
 			}
 			else //health raised/stagnated, stop shaking
 			{
@@ -164,7 +168,13 @@ class DI_HUD : BaseStatusBar
 		if (state == HUD_Fullscreen) //render HUD in fullscreen mode
 		{
 			BeginHUD();
-			if (photomode.GetBool() == false) {DrawBoxHUD(TicFrac);}
+			if (photomode.GetBool() == false) 
+			{
+				DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+				if (!diplayer) {return;}
+				DrawBoxHUD(diplayer, TicFrac);
+			}
+			if (drawAutomap) {drawAutomap = false;}
 		}
 	}
 	
@@ -173,28 +183,67 @@ class DI_HUD : BaseStatusBar
 		Super.DrawAutomapHUD(TicFrac);
 		
 		BeginHUD(0.5);
-		if (photomode.GetBool() == false) {DrawBoxHUD(TicFrac);}
+		if (photomode.GetBool() == false) 
+		{
+			DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+			if (!diplayer) {return;}
+			if (!diplayer.thehud) {diplayer.thehud = self;}
+			DrawBoxHUD(diplayer, TicFrac);
+			DrawWeaponStats(diplayer, TicFrac);
+			drawAutomap = true;
+		}
 	}
 	
-	void DrawBoxHUD(double TicFrac)
+	void DrawWeaponStats(DI_PlayerBase diplayer, double TicFrac)
 	{
-		DI_PlayerBase diplayer = DI_PlayerBase(CPlayer.mo);
+		DI_Weapon diwpn = DI_Weapon(CPlayer.readyweapon);
+		if (!diwpn) {return;}
+		int maxstats = 6;
+		for (int i = 0; i < maxstats; ++i)
+		{
+			string icon = "";
+			switch(i)
+			{
+				default: icon = string.format("%d", i); break; //placeholder, replace with real icon graphics later.
+				case 0: icon = "DMG"; break;
+				case 1: icon = "ACC"; break;
+				case 2: icon = "FIR"; break;
+				case 3: icon = "RLD"; break;
+				case 4: icon = "SPD"; break;
+				case 5: icon = "COM"; break;
+			}
+			string value = "";
+			switch(i)
+			{
+				case 0: value = string.format("%.1f (x%d)", 0.1 * diwpn.CheckDamage(), diwpn.wpn_projectiles); break;
+				case 1: value = string.format("%.2f (+%.2f)", diwpn.wpn_accuracy + diwpn.wpn_maxspread + diwpn.current_recoil, diwpn.wpn_recoil); break;
+				case 2: value = string.format("%.2f", diwpn.CheckWeaponSpeed(1)); break;
+				case 3: value = string.format("%.2f", diwpn.CheckWeaponSpeed(2)); break;
+				case 4: value = string.format("%.2f", diplayer.default.Speed + diwpn.plr_speed); break;
+				case 5: value = string.format("%.2f", diwpn.plr_combodrainbonus); break;
+			}
+			vector2 StatOffset = (16, -16 + (-8 * (maxstats - i)));
+			DrawString(SmallFont, string.format("%s: %s", icon, value), GlobalOffset + StatOffset, DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, Font.CR_WHITE, scale: (0.8, 0.8));
+		}
+	}
 	
+	void DrawBoxHUD(DI_PlayerBase diplayer, double TicFrac)
+	{
 		int regenamount = GetAmount("DI_Regen") + CPlayer.health;
 		
 		if (GetAmount("DI_Regen") > 0)
 		{
-			DrawBar("graphics/boxhud/HUDBARB1.png", "graphics/boxhud/HUDBARA.png", regenamount, cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARB0.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB1.png", "graphics/boxhud/HUDBARA.png", regenamount, diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARB0.png", BoxHealthInterpolator.GetValue(), diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		else 
 		{
-			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARA.png", BoxHealthInterpolator.GetValue(), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARB.png", "graphics/boxhud/HUDBARA.png", BoxHealthInterpolator.GetValue(), diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		
-		if (BoxHealthInterpolator.GetValue() > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen")))
+		if (BoxHealthInterpolator.GetValue() > (diplayer.DIMaxHealth()))
 		{
-			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen")), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("graphics/boxhud/HUDBARC.png", "graphics/boxhud/HUDBARB.png", BoxHealthInterpolator.GetValue() - (diplayer.DIMaxHealth()), diplayer.DIMaxHealth(false), GlobalOffset + PrismOffset + (-144, -32), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
 		}
 		
 		if (GetAmount("DI_Degen") > 0)
@@ -202,29 +251,27 @@ class DI_HUD : BaseStatusBar
 			DrawBar("graphics/boxhud/HUDBARB2.png", "graphics/boxhud/HUDBARB0.png", GetAmount("DI_Degen"), cplayer.mo.GetMaxHealth(true), GlobalOffset + PrismOffset + (-80, -8), 0, DI_ITEM_OFFSETS);
 		}
 		
-		DrawString(SmallFont, FormatNumber(cplayer.health, 0), GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+		let hpfont = Font.CR_WHITE;
+		if (cplayer.health > diplayer.DIMaxHealth()) {hpfont = Font.CR_BRICK;}
+		string drawhealth = string.format("%.1f", 0.1 * cplayer.health);
+		if (detailnum.GetBool()) {drawhealth.AppendFormat("\cu/\cb%.1f", 0.1 * diplayer.DIMaxHealth());}
+		DrawString(SmallFont, drawhealth, GlobalOffset + (-24, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, hpfont);
 		let regfont = Font.CR_GREEN;
-		if (GetAmount("DI_Regen") > (cplayer.mo.GetMaxHealth(true) - GetAmount("DI_Degen"))) {regfont = Font.CR_RED;}
+		if (regenamount > (diplayer.DIMaxHealth())) {regfont = Font.CR_RED;}
 		if (GetAmount("DI_Regen") > 0)
 		{
-			DrawString(SmallFont, FormatNumber(GetAmount("DI_Regen"), 0), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);
+			DrawString(SmallFont, string.format("+%.1f", 0.1 * GetAmount("DI_Regen")), GlobalOffset + (-140, -23), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_LEFT, regfont, 0.5);
 		}
 		
 		//DrawTexture(GetMugShot(5), GlobalOffset + (-36, -36), DI_ITEM_OFFSETS);
 		
-		if (GetArmorAmount() > 0) //show armor when not empty
-		{
-			BasicArmor curarmor = BasicArmor(CPlayer.mo.FindInventory('BasicArmor'));
+		curarmor = diplayer.FindArmor();
 		
-			DrawBar("graphics/boxhud/HUDBARH.png", "graphics/boxhud/HUDBARG.png", BoxArmorInterpolator.GetValue(), ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			if (BoxArmorInterpolator.GetValue() > ArmorMax)
-			{
-				DrawBar("graphics/boxhud/HUDBARK.png", "graphics/boxhud/HUDBARH.png", BoxArmorInterpolator.GetValue() - ArmorMax, ArmorMax, GlobalOffset + (-142, -56), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			}
-			DrawString(SmallFont, FormatNumber(GetArmorAmount(), 0), GlobalOffset + (-48, -49), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
-			
-			DrawInventoryIcon(curarmor, GlobalOffset + (-24, -36), DI_ITEM_OFFSETS);
+		if (curarmor) //show armor when not empty
+		{
+			ArmorOffset = curarmor.ArmorHUD(self, GlobalOffset, BoxArmorInterpolator.GetValue(), detailnum.GetBool());
 		}
+		else {ArmorOffset = (0, 0);}
 		
 		//AMMO BARS
 		Ammo ammo1, ammo2;
@@ -232,8 +279,6 @@ class DI_HUD : BaseStatusBar
 		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
 		textureid ammo1icon, ammo2icon;
 		
-		if (GetArmorAmount() > 0) {ArmorOffset = (0, -24);} //do armor offset if armor > 0
-		else {ArmorOffset = (0, 0);}
 		Ammo1Offset = (0, -20 * HasAmmo1);
 		Ammo2Offset = (0, -20 * HasAmmo2);
 		
@@ -265,7 +310,10 @@ class DI_HUD : BaseStatusBar
 			ammo1max = CPlayer.ReadyWeapon.Ammo1.MaxAmount;
 			ammo1icon = GetIcon(cplayer.readyweapon.ammo1, 0);
 			DrawBar(ammo1bar, "graphics/boxhud/HUDBARE.png", BoxAmmoInterpolator.GetValue(), ammo1max, GlobalOffset + ArmorOffset + (-136, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			DrawString(SmallFont, FormatNumber(ammocount1, 1), GlobalOffset + ArmorOffset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			
+			string drawammo1 = FormatNumber(ammocount1, 1);
+			if (detailnum.GetBool()) {drawammo1.AppendFormat("\cu/\cb%d", ammo1max);}
+			DrawString(SmallFont, drawammo1, GlobalOffset + ArmorOffset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + (-32, -52), DI_ITEM_OFFSETS);
 			
 			/*
@@ -303,7 +351,10 @@ class DI_HUD : BaseStatusBar
 			ammo2max = cplayer.readyweapon.ammo2.maxamount;
 			ammo2icon = GetIcon(cplayer.readyweapon.ammo2, 0);
 			DrawBar(ammo2bar, "graphics/boxhud/HUDBARE.png", BoxAmmo2Interpolator.GetValue(), ammo2max, GlobalOffset + ArmorOffset + Ammo1Offset + (-136, -52), 0, SHADER_REVERSE, DI_ITEM_OFFSETS);
-			DrawString(SmallFont, FormatNumber(ammocount2, 1), GlobalOffset + ArmorOffset + Ammo1Offset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			
+			string drawammo2 = FormatNumber(ammocount2, 1);
+			if (detailnum.GetBool()) {drawammo2.AppendFormat("\cu/\cb%d", ammo2max);}
+			DrawString(SmallFont, drawammo2, GlobalOffset + ArmorOffset + Ammo1Offset + (-48, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + (-32, -52), DI_ITEM_OFFSETS);
 			
 			/*
@@ -332,13 +383,8 @@ class DI_HUD : BaseStatusBar
 		
 		//score
 		//DrawImage("graphics/boxhud/SCOREBAR.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-74, -36));
-		if (1 == 1)
-		{
-			//dont show score until you've killed your first enemy.
-			showscore = true;
-		}
 		
-		if (showscore == true)
+		if (1 == 1)
 		{
 			int curcombo = GetAmount("DI_TokenComboTimer");
 			int combo2x = diplayer.ComboThreshold(2);
@@ -399,7 +445,9 @@ class DI_HUD : BaseStatusBar
 			let scorecolor = Font.CR_WHITE;
 			if (BoxScoreInterpolator.GetValue() < 0) {scorecolor = Font.CR_RED;}
 			
-			DrawString(SmallFont, FormatNumber(BoxScoreInterpolator.GetValue()), GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-44, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, scorecolor);
+			string cashmoney = string.format("$%d", BoxScoreInterpolator.GetValue());
+			
+			DrawString(SmallFont, cashmoney, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-44, -47), DI_ITEM_OFFSETS|DI_TEXT_ALIGN_RIGHT, scorecolor);
 			DrawImage(comboicon, GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-32, -52), DI_ITEM_OFFSETS);
 			
 			DrawImage("graphics/boxhud/AMMOZ0.png", GlobalOffset + ArmorOffset + Ammo1Offset + Ammo2Offset + (-130, -52), DI_ITEM_OFFSETS);
@@ -441,8 +489,53 @@ class DI_HUD : BaseStatusBar
 		//inventory bar
 		if (CPlayer.mo.InvSel != null && !Level.NoInventoryBar && isInventoryBarVisible() == false)
 		{
-			DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED);
-			DrawString(SmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), GlobalOffset + (-149, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			bool canshowitem = true;
+			float invalpha = 1.0;
+			float concooldown, concooldown_max;
+			float cooldownalpha = 0.0;
+			if (CPlayer.mo.InvSel is "DIConsumable") 
+			{
+				let con = DIConsumable(CPlayer.mo.InvSel);
+				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse) || (con.amount <= 0);
+				if (useblocked) {cooldownalpha = 1.0;}
+				else if (con.currentcooldown > 0) 
+				{
+					concooldown_max = con.cooldowntics;
+					concooldown = con.currentcooldown;
+				}
+				if ((con.amount < 1) && !con.PermaCheck()) {canshowitem = false;}
+			}
+			else if (CPlayer.mo.InvSel is "DICustomConsumable") 
+			{
+				let con = DICustomConsumable(CPlayer.mo.InvSel);
+				bool useblocked = (diplayer.inwave && con.blockinwave) || (!diplayer.inwave && con.blockinshop) || (con.forceblockuse) || (con.amount <= 0);
+				if (useblocked) {cooldownalpha = 1.0;}
+				else if (con.currentcooldown > 0) 
+				{
+					concooldown_max = con.cooldowntics;
+					concooldown = con.currentcooldown;
+				}
+				if ((con.amount < 1) && !con.PermaCheck()) {canshowitem = false;}
+			}
+			if ((concooldown > 0) && (concooldown_max > 0))
+			{
+				cooldownalpha = 0.25 + (concooldown / concooldown_max);
+			}
+			if (cooldownalpha > 0.0) {invalpha = 0.5;}
+			if (canshowitem)
+			{
+				DrawInventoryIcon(CPlayer.mo.InvSel, GlobalOffset + (-164, -12), DI_DIMDEPLETED, invalpha);
+				DrawImage("graphics/boxhud/NOITEM.png", GlobalOffset + (-164, -12), DI_ITEM_OFFSETS, cooldownalpha);
+				string invnum = FormatNumber(CPlayer.mo.InvSel.Amount);
+				int permnum = diplayer.GetPermaItemAmount(CPlayer.mo.InvSel.GetClassName());
+				int invx = -149;
+				if (permnum > 0) 
+				{
+					invnum.AppendFormat("\cu/\c-%d", permnum);
+					//invx += 4;
+				}
+				DrawString(SmallFont, invnum, GlobalOffset + (invx, -24+SmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			}
 		}
 		if (isInventoryBarVisible())
 		{
@@ -453,7 +546,8 @@ class DI_HUD : BaseStatusBar
 	virtual void BoxInterpolate() 
 	{
 		BoxHealthInterpolator.Update(CPlayer.health);
-		BoxArmorInterpolator.Update(GetArmorAmount());
+		if (curarmor) {BoxArmorInterpolator.Update(curarmor.durability);}
+		else {BoxArmorInterpolator.Update(0);}
 		BoxScoreInterpolator.Update(CPlayer.mo.score);
 	}
 }

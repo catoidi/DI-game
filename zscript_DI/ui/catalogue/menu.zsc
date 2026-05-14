@@ -1,0 +1,562 @@
+//zscript_DI/ui/catalogue.zsc
+Class DICatalogueMenu : boxparty_ZF_GenericMenu
+{
+	//this is a menu that contains detailed information about every purchasable item in the game.
+	//im creating this as i had felt i was limiting myself with the small descriptions available from the Shop Displays.
+	
+	//plus, this is a great way for a player to look back and remember every item they currently have equipped.
+	
+	mixin DI_UIMixin;
+	
+	DICatalogueHandler handler;
+	
+	Font SmallFont;
+	boxparty_ZF_Image background, tutorialimage;
+	Array<boxparty_ZF_BoxImage> itemboximages, tabboximages;
+	Array<boxparty_ZF_Label> itemlabels;
+    Array<boxparty_ZF_Button> itembuttons, tabbuttons;
+	Array<boxparty_ZF_Element> itemextras;
+	boxparty_ZF_BoxImage itemimage;
+	boxparty_ZF_Label categorytxt, itemtitle, itemdesc, itemdesc2, itemtags;
+	
+	Array<String> permaitems;
+	
+	int currenttab;
+	int tutorialnum;
+	
+	override void init(menu parent)
+	{
+		super.init(parent);
+		setbaseresolution((640, 400));
+		smallFont = Font.GetFont("SmallFont");
+		
+        handler = new('DICatalogueHandler');
+        handler.link = self;
+		
+		background = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/catalog/catback.png", imagescale: (2, 2));
+		background.Pack(mainFrame);
+		
+		//textureid poop = texman.CheckForTexture("graphics/hat/HATBACK.png");
+		//int fart, fart2;
+		//[fart, fart2] = texman.GetSize(poop);
+		//console.printf("%d, %d", fart, fart2);
+		
+		currenttab = 0;
+		
+		DoTutorial();
+		CreateTabButtons(); //can only be called once.
+		GetPlayerItems(); //grab a list of the player's permanent items, so they can be displayed as such.
+	}
+	
+	override void Ticker ()
+    {
+        if (players[consoleplayer].mo == NULL) {return;}	
+	}
+	
+	override void Drawer()
+	{
+		DrawStars();
+		Super.Drawer();
+	}
+	
+	virtual void CreateItemList()
+	{
+		//this will a list of valid items, and create a button for each of them on the left side of the menu.
+		
+		//also, grab the item name list from the player's "renteditems", the player's weapons, and all inventory items with "INVBAR" marked as true.
+	
+		//delete any old array data, if it exists.
+        while (itemlabels.Size() > 0)
+        {
+            let label = itemlabels[0];
+            itemlabels.Delete(0, 1);
+
+            label.Unpack();
+            label.Destroy();
+        }
+		while (itembuttons.Size() > 0)
+        {
+            let button = itembuttons[0];
+            itembuttons.Delete(0, 1);
+
+            button.Unpack();
+            button.Destroy();
+        }
+		while (itemboximages.Size() > 0)
+        {
+            let boximage = itemboximages[0];
+            itemboximages.Delete(0, 1);
+
+            boximage.Unpack();
+            boximage.Destroy();
+        }
+		
+		//console.printf("%s", "generating item list...");
+	
+		// Iterate through the player's inventory to find all of their weapons.
+        int labelCount = 0; // We need this to calculate the position of the labels.
+        let item = players [consoleplayer].mo.inv;
+        while (item != NULL)
+        {
+			/*
+            // If the inventory item isn't a weapon...
+            if (!(item is "Weapon"))
+            {
+                // Set "item" to the next item in the player's inventory.
+                item = item.inv;
+                // Continue the loop.
+                continue;
+            }
+			*/
+			
+			switch(currenttab)
+			{
+				case 0:
+					if (!(item is "DI_Weapon"))
+					{
+						item = item.inv;
+						continue;
+					}
+					break;
+				case 1:
+					if (!(item is "DIPassiveInventory"))
+					{
+						item = item.inv;
+						continue;
+					}
+					else
+					{						
+						let passive = DIPassiveInventory(item);
+						if (passive.dipassive_hidden == true)
+						{
+							item = item.inv;
+							continue;
+						}
+					}
+					break;
+				case 2:
+					if (item.bINVBAR == false) 
+					{
+						item = item.inv;
+						continue;
+					}
+					break;
+			}
+			
+			//console.printf("making item for tab #%d", currenttab);
+			
+
+            // If there's no space left in the screen...
+            if (labelCount > 32)
+            {
+                // Break out of the loop.
+                break;
+            }
+			
+			// Create the box image's textures.
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/catalog/ITEMBAR.png", (0, 0), (144, 12), false, false);
+			// Add a box image.
+			let boxSize = (144, 12);
+			let aBoxImage = boxparty_ZF_BoxImage.Create
+			(
+				// Position
+				(
+					// Horizontal position.
+                    18,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    102 + (12 * labelCount)
+				),
+				// Size
+				boxSize,
+				// Texture
+				boxTexture
+			);
+			// Add the box image element into the main frame.
+			aBoxImage.Pack (mainFrame);
+			itemboximages.Push(aBoxImage);
+
+            // Get the weapon's name.
+            let weaponName = item.GetTag ();
+			if (weaponName.CodePointCount() > 32)
+			{
+				weaponName = String.Format("%s...", weaponName.Left(31));
+			}
+			
+            // Add a label.
+            let label = boxparty_ZF_Label.Create
+            (
+                // Position.
+                (
+                    // Horizontal position.
+                    24,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    105 + (12 * labelCount)
+                ),
+                // Size.
+                (
+                    // Calculate the horizontal size of the text.
+                    smallfont.StringWidth (weaponName),
+                    // Get the font's height.
+                    smallFont.GetHeight ()
+                ),
+                // The label's text.
+                text: weaponName,
+                // The font to use.
+                fnt: smallFont,
+                // Whether to automatically wrap the text or not.
+                wrap: false,
+                // Whether to automatically resize the element based on the text width.
+                autoSize: true,
+                // The text's colour.
+                textColor: Font.CR_WHITE
+            );
+
+            // Add the label element to the main frame.
+            label.Pack (mainFrame);
+            // Add the label to the labels list.
+            itemlabels.Push (label);
+			
+			// Create the button's textures.
+			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
+			let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/ITEMBAR_HOVER.png", false);
+			let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/ITEMBAR_CLICK.png", false);
+			// Add a button.
+			let aButton = boxparty_ZF_Button.Create
+			(
+				// Position
+				(
+					// Horizontal position.
+                    18,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    102 + (12 * labelCount)
+				),
+				// Size
+				(144, 12),
+				// Our command handler
+				cmdHandler: handler,
+				// A command string for the button
+				command: string.Format("item %s", item.GetClassName()),
+				// The button's textures
+				inactive: buttonIdle,
+				hover: buttonHover,
+				click: buttonClick
+			);
+			// Add the button element into the main frame.
+			aButton.Pack (mainFrame);
+			itembuttons.Push(aButton);
+
+            // Increment labelCount.
+            labelCount++;
+
+            // Set "item" to the next item in the player's inventory.
+            item = item.inv;
+        }
+		
+		string currentcat;
+		switch(currenttab)
+		{
+			case 0: currentcat = "\ca> Weapons"; break;
+			case 1: currentcat = "\cd> Passives\cc/\cvPowerups"; break;
+			case 2: currentcat = "\cv> Consumables"; break;
+		}
+		
+		if (categorytxt) {categorytxt.Unpack(); categorytxt.Destroy();}
+		
+		// Add a label.
+        categorytxt = boxparty_ZF_Label.Create
+        (
+            // Position.
+            (20, 84),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallfont.StringWidth (currentcat) * 1.5,
+                // Get the font's height.
+                SmallFont.GetHeight() * 1.5
+            ),
+            // The label's text.
+            text: currentcat,
+            // The font to use.
+            fnt: SmallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+			// The size of the font.
+			textScale: 1.5,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+        );
+
+        // Add the label element to the main frame.
+        categorytxt.Pack (mainFrame);
+		
+		if (labelcount == 0) //if there's no items available...
+		{
+			// Add a label.
+            let label = boxparty_ZF_Label.Create
+            (
+                // Position.
+                (
+                    // Horizontal position.
+                    24,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    105 + (12 * labelCount)
+                ),
+                // Size.
+                (
+                    // Calculate the horizontal size of the text.
+                    smallfont.StringWidth ("sorry nothing"),
+                    // Get the font's height.
+                    smallFont.GetHeight ()
+                ),
+                // The label's text.
+                text: "sorry nothing",
+                // The font to use.
+                fnt: smallFont,
+                // Whether to automatically wrap the text or not.
+                wrap: false,
+                // Whether to automatically resize the element based on the text width.
+                autoSize: true,
+                // The text's colour.
+                textColor: Font.CR_BRICK
+            );
+
+            // Add the label element to the main frame.
+            label.Pack (mainFrame);
+            // Add the label to the labels list.
+            itemlabels.Push (label);
+		}
+	}
+	
+	virtual void CreateTabButtons()
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			// Create the box image's textures.
+			string icontex = string.Format("graphics/catalog/TABICON%d.png", i);
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(icontex, (0, 0), (38, 26), true, true);
+			// Add a box image.
+			let boxSize = (38, 26);
+			let aBoxImage = boxparty_ZF_BoxImage.Create
+			(
+				// Position
+				(
+					(172 + (50 * i)) * 2,
+					24
+				),
+				// Size
+				boxSize * 2,
+				// Texture
+				boxTexture
+			);
+			// Add the box image element into the main frame.
+			aBoxImage.Pack (mainFrame);
+			tabboximages.Push(aBoxImage);
+			
+			// Create the button's textures.
+			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
+			let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/TABICON_HOVER.png", true);
+			let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/catalog/TABICON_CLICK.png", true);
+			// Add a button.
+			let aButton = boxparty_ZF_Button.Create
+			(
+				// Position
+				(
+					(172 + (50 * i)) * 2,
+					24
+				),
+				// Size
+				boxSize * 2,
+				// Our command handler
+				cmdHandler: handler,
+				// A command string for the button
+				command: string.Format("switchtab%d", i),
+				// The button's textures
+				inactive: buttonIdle,
+				hover: buttonHover,
+				click: buttonClick
+			);
+			// Add the button element into the main frame.
+			aButton.Pack (mainFrame);
+			tabbuttons.Push(aButton);
+		}
+	}
+	
+	virtual void DoTutorial(void)
+	{
+		if (tutorialimage)
+		{
+			tutorialimage.Unpack();
+			tutorialimage.Destroy();
+		}
+		
+		if (tutorialnum == 0)
+		{
+			tutorialimage = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/catalog/cattutorial1.png");
+			tutorialimage.Pack(mainFrame);
+		}
+		else if (tutorialnum == 1)
+		{
+			tutorialimage = boxparty_ZF_Image.Create((0, 0), (640, 400), "graphics/catalog/cattutorial2.png");
+			tutorialimage.Pack(mainFrame);
+			mainFrame.moveelement(mainFrame.indexofelement(tutorialimage), 1);
+		}
+	}
+	
+	virtual void GetPlayerItems()
+	{
+		let diplr = DI_PlayerBase(players[consoleplayer].mo);
+		if (diplr)
+		{
+			permaitems.Copy(diplr.wavekeep); //ezpz.
+		}
+	}
+	
+	virtual void GetItemPage(string curitem)
+	{
+		if (itemimage)
+		{
+			itemimage.Unpack();
+			itemimage.Destroy();
+		}
+		if (itemtitle)
+		{
+			itemtitle.Unpack();
+			itemtitle.Destroy();
+		}
+		if (itemdesc)
+		{
+			itemdesc.Unpack();
+			itemdesc.Destroy();
+		}
+		if (itemdesc2)
+		{
+			itemdesc2.Unpack();
+			itemdesc2.Destroy();
+		}
+		if (itemtags)
+		{
+			itemtags.Unpack();
+			itemtags.Destroy();
+		}
+		if (itemextras.Size() > 0)
+		{
+			for (int i = itemextras.Size() - 1; i > -1; --i)
+			{
+				let curextra = itemextras[i];
+				itemextras.Delete(i);
+				curextra.Unpack();
+				curextra.Destroy();
+			}
+		}
+		
+		let startx = 412;
+		
+		let permacount = 0;
+		
+		foreach(mo : permaitems)
+		{
+			array<string> thisthing;
+			mo.Split(thisthing, ",");
+			if (thisthing.Size() == 2)
+			{
+				if (thisthing[0] == curitem) 
+				{
+					permacount += thisthing[1].ToInt(10);
+				}
+			}
+		}
+		
+		let realitem = players[consoleplayer].mo.FindInventory(curitem);
+		if (realitem && realitem.icon)
+		{
+			let icon = realitem.icon;
+			if (icon.IsValid())
+			{
+				let iconname = TexMan.GetName(icon);
+				int sizex, sizey;
+				[sizex, sizey] = TexMan.GetSize(icon);
+				if (sizex == 0) {sizex = 1;} //do not divide by 0 pls thank u :)
+				if (sizey == 0) {sizey = 1;}
+				vector2 iconsize = (sizex, sizey);
+				float sizescale = 120 / sizex; //get scale from X
+				float sizescaley = 60 / sizey; //get scale from Y
+				if (sizescaley > sizescale) {sizescale = sizescaley;} //just pick whichever one is largest and scale based off that.
+				if (sizescale > 3.0) {sizescale = 3.0;} //default size is 3x.
+				float starty = (60 - (sizey * sizescale)) / 2; //place texture in the center of the whitespace.
+				let itemtexture = boxparty_ZF_BoxTextures.CreateTexturePixels(iconname, (0, 0), iconsize, true, true);
+				itemimage = boxparty_ZF_BoxImage.Create((startx - 180, starty + 102), iconsize * sizescale, itemtexture);
+				itemimage.Pack (mainFrame);
+			}
+		}
+		
+		let curtxt = string.format("$shopitem_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		curtxt.Replace("\n", " ");
+        itemtitle = boxparty_ZF_Label.Create
+        (
+            (startx - 180, 180),
+            (480, 48),
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 2.0, textColor: Font.CR_GOLD
+        );
+        itemtitle.Pack (mainFrame);
+		
+		curtxt = string.format("$shopdesc_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		//curtxt.Replace("\n", " ");
+        itemdesc = boxparty_ZF_Label.Create
+        (
+            (startx - 180, 220),
+            (360, 48),
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
+        );
+        itemdesc.Pack (mainFrame);
+		
+		if (realitem is "DIPassiveInventory") 
+		{
+			let realpassive = DIPassiveInventory(realitem);
+			curtxt = realpassive.CatalogueDescription(); //custom description support for passive items.
+		}
+		else {curtxt = string.format("$shopdesc2_%s", curitem);}
+		curtxt = stringtable.localize(curtxt);
+		//curtxt.Replace("\n", " ");
+		if (curtxt == string.format("shopdesc2_%s", curitem)) {curtxt = "";} //prevent blank descriptions from being displayed
+        itemdesc2 = boxparty_ZF_Label.Create
+        (
+            (startx - 180, 284),
+            (360, 76),
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
+        );
+        itemdesc2.Pack (mainFrame);
+		
+		curtxt = string.format("$shoptype_%s", curitem);
+		curtxt = stringtable.localize(curtxt);
+		curtxt.Replace("\n", " ");
+		let itemamount = players[consoleplayer].mo.CountInv(curitem);
+		if (itemamount > 0) {curtxt = String.Format("%s \cn[Have: %d]", curtxt, itemamount);}
+		if (permacount > 0) {curtxt = String.Format("%s \cz[Permanent: %d] ", curtxt, permacount);}
+        itemtags = boxparty_ZF_Label.Create
+        (
+            (startx - 180, 360),
+            (360, 48),
+            text: curtxt, fnt: SmallFont, wrap: true, autoSize: false, textScale: 1, textColor: Font.CR_WHITE
+        );
+        itemtags.Pack (mainFrame);
+		
+		let item = players[consoleplayer].mo.inv;
+        while (item != NULL)
+		{
+			if (item is "DIPassiveInventory")
+			{
+				let passiveinv = DIPassiveInventory(item);
+				passiveinv.CustomCataloguePage(self, curitem);
+			}
+			item = item.inv;
+		}
+	}
+}

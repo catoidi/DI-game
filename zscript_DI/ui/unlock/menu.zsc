@@ -2,12 +2,16 @@
 
 class DI_UnlockMenu : boxparty_ZF_GenericMenu
 {
+	mixin DI_UIMixin;
+
 	DI_UnlockMenuHandler handler;
 	
 	cvar tutcvar, //check to see if player has done tutorial yet.
 		 cheatmode, //force everything to be enabled when cheatmode is on.
 		 blacklistcvar, //the cvar containing everything that's blacklisted.
-		 morebuttoncvar;
+		 morebuttoncvar,
+		 defaultcvar;
+		 
 		 
 	bool justkeyed; //keyboard was pressed this tic.
 	int keypos, curkey; //more keyboard stuff.
@@ -16,14 +20,16 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	
 	boxparty_ZF_BoxImage background, 
 						 topimage, //the title of the menu at the top left.
-					     keyboardselect; //the item selected via keyboard.
+					     keyboardselect,
+						 defaultimage; //the item selected via keyboard.
 	boxparty_ZF_BoxImage currentsprite; //the item sprite shown at the top right of the screen. should be a duplicate of the current buttonimage.
 	
-	int unlockcounter, totalunlocks; //text showing how many unlocks you have so far.
+	int unlockcounter, defaultcounter, totalunlocks; //text showing how many unlocks you have so far.
 		   
 	boxparty_ZF_Label infolabel, pagelabel, unlocklabel; //this is the actual text you see on the menu.
 	
 	Array<string> fulllist, //all the date from the DIUNLOCK file, including the tabs we aren't using.
+				  defaultlist, //all the data pertaining to Default Items. needs to be separate as it can be toggled at anytime.
 				  unlocklist, //all the data from the DIUNLOCK file that we are currently using.
 				  blacklistdata; //all the data currently in the blacklist cvar.
 	Array<boxparty_ZF_BoxImage> buttonimage, backimage, blacklistimage; //the background image and sprite for the buttons.
@@ -31,6 +37,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	
 	bool unlockscreated; 
 	bool morebuttons; //display 60 buttons at once instead of 15.
+	bool showdefaults;
 	int pagenum; //current page of unlocks.
 	int tabnum; //current tab of unlocks.
 	
@@ -46,6 +53,8 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		morebuttoncvar = cvar.getcvar("di_unlock_morebuttons", plr);
 		cheatmode = cvar.getcvar("di_unlock_cheat", plr);
 		blacklistcvar = cvar.getcvar("di_unlock_blacklist", plr);
+		defaultcvar = cvar.getcvar("di_unlock_showdefaults", plr);
+		showdefaults = defaultcvar.GetBool();
 		if (morebuttoncvar.GetBool() == true) {morebuttons = true;} //DO NOT UPDATE THIS POST-INIT, EVERYTHING WILL EXPLODE....................
 		//make background texture
 		let bgtex = boxparty_ZF_BoxTextures.CreateTexturePixels("graphics/hat/HATBACK.png", (0, 0), (640, 400), true, true);
@@ -62,7 +71,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		keypos = -1;
 		curkey = -1;
 		//create info label
-		UpdateInfoLabel("Select an item to add/remove them from the shop pool.\n\n\cfChanges don't take effect until a new game is started.");
+		UpdateInfoLabel("Select an unlocked item to add/remove them from the shop pool.\n\cfOr, select a locked item to learn how to unlock it.\n\caChanges don't take effect until a new game is started.");
 		//parse DIUNLOCK data
 		ParseDIUNLOCK();
 		ParseBlacklistCVAR();
@@ -74,9 +83,16 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		CreatePageButton(false);
 		UpdatePageLabel();
 		//create extra buttons
+		CreateDefaultButton();
 		CreateResetButton();
 		CreateTabButtons();
 		UpdateUnlockLabel();
+	}
+	
+	override void Drawer()
+	{
+		DrawStars();
+		Super.Drawer();
 	}
 	
 	virtual void UpdateInfoLabel(string infotext)
@@ -111,6 +127,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	virtual void UpdateUnlockLabel()
 	{
 		unlockcounter = 0;
+		defaultcounter = 0;
 		totalunlocks = unlocklist.Size();
 		string unlocktext = "Unlocked:\n";
 		
@@ -118,11 +135,20 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		{
 			array<string> curline;
 			unlocklist[i].Split(curline, " ");
-			let curcvar = cvar.findcvar(curline[0]);
-			if (curcvar.getbool()) {++unlockcounter;}
+			if (curline[0].Left(1) == "!") 
+			{
+				--totalunlocks;
+				++defaultcounter;
+			}
+			else
+			{
+				let curcvar = cvar.findcvar(curline[0]);
+				if (curcvar.getbool()) {++unlockcounter;}
+			}
 		}
 		
 		unlocktext.AppendFormat("\cb%d/%d", unlockcounter, totalunlocks);
+		if (showdefaults) {unlocktext.AppendFormat(" \cd(+%d)", defaultcounter);}
 		
 		if (cheatmode.getbool() == true) {unlocktext = "\cbCheats Enabled";}
 	
@@ -142,7 +168,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				// Whether to automatically wrap the text or not
 				wrap: false,
 				// Whether to automatically resize the element based on the text width
-				autoSize: false,
+				autoSize: true,
 				//make the text smaller :)
 				textScale: 1.5,
 				// The text's colour
@@ -210,8 +236,76 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
 			array<string> curline;
 			filedata[i].Split(curline, " ");
-			if ((curline.Size() < 3) && (curline.Size() > 4)) {continue;} //each valid line must contain 3 or 4 arguments.
-			fulllist.Push(filedata[i]);
+			bool isdefault = false;
+			if (curline[0].Left(1) == "!") {isdefault = true;}
+			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
+			let unlockpos = 0;
+			if (curline.Size() == 5) 
+			{
+				//console.printf("unlock position found, %d", curline[4].ToInt(10));
+				unlockpos = curline[4].ToInt(10);
+			}
+			else
+			{
+				//console.printf("%s", "editing line");
+				curline.Reserve(5 - curline.Size());
+				curline[4] = string.format("%d", unlockpos);
+				filedata[i] = string.format("%s %s %s %s %s", curline[0], curline[1], curline[2], curline[3], curline[4]);
+			}
+			
+			bool foundspot;
+			if (!isdefault)
+			{
+				if (fulllist.Size() > 0)
+				{
+					//console.printf("%s", "items already in list");
+					for (int j = 0; j < fulllist.Size(); ++j)
+					{
+						array<string> listline;
+						fulllist[j].Split(listline, " ");
+						if (listline[4].ToInt(10) <= unlockpos) 
+						{
+							//console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
+							continue;
+						}
+						//console.printf("%s %d", "inserting item at line", j);
+						fulllist.Insert(j, filedata[i]);
+						foundspot = true;
+						j = fulllist.Size();
+					}
+				}
+				if (foundspot == false) 
+				{
+					//console.printf("%s", "adding item to end of list");
+					fulllist.Push(filedata[i]);
+				}
+			}
+			else
+			{
+				if (defaultlist.Size() > 0)
+				{
+					//console.printf("%s", "items already in list");
+					for (int j = 0; j < defaultlist.Size(); ++j)
+					{
+						array<string> listline;
+						defaultlist[j].Split(listline, " ");
+						if (listline[4].ToInt(10) <= unlockpos) 
+						{
+							//console.printf("Continuing, %d <= %d...", listline[4].ToInt(10), curline[4].ToInt(10));
+							continue;
+						}
+						//console.printf("%s %d", "inserting item at line", j);
+						defaultlist.Insert(j, filedata[i]);
+						foundspot = true;
+						j = defaultlist.Size();
+					}
+				}
+				if (foundspot == false) 
+				{
+					//console.printf("%s", "adding item to end of list");
+					defaultlist.Push(filedata[i]);
+				}
+			}
 			//console.printf("%s", filedata[i]);
 		}
 	}
@@ -223,11 +317,30 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 		
 		if ((tab == 0) || (tabnum == tab)) 
 		{
-			unlocklist.Copy(fulllist);
+			//console.printf("%s", "\cgALL ITEMS COPIED");
+			if (showdefaults) 
+			{
+				//console.printf("%s", "\cgDEFAULTS ENABLED");
+				unlocklist.Append(defaultlist);
+			}
+			unlocklist.Append(fulllist);
 			tabnum = 0;
 		}
 		else
 		{
+			if (showdefaults)
+			{
+				for (int i = 0; i < defaultlist.Size(); ++i)
+				{
+					array<string> curline;
+					defaultlist[i].Split(curline, " ");
+					//console.printf("%d, %d", curline[2].ToInt(10), tab);
+					if (curline[2].ToInt(10) == tab)
+					{
+						unlocklist.push(defaultlist[i]);
+					}
+				}
+			}
 			for (int i = 0; i < fulllist.Size(); ++i)
 			{
 				array<string> curline;
@@ -251,7 +364,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 			//console.printf("'%s', '%s'", checkname, curline[1]);
 			if (checkname == curline[1])
 			{
-				if (curline.Size() == 4) {return curline[3];}
+				if (curline.Size() >= 4) {return curline[3];}
 				else {return "";}
 			}
 		}
@@ -321,10 +434,14 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					//console.printf("%s", "getting cvar #%d", i);
 					unlocklist[i].Split(curline, " ");
-					cvar curcvar = cvar.getcvar(curline[0], plr);
-					
-					if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
-					if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					if (curline[0].Left(1) == "!") {buttonmode = 2;}
+					else
+					{
+						cvar curcvar = cvar.getcvar(curline[0], plr);
+						
+						if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
+						if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					}
 				}
 				
 				//CREATE THE BACKGROUND IMAGE
@@ -333,6 +450,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					case 0: backimg = "graphics/hat/DILOCK.png"; break;
 					case 1: backimg = "graphics/hat/HATBLANK4.png"; break;
+					case 2: backimg = "graphics/hat/HATBLANK3.png"; break;
 				}
 				let curtex = boxparty_ZF_BoxTextures.CreateSingleTexture(backimg, false);
 				let curboximage = boxparty_ZF_BoxImage.Create
@@ -350,13 +468,14 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				curboximage.Pack(mainFrame);
 				
 				//CREATE THE UNLOCKED IMAGE
-				let unlockimg = 'graphics/hat/HATIDLE.png';
+				string unlockimg = 'graphics/hat/HATIDLE.png';
 				vector2 iconsize = (44, 44);
 				float bonusx, bonusy = 0;
 				float sizescale = 1.0;
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					unlockimg = string.format('graphics/unlocks/%s.png', curline[0]);
+					if (buttonmode == 2) {unlockimg.Replace("!", "");}
 					let temptex = texman.checkfortexture(unlockimg);
 					if (temptex.IsValid())
 					{
@@ -395,7 +514,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				//CREATE THE BLACKLIST IMAGE
 				let blimg = 'graphics/hat/HATIDLE.png';
 				vector2 blimgsize = (40 * buttonscale, 40 * buttonscale);
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					name curclass = curline[1];
 					for (int j = 0; j < blacklistdata.Size(); ++j)
@@ -424,6 +543,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				let docommand = "sorrynothing";
 				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[1]);}
 				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[1]);}
+				else if (buttonmode == 2) {docommand = string.format("DEFAULT:%s", curline[1]);}
 				//CREATE THE BUTTON ITSELF
 				let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
 				let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATHOVER.png", true);
@@ -471,10 +591,13 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					//console.printf("%s", "getting cvar #%d", i);
 					unlocklist[newpos].Split(curline, " ");
-					cvar curcvar = cvar.getcvar(curline[0], plr);
-					
-					if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
-					if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					if (curline[0].Left(1) == "!") {buttonmode = 2;}
+					else
+					{ 
+						cvar curcvar = cvar.getcvar(curline[0], plr);
+						if (curcvar && (curcvar.GetBool())) {buttonmode = 1;} //item is unlocked
+						if (curcvar && cheatmode.GetBool()) {buttonmode = 1;}
+					}
 				}
 				
 				//UPDATE BACK IMAGE
@@ -483,6 +606,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				{
 					case 0: backimg = "graphics/hat/DILOCK.png"; break;
 					case 1: backimg = "graphics/hat/HATBLANK4.png"; break;
+					case 2: backimg = "graphics/hat/HATBLANK3.png"; break;
 				}
 				let curtex = boxparty_ZF_BoxTextures.CreateSingleTexture(backimg, false);
 				backimage[i].setPos((startx_img, starty_img));
@@ -491,13 +615,14 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				backimage[i].setBoxScale((buttonscale, buttonscale));
 				
 				//UPDATE ICON IMAGE
-				let unlockimg = 'graphics/hat/HATIDLE.png';
+				string unlockimg = 'graphics/hat/HATIDLE.png';
 				vector2 iconsize = (44, 44);
 				float bonusx, bonusy = 0;
 				float sizescale = 1.0;
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					unlockimg = string.format('graphics/unlocks/%s.png', curline[0]);
+					if (buttonmode == 2) {unlockimg.Replace("!", "");}
 					let temptex = texman.checkfortexture(unlockimg);
 					if (temptex.IsValid())
 					{
@@ -526,7 +651,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				
 				//UPDATE THE BLACKLIST IMAGE
 				let blimg = 'graphics/hat/HATIDLE.png';
-				if (buttonmode == 1)
+				if (buttonmode >= 1)
 				{
 					name curclass = curline[1];
 					for (int j = 0; j < blacklistdata.Size(); ++j)
@@ -544,6 +669,7 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 				let docommand = "sorrynothing";
 				if (buttonmode == 0) {docommand = string.format("LOCKED:%s", curline[1]);}
 				else if (buttonmode == 1) {docommand = string.format("UNLOCKED:%s", curline[1]);}
+				else if (buttonmode == 2) {docommand = string.format("DEFAULT:%s", curline[1]);}
 				buttonlist[i].setCommand(docommand);
 			}
 		}
@@ -627,25 +753,76 @@ class DI_UnlockMenu : boxparty_ZF_GenericMenu
 	{
 		string docommand = "ResetBlacklist";
 		string dotexture = "graphics/hat/HATBUTTONOFF.png";
-		vector2 pagepos = (528, 288);
+		vector2 pagepos = (576, 308);
 	
-		let boxSize = (88, 88);
-		let boxSize2 = (80, 80);
+		let boxSize = (44, 44);
+		let boxSize2 = (40, 40);
 		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), boxSize, true, true);
 		let aBoxImage = boxparty_ZF_BoxImage.Create
         (
             // Position
-            pagepos - (4, 4),
+            pagepos - (2, 2),
             // Size
             boxSize,
             // Texture
             boxTexture,
             // Scale
-            (2, 2)
+            (1, 1)
         );
         // Add the box image element into the main frame.
 		buttonimage.Push(aBoxImage);
         aBoxImage.Pack (mainFrame);
+		
+		// Create the button's textures.
+        let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);
+        let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATHOVER.png", true);
+        let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATSELECT.png", true);
+        // Add a button.
+        let aButton = boxparty_ZF_Button.Create
+        (
+            // Position
+            pagepos,
+            // Size
+            boxSize2,
+            // Our command handler
+            cmdHandler: handler,
+            // A command string for the button
+            command: docommand,
+            // The button's textures
+            inactive: buttonIdle,
+            hover: buttonHover,
+            click: buttonClick
+        );
+        // Add the button element into the main frame.
+		buttonlist.Push(aButton);
+        aButton.Pack (mainFrame);
+	}
+	
+	virtual void CreateDefaultButton()
+	{
+		string docommand = "ToggleDefaults";
+		string dotexture = "graphics/hat/DIDEFAULTA.png";
+		if (!showdefaults) {dotexture = "graphics/hat/DIDEFAULTB.png";}
+		vector2 pagepos = (520, 308);
+	
+		let boxSize = (44, 44);
+		let boxSize2 = (40, 40);
+		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(dotexture, (0, 0), boxSize, true, true);
+		let aBoxImage = boxparty_ZF_BoxImage.Create
+        (
+            // Position
+            pagepos - (2, 2),
+            // Size
+            boxSize,
+            // Texture
+            boxTexture,
+            // Scale
+            (1, 1)
+        );
+        // Add the box image element into the main frame.
+		buttonimage.Push(aBoxImage);
+        aBoxImage.Pack (mainFrame);
+		defaultimage = aBoxImage;
 		
 		// Create the button's textures.
         let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("graphics/hat/HATIDLE.png", true);

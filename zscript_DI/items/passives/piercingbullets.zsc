@@ -1,0 +1,55 @@
+//zscript_DI/items/passives/piercingbullets.zsc
+
+Class DI_PiercingBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Armor-Piercing Bullets";
+		Inventory.Icon "POW2U0";
+		Inventory.PickupMessage "Armor-Piercing Bullets acquired! (Bullets gain +0.25 Piercing, but Base DMG is reduced by 0.5.)";
+		Inventory.MaxAmount 10;
+	}
+
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_PiercingBullets_Item", amount;
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return -amount * 5;
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 U -1;
+			Stop;
+	}
+}
+
+Class DI_PiercingBullets_Item : DIProjectileInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 999999;
+	}
+	
+	//projectile inventory items cant count themselves for some reason. 
+	//maybe the function is called too early in advance?
+	//regardless, we can get a more reliable number from just checking the player's inventory instead.
+	override double GivePiercing(DI_PlayerBase plr)
+	{
+		return 0.25 * plr.CountInv("DI_PiercingBullets");
+	}
+	
+	
+	States
+	{
+		Spawn:
+			POW2 U -1;
+			Stop;
+	}
+}

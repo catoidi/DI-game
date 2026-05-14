@@ -6,6 +6,10 @@ Class DI_GlassExplosion : SafeBoom
 	{
 		Renderstyle "Translucent";
 		Alpha 0.25;
+		//$Category "DI/Decor/Building"
+		//$Color 4
+		//$Title "Glass Shard Explosion"
+		//$Sprite "BOOMA0"
 	}
 
 	override void postbeginplay()

@@ -1,0 +1,53 @@
+//zscript_DI/items/consumables/raspberry.zsc
+
+Class DI_Raspberry : DIConsumable
+{
+	Default
+	{
+		Tag "Raspberry";
+		DIConsumable.CooldownTics 1050;
+		DIConsumable.BlockInShop true;
+		Inventory.MaxAmount 3;
+		Inventory.Icon "POW2J0";
+		Inventory.PickupMessage "Got a Raspberry! (Upon use, get +3 coins for every Fresh Weapon Kill for 30 seconds.)";
+	}
+	
+	override bool DIUse(bool pickup)
+	{
+		if (owner is "DI_PlayerBase")
+		{	
+			let plr = DI_PlayerBase(owner);
+			plr.ACS_NamedExecuteAlways("DoLeafFlash");
+			plr.A_GiveInventory("DI_Raspberry_Powerup", 30);
+		
+			return true;
+		}
+		else {return false;}
+	}
+	
+	States
+	{
+		Spawn:
+			POW2 J -1;
+			Stop;
+	}
+}
+
+Class DI_Raspberry_Powerup : DIPowerup
+{
+	Default
+	{
+		Tag "\cvRaspberry (Active)";
+		Inventory.MaxAmount 30;
+		Inventory.Icon "POW2K0";
+	}
+	
+	override int GiveFreshBonus() {return 3;}
+
+	States
+	{
+		Spawn:
+			POW2 K -1;
+			Stop;
+	}
+}

@@ -1,167 +1,431 @@
-Class DI_BulletPuff : DI_Actor
+Class DI_Projectile : DI_Actor
 {
-	Default
-	{
-		+NOBLOCKMAP;
-		+NOGRAVITY;
-		+ALLOWPARTICLES;
-		+RANDOMIZE;
-		RenderStyle "Translucent";
-		Alpha 0.5;
-		Mass 5;
-	}
-	
-	States
-	{
-		Spawn:
-			PUFF BBB 0 NoDelay A_SpawnParticle("f8e63d", SPF_FULLBRIGHT | SPF_RELVEL, 24, 2, random(0, 359), 0, 0, 0, random(0, 4), 0, random(0, 4), 0, 0, -0.33);
-			PUFF B 2 A_AttachLightDef("spark", "BULLETSPARK");
-			PUFF B 2 A_RemoveLight("spark");
-			Goto Looper+1;
-		Looper:
-			PUFF B 4;
-			PUFF C 4 A_Fadeout(0.1);
-			Loop;
-	}
-}
-Class DI_BulletPuff_NoWPN : DI_BulletPuff {Default {DI_Actor.IgnoreWeapon true;}}
+	mixin DI_ProjectileMixin;
 
-Class DI_IcePuff : DI_BulletPuff
-{
+	bool flatbullet, dobounce, dopiercing, isdying;
+	
+	double pierceamount;
+
+	property FlatBullet : flatbullet; //combine with +FLATSPRITE to create fake 3d bullets.
+	property DoBounce : dobounce;
+	property DoPiercing : dopiercing;
+	property PierceAmount : pierceamount;
+	property AutoImpact : autoimpact;
+	property CanImpactFloor : canimpactfloor;
+	property CanImpactWall : canimpactwall;
+	property CanImpactActor : canimpactactor;
+	
+	DI_Weapon plrwpn;
+
+	array<Actor> impacted;
+	array<DIProjectileInventory> items;
+	
+	int initdamage, justpierced;
+	bool justbounced, justimpacted, impactdeathdone, autoimpact, canimpactfloor, canimpactwall, canimpactactor;
+	
 	Default
 	{
-		Radius 4;
-		Height 8;
-		DamageType "Ice";
-		Gravity 0.1;
+		DamageFunction GetFinalDamage();
+		Projectile;
+		BounceType "Doom";
+		BounceFactor 0.0;
+		WallBounceFactor 0.0;
+		BounceCount 10;
+		DI_Projectile.DoBounce true; //disable to use custom bouncing behavior.
+		DI_Projectile.DoPiercing true; //disable this to allow original bRIPPER behavior.
+		DI_Projectile.PierceAmount 1.0; //determines how many enemies the bullet can pierce through. values lower than 1.0 will reduce the bullet's damage.
+		DI_Projectile.AutoImpact true; //spawns impact effects from passive projectile items upon crashing into a wall/floor without bouncing. disable this and run DoImpactDeath() manually if your projectile contains a Crash animation, or you are running into issues with impact functions running twice or not at all.
+		DI_Projectile.CanImpactFloor true; //allows DoImpactFloor to run.
+		DI_Projectile.CanImpactWall true; //allows DoImpactWall to run.
+		DI_Projectile.CanImpactActor true; //allows DoImpactActor to run.
 		-NOGRAVITY;
-		+ROLLSPRITE;
-		+SPRITEANGLE;
-		+FORCEXYBILLBOARD;
-		+PUFFONACTORS;
 		+BLOODSPLATTER;
+		+FORCEXYBILLBOARD;
+		+BOUNCEONACTORS;
+		+RIPPER; //allows piercing code to work. not needed if piercing is disabled.
 	}
 
-	States
+	override void PostBeginPlay()
 	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
-			#### # 0 A_DIIced(3, 1.0);
-			#### # 0 A_AttachLightDef("spark", "BULLETSPARK_ICE");
-			PUFF DD 1
+		Super.PostBeginPlay();
+
+		if (!di_notweapon) {TrackBulletSource();}
+		CheckStatusChange();
+		UpdateSize();
+		if (flatbullet) {DI_SideBullet();}
+		
+		//CheckItemStats(); //called by thebrain handler.
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (dopiercing && !passive) 
+		{
+			if (other is "DI_PlayerBase") {return false;}
+			if (impacted.Find(other) != impacted.Size()) 
 			{
-				A_FadeOut(0.025);
-				A_DIScale(1.05, 1.05, true);
+				//console.printf("IGNORING THIS ENEMY");
+				return false;
 			}
-			#### # 0 A_RemoveLight("spark");
-			Goto Looper;
-		Looper:
-			PUFF D 1 
+			else 
 			{
-				A_FadeOut(0.025);
-				A_DIScale(1.05, 1.05, true);
+				//console.printf("incoming valid hit: %s", other.GetClassName());
+				impacted.Push(other);
+				justpierced += 1;
+				//pierceamount -= 1.0;
 			}
-			Loop;
+		}
+		
+		return Super.CanCollideWith(other, passive);
+	}
+	
+	override int SpecialBounceHit(Actor bounceMobj, Line bounceLine, readonly<SecPlane> bouncePlane)
+	{
+		int returnvalue = Super.SpecialBounceHit(bounceMobj, bounceLine, bouncePlane);
+		if (dobounce)
+		{
+			if (bounceMobj) 
+			{
+				if (canimpactactor)	{DoImpactActor(bBOUNCEONACTORS, bounceMobj);}
+				if (BounceFactor == 0.0) {returnvalue = 0;}
+				justbounced = true;
+			}
+			if (bounceLine) 
+			{
+				impacted.Clear();
+				if (canimpactwall) {DoImpactWall(bBOUNCEONWALLS, bounceLine);}
+				if (WallBounceFactor == 0.0) {returnvalue = 0;}
+				//justbounced = true;
+			}
+			if (bouncePlane) 
+			{
+				if (canimpactfloor) {DoImpactFloor((bBOUNCEONFLOORS || bBOUNCEONCEILINGS), bouncePlane);}
+				if (BounceFactor == 0.0) {returnvalue = 0;}
+				//justbounced = true;
+			}
+		}
+		return returnvalue;
+	}
+	
+	void CheckItemStats()
+	{
+		initdamage = GetWeaponDamage();
+	
+		//console.printf("checking for items...");
+		for (int i = 0; i < items.Size(); ++i)
+		{
+			if (items[i])
+			{
+				items[i].owner = self;
+				//console.printf("\cqFound: %s", items[i].GetClassName());
+				if (dobounce)
+				{
+					//console.printf("\cqReading Bounce Stats...");
+					BounceFactor += ((BounceFactor + items[i].GiveBounceFactor(plr)) >= 0.0) ? items[i].GiveBounceFactor(plr) : -BounceFactor;
+					WallBounceFactor += ((WallBounceFactor + items[i].GiveWallBounceFactor(plr)) >= 0.0) ? items[i].GiveWallBounceFactor(plr) : -WallBounceFactor;
+				}
+				if (dopiercing)
+				{
+					pierceamount += items[i].GivePiercing(plr);
+				}
+			}
+		}
+		if (pierceamount < 0.0) {pierceamount = 0.0;}
+		
+		//console.printf("bounce: %.2f", BounceFactor);
+		
+		if (dobounce)
+		{
+			if (BounceFactor == 0.0) 
+			{
+				bBOUNCEONFLOORS = false;
+				bBOUNCEONCEILINGS = false;
+				bBOUNCEONACTORS = false;
+			}
+			if (WallBounceFactor == 0.0)
+			{
+				bBOUNCEONWALLS = false;
+			}
+		}
+		if (dopiercing)
+		{
+			if (pierceamount <= 1.0) 
+			{
+				bRIPPER = false;
+				dopiercing = false;
+			}
+			else if (dobounce) {bBOUNCEONACTORS = false;}
+		}
+	}
+	
+	clearscope virtual double GetFinalDamage()
+	{
+		double piercemult = pierceamount - (justpierced - 1);
+		if (piercemult > 1.0) {piercemult = 1.0;}
+		if (!dopiercing) {piercemult = 1.0;}
+		if (piercemult < 0.0) {piercemult = 0.0;}
+		//console.printf("%.1f, %.1f", initdamage, piercemult);
+		double returnvalue = initdamage * piercemult;
+		//if ((returnvalue <= 1.0) && (initdamage >= 1.0)) {returnvalue = 1.0;}
+		return returnvalue;
+	}
+	
+	virtual void DoImpactActor(bool bounced, Actor bounceMobj)
+	{
+		foreach(mo : items) {if (mo) {mo.ImpactActor(plr, bounced, bounceMobj);}}
+		justimpacted = true;
+		//console.printf("hit actor");
+	}
+	
+	virtual void DoImpactWall(bool bounced, Line bounceLine)
+	{
+		foreach(mo : items) {if (mo) {mo.ImpactWall(plr, bounced, bounceLine);}}
+		justimpacted = true;
+		//console.printf("hit wall");
+	}
+	
+	virtual void DoImpactFloor(bool bounced, readonly<SecPlane> bouncePlane)
+	{
+		foreach(mo : items) {if (mo) {mo.ImpactFloor(plr, bounced, bouncePlane);}}
+		justimpacted = true;
+		//console.printf("hit floor");
+	}
+	
+	virtual void DoImpactDeath()
+	{
+		//console.printf("impact death start");
+		if (!impactdeathdone) 
+		{
+			//console.printf("impact death active");
+			foreach(mo : items) {if (mo) {mo.ImpactDeath(plr);}}
+			impactdeathdone = true;
+		}
+		//console.printf("impact death finished");
+	}
+	
+	void TrackBulletSource()
+	{
+		//lets projectiles remember what weapon that it originated from.
+		if (target is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(target);
+			if (plr.player.readyweapon is "DI_Weapon") 
+			{
+				plrwpn = DI_Weapon(plr.player.readyweapon);
+				wpn = plrwpn; //oopsie :)
+			}
+		}
+	}
+
+	void DI_SideBullet()
+	{
+		A_SpawnItemEX("DI_Tracer_Side", flags: SXF_NOCHECKPOSITION | SXF_ORIGINATOR | SXF_SETMASTER | SXF_TRANSFERSPRITEFRAME | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERTRANSLATION | SXF_TRANSFERSCALE);
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		if (flatbullet) {pitch = (-Vel.Z / Speed) * 90;}
+		
+		if (!IsFrozen()) {BulletTick();}
+	}
+	
+	virtual void BulletTick()
+	{
+		if (dopiercing)
+		{
+			if (justpierced > 0) 
+			{
+				//impactactor pierce check
+				if (!justbounced && canimpactactor) //dont run if we already bounced this tic.
+				{
+					for (int i = justpierced - 1; i < impacted.Size(); ++i)
+					{
+						//console.printf("pierce impacted %s", impacted[i].getclassname());
+						DoImpactActor(false, impacted[i]);
+					}
+				}
+			
+				pierceamount -= justpierced;
+				justpierced = 0;
+			}
+		
+			if ((pierceamount <= 0.0) && (!isdying))
+			{
+				if (impacted.Size() > 0)
+				{
+					actor lasthit = impacted[impacted.Size() - 1];
+					if (lasthit.bNOBLOOD) 
+					{
+						SetStateLabel("Crash");
+					}
+					else
+					{
+						SetStateLabel("XDeath");
+					}
+				}
+				else
+				{
+					SetStateLabel("Death");
+				}
+				isdying = true;
+			}
+			else if (pierceamount <= 1.0) 
+			{
+				bRIPPER = false;
+			}
+		}
+		if (dobounce)
+		{
+			if (justbounced) {justbounced = false;}
+		}
+		if (autoimpact)
+		{
+			if (!justimpacted)
+			{
+				//if (!curstate) {DoImpactDeath();}
+				if (!curstate && !impactdeathdone) {ThrowAbortException("ERROR: %s was despawned before it had a chance to run DoImpactDeath()!\n\ca(Maybe disable AutoImpactDeath or extend the death animation's tics?)", self.getclassname());}
+				if (curstate)
+				{
+					if (curstate.InStateSequence(ResolveState("Death"))) {DoImpactDeath();}
+					else if (curstate.InStateSequence(ResolveState("Crash"))) {DoImpactDeath();}
+				}
+			}
+			//else {justimpacted = false;}
+		}
 	}
 }
-Class DI_IcePuff_NoWPN : DI_IcePuff {Default {DI_Actor.IgnoreWeapon true;}}
 
-Class DI_FirePuff : DI_IcePuff
+Class DI_Tracer : DI_Projectile
 {
+	//the projectile fired from DI_Shoot().
 	Default
 	{
-		DamageType "Fire";
-		VSpeed 1;
-		+NOGRAVITY;
+		Mass 0;
+		Gravity 0.1;
+		Radius 2;
+		Height 4;
+		Speed 60;
+		Scale 0.2;
+		DI_Projectile.FlatBullet true;
+		+FLATSPRITE;
 		+BRIGHT;
+		+USEBOUNCESTATE;
 	}
-	
+
 	States
 	{
 		Spawn:
-			PUFF EEE 0 NoDelay A_SpawnParticle("ff4f00", SPF_FULLBRIGHT | SPF_RELVEL, 24, 6, random(0, 359), 0, 0, 0, random(0, 4), 0, random(-2, 2), 0, 0, 0.33);
-			#### # 0 A_AttachLightDef("spark", "BULLETSPARK_FIRE");
-			PUFF ## 1
+			TRAC A -1;
+			Loop;
+		Bounce.Floor:
+		Bounce.Ceiling:
+		Bounce.Wall:
+			#### # 1 
 			{
-				A_FadeOut(0.05);
-				A_DIScale(1.05, 1.05, true);
+				A_SpawnItemEX("DI_BulletPuff", flags: SXF_NOCHECKPOSITION);
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
 			}
-			#### # 0 A_RemoveLight("spark");
-			Goto Looper;
-		Looper:
-			PUFF # 1 
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+		Bounce.Actor:
+			#### # 1
 			{
-				A_FadeOut(0.05);
-				A_DIScale(1.05, 1.05, true);
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
 			}
-			Loop;	
+			#### # 0 A_Jump(256, "Spawn");
+			Stop;
+		Crash:
+		Death.Sky:
+		Death:
+			TNT1 A 5 
+			{
+				A_SpawnItemEX("DI_BulletPuff", flags: SXF_NOCHECKPOSITION);
+				//invoker.DoImpactDeath();
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
+			}
+			Stop;
+		XDeath:
+			TNT1 A 5 
+			{
+				A_SpawnParticleEX("fff59e", TexMan.CheckForTexture("PUFFA0"), STYLE_NONE, SPF_ROLL, 10, 8 + sqrt(invoker.GetWeaponDamage()), startroll: random(0, 359));
+				if (invoker.wpn) {A_DIFakeStatusPuff(3.0 * invoker.wpn.wpn_bulletsize);}
+			}
+			Stop;
 	}
 }
-Class DI_FirePuff_NoWPN : DI_FirePuff {Default {DI_Actor.IgnoreWeapon true;}}
 
-Class DI_LightningPuff : DI_IcePuff
+Class DI_Tracer_Side : DI_Actor
 {
 	Default
 	{
-		Alpha 0.75;
-		DamageType "Lightning";
+		Health 1;
+		+INVISIBLE;
+		+ROLLSPRITE;
+		+WALLSPRITE;
+		+NOCLIP;
 		+NOGRAVITY;
-		+BRIGHT;
 	}
-	
-	States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
-			PUFF FFF 0 A_SpawnParticle("ffeb00", SPF_FULLBRIGHT, 24, 4, random(0, 359), random(-8, 8), random(-8, 8), random(-8, 8), 0, 0, -0.167);
-			#### # 0 A_AttachLightDef("spark", "BULLETSPARK_LIGHTNING");
-			PUFF ## 1
-			{
-				A_FadeOut(0.1);
-				A_DIScale(1.1, 1.1, true);
-			}
-			#### # 0 A_RemoveLight("spark");
-			Goto Looper;
-		Looper:
-			PUFF # 1 
-			{
-				A_FadeOut(0.1);
-				A_DIScale(1.1, 1.1, true);
-			}
-			Loop;
-	}
-}
-Class DI_LightningPuff_NoWPN : DI_LightningPuff {Default {DI_Actor.IgnoreWeapon true;}}
 
-Class DI_PoisonPuff : DI_IcePuff
-{
-	Default
+	bool finished;
+
+	override void Tick()
 	{
-		Alpha 1.0;
-		DamageType "Poison";
-		+NOGRAVITY;
+		Super.Tick();
+
+		if (master)
+		{
+			SetOrigin(master.Pos, true);
+			bBRIGHT = master.bBRIGHT;
+			roll = -90 - master.pitch;
+			angle = master.angle + 90;
+			bINVISIBLE = false;
+		}
+		else if (!finished) 
+		{
+			SetStateLabel("Death");
+			finished = true;
+		}
 	}
-	
+
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
-			PUFF GGG 0 A_SpawnParticle("54c600", SPF_FULLBRIGHT | SPF_RELVEL, 24, 6, random(0, 359), 0, 0, 0, random(1, 2), 0, random(-2, 2));
-			#### # 0 A_AttachLightDef("spark", "BULLETSPARK_POISON");
-			PUFF ## 1
-			{
-				A_FadeOut(0.05);
-				A_DIScale(1.025, 1.025, true);
-			}
-			#### # 0 A_RemoveLight("spark");
-			Goto Looper;
-		Looper:
-			PUFF # 1 
-			{
-				A_FadeOut(0.05);
-				A_DIScale(1.025, 1.025, true);
-			}
+			#### # -1;
 			Loop;
+		Death:
+			TNT1 A 1 {bINVISIBLE = true;}
+			Stop;
 	}
 }
-Class DI_PoisonPuff_NoWPN : DI_PoisonPuff {Default {DI_Actor.IgnoreWeapon true;}}
+
+Class DIProjectileInventory : Inventory
+{
+	DI_Projectile proj;
+	
+	override void AttachToOwner(Actor other)
+	{
+		if (other is "DI_Projectile")
+		{
+			proj = DI_Projectile(other);
+			if (proj.items.Find(self) == proj.items.Size())
+			{
+				//keep list of all projectile inventory items here.
+				proj.items.Push(self);
+				//self.owner = proj;
+				//console.printf("adding item to projectile");
+			}
+		}
+		Super.AttachToOwner(other);
+	}
+	
+	virtual int GiveBonusDamage(DI_PlayerBase plr) {return 0;}
+	virtual int GiveBonusDamageMult(DI_PlayerBase plr) {return 0.0;}
+	virtual double GivePiercing(DI_PlayerBase plr) {return 0.0;}
+	virtual double GiveBounceFactor(DI_PlayerBase plr) {return 0.0;}
+	virtual double GiveWallBounceFactor(DI_PlayerBase plr) {return 0.0;}
+	virtual void ImpactActor(DI_PlayerBase plr, bool bounced, Actor victim) {} //called when crashing or bouncing on an actor.
+	virtual void ImpactWall(DI_PlayerBase plr, bool bounced, Line wall) {} //called when bouncing off a wall.
+	virtual void ImpactFloor(DI_PlayerBase plr, bool bounced, readonly<SecPlane> ground) {} //called when bouncing off a sector.
+	virtual void ImpactDeath(DI_PlayerBase plr) {} //called when crashing onto a wall or floor.
+}

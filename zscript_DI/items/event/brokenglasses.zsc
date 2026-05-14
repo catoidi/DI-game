@@ -1,0 +1,35 @@
+//zscript_DI/items/event/brokenglasses.zsc
+
+Class DI_BrokenGlasses : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+	
+	int prevmon;
+	int itemtimer;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!Level.IsFrozen() && !plr.IsFrozen())
+		{
+			if (Level.Killed_Monsters == prevmon)
+			{
+				if ((itemtimer < 350) && (Level.Killed_Monsters < Level.Total_Monsters)) {++itemtimer;}
+			}
+			else
+			{
+				itemtimer = 0;
+				prevmon = Level.Killed_Monsters;
+			}
+		}
+	}
+
+	override double GiveAccuracy()
+	{
+		return 0.02 * itemtimer * amount;
+	}
+}

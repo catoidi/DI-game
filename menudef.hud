@@ -3,15 +3,15 @@
 OptionMenu "DIHudOptions"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "HUD Options"
 	Tooltip ""
-	StaticText "Main HUD Options", "Purple"
+	StaticText "-= Main HUD =-", "Purple"
 	Slider "Scale", "hud_scalefactor", 0.0, 1.0, 0.025, 3
 	Tooltip "Controls the size of the main HUD elements."
 	Slider "Damage Shake",		"box_hudshake",		0, 5, 1, 0	
 	Tooltip "Controls how much the HUD will 'shake' upon you taking damage.\n\nAlso influences the minimum threshold of damage needed for shake to occur."
+	Option "Detailed Numbers", "di_hudnumbers", OnOff
+	Tooltip "Adds numbers for your current max ammo and max health to the HUD."
 	Option "Show Fresh Timer", "di_showfreshtimer", OnOff
 	Tooltip "Adds a number timer beside the 'Fresh' meter.\n\nCan help you understand the fresh bonus cooldown a bit more."
 	StaticText ""
@@ -22,33 +22,100 @@ OptionMenu "DIHudOptions"
 	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
 	Tooltip "Prevents pickup messages from appearing at the top of your screen."
 	StaticText ""
-	StaticText "Passive Hotbar Options", "Purple"
-	Option "Enabled?", "di_itemhud_toggle", OnOff
-	Tooltip "Shows you your Passive items at the top right of the screen.\n\nPro tip: It also shows the item quantity and whether or not it's 'permanent'."
+	StaticText "-= Submenus =-", "Purple"
+	SubMenu "Crosshair Options", "DIHUDOptions_Crosshair", 0, 1
+	Tooltip "Change the appearance and the behavior of your crosshair."
+	SubMenu "Minimap Options", "DIHUDOptions_Minimap", 0, 1
+	Tooltip "A menu for all of your minimap needs."
+	SubMenu "Extra HUD Options", "DIHUDOptions_Extra", 0, 1
+	Tooltip "Find options for HUD elements that weren't important enough to get their own dedicated submenu."
+	SubMenu "Damage Number Options", "DIHUDOptions_DamNums", 0, 1
+	Tooltip "Change the behavior of the damage numbers that appear above enemies."
+}
+
+OptionMenu "DIHUDOptions_Extra"
+{
+	class "DITF_TooltipOptionMenu"
+	Title "HUD Options (Extra)"
+	Tooltip ""
+	StaticText "Passive Hotbar", "Purple"
+	Option "Enabled?", "di_itemhud_toggle", "passivevalues"
+	Tooltip "Shows you your Passive items and Powerups at the top right of the screen.\n\nSetting to 'Powerups Only' prevents Passives from being rendered.\n\nIt also shows the item quantity and whether or not it's 'permanent'.\n\nYou can also see these at anytime from the Catalogue Menu."
 	Slider "Scale", "di_itemhud_scale", 0.25, 3.0, 0.05, 2, "di_itemhud_toggle"
 	Tooltip "Controls the size of the Item HUD."
 	Slider "Alpha", "di_itemhud_alpha", 0.05, 1.0, 0.05, 2, "di_itemhud_toggle"
 	Tooltip "Controls the opacity of the Item HUD."
 	StaticText ""
-	StaticText "Crosshair Options", "Purple"
+	StaticText "Random Events / Side Quests", "Purple"
+	Slider "Event Scale", "di_questscale", 0.0, 1.0, 0.025, 3
+	Tooltip "Tweak the size of Random Event and Side Quest popups on the left side of the screen."
+	Slider "Event Alpha", "di_questalpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Tweak the alpha of Random Event and Side Quest popups. Set to 0 to completely hide them."
+	StaticText ""
+}
+
+OptionMenu "DIHUDOptions_Crosshair"
+{
+	class "DITF_TooltipOptionMenu"
+	Title "HUD Options (Crosshair)"
+	Tooltip ""
+	//StaticText "Crosshair Options", "Purple"
 	Option "Enabled?", "di_xhair_toggle", "xhairvalues"
-	Tooltip "Setting to 'Dynamic' will have crosshair dynamically match the weapon's accuracy."
-	Slider "Scale", "di_xhair_scale", 1.0, 10.0, 0.5, 1, "di_xhair_toggle"
+	Tooltip "Toggles the crosshair's visibility.\n\nSet to 'Simple' by default.\n\n'Detailed' will separate inaccuracy/recoil from the bullet spread."
+	Option "Add Dot", "di_xhair_dot", onoff
+	Tooltip "Adds a dot in the middle of the crosshair."
+	Option "Precise Mode", "di_xhair_precise", onoff
+	Tooltip "When enabled, the crosshair will dynamically move up/down to match where your bullets will actually land.\n\nDisabled by default."
+	Slider "Scale", "di_xhair_scale", 0.25, 3.0, 0.25, 2, "di_xhair_toggle"
 	Tooltip "Controls the size of the crosshair."
 	Slider "Alpha", "di_xhair_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_toggle"
 	Tooltip "Controls the opacity of the crosshair."
-	Option "Precise Mode", "di_xhair_precise", onoff
-	Tooltip "When enabled, the crosshair will dynamically move up/down to match where your bullets will actually land.\n\nDisabled by default."
-	Option "Add Dot", "di_xhair_dot", onoff
-	Tooltip "Adds a dot in the middle of the crosshair."
+	//ColorPicker "Color", "di_xhair_color", "di_xhair_color_fresh", 1
+	//Tooltip "Set a custom color for the crosshair.\n\nThe 'Fresh Color Override' setting MUST be false to use this color."
+	StaticText ""
+	Option "Fresh Color Override", "di_xhair_color_fresh", onoff
+	Tooltip "Updates the colors of the crosshair to match the current state of your Fresh Weapon Bonus. (Enabled by Default)\n\n- \cjWhite: \cfFresh Bonus is recharging.\n- \cvCyan: \cfFresh Bonus is ready.\n- \caRed: \cfYou need to swap weapons to use Fresh Bonus."
 	Option "Add Fresh Meter", "di_xhair_fresh_toggle", onoff
 	Tooltip "Adds a 2nd Fresh Weapon Bonus meter below the crosshair.\n\nFresh Weapon Bonus is kinda an important mechanic to the game, and this can help make tracking it easier."
 	Slider "Fresh Scale", "di_xhair_fresh_scale", 0.05, 3.0, 0.05, 1, "di_xhair_fresh_toggle"
 	Tooltip "Controls the length of the fresh meter.\n\nAlso takes your crosshair scaling into account."
 	Slider "Fresh Alpha", "di_xhair_fresh_alpha", 0.05, 1.0, 0.05, 2, "di_xhair_fresh_toggle"
 	Tooltip "Controls the alpha of the fresh meter.\n\nAlso takes your crosshair alpha into account."
+}
+
+OptionMenu "DIHUDOptions_Minimap"
+{
+	class "DITF_TooltipOptionMenu"
+	Title "HUD Options (Minimap)"
+	Tooltip ""
+	//StaticText "Minimap", "Purple"
+	Option "Enabled?", "atmp_enablemap", "onoff"
+	Tooltip "Toggles the minimap. Matches the behavior of the fullscreen map.\n\nMinimap is always displayed below other HUD elements, in case of conflicts."
+	Option "Minimap Icons", "atmp_enemies", "onoff"
+	Tooltip "Controls whether or not you can see enemies and coins on the minimap."
 	StaticText ""
-	StaticText "Damage Numbers Options", "Purple"
+	Slider "X Offset", "ATMP_MapX", 0, 500, 5, 0
+	Slider "Y Offset", "ATMP_MapY", 0, 500, 5, 0
+	Tooltip "Adjust the position of the minimap.\n\nMinimap is anchored to the top left of the screen. Offset scales with game resolution."
+	StaticText ""
+	Slider "Minimap Width", "ATMP_MapSizeX", 50, 300, 5, 0
+	Slider "Minimap Height", "ATMP_MapSizeY", 50, 300, 5, 0
+	Tooltip "Adjust the size of the minimap.\n\nLarger minimaps will allow you to render more level geometry at once, but may conflict with other HUD elements.\n\nMap size scales with game resolution."
+	Slider "Zoom Level", "ATMP_MapScale", 0.005, 0.4, 0.005, 3
+	Tooltip "Adjust how much of the level is visible on the minimap.\n\nScales with width/height and game resolution."
+	StaticText ""
+	Slider "Minimap Alpha", "ATMP_MapAlpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Adjust the opacity of the minimap's foreground objects, which includes the level geometry and minimap icons."
+	Slider "Background Alpha", "ATMP_BackgroundAlpha", 0.0, 1.0, 0.05, 2
+	Tooltip "Adjust the opacity of the minimap's background. Does not influence the alpha of the foreground in any way."
+}
+
+OptionMenu "DIHUDOptions_DamNums"
+{
+	class "DITF_TooltipOptionMenu"
+	Title "HUD Options (Damage Numbers)"
+	Tooltip ""
+	//StaticText "Damage Numbers Options", "Purple"
 	Option		"Enabled?"       , "dam_enabled"  , "DamEnabled"
 	Tooltip "Shows damage numbers above enemies heads (and yours) when they take damage."
 	Option      "Shotgun Spray"     , "dam_spray"    , "YesNo", "dam_enabled"
@@ -60,6 +127,13 @@ OptionMenu "DIHudOptions"
 OptionValue "xhairvalues"
 {
 	0, "Off"
+	1, "Simple"
+	2, "Detailed"
+}
+
+OptionValue "passivevalues"
+{
+	0, "Off"
 	1, "On"
-	2, "Dynamic"
+	2, "Powerups Only"
 }

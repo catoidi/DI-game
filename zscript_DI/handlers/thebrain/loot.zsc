@@ -1,0 +1,145 @@
+extend class DIHandler
+{
+	virtual void CoinDropper(WorldEvent e)
+	{
+		DI_Drop dropper = DI_Drop(e.Thing);
+		if (dropper && dropper.coindropper)
+		{
+			int combo;
+			DI_PlayerBase plr;
+			DI_Weapon diwep;
+			DI_Monster mon = dropper.coindropper;
+			
+			if (e.Thing.target is "DI_PlayerBase")
+			{
+				plr = DI_PlayerBase(dropper.target);
+				diwep = DI_Weapon(plr.player.ReadyWeapon);
+				if (mon.coinnum > -1) {combo = mon.coinnum + diwep.wpn_extracoin;}
+				else {combo = plr.combonum + diwep.wpn_extracoin;}
+			}
+			else {combo = 1;}
+
+			if (diwep && mon.wasfreshkilled)
+			{
+				combo += diwep.wpn_freshbonus;
+			}
+
+			//GiveEnemyDrop code
+			Array<String> itemdrops;
+			for (int i = 0; i < plr.knownpassives.Size(); ++i)
+			{
+				DIPassiveInventory curinv = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+				if (curinv)
+				{
+					string returnstring;
+					int returnnum;
+					int failchance;
+					[returnstring, returnnum, failchance] = curinv.GiveEnemyDrop(mon);
+					if ((returnstring != "") && (returnnum > 0))
+					{
+						for (int j = 0; j < returnnum; ++j)
+						{
+							if (random[dienemy](1, 256) > failchance) {itemdrops.push(returnstring);}
+						}
+					}
+				}
+			}
+	
+			for (int i = 0; i < combo; ++i)
+			{
+				dropper.A_SpawnItemEx(mon.coindrop, random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
+			for (int i = 0; i < itemdrops.Size(); ++i)
+			{
+				dropper.A_SpawnItemEx(itemdrops[i], random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+			}
+		}
+	}
+	
+	virtual void GivePlayerCombo(WorldEvent e, bool notweapon = false)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			if (playeringame[i])
+			{
+				bool iskiller = false;
+				DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
+				DI_PlayerBase cplr = DI_PlayerBase(players[i].mo);
+					
+				if (plr && cplr)
+				{
+					if (cplr == plr) {iskiller = true;}
+				
+					int compoint = 120 + (0.1 * e.Thing.default.Health);
+					int fakescore = plr.score;
+					if (fakescore < 0) {fakescore = 0;}
+					if ((iskiller == true) && (plr.CanFreshKill()) && (notweapon == false)) {compoint += (30 * (plr.CountInv("DI_TokenCombo") + 2)) + fakescore;}
+					cplr.GiveInventory("DI_TokenComboTimer", compoint);
+					if (iskiller == true) {plr.DIMonsterKilled(DI_Monster(e.thing), notweapon);}
+				}
+			
+			}
+		}
+	}
+	
+	virtual void BoxDrops(DI_Monster dimon, DI_PlayerBase plr, bool notweapon = false)
+	{
+		if (notweapon == false)
+		{
+			if (dimon.wasfreshkilled)
+			{
+				if (plr.boxammonum > 0)
+				{
+					dimon.A_SpawnItemEX("BoxAmmo", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+				}
+			}
+			if (plr.CountInv("Glowstick") > 0)
+			{
+				if ((plr.player.ReadyWeapon is "Glowstick") && (plr.health < plr.DIMaxHealth()))
+				{
+					int glowamount = 1;
+					if (plr.health * 2 < plr.DIMaxHealth()) {++glowamount;}
+					if (plr.health * 4 < plr.DIMaxHealth()) {++glowamount;}
+					for (int i = 0; i < glowamount; ++i)
+					{
+						dimon.A_SpawnItemEx("GlowstickHealthDrop", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+					}
+				}
+				if (dimon.wasfreshkilled)
+				{
+					dimon.A_SpawnItemEx("GlowstickAmmoDrop", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+				}
+			}
+		}
+	}
+	
+	virtual void BonusArmorDrop(WorldEvent e, DI_PlayerBase plr)
+	{
+		int armorchance = plr.CountInv("DI_BonusArmor");
+		
+		if (random[dienemy](1, 3) <= armorchance)
+		{
+			e.Thing.A_SpawnItemEx("DI_BonusArmorPickup", random[dienemy](-8, 8), random[dienemy](-8, 8), random[dienemy](8, 16), random[dienemy](-2, 2), random[dienemy](-2, 2), random[dienemy](6, 10), 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION);
+		}
+	}
+	
+	virtual void BonusAmmoGiver(WorldEvent e, DI_PlayerBase plr)
+	{
+		let ammogivenum = plr.CountInv("DI_LeadRecycling");
+		if ((ammogivenum > 0) && (ammogivetick == false))
+		{
+			let curwpn = DI_Weapon(plr.player.ReadyWeapon);
+			let curammo1 = curwpn.AmmoType1;
+			let curammo2 = curwpn.AmmoType2;
+			if (curammo1 && (curwpn.wpn_dontgiveammo1 == false))
+			{
+				plr.GiveInventory(curammo1, ammogivenum);
+			}
+			if (curammo2 && (curwpn.wpn_dontgiveammo2 == false))
+			{
+				plr.GiveInventory(curammo2, ammogivenum);
+			}
+			ammogivetick = true; //only give 1 ammo per tick.
+		}
+	}
+}

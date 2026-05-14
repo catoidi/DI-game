@@ -1,22 +1,31 @@
 //health.zsc
 
-Class DI_FullHeal : Health
+Class DI_FullHeal : Inventory
 {
 	mixin DI_ActorMixin;
 	
 	Default
 	{
-		Inventory.Amount 100;
 		Inventory.PickupMessage "+100 Health";
-		Health.LowMessage 10, "+100 Health (wow u almost died lol)";
+		+Inventory.AUTOACTIVATE;
+		+Inventory.ALWAYSPICKUP;
 		+BRIGHT;
 		+FLOATBOB;
 	}
 	
-	override void DoPickupSpecial(Actor toucher)
+	override bool Use(bool pickup)
 	{
-		eventhandler.sendnetworkevent("di_burgerunlock");
-		Super.DoPickupSpecial(toucher);
+		if (pickup)
+		{
+			if (owner is "DI_PlayerBase")
+			{
+				let plr = DI_PlayerBase(owner);
+				plr.DI_HealSelf(1000);
+				eventhandler.sendnetworkevent("di_burgerunlock");
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	States
@@ -27,16 +36,31 @@ Class DI_FullHeal : Health
 	}
 }
 
-Class DI_Melon : Health
+Class DI_Melon : Inventory
 {
+	mixin DI_ActorMixin;
+	
 	Default
 	{
-		Inventory.Amount 80;
-		Inventory.MaxAmount 200;
-		Inventory.PickupMessage "+80 Health";
-		Health.LowMessage 10, "+80 Health (wow u almost died lol)";
+		Inventory.PickupMessage "+60 Health";
+		+Inventory.AUTOACTIVATE;
+		+Inventory.ALWAYSPICKUP;
 		+BRIGHT;
 		+FLOATBOB;
+	}
+	
+	override bool Use(bool pickup)
+	{
+		if (pickup)
+		{
+			if (owner is "DI_PlayerBase")
+			{
+				let plr = DI_PlayerBase(owner);
+				plr.DI_HealSelf(600, 2.0);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	States
@@ -47,14 +71,16 @@ Class DI_Melon : Health
 	}
 }
 
-Class DI_Regen : HealthPickup //regenerates 1 hp every second.
+Class DI_Regen : Inventory //regenerates 1 hp every second.
 {
-	int hptick;
+	double hptick;
+	
+	DI_PlayerBase plr;
+	DI_Weapon wpn;
 
 	Default
 	{
-		Health 1;
-		Inventory.MaxAmount 999;
+		Inventory.MaxAmount 9999999;
 		-INVENTORY.INVBAR;
 	}
 
@@ -62,20 +88,39 @@ Class DI_Regen : HealthPickup //regenerates 1 hp every second.
 	{
 		Super.DoEffect();
 		
-		++hptick;
-		if (hptick >= 35)
+		if (owner && (owner.isFrozen() == false))
 		{
-			if (CallACS("DICheckWaveProgress") == true)
+			if (!plr && owner is "DI_PlayerBase")
 			{
-				if (owner)
-				{
-					int maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
-					if (owner.health < maxhp) {Use(false);}
-					if (owner.CountInv("DI_Regen") > maxhp) {owner.SetInventory("DI_Regen", maxhp);}
-					else {owner.A_TakeInventory("DI_Regen", 1);} //will remove the item, regardless if the player can regenerate or not.
-				}
+				plr = DI_PlayerBase(owner);
+				wpn = DI_Weapon(plr.player.ReadyWeapon);
 			}
-			hptick = 0;
+			double hptick_max = (plr && wpn) ? wpn.plr_regen : 3.5;
+			if (hptick_max < 0.01) {hptick_max = 0.01;}
+		
+			int ticktime = 0;
+			++hptick;
+			while (hptick >= hptick_max) {++ticktime; hptick -= hptick_max;}
+			
+			if ((ticktime > 0) && (CallACS("DICheckWaveProgress") == true))
+			{
+				for (int i = 0; i < ticktime; ++i) {owner.A_SpawnParticle("a2d500", SPF_FULLBRIGHT, 40, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, 8), 0, 0, 0, 0, 0, 0.33, 0.25);}
+				
+				int maxhp;
+				if (plr)
+				{
+					maxhp = plr.DIMaxHealth();
+					if (plr.health < maxhp) {plr.DI_HealSelf(ticktime, 1.0, false, false);}
+				}
+				else
+				{
+					maxhp = owner.GetMaxHealth(true) - owner.CountInv("DI_Degen");
+					if (owner.health < maxhp) {owner.GiveBody(ticktime);}
+				}
+				int takeamount = ticktime;
+				if ((owner.CountInv("DI_Regen") + owner.health) > maxhp) {takeamount *= 2;}
+				owner.A_TakeInventory("DI_Regen", takeamount);
+			}
 		}
 	}
 }
@@ -86,7 +131,7 @@ Class DI_Degen : Inventory
 	
 	Default
 	{
-		Inventory.MaxAmount 999;
+		Inventory.MaxAmount 9999999;
 		-INVENTORY.INVBAR;
 	}
 	
@@ -94,9 +139,35 @@ Class DI_Degen : Inventory
 	{
 		Super.DoEffect();
 		
-		if (owner.GetMaxHealth(true) <= owner.CountInv("DI_Degen"))
+		if (owner.GetMaxHealth(true) <= amount)
 		{
 			owner.A_Die();
 		}
+	}
+}
+
+Class DI_MaxHealthGiver : DIPassiveInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1000000;
+	}
+	
+	override double GiveHealingPower()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + 0.001 * amount;
+	}
+	
+	override double GiveRegenSpeed()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 / (1.0 + 0.001 * amount);
+	}
+	
+	override double GiveMaxHealth()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0001 + 0.001 * amount;
 	}
 }

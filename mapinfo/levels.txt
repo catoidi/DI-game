@@ -7,6 +7,8 @@ GameDefaults
 	LightMode = 3
 	EnableShadowmap
 	UsePlayerStartZ
+	NoCrouch
+	CheckSwitchRange
 }
 
 
@@ -32,23 +34,40 @@ Episode di02
 	Name = "Where the boxes go party"
 }
 
+Episode di03
+{
+	Name = "castlephobia"
+}
+
+Episode bonus01
+{
+	Name = "Nine Sectors"
+}
+
 //Levels:
 Map "titlemap" "Title Screen"
 {
-
+	//Music = "titlesong"
 }
 
 Map "di01" "Your first death"
 {
+	//Music = "music01"
 	Sky1 = "textures/sky1.png"
 }
 
-Map "di02" "Where the boxes go party"
+Map "di02" "The afterparty"
 {
-	Sky1 = "textures/sky2.png"
+	//Music = "music02"
+	Sky1 = "textures/boxsky1.png"
 }
 
-Map "bonus01" "My first death"
+Map "di03" "castlephobia"
 {
 	Sky1 = "textures/sky1.png"
+}
+
+Map "bonus01" "Nine Sectors"
+{
+	Sky1 = "textures/boxsky1.png"
 }

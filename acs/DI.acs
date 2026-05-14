@@ -3,7 +3,6 @@
 
 int curwave;
 int spawntime;
-int spawntime_delay;
 bool okspawn;
 int spawnercount;
 int spawnamount;
@@ -15,6 +14,8 @@ int enemycount;
 bool announcewave;
 bool announceevent;
 
+bool canprogress;
+
 SCRIPT "playerscript" ENTER
 {
 	SetAirControl(0.5);
@@ -25,6 +26,8 @@ SCRIPT "playerscript" ENTER
 
 SCRIPT "openscript" (void) //run this script on your map to enable the waves.
 {
+	canprogress = GetCVAR("di_progression");
+
 	okspawn = true;
 	curwave = 1;
 	announcewave = true;
@@ -32,22 +35,18 @@ SCRIPT "openscript" (void) //run this script on your map to enable the waves.
 	ACS_NamedExecute("DIStartWave", 0, 0, 0, 0);
 }
 
-SCRIPT "SpawnSpawners" OPEN
+SCRIPT "SpawnSpawners" (void)
 {
 	if (okspawn == true)
 	{
-		++spawntime_delay;
-		if (spawntime_delay >= spawntime)
+		SetUserVariable(0, "user_wavetimer", spawntime);
+		for (int i = 0; i < spawnamount; ++i)
 		{
-			for (int i = 0; i < spawnamount; ++i)
-			{
-				Spawn("DISpawner", 0, 0, 0, 0, 0);
-			}
-			spawntime_delay = 0;
+			SpawnForced("DISpawner", 0, 0, 0, 0, 0);
 		}
 	}
+	else {SetUserVariable(0, "user_wavetimer", 1);}
 	Delay(1);
-	Restart;
 }
 
 script "activateself" (void)
@@ -131,14 +130,15 @@ SCRIPT "DIWaveFinished" (int nextwave)
 SCRIPT "DIStartWave" (void)
 {	
 	ACS_NamedExecute("DIStartWave_Level", 0, 0, 0, 0);
+	Delay(35);
 	if (announcewave == true) //set this to false if you want your level to announce waves in a different way.
 	{
-		SetFont("BIGFONT");
-		SetHudSize(320, 200, false);
-		HudMessageBold(s:"Wave\n", d:curwave; HUDMSG_FADEINOUT, -123456781, CR_RED, 160.4, 70.0, 3.0, 1.0, 1.0);
+		//SetFont("BIGFONT");
+		//SetHudSize(320, 200, false);
+		//HudMessageBold(s:"Wave\n", d:curwave; HUDMSG_FADEINOUT, -123456781, CR_RED, 160.4, 70.0, 3.0, 1.0, 1.0);
+		ScriptCall("EventHandler", "SendInterfaceEvent", 0, "DI_WaveStartUI", curwave);
 	}
-	Delay(35);
-	Spawn("DI_WaveStarter", 0, 0, 0, 0, 0);
+	SpawnForced("DI_WaveStarter", 0, 0, 0, 0, 0);
 	waveinprogress = true;
 	queuefinished = false;
 }
@@ -159,6 +159,13 @@ SCRIPT "EventIsStarting" (void)
 		SetHudSize(640, 400, false);
 		HudMessageBold(s:"INCOMING RANDOM EVENT"; HUDMSG_FADEINOUT, -123456782, CR_ORANGE, 320.4, 248.0, 3.0, 1.0, 1.0);
 	}
+}
+
+SCRIPT "SpawningTheBigGuy" (void)
+{
+	SetFont("BIGFONT");
+	SetHudSize(640, 400, false);
+	HudMessageBold(s:"BIG GUY SPAWNING SOON"; HUDMSG_FADEINOUT, -123456782, CR_ORANGE, 320.4, 248.0, 3.0, 1.0, 1.0);
 }
 
 SCRIPT "EnemyCount" (int nme)
@@ -197,7 +204,7 @@ SCRIPT "DoLeafFlash" (void)
 
 SCRIPT "FreshReadyMSG" (void)
 {
-	if (getcvar("di_photomode") == false) {HudMessage(s:" \n\n\n\n\n\n\n\n\cnfresh bonus ready!"; HUDMSG_FADEOUT, -5679, CR_UNTRANSLATED, 0.5, 0.8, 0.3, 0.3, 0.75);}
+	if (getcvar("di_photomode") == false) {HudMessage(s:" \n\n\n\n\n\n\n\n\cnfresh bonus ready!"; HUDMSG_FADEOUT, -5679, CR_UNTRANSLATED, 0.5, 0.8, 0.9, 0.3, 0.75);}
 }
 
 SCRIPT "DICheckWave" (void)
@@ -208,4 +215,77 @@ SCRIPT "DICheckWave" (void)
 SCRIPT "DICheckWaveProgress" (void)
 {
 	SetResultValue(waveinprogress);
+}
+
+SCRIPT "AddSalePercent" (int addnum)
+{
+	ScriptCall("EventHandler", "SendNetworkEvent", "AddSalePercent", addnum);
+}
+
+SCRIPT "DIGiveMoney" (int cashmoney)
+{
+	int oldscore = GetActorProperty(0, APROP_Score);
+	SetActorProperty(0, APROP_Score, oldscore + cashmoney);
+	Print(s:"You have received $", d:cashmoney, s:" directly into your bank account.");
+}
+
+SCRIPT "QuestBookCancel" (void)
+{
+	SetFont("BIGFONT");
+	SetHudSize(640, 400, false);
+	HudMessage(s:"Side Quest has been cancelled."; HUDMSG_FADEINOUT, -900, CR_ORANGE, 320.4, 248.0, 2.0, 0.25, 0.25);
+}
+
+SCRIPT "DI_Debilitated" (int plr)
+{
+	str currentdebuff = GetUserVariable(0, "newdebuff_name");
+	str currentdebuff_desc = GetUserVariable(0, "newdebuff_desc");
+	SetActivator(plr);
+	SetFont("BIGFONT");
+	SetHudSize(640, 400, false);
+	HudMessage(s:"New Debuff: ", s:currentdebuff; HUDMSG_FADEINOUT, -1901, CR_ORANGE, 320.4, 272.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:currentdebuff_desc; HUDMSG_FADEINOUT, -1902, CR_BRICK, 320.4, 288.0, 5.0, 0.25, 0.25);
+}
+
+SCRIPT "DI_Cursed" (int plr)
+{
+	str currentdebuff = GetUserVariable(0, "newdebuff_name");
+	str currentdebuff_desc = GetUserVariable(0, "newdebuff_desc");
+	str currentdebuff2 = GetUserVariable(0, "newdebuff2_name");
+	str currentdebuff2_desc = GetUserVariable(0, "newdebuff2_desc");
+	SetActivator(plr);
+	SetHudSize(640, 400, false);
+	SetFont("BIGFONT");
+	HudMessage(s:"New Debuff: ", s:currentdebuff; HUDMSG_FADEINOUT, -1903, CR_ORANGE, 320.4, 260.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:currentdebuff_desc; HUDMSG_FADEINOUT, -1904, CR_BRICK, 320.4, 276.0, 5.0, 0.25, 0.25);
+	SetFont("BIGFONT");
+	HudMessage(s:"New Debuff: ", s:currentdebuff2; HUDMSG_FADEINOUT, -1905, CR_ORANGE, 320.4, 294.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:currentdebuff2_desc; HUDMSG_FADEINOUT, -1906, CR_BRICK, 320.4, 310.0, 5.0, 0.25, 0.25);
+}
+
+SCRIPT "DI_NewItem" (int plr, int xsize)
+{
+	str curitem_icon = GetUserVariable(0, "newitem_icon");
+	str curitem_name = GetUserVariable(0, "newitem_name");
+	str curitem_desc = GetUserVariable(0, "newitem_desc");
+	SetActivator(plr);
+	if ((curitem_icon != "") && (xsize > 0))
+	{
+		SetHudSize(640, 480, false);
+		int startx = 330.0 + xsize;
+		SetFont(curitem_icon);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, -1903, CR_UNTRANSLATED, startx, 428.0, 5.0, 0.25, 0.25);
+	}
+	else
+	{
+		HudMessage(s:" "; HUDMSG_FADEINOUT, -1903, CR_UNTRANSLATED, 0.0, 0.0, 5.0, 0.25, 0.25);
+	}
+	SetHudSize(640, 400, false);
+	SetFont("BIGFONT");
+	HudMessage(s:"New Item: ", s:curitem_name; HUDMSG_FADEINOUT, -1901, CR_GOLD, 320.4, 356.0, 5.0, 0.25, 0.25);
+	SetFont("SMALLFONT");
+	HudMessage(s:curitem_desc; HUDMSG_FADEINOUT, -1902, CR_WHITE, 320.4, 376.0, 5.0, 0.25, 0.25);
 }

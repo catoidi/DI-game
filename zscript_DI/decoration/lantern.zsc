@@ -1,0 +1,63 @@
+//zscript_DI/decoration/lantern.zsc
+
+CLASS Lantern : Actor
+{
+	Default
+	{
+		Radius 10;
+		Height 28;
+		-SOLID;
+		//$Category "DI/Decor/Lights"
+		//$Title "Lantern (Floor)"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			LAMP A 0 BRIGHT NoDelay A_Jump(128, 2);
+			LAMP A 0 BRIGHT {bSPRITEFLIP = true;}
+			LAMP A -1 BRIGHT;
+			Stop;
+	}
+}
+
+CLASS HangingLantern : Lantern
+{
+	Default
+	{
+		+NOGRAVITY;
+		//$Category "DI/Decor/Lights"
+		//$Title "Lantern (Ceiling)"
+		//$Color 2
+	}
+
+	States
+	{
+		Spawn:
+			LAMP B 0 BRIGHT NoDelay A_Jump(128, 2);
+			LAMP B 0 BRIGHT {bSPRITEFLIP = true;}
+			LAMP B -1 BRIGHT;
+			Stop;
+	}
+}
+
+CLASS TallLantern : Lantern
+{
+	Default
+	{
+		Height 96;
+		//$Category "DI/Decor/Lights"
+		//$Title "Tall Lantern"
+		//$Color 2
+	}
+	
+	States
+	{
+		Spawn:
+			LAMP C 0 BRIGHT NoDelay A_Jump(128, 2);
+			LAMP C 0 BRIGHT {bSPRITEFLIP = true;}
+			LAMP C -1 BRIGHT;
+			Stop;
+	}
+}

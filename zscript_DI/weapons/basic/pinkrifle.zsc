@@ -2,11 +2,14 @@
 
 CLASS PinkRifle : DI_Weapon
 {
+	mixin DI_Spray_Progressive;
+	
 	Default
 	{
 		DI_Weapon.FreshBonus 3;
-		DI_Weapon.BaseDamage 20;
+		DI_Weapon.BaseDamage 200;
 		DI_Weapon.PlayerSpeed -0.1;
+		DI_Weapon.BonusSpread 5.0;
 		DI_Weapon.Recoil 5.0;
 		DI_Weapon.RecoilRecover 1.25;
 		DI_Weapon.RecoilOffset 2.5;
@@ -31,9 +34,9 @@ CLASS PinkRifle : DI_Weapon
 	{
 		if (flashnum == 0) {A_Overlay(-2, "Flash");}
 		else {A_Overlay(-2, "Flash2");}
-		DI_BasicBullet();
+		DI_Shoot();
 		int recamount = 10;
-		A_StartSound("pistpow");
+		DI_GunSound("gunpow2", pitch: 0.9);
 	}
 	
 	action state PinkRifleStop(bool recover)
@@ -69,18 +72,36 @@ CLASS PinkRifle : DI_Weapon
 		Reload:
 			PRIF A 0 DI_ReloadCheck();
 			PRIF A 0 A_OverlayPivot(PSP_WEAPON, 0.2, 0.3);
-			PRIF AAAAAAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, 4, WOF_ADD); //A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+			#### # 0 DI_StartSound("hpnmov1");
+			PRIF AAAAAAAAAAAA 1 
+			{
+				A_OverlayRotate(PSP_WEAPON, 4, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 0.25);
+			}
 			PRIF A 6;
+			#### # 0 DI_StartSound("gunmov1", pitch: 1.0);
 			PRIF A 0 A_Overlay(-2, "ReloadClip");
 			PRIF AA 1 A_OverlayOffset(PSP_WEAPON, 0, 2, WOF_ADD);
-			PRIF A 0; //A_Overlay(-2, "ReloadClip");
-			PRIF G 1 A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+			PRIF G 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, 8, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 1.5);
+			}
 			PRIF GGGG 1 A_OverlayOffset(PSP_WEAPON, 0, -2, WOF_ADD);
 			PRIF G 31;
-			PRIF A 1 A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+			PRIF A 1 
+			{
+				A_OverlayOffset(PSP_WEAPON, 0, -6, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch - 1.125);
+			}
 			PRIF AAAA 1 A_OverlayOffset(PSP_WEAPON, 0, 0.5, WOF_ADD);
 			PRIF A 0 A_GiveInventory("PinkRifleAmmo", invoker.Ammo1.MaxAmount);
-			PRIF AAAAAAAAAAAA 1 A_OverlayRotate(PSP_WEAPON, -4, WOF_ADD);
+			#### # 0 DI_StartSound("hpnmov1", pitch: 1.2, startTime: 0.4);
+			PRIF AAAAAAAAAAAA 1 
+			{
+				A_OverlayRotate(PSP_WEAPON, -4, WOF_ADD);
+				A_SetPitch(invoker.owner.pitch + 0.25);
+			}
 			Goto Ready;
 		ReloadClip:
 			TNT1 A 1 {A_OverlayPivot(-2, 0.2, 0.3); A_OverlayRotate(-2, 48, WOF_ADD);}
@@ -88,7 +109,9 @@ CLASS PinkRifle : DI_Weapon
 			PRIF E 1;
 			PRIF EEEEEEEEEEE 1 A_OverlayOffset(-2, 6, 12, WOF_ADD);
 			#### # 0 DI_EjectMagazine("PinkRifleMagazine");
-			TNT1 A 16;
+			TNT1 A 13;
+			#### # 0 DI_StartSound("gunrel2", pitch: 0.8);
+			TNT1 A 3;
 			PRIF FFFFFFFF 1 A_OverlayOffset(-2, -8.25, -16.5, WOF_ADD);
 			Stop;
 		Flash:

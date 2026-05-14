@@ -1,0 +1,331 @@
+extend class DIHandler
+{
+	override void WorldLoaded(WorldEvent e)
+	{
+		canprogress = di_progression;
+		DIRandomSeed(e);
+	
+		++wavenum;
+		++fakewavenum;
+		
+		++endless_capmult;
+		++endless_ratemult;
+		++endless_spawnmult;
+		++endless_healthmult;
+		++endless_damagemult;
+		++endless_speedmult;
+		
+		ParseDIWAVE(e);
+		//GetWaveData(e);
+		//ParseWaveData(e);
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing is "DISpawner") {SpawnerSpawned(e);}
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e);}
+			if ((e.Thing.target != null) && (e.Thing.target is "PlayerPawn"))
+			{
+				if (e.Thing is "DI_Drop") {CoinDropper(e);}
+			}
+			if (e.Thing.GetClassName() == "DI_WaveStarter") //if it ain't broke don't fix it
+			{
+				GetWaveData(e);
+				ParseWaveData(e);
+				ListNMEs();
+				waveinprogress = true;
+				for (int i = 0; i < 8; ++i)
+				{
+					let p = players[i].mo;
+					if ((p is "DI_PlayerBase") && (playeringame[i]))
+					{
+						DI_PlayerBase plr = DI_PlayerBase(p);
+						plr.DIWave_Start();
+					}
+				}
+				DoWaveEvent(e);
+				e.Thing.Spawn("DI_WaveSpawnTimer");
+			}
+			if (e.Thing.GetClassName() == "DI_ClearPlayerItems")
+			{
+				for (int i = 0; i < 8; ++i)
+				{
+					let p = players[i].mo;
+					if ((p is "DI_PlayerBase") && (playeringame[i]))
+					{
+						DI_PlayerBase plr = DI_PlayerBase(p);
+						plr.DIWave_End();
+					}
+				}
+			}
+			if (e.Thing is "DI_Monster")
+			{
+				DIMonsterHandler(e);
+			}
+			if (e.Thing is "DI_Boss")
+			{
+				DIBossHandler(e);
+			}
+			if (e.thing is "DI_Projectile")
+			{
+				DIProjectileHandler(e);
+			}
+			if (e.Thing is "DIShop")
+			{
+				shoparray.Push(DIShop(e.Thing));
+				if (di_mod_weaponized)
+				{
+					Weaponized_AddShop(DIShop(e.Thing));
+				}
+				if (di_mod_blindbox)
+				{
+					AddShopInventoryItem(DIShop(e.Thing), "DI_BlindBox_Shop");
+				}
+			}
+			if (e.Thing is "DIShopController")
+			{
+				controllerarray.Push(DIShopController(e.Thing));
+			}
+			if (e.Thing is "DI_WaveSpawnTimer")
+			{
+				if (wavetimeractor) {ThrowAbortException("%s", "WAVE ERROR: Attmepted to start the same wave multiple times!");}
+				else {wavetimeractor = DI_WaveSpawnTimer(e.Thing);}
+			}
+			if (e.Thing is "DI_PlayerBase")
+			{
+				let plr = DI_PlayerBase(e.Thing);
+				plr.A_SpawnItemEX("DIShadow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+				if (canprogress && !di_unlock_item_glassgem) {plr.GiveInventory("DI_GlassGem_Tracker", 1);}
+				plr.thebrain = self;
+				DIModifierHandler(plr);
+			}
+			if (e.Thing is "DI_NME")
+			{
+				let nme = DI_NME(e.Thing);
+				nme.handler = self;
+				//nme.SpawnNME();
+			}
+		}
+	}
+	
+	override void WorldThingRevived(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e);}
+		}
+	}
+	
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing.bIsMonster == true) {DIMonsterDied(e);}
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e, false);}
+			if (e.Thing.target != null) 
+			{
+				if (e.Thing is "DI_Monster")
+				{
+					DI_Monster dimon = DI_Monster(e.Thing);
+					bool notweapon = dimon.di_notweapon;
+					GivePlayerCombo(e, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
+					if (e.Thing.target is "DI_PlayerBase")
+					{
+						DI_PlayerBase plr = DI_PlayerBase(e.Thing.target);
+						BoxDrops(dimon, plr, notweapon); //notweapon needs to be passed to all functions that involve fresh weapon kills.
+						BonusArmorDrop(e, plr);
+						BonusAmmoGiver(e, plr); //used for DI_LeadRecycling.
+					}
+				}
+			}
+		}
+	}
+	
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		if (e.Thing != null)
+		{
+			if (e.Thing is "DISpawnerSpot") {SpawnerSpotUpdate(e, false);}
+			if (e.Thing is "DIShop") 
+			{
+				int removeshop;
+				foreach(shopmo : shoparray)
+				{
+					if (shoparray.Find(shopmo) < shoparray.Size()) {removeshop = shoparray.Find(shopmo);}
+				}
+				shoparray.Delete(removeshop);
+			}
+		}
+	}
+	
+	override void WorldTick()
+	{
+		ammogivetick = false;
+	}
+	
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "DIRerollShops") //called by the Dice Block consumable or by Reroll Machines.
+		{
+			foreach(shopmo : shoparray)
+			{
+				if (shopmo)
+				{
+					shopmo.SetStateLabel("Reroll");
+				}
+			}
+		}
+		else if (e.Name == "diaddenemycount") //allows other scripts to add to the handler's estimated enemy count.
+		{
+			enemycount += e.Args[0];
+		}
+		else if (e.Name.Left(16) == "diplayeritemused") //called automagically by all consumable items on successful use.
+		{
+			let itemplr = DI_PlayerBase(players[e.Player].mo);
+			if (itemplr)
+			{
+				//code for DI_Consumer.
+				int consumer = itemplr.CountInv("DI_Consumer");
+				if (consumer > 0) 
+				{
+					itemplr.DI_HealSelf(30 * consumer, 2.0, true);
+					itemplr.GiveInventory("DI_Consumer_Powerup", 3 * consumer);
+				}
+				
+				//Overconsumption Objective.
+				let objective = DI_QuestObjective_Overconsumption(itemplr.FindInventory("DI_QuestObjective_Overconsumption"));
+				if (objective) {objective.ItemUsed();}
+			}
+		}
+		else if (e.Name == "wave_debug") //used to display some debug info about the current wave.
+		{
+			console.printf("waitnum: %d\ncurrentspawners: %d\nspawnqueue: %d\nalive monsters: %d\nenemycount: %d", waitnum, currentspawners, spawnqueue.Size(), Level.Total_Monsters - Level.Killed_Monsters, enemycount);
+			//if ((waitnum == 0) && (currentspawners <= 0) && (spawnqueue.Size() == 0) && (queuefinished == true) && (Level.Total_Monsters == Level.Killed_Monsters + 1) && (enemycount <= 0))
+		}
+		else if (e.Name.Left(14) == "autoblacklist ") //adds a specific item to the blacklist. used by the unlock menu. just type the name of the item after the space.
+		{
+			name newblacklist = e.Name.Mid(14);
+			foreach(mo : shoparray)
+			{
+				if (mo) {mo.AddBlacklist(newblacklist);}
+			}
+		}
+		else if (e.Name.Left(13) == "addwaveenemy ") //this is how you add new enemies to the wave. NOTE: will always put the enemy in the current batch. TODO: add a way to check how many batches are in this wave.
+		{
+			array<string> newenemy;
+			e.Name.Split(newenemy, " ");
+			int datasize = newenemy.Size();
+			if (datasize >= 2)
+			{
+				name addname = newenemy[1];
+				int addnum = 0;
+				string addspawner = "";
+				if (datasize >= 3) {addnum = newenemy[2].ToInt(10);}
+				if (datasize >= 4) {addspawner = newenemy[3];}
+				
+				AddWaveEnemy(addname, addnum, addspawner);
+			}
+			else {ThrowAbortException("\cqInvalid Add Wave Enemy Command: '%s'", e.Name);}
+		}
+		else if (e.Name.Left(13) == "addpermaitem ") //cheat command to test permanent items.
+		{
+			if (players[e.Player].mo && (sv_cheats == true))
+			{
+				Array<String> cmd;
+				e.Name.Split(cmd, " ");
+				int cmdnum = 1;
+				if (cmd.size() == 3) {cmdnum = cmd[2].ToInt(10);}
+				let plr = DI_PlayerBase(players[e.Player].mo);
+				
+				plr.GiveInventory(cmd[1], cmdnum);
+				plr.BuyPermaItem(cmd[1], cmdnum);
+				console.printf("Added %d %s to your inventory.", cmdnum, cmd[1]);
+			}
+			else {console.printf("%s", "You cannot use this command while cheats are disabled.");}
+		}
+		else if (e.Name.Left(15) == "checkpermaitem ") //check if the player owns a specific permanent item.
+		{
+			if (players[e.Player].mo && (sv_cheats == true))
+			{
+				Array<String> cmd;
+				e.Name.Split(cmd, " ");
+				let plr = DI_PlayerBase(players[e.Player].mo);
+				let num = plr.GetPermaItemAmount(cmd[1]);
+				console.printf("You have %d of these.", num);
+			}
+		}
+		else if (e.Name == "DIWaveFinished") //this is ran automatically once the wave is considered "finished".
+		{
+			wavetimeractor.Destroy();
+		}
+		else if (e.Name == "AddSalePercent") //adds the provided number in the first argument to all future shop sales.
+		{
+			console.printf("\cdFuture sales on items are now improved by %d%%!", e.Args[0]);
+			foreach(mo : shoparray)
+			{
+				if (mo) {mo.LevelSale += e.Args[0];}
+			}
+			foreach(mo : controllerarray)
+			{
+				if (mo) {mo.LevelSale += e.Args[0];}
+			}
+		}
+		else if (e.Name == "RemoveDebuff")
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				if (players[i].mo is "DI_PlayerBase")
+				{
+					let plr = DI_PlayerBase(players[i].mo);
+					string questdebuff = "";
+					array<string> alldebuffs;
+					DI_MainQuest quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+					if (quest && quest.debuff) {questdebuff = quest.debuff_name;}
+					for (int j = 0; j < plr.knownpassives.Size(); ++j)
+					{
+						DI_QuestDebuff debuff = DI_QuestDebuff(plr.FindInventory(plr.knownpassives[j], true));
+						if (debuff && (debuff.GetClassName() != questdebuff)) {alldebuffs.push(debuff.GetClassName());}
+						else if (plr.CountInv(debuff.GetClassName()) > 1) {alldebuffs.push(debuff.GetClassName());}
+					}
+					if (alldebuffs.Size() > 0)
+					{
+						int rng = random[di](0, alldebuffs.Size() - 1);
+						plr.TakeInventory(alldebuffs[rng], 1);
+						plr.ACS_NamedExecuteAlways("DebuffRemoved");
+					}
+				}
+			}
+		}
+		else if (e.Name == "DI_CoinDespawned")
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				if (players[i].mo is "DI_PlayerBase")
+				{
+					let plr = DI_PlayerBase(players[i].mo);
+					DI_MainQuest quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+					if (quest && quest.objective.GetClassName() == "DI_QuestObjective_Audit")
+					{
+						let audit = DI_QuestObjective_Audit(quest.objective);
+						audit.CoinLost();
+					}
+				}
+			}
+		}
+		else if (e.Name == "DI_RemoveAllCoins")
+		{
+			if (!dontremovecoins) 
+			{
+				//console.printf("removing coins :3");
+				Thing_Remove(7499);
+			}
+		}
+		else if (e.Name == "DI_ToggleCoinRemoval")
+		{
+			//console.printf("coin removal has been toggled.");
+			dontremovecoins = !dontremovecoins;
+		}
+	}
+}

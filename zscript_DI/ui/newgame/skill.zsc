@@ -15,7 +15,7 @@ extend class DINewGameMenu
         {	
 			// Create the box image's textures.
 			let boxTexture_String = "graphics/catalog/ITEMBAR_BIG.png";
-			if (i == 1) {boxTexture_String = "graphics/catalog/ITEMBAR2_BIG.png";}
+			//if (i == 1) {boxTexture_String = "graphics/catalog/ITEMBAR2_BIG.png";}
 			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(boxTexture_String, (0, 0), (252, 21), false, false);
 			// Add a box image.
 			let boxSize = (252, 21);
@@ -24,7 +24,7 @@ extend class DINewGameMenu
 				// Position
 				(
 					// Horizontal position.
-                    194,
+                    48,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
                     80 + (21 * i)
@@ -48,7 +48,7 @@ extend class DINewGameMenu
                 // Position.
                 (
                     // Horizontal position.
-                    194 + 126 - (bigFont.StringWidth(labeltxt) / 2),
+                    48 + 126 - (bigFont.StringWidth(labeltxt) / 2),
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
                     84 + (21 * i)
@@ -90,7 +90,7 @@ extend class DINewGameMenu
 				// Position
 				(
 					// Horizontal position.
-                    194,
+                    48,
                     // Calculate the vertical position.
                     // Initial offset + ((label text height + spacing) * label count)
                     80 + (21 * i)
@@ -111,6 +111,127 @@ extend class DINewGameMenu
 			sklbuttons.Push(aButton);
         }
 		
+		for (int i = 0; i < modpool.Size(); ++i)
+		{
+			bool ischeatmod = (cheatmodpool.Find(modpool[i]) < cheatmodpool.Size());
+			let modcvar = cvar.findcvar(modpool[i]);
+			let modunlockcvar = cvar.findcvar(modlock[i]);
+			// Create the box image's textures.
+			let boxTexture_String = "graphics/catalog/ITEMBAR_BIG.png";
+			if (!modunlockcvar.GetBool() && !cheatmode) {boxTexture_String = "graphics/catalog/ITEMBAR2_BIG.png";}
+			let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(boxTexture_String, (0, 0), (252, 21), false, false);
+			// Add a box image.
+			let boxSize = (252, 21);
+			let aBoxImage = boxparty_ZF_BoxImage.Create
+			(
+				// Position
+				(
+					// Horizontal position.
+                    332,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    160 + (21 * i)
+				),
+				// Size
+				boxSize,
+				// Texture
+				boxTexture
+			);
+			// Add the box image element into the main frame.
+			aBoxImage.Pack (mainFrame);
+			sklboximages.Push(aBoxImage);
+
+            // Get the player's name.
+            string labeltxt = stringtable.localize(modpool[i], false);
+			if (!modunlockcvar.GetBool() && !cheatmode) {labeltxt = "\ca[LOCKED]";}
+			else if (modcvar.GetBool()) 
+			{
+				labeltxt.AppendFormat("%s", ": \cd[ON]");
+				++modsactive;
+				activemods.push(modpool[i]);
+				if (ischeatmod) {++cheatmodsactive;}
+			}
+			else {labeltxt.AppendFormat("%s", ": \ca[OFF]");}
+			
+            // Add a label.
+            let label = boxparty_ZF_Label.Create
+            (
+                // Position.
+                (
+                    // Horizontal position.
+                    332 + 126 - (bigFont.StringWidth(labeltxt) / 2),
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    164 + (21 * i)
+                ),
+                // Size.
+                (
+                    // Calculate the horizontal size of the text.
+                    bigFont.StringWidth (labeltxt),
+                    // Get the font's height.
+                    bigFont.GetHeight ()
+                ),
+                // The label's text.
+                text: labeltxt,
+                // The font to use.
+                fnt: bigFont,
+                // Whether to automatically wrap the text or not.
+                wrap: false,
+                // Whether to automatically resize the element based on the text width.
+                autoSize: true,
+                // The text's colour.
+                textColor: Font.CR_WHITE
+            );
+
+            // Add the label element to the main frame.
+            label.Pack (mainFrame);
+            // Add the label to the labels list.
+            skllabels.Push (label);
+			
+			string buttoncmd = String.Format("mod%d", i);
+			if (!modunlockcvar.GetBool() && !cheatmode) {buttoncmd = string.Format("locked%s", buttoncmd);}
+			else if (ischeatmod) {buttoncmd = string.format("cheatmod%d", i);}
+			
+			// Create the button's textures.
+			let buttonIdle = boxparty_ZF_BoxTextures.CreateSingleTexture ("", true);
+			let buttonHover = boxparty_ZF_BoxTextures.CreateSingleTexture("graphics/catalog/ITEMBAR_HOVER_BIG.png", true);
+			let buttonClick = boxparty_ZF_BoxTextures.CreateSingleTexture("graphics/catalog/ITEMBAR_CLICK_BIG.png", true);
+			// Add a button.
+			let aButton = boxparty_ZF_Button.Create
+			(
+				// Position
+				(
+					// Horizontal position.
+                    332,
+                    // Calculate the vertical position.
+                    // Initial offset + ((label text height + spacing) * label count)
+                    160 + (21 * i)
+				),
+				// Size
+				(252, 21),
+				// Our command handler
+				cmdHandler: handler,
+				// A command string for the button
+				command: buttoncmd,
+				// The button's textures
+				inactive: buttonIdle,
+				hover: buttonHover,
+				click: buttonClick
+			);
+			// Add the button element into the main frame.
+			aButton.Pack (mainFrame);
+			sklbuttons.Push(aButton);
+		}
+		
+		//Modifier Description and Image
+		let modtexture = boxparty_ZF_BoxTextures.CreateTexturePixels("", (0, 0), (64, 64), true, true);
+		modselect = boxparty_ZF_BoxImage.Create((332, 100), (64, 64), modtexture);
+		modselect.Pack(mainFrame);		
+		string activestring = string.format("\cf%d mod(s) active.", modsactive);
+		modlabel = boxparty_ZF_Label.Create((396, 108), (240, 56), text: string.format("Select Modifier:\n\n\n%s", activestring),  fnt: smallFont, wrap: true, autoSize: false, textscale: 1.5, textcolor: Font.CR_WHITE);
+		modlabel.Pack(mainFrame);
+		
+		//FRED APPROVED
 		// Create the box image's textures.
 		let boxTexture_String = "graphics/FRED_APPROVED.png";
 		let boxTexture = boxparty_ZF_BoxTextures.CreateTexturePixels(boxTexture_String, (0, 0), (352, 176), false, false);
@@ -121,7 +242,7 @@ extend class DINewGameMenu
 			// Position
 			(
 				// Horizontal position.
-                144,
+                8,
                 // Calculate the vertical position.
                 // Initial offset + ((label text height + spacing) * label count)
                 140
@@ -134,6 +255,107 @@ extend class DINewGameMenu
 		// Add the box image element into the main frame.
 		aBoxImage.Pack (mainFrame);
 		sklboximages.Push(aBoxImage);
+		
+		let maxswag = GetMaxSwag();
+		
+		// Add Swag XP elements to this part of the menu.
+		string swagstring = string.format("%s \cb%d/%d", "\ctSwag Level:", di_swaglevel, maxswag);
+        if (di_swaglevel_over > 0)
+        {
+            swagstring.appendformat(" \cd(+%d)", di_swaglevel_over);
+        }
+		swaglevel = boxparty_ZF_Label.Create(
+			// Position.
+            (
+                // Horizontal position.
+                48 + 126 - ((smallFont.StringWidth(swagstring) * 1.5) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                314
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (swagstring) * 1.5,
+                // Get the font's height.
+                smallFont.GetHeight() * 1.5
+            ),
+            // The label's text.
+            text: swagstring,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+			// scaling of the text.
+			textScale: 1.5,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+		);
+		swaglevel.Pack(mainFrame);
+		
+		//Add EXP below the level and the bar.
+		string expstring = string.format("\cnExp: \cb%d\cn/\cb%d", di_experience, (di_swaglevel + di_swaglevel_over + 1) * 2500);
+		explabel = boxparty_ZF_Label.Create(
+			// Position.
+            (
+                // Horizontal position.
+                48 + 126 - (smallFont.StringWidth(expstring) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                342
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (expstring),
+                // Get the font's height.
+                smallFont.GetHeight()
+            ),
+            // The label's text.
+            text: expstring,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+		);
+		explabel.Pack(mainFrame);
+		
+		//Add unlock bonus exp info here as well.
+		string unlockstring = CreateUnlockString();
+		unlocklabel = boxparty_ZF_Label.Create(
+			// Position.
+            (
+                // Horizontal position.
+                48 + 126 - (smallFont.StringWidth(unlockstring) / 2),
+                // Calculate the vertical position.
+                // Initial offset + ((label text height + spacing) * label count)
+                354
+            ),
+            // Size.
+            (
+                // Calculate the horizontal size of the text.
+                smallFont.StringWidth (unlockstring),
+                // Get the font's height.
+                smallFont.GetHeight() * 4.5
+            ),
+            // The label's text.
+            text: unlockstring,
+            // The font to use.
+            fnt: smallFont,
+            // Whether to automatically wrap the text or not.
+            wrap: false,
+            // Whether to automatically resize the element based on the text width.
+            autoSize: false,
+            // The text's colour.
+            textColor: Font.CR_WHITE
+		);
+		unlocklabel.Pack(mainFrame);
 	}
 	
 	virtual void DestroySkill()
@@ -163,5 +385,78 @@ extend class DINewGameMenu
             boximage.Unpack();
             boximage.Destroy();
         }
+		
+		if (swaglevel)
+		{
+			swaglevel.Unpack();
+			swaglevel.Destroy();
+		}
+		if (explabel)
+		{
+			explabel.Unpack();
+			explabel.Destroy();
+		}
+		if (unlocklabel)
+		{
+			unlocklabel.Unpack();
+			unlocklabel.Destroy();
+		}
+		if (modlabel)
+		{
+			modlabel.Unpack();
+			modlabel.Destroy();
+		}
+		if (modselect)
+		{
+			modselect.Unpack();
+			modselect.Destroy();
+		}
+		modsactive = 0;
+		cheatmodsactive = 0;
+	}
+	
+	clearscope virtual int GetMaxSwag()
+	{
+		array<string> swaglist;
+	
+		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(swaglist, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISWAG", ThisLump + 1, 1);
+		}
+		
+		int bigswag = 0;
+		for (int i = 0; i < swaglist.Size(); ++i)
+		{
+			if (swaglist[i].Left(2) == ">>") {continue;}
+			array<string> currentswag;	
+			swaglist[i].Split(currentswag, " ");
+			if (currentswag.Size() != 2) {continue;}
+			++bigswag;
+		}
+		return bigswag;
+	}
+	
+	virtual string CreateUnlockString(float skillmult = 1.0)
+	{
+		string unlockstring = string.format("\cc+%d%% EXP from unlocked items", GetUnlockNum());
+		unlockstring.appendformat("\n\cc+%d%% EXP from high scores", GetHighScore() / 1000);
+		string scoremultstring;
+		float newscoremult = GetScoreMult(skillmult);
+		if (newscoremult <= 0.0)
+		{
+			unlockstring = "\n\caScores are currently disabled.";
+		}
+		if (newscoremult != 1.0)
+		{
+			if (newscoremult > 1.0) {scoremultstring = "v+";}
+			else if (newscoremult < 1.0) {scoremultstring = "a";}
+			unlockstring.appendformat("\n\n\c%s%.1f%% bonus to final score", scoremultstring, (newscoremult * 100) - 100.0);
+		}
+		return unlockstring;
 	}
 }

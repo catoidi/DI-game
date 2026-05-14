@@ -1,0 +1,69 @@
+//zscript_DI/items/passives/carbonateddrink.zsc
+
+Class DI_CarbonatedDrink : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Carbonated Drink";
+		Inventory.Icon "POWRX0";
+		Inventory.PickupMessage "Acquired Carbonated Drink! (Enemies have a chance to drop Regen on fresh weapon kills.)";
+		Inventory.MaxAmount 4;
+	}
+
+	override string, int, int GiveEnemyDrop(DI_Monster mon)
+	{
+		if (mon.wasfreshkilled)
+		{
+			if (amount > 0)
+			{
+				int failure = 400 - (400 * ((1.0 * (plr.DIMaxHealth() - plr.health - plr.CountInv("DI_Regen"))) / plr.DIMaxHealth()));
+				failure -= amount * 40;
+				//console.printf("%d", failure);
+				if (failure > 256) {failure = 256;}
+				
+				
+				return "DI_CarbonatedDrink_Pickup", amount, failure;
+			}
+		}
+		
+		return "", 0, 0;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR X -1;
+			Stop;
+	}
+}
+
+Class DI_CarbonatedDrink_Pickup : Inventory
+{
+	Default
+	{
+		+BRIGHT;
+		+FLOATBOB;
+		+Inventory.AUTOACTIVATE;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
+	}
+
+	override bool Use(bool pickup)
+	{
+		let plr = DI_PlayerBase(owner);
+		if (plr) {plr.DI_HealSelf(30, 2.0, true);}
+		return true;
+	}
+
+	States
+	{
+		Spawn:
+			POWR X -1;
+			Stop;
+	}
+}

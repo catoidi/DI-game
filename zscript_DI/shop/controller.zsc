@@ -7,6 +7,9 @@ Class DIShopController : DIShop_Base
 	int user_pricedown_round; //how many rounds until the price can decrease. default is 2.
 	int user_pricedown_base; //when price can decrease, decrease by this amount.
 	double user_pricedown_mult; //when price can decrease, multiply price by this amount.
+	int LevelSale;
+	
+	bool user_playeractivates;
 	
 	Property ReducePriceRound : user_pricedown_round;
 	Property ReducePriceBase : user_pricedown_base;
@@ -14,13 +17,18 @@ Class DIShopController : DIShop_Base
 	
 	Default
 	{
+		DIShop_Base.AllowDebt true;
+		DIShop_Base.DebtHP 1;
 		DIShopController.ReducePriceRound 2;
 		DIShopController.ReducePriceBase 5;
 		DIShopController.ReducePriceMult 0.95;
+		//$Title "Script-activator (ZScript)"
 	}
 	
 	override void PostBeginPlay()
 	{
+		if (user_itemstock == 0) {user_itemstock = 1;}
+	
 		shop_currentsprite = user_currentsprite;
 		shop_itemstock = user_itemstock;
 		SpawnShopExtras();
@@ -54,14 +62,26 @@ Class DIShopController : DIShop_Base
 				//sale can only occur on items with a base price of at least 2.
 				//sale chance increases based on how long since the last sale 
 				//and also how long since the player last purchased from this shop.
-				int extrasale = newround - lastpurchased;
-				if (extrasale > 14) {extrasale = 14;}
-				if ((random(1, 30) <= 1 + extrasale + lastsale) && (user_baseprice >= 2)) {saleamount = 1; lastsale = 0;}
-				else {saleamount = 0; ++lastsale;}
+				extrasale = newround - lastpurchased;
+				if ((random[dishop](1, 30) <= 1 + extrasale + lastsale) && (user_baseprice >= 2)) {dosale = true; lastsale = 0;}
+				else {dosale = false; ++lastsale;}
+				GetSalePercent();
+				//console.printf("%.1f", CheckSaleNum());
 				canshop = true;
 				curround = newround;
 			}
 		}
+	}
+	
+	//allow custom shop controllers to define their own shop conditions.
+	virtual bool CanPurchase(PlayerPawn plr)
+	{
+		return true;
+	}
+	
+	virtual string CantPurchase()
+	{
+		return "\cryou cannot purchase this item.";
 	}
 
 	override void PurchaseShopItem(void)
@@ -75,8 +95,9 @@ Class DIShopController : DIShop_Base
 			
 			int buyprice = GetShopPrice();
 			plr = PlayerPawn(target);
+			bool shopblocked = (plr.CountInv("DI_ShopBlocker") >= 1);
 			if ((plr.score >= buyprice) || (user_allowdebt == true)) {canafford = true;}
-			if ((canafford == true) && (canshop == true) && (CanDoDebt(plr) == true))
+			if ((canafford == true) && (canshop == true) && (shopblocked == false) && (CanDoDebt(plr) == true) && (CanPurchase(plr) == true))
 			{
 				DoDebt(buyprice); //must run before making the purchase.
 				DoPurchase(buyprice);
@@ -88,6 +109,8 @@ Class DIShopController : DIShop_Base
 				else if ((canafford == false) && (user_allowdebt == false)) {failmsg = "\cryou cannot afford this.";}
 				//else if ((canafford == false) && (user_allowdebt == true)) {failmsg = "\cryou cannot buy this while in debt.";}
 				else if (CanDoDebt(plr) == false) {failmsg = "\cryou don't have enough HP to buy this.";}
+				else if (CanPurchase(plr) == false) {failmsg = CantPurchase();}
+				else if (shopblocked) {failmsg = "\cryour ability to purchase items has been temporarily disabled.";}
 				else {failmsg = "\cra mysterious force prevents you from buying this.";}
 				
 				console.printf("%s", failmsg);
@@ -100,7 +123,7 @@ Class DIShopController : DIShop_Base
 	
 	override int GetShopPrice()
 	{
-		int getshopprice_int = ((user_baseprice + currentprice) / (saleamount + 1));
+		int getshopprice_int = ((user_baseprice + currentprice) * CheckSaleNum());
 		if (getshopprice_int < 1) {getshopprice_int = 1;}
 		return getshopprice_int;
 	}
@@ -113,6 +136,26 @@ Class DIShopController : DIShop_Base
 	override string GetShopItem(void)
 	{
 		return user_eventname;
+	}
+	
+	override void GetSalePercent(void)
+	{
+		if (dosale)
+		{
+			float minsale = user_salemin + (0.01 * LevelSale);
+			float maxsale = user_salemax + (0.03 * (extrasale + lastsale)) + (0.01 * LevelSale);
+			int based = user_baseprice;
+			if (based <= 0) {based = 1;}
+			float overpricesale = (0.1 * ((currentprice + based) / based)) - 0.1;
+			minsale += overpricesale;
+			maxsale += overpricesale;
+			if (maxsale > 0.9) {maxsale = 0.9;}
+			if (minsale > maxsale) {minsale = maxsale;}
+			float rtn = 1.0 - frandom[dishop](minsale, maxsale); //generate random sale percentage. sales get better depending on player's last purchase and the shop's last sale.
+			salenum = rtn;
+			//console.printf("%.2f", rtn);
+		}
+		else {salenum = 1.0;}
 	}
 	
 	override bool IsPriceDecreased(void)
@@ -129,7 +172,7 @@ Class DIShopController : DIShop_Base
 		let diplr = DI_PlayerBase(plr);
 		diplr.buycounter += 1;
 		diplr.moneyspent += buyprice;
-		int priceincrease = user_baseprice / (saleamount + 1);
+		int priceincrease = user_baseprice * CheckSaleNum();
 		if (priceincrease < 2) {priceincrease = 1;}
 		currentprice += priceincrease;
 		lastpurchased = curround;
@@ -162,13 +205,54 @@ Class DIShopController_ACS : DIShopController //same as above but sends an ACS s
 		frame += 1;
 		A_StartSound("switches/normbutn");
 		plr.score -= buyprice;
-		currentprice += user_baseprice / (saleamount + 1);
+		currentprice += user_baseprice * CheckSaleNum();
 		lastpurchased = curround;
-		ACS_NamedExecuteAlways(user_eventname, 0, user_event1, user_event2, user_event3);
+		actor scriptor = self;
+		if (user_playeractivates) {scriptor = plr;}
+		scriptor.ACS_NamedExecuteAlways(user_eventname, 0, user_event1, user_event2, user_event3);
 		//plr.A_SpawnItemEX(shop_currentitem, zofs: 16, flags: SXF_NOCHECKPOSITION);
 		//plr.Thrust(0.01); //gross hack to make player instantly pickup an item.
 		A_SpawnItemEX("DI_Teleport", flags: SXF_NOCHECKPOSITION);
 		--shop_itemstock;
 		if (shop_itemstock == 0) {canshop = false;}
+	}
+	
+	Default
+	{
+		//$Title "Script-activator (ACS)"
+	}
+}
+
+Class DIShopController_Debuff : DIShopController
+{
+	Default
+	{
+		//$Title "Script-activator (Debuff)"
+	}
+	
+	override bool CanPurchase(PlayerPawn plr)
+	{
+		let diplr = DI_PlayerBase(plr);
+		if (!diplr) {return false;}
+		string questdebuff = "";
+		array<string> alldebuffs;
+		DI_MainQuest quest = DI_MainQuest(plr.FindInventory("DI_MainQuest", true));
+		if (quest && quest.debuff) {questdebuff = quest.debuff_name;}
+		for (int j = 0; j < diplr.knownpassives.Size(); ++j)
+		{
+			DI_QuestDebuff debuff = DI_QuestDebuff(plr.FindInventory(diplr.knownpassives[j], true));
+			if (debuff)
+			{
+				if (debuff.GetClassName() != questdebuff) {alldebuffs.push(debuff.GetClassName());}
+				else if (plr.CountInv(debuff.GetClassName()) > 1) {alldebuffs.push(debuff.GetClassName());}
+			}
+		}
+		if (alldebuffs.Size() > 0) {return true;}
+		else {return false;}
+	}
+	
+	override string CantPurchase()
+	{
+		return "\cryou do not have any debuffs to remove.";
 	}
 }

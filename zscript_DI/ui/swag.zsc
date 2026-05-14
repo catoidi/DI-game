@@ -1,0 +1,826 @@
+//zscript_DI/handlers/swag.zsc
+
+Class SwagHandler : EventHandler
+{
+	mixin DI_UIMixin;
+	
+	ui DI_PlayerBase plr;
+	ui bool IsDead;
+	ui float DeathFade;
+	ui int DeathTimer;
+	ui float diedmove;
+	ui int wavenum;
+	ui int msgrng;
+	ui bool unlockedscore, unlockedextras;
+	ui bool scoredone;
+	ui bool canprogress;
+	ui int prevscore;
+	ui int finalscore; //prevent extra score from being calculated after death.
+	ui float exp1, exp2, exp3, exp4, lvl1, lvl2, lvlover, lvlmax, lvlguess;
+	ui double scoremult;
+	
+	//from newgamemenu
+	ui Array<String> filedata, playerpool, playerlock, levelpool, levellock;
+	ui bool getgamedata;
+	
+	//for new game fade out
+	ui uint newgametimer;
+	ui bool newgamed;
+
+	override void OnRegister()
+	{
+		array<string> swagdata;
+		array<string> lockeditems, unlockeditems;
+	
+		int ThisLump = Wads.FindLump("DISWAG", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISWAG", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(swagdata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISWAG", ThisLump + 1, 1);
+		}
+
+		//calculate max swag level and predict player's current swag level
+		cvar maxswag = cvar.findcvar("di_swaglevel_max");
+		int maxswag_int = 0;
+		cvar swagguess = cvar.findcvar("di_swaglevel_predicted");
+		int swagguess_int = 0;
+		foreach(swag : swagdata)
+		{
+			if (swag.Left(2) == ">>") {continue;}
+			string realline = swag.Left(swag.IndexOf(";"));
+			array<string> curline;
+			realline.split(curline, " ");
+			if (curline.size() != 2) {ThrowAbortException("DISWAG Error: Expected 2 arguments, found %d in '%s'.", curline.size(), swag);}
+
+			cvar swagcvar = cvar.findcvar(curline[1]); //get the actual item cvar
+			if (!swagcvar) {ThrowAbortException("DISWAG Error: Invalid CVar detected: '%s'.", curline[1]);} //check if cvar exists
+			else 
+			{
+				++maxswag_int; //calculate max swag level.
+				if (swagcvar.GetBool()) {++swagguess_int;} //calculate predicted player level.
+			}
+		}
+		maxswag.setint(maxswag_int);
+		swagguess.setint(swagguess_int);
+
+		cvar curswag = cvar.findcvar("di_swaglevel");
+		int curswag_int = curswag.getint();
+		cvar overswag = cvar.findcvar("di_swaglevel_over");
+		int overswag_int = overswag.getint();
+		if (curswag_int < swagguess_int) //current swag level does not match predicted level, adjust current level to match prediction.
+		{
+			console.printf("\cgWARNING: Swag Level was lower than expected. (Current: %d, Expected: %d)\n\cgIncreasing current level to match prediction.", curswag_int, swagguess_int);
+			int swagdiff = swagguess_int - curswag_int;
+			curswag_int += swagdiff; //add prediction to current level.
+			overswag_int -= swagdiff; //remove prediction from overlevels.
+			if (overswag_int < 0) {overswag_int = 0;}
+		}
+		else if (curswag_int > swagguess_int)
+		{
+			console.printf("\cgWARNING: Swag Level was higher than expected. (Current: %d, Expected: %d)\n\cgTransferring extra levels to overlevels to match prediction.", curswag_int, swagguess_int);
+			//inverse of above, basically.
+			int swagdiff = curswag_int - swagguess_int;
+			curswag_int -= swagdiff;
+			overswag_int += swagdiff;
+		}
+		curswag.setint(curswag_int);
+		overswag.setint(overswag_int);
+	}
+	
+	override void InterfaceProcess(ConsoleEvent e)
+	{
+		if (e.Name == "newwave_ui")
+		{
+			wavenum = e.Args[0];
+		}
+	}
+
+	override void UITick()
+	{	
+		if (!getgamedata) 
+		{
+			GetDIGAMEData();
+			getgamedata = true;
+		}
+		
+		plr = DI_PlayerBase(players[consoleplayer].mo);
+		if (!plr) {return;}
+		canprogress = plr.canprogress;
+		if (plr.Health <= 0) {IsDead = true;}
+		else {IsDead = false;}
+		
+		if (!newgamed && (Level.MapName != 'TITLEMAP')) {newgametimer = 13; newgamed = true;}
+		if ((newgametimer > 0) && (plr.IsFrozen() == false)) {--newgametimer;}
+		
+		if (IsDead == true)
+		{
+			if (msgrng == 0)
+			{
+				msgrng = random[die](0, 200);
+			}
+			
+			if ((DeathTimer == 0) && (di_musicloaded == true))
+			{
+				SendNetworkEvent("DI_ChangeMusic deathsong", 1);
+			}
+			
+			if (DeathFade < 1.0) {DeathFade += 0.01;}
+			//else {DeathFade2 += 0.04;}
+			++DeathTimer;
+			if ((DeathTimer > 105) && (diedmove < 4.0))
+			{
+				float newmove = 0.02 + ((4.0 - diedmove) / 35);
+				diedmove += newmove;
+			}
+			else if (diedmove > 4.0) {diedmove = 4.0;}
+			else if (diedmove < 2.0) {diedmove = 2.0;}
+			
+			if (canprogress)
+			{
+				if (scoredone && !unlockedscore)
+				{
+					DoScoreUnlocks();
+					unlockedscore = true;
+				}
+				else if (scoredone && unlockedscore && !unlockedextras)
+				{
+					DoExtraUnlocks();
+					unlockedextras = true;
+				}
+			}
+		}
+		else
+		{
+			DeathFade = 0.0;
+			DeathTimer = 0;
+			diedmove = 2.0;
+		}
+	}
+	
+	ui virtual void DoScoreUnlocks()
+	{
+		console.printf("%s", "Doing Score Unlocks...");
+	
+		Array<string> unlockdata;
+		
+		int ThisLump = Wads.FindLump("DISCORE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DISCORE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(unlockdata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DISCORE", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < unlockdata.Size(); i++)
+		{
+			if (unlockdata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (unlockdata[i].Length() < 3) {continue;}
+			unlockdata[i] = unlockdata[i].Left(unlockdata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			unlockdata[i].Split(currentline, " ");
+			if (currentline.Size() != 4) {continue;}
+			
+			if ((currentline[0] != Level.MapName) && (currentline[0] != "*")) {continue;}
+			if ((currentline[1] != plr.GetClassName()) && (currentline[1] != "*")) {continue;}
+			if (currentline[2].ToInt(10) > finalscore) {continue;}
+			
+			EventHandler.SendInterfaceEvent(consoleplayer, string.format("diunlock_%s", currentline[3]));
+		}
+	}
+	
+	ui virtual void DoExtraUnlocks()
+	{
+		//hard-coded here for ease of use, but can easily be replicated by modders by simply doing this a single tic after the player is dead.
+		if (!di_unlock_mod_doubletrouble && di_swaglevel >= 5)
+		{
+			//console.printf("%s", "DOING DOUBLE TROUBLE UNLOCK NOW");
+			EventHandler.SendInterfaceEvent(consoleplayer, "diunlock_di_unlock_mod_doubletrouble");
+		}
+	}
+	
+	ui virtual void GetDIGAMEData()
+	{
+		//copy/pasted this function from newgamemenu.
+	
+		//clear file data and item pool. in case this function gets ran multiple times. (like for example if this shop were to change item pools mid-game.)
+		filedata.Clear();
+		playerpool.Clear();
+		playerlock.Clear();
+	
+		int ThisLump = Wads.FindLump("DIGAME", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIGAME", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIGAME", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			Array<String> currentline;
+			filedata[i] = filedata[i].MakeLower();
+			filedata[i].Split(currentline, ", ", TOK_SKIPEMPTY);
+			if (currentline[0] == "add")
+			{
+				if ((currentline[1] == "player") && (currentline[2]))
+				{
+					playerpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {playerlock.Push(currentline[3]);}
+					else {playerlock.Push("u");}
+					//console.printf("%s", currentline[2]);
+				}
+				else if ((currentline[1] == "level") && (currentline[2]))
+				{
+					levelpool.Push(currentline[2]);
+					if (currentline.Size() == 4) {levellock.Push(currentline[3]);}
+					else {levellock.Push("u");}
+					//console.printf("%s", currentline[2]);
+				}
+			}
+			else if (currentline[0] == "delete")
+			{
+				console.printf("%s", "'delete' feature not implemented yet.");
+			}
+			else {console.printf("failed: %s", currentline[0]);}
+		}
+	}
+	
+	ui virtual int GetHighScore(string cvarstring = "di_highscore")
+	{
+		if (!plr) {return 999999999;}
+		cvar highscores = cvar.findcvar(cvarstring);
+		if (!highscores) 
+		{
+			console.printf("%s", "\cginvalid cvar used in GetHighscore.");
+			return 999999998;
+		}
+		string fullscores = highscores.getstring();
+		array<string> scorelines;
+		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
+		if (scorelines.size() < 1) {return 0;}
+		string playername = plr.GetClassName();
+		int currentscore;
+		for (int i = 0; i < scorelines.size(); ++i)
+		{
+			array<string> currentline;
+			scorelines[i].split(currentline, " ", TOK_SKIPEMPTY);
+			if (currentline.size() != 3) 
+			{
+				//something has gone terribly wrong!
+				console.printf("%s", "\caWARNING: Junk data was detected in the highscore CVAR!");
+				continue;
+			}
+			else
+			{
+				if (currentline[0] != playername) {continue;}
+				if (currentline[1] != Level.MapName) {continue;}
+				int lsize = currentline[2].Length();
+				if (currentline[2].Left(1) == "E")
+				{
+					string newcheck = currentline[2].Mid(1, lsize - 1);
+					if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+				else 
+				{
+					string newcheck = currentline[2].Mid(0);
+					if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+			}
+		}
+		return currentscore;
+	}
+	
+	ui virtual void UpdateHighScore(int newscore, bool iseasy, string cvarstring = "di_highscore")
+	{
+		if (!plr) {return;}
+		cvar highscores = cvar.findcvar(cvarstring);
+		if (!highscores) 
+		{
+			console.printf("%s", "\cginvalid cvar used in UpdateHighscore.");
+			return;
+		}
+		string fullscores = highscores.getstring();
+		array<string> scorelines;
+		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
+		string playername = plr.GetClassName();
+		int scoreposition = -1;
+		for (int i = 0; i < scorelines.size(); ++i)
+		{
+			array<string> currentline;
+			scorelines[i].split(currentline, " ", TOK_SKIPEMPTY);
+			if (currentline.size() != 3) 
+			{
+				//something has gone terribly wrong!
+				console.printf("%s", "\caWARNING: Junk data was detected in the highscore CVAR!");
+				continue;
+			}
+			else
+			{
+				if (currentline[0] != playername) {continue;}
+				if (currentline[1] != Level.MapName) {continue;}
+				string easycheck = "";
+				if (skill == 0) {easycheck = "E";}
+				currentline[2] = string.format("%s%d", easycheck, newscore);
+				scorelines[i] = string.format("%s %s %s", currentline[0], currentline[1], currentline[2]);
+				scoreposition = i;
+			}
+		}
+		if (scoreposition == -1)
+		{
+			string easycheck = "";
+			if (skill == 0) {easycheck = "E";}
+			string scoreinput = string.format("%s %s %s%d", playername, Level.MapName, easycheck, newscore);
+			scorelines.push(scoreinput);
+		}
+		
+		string newcvar = "";
+		for (int i = 0; i < scorelines.size(); ++i)
+		{
+			newcvar.AppendFormat("%s,", scorelines[i]);
+		}
+		highscores.setstring(newcvar);
+	}
+	
+	ui virtual int GetScoreBonus(name findplayer = '*', name findlevel = '*')
+	{
+		//copy/pasted the gethighscore function from the newgamemenu.
+	
+		cvar highscores = cvar.findcvar("di_highscore");
+		string fullscores = highscores.getstring();
+		array<string> scorelines;
+		fullscores.split(scorelines, ",", TOK_SKIPEMPTY);
+		if (scorelines.size() < 1) {return 0;}
+		int currentscore;
+		bool combinescore;
+		for (int i = 0; i < scorelines.size(); ++i)
+		{
+			array<string> currentline;
+			scorelines[i].split(currentline, " ", TOK_SKIPEMPTY);
+			if (currentline.size() != 3) 
+			{
+				//something has gone terribly wrong!
+				console.printf("%s", "\caWARNING: Junk data was detected in the highscore CVAR!");
+				continue;
+			}
+			else
+			{
+				let levelfinder = currentline[1].MakeLower();
+				let playerfinder = string.format("%s", currentline[0].MakeLower());
+				if ((findplayer != "*") && (currentline[0] != findplayer)) {continue;}
+				if ((findlevel != "*") && (levelfinder != findlevel)) {continue;}
+				if (levelpool.Find(levelfinder) == levelpool.Size()) {console.printf("invalid level %s found, skipping score.", levelfinder); continue;}
+				if (playerpool.Find(playerfinder) == playerpool.Size()) {console.printf("invalid player %s found, skipping score.", playerfinder); continue;}
+				
+				if (findlevel == "*") {combinescore = true;}
+				int lsize = currentline[2].Length();
+				if (currentline[2].Left(1) == "E")
+				{
+					string newcheck = currentline[2].Mid(1, lsize - 1);
+					if (combinescore) {currentscore += newcheck.ToInt(10);}
+					else if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+				else 
+				{
+					string newcheck = currentline[2];
+					if (combinescore) {currentscore += newcheck.ToInt(10);}
+					else if (newcheck.ToInt(10) > currentscore) {currentscore = newcheck.ToInt(10);}
+				}
+			}
+		}
+		return currentscore / 1000;
+	}
+	
+	ui virtual void UpdateSwag(int newscore)
+	{
+		if (!plr) {return;}
+		cvar swaglevel = cvar.findcvar("di_swaglevel");
+		cvar experience = cvar.findcvar("di_experience");
+		cvar overlevel = cvar.findcvar("di_swaglevel_over");
+		int curexp = experience.getint();
+		int curlvl = swaglevel.getint();
+		int overlvl = overlevel.getint();
+		
+		int newexp = newscore;
+		int bonusexp = (newscore - prevscore); //give +100% exp for high score.
+		
+		//insert DIUNLOCK cvar search here
+		newexp *= 1.0 + (0.01 * (GetUnlockNum() + GetScoreBonus()));
+		if (bonusexp > 0) {newexp += bonusexp;}
+		else {bonusexp = 0;}
+		
+		curexp += newexp;
+		int expmax = 2500 * (1 + curlvl + overlvl);
+		int newlvl = 0;
+		while (curexp >= expmax)
+		{
+			int addlvl = 1;
+			if (overlvl > 0) 
+			{
+				//if overlevel detected, do 2 level increases to compensate.
+				++addlvl;
+				--overlvl;
+			}
+			curlvl += addlvl;
+			newlvl += addlvl;
+			curexp -= expmax;
+			expmax = 2500 * (1 + curlvl + overlvl);
+		}
+		
+		exp1 = curexp;
+		exp2 = expmax;
+		exp3 = newexp - bonusexp;
+		exp4 = bonusexp;
+		lvl1 = curlvl;
+		lvl2 = newlvl;
+		lvlover = overlvl;
+		//console.printf("\cnExp: %d/%d \cf(+%d)", curexp, expmax, newexp);
+		//console.printf("\ctSwag Lvl: %d", curlvl);
+		//if (newlvl == 1) {console.printf("\cfYou gained %d swag level this game.", newlvl);}
+		//else if (newlvl > 1) {console.printf("\cfYou gained %d swag levels this game.", newlvl);}
+		swaglevel.setint(curlvl);
+		experience.setint(curexp);
+		overlevel.setint(overlvl);
+	}
+	
+	virtual clearscope int GetUnlockNum()
+	{
+		int returnnum;
+		array<string> filedata;
+	
+		int ThisLump = Wads.FindLump("DIUNLOCK", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIUNLOCK", ThisLump + 1, 1);
+		}
+		
+		for (int i = 0; i < filedata.Size(); ++i)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //comment
+			if (filedata[i].Length() < 3) {continue;} //too small
+			int linesize = filedata[i].IndexOf(";"); //end of line
+			filedata[i] = filedata[i].Left(linesize); //only use data left of the ;
+			array<string> curline;
+			filedata[i].Split(curline, " ");
+			if ((curline.Size() < 3) || (curline.Size() > 5)) {continue;} //each valid line must contain 3 to 5 arguments.
+			if (curline[0].Left(1) == "!") {continue;}
+			
+			let unlockcvar = cvar.getcvar(curline[0]);
+			if (unlockcvar.getbool() == true) {++returnnum;}
+		}
+		
+		return returnnum;
+	}
+	
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (plr && (IsDead == true))
+		{
+			string spacing = "\n\n\n";
+			let startx = Screen.GetWidth() / 3;
+			let startx2 = startx * 2;
+			let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
+			Screen.DrawTexture(blackscreen, false,
+				0, 0,
+				DTA_DestWidth, Screen.GetWidth(),
+				DTA_DestHeight, Screen.GetHeight(),
+				DTA_Alpha, DeathFade
+			);
+			DrawStars(staralpha: 0.05 * DeathFade);
+			
+			if (!scoredone)
+			{
+				prevscore = GetHighScore();
+				finalscore = plr.GetScore();
+				scoremult = plr.GetScoreMult();
+				if (canprogress)
+				{
+					int prevdeaths = GetHighScore("di_playerdeaths");
+					++prevdeaths;
+					if (finalscore > prevscore)
+					{
+						bool iseasy = false;
+						if (skill == 0) {iseasy = true;}
+						UpdateHighScore(finalscore, iseasy);
+					}
+					UpdateHighScore(prevdeaths, false, "di_playerdeaths");
+					UpdateSwag(finalscore);
+					eventhandler.sendnetworkevent("swagcheck", lvl2);
+				}
+				console.printf("Current Seed: %d", plr.thebrain.curseed);
+				scoredone = true;
+			}
+			
+			if (DeathTimer > 35)
+			{
+				string died = "DEATH IS INEVITABLE";
+				if (plr.Score < 0) 
+				{
+					died = "DEBT IS INEVITABLE";
+					switch(msgrng)
+					{
+						case 1: died = "debt was inevitable";
+						case 2: died = "try going more in debt next time"; break;
+						case 3: died = "failed to repay debts"; break;
+						case 4: died = "should've bought less items"; break;
+						case 5: died = "life borrowed (permanently)"; break;
+						case 6: died = "you were used up"; break;
+						case 7: died = "pleasure doing business with you"; break;
+					}
+				}
+				else switch(msgrng)
+				{
+					case 1: died = "MEMENTO MORI"; break;
+					case 2: died = "u ded lmao"; break;
+					case 3: died = "rip bozo"; break;
+					case 4: died = "better luck next time"; break;
+					case 5: died = "unlucky"; break;
+					case 6: died = "99% of players died here"; break;
+					case 7: died = "your life has expired"; break;
+					case 8: died = "welp that didn't work"; break;
+					case 9: died = "that's gotta hurt"; break;
+					case 10: died = "the future refused to change"; break;
+					case 11: died = "have you tried not doing that"; break;
+					case 12: died = "bones removed"; break;
+					case 13: died = "just 1 more run"; break;
+					case 14: died = "cleanup on aisle 3"; break;
+					case 15: died = "press E to not die"; break;
+					case 16: died = "your death has arrived"; break;
+					case 17: died = "should've bought more items"; break;
+					case 18: died = "try spending more money"; break;
+					case 19: died = "blood removed"; break;
+					case 20: died = "organs removed"; break;
+					case 21: died = "error: soul not found"; break;
+					case 22: died = "MORTIS"; break;
+					case 23: died = ":("; break;
+					case 24: died = "death was inevitable"; break;
+				}
+				int scaley = (bigfont.GetHeight() * (CleanYFac * 1.3)) / 2;
+				Screen.DrawText(bigfont, Font.CR_BRICK,
+					(Screen.GetWidth() / 2) - ((bigfont.StringWidth(died) / 2) * (CleanXFac * 1.3)),
+					(Screen.GetHeight() / diedmove) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.3,
+					DTA_ScaleY, CleanYFac * 1.3
+				);
+			}
+			if (DeathTimer > 177)
+			{
+				string died = string.format("Level: \ck%s - %s", Level.MapName, Level.LevelName);
+				string died2 = string.format("\nCurrent Wave: \ck%d",wavenum);
+				int scaley = (48 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5
+				);
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died2) / 2) * (CleanXFac * 1.5)),
+					(Screen.GetHeight() / 2) - scaley,
+					died2,
+					DTA_ScaleX, CleanXFac * 1.5,
+					DTA_ScaleY, CleanYFac * 1.5
+				);
+			}
+			if (DeathTimer > 198)
+			{
+				string died = string.format("%sEnemies Killed: \cr%d", spacing, plr.killcounter);
+				int scaley = (32 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					startx - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
+				);
+			}
+			if (DeathTimer > 198)
+			{
+				string died = string.format("%sItems Bought: \cn%d", spacing, plr.buycounter);
+				int scaley = (32 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					startx2 - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
+				);
+			}
+			if (DeathTimer > 219)
+			{
+				spacing.appendformat("%s", "\n\n");
+				string died = string.format("%sMoney Spent: \cp$%d", spacing, plr.moneyspent);
+				int scaley = (32 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					startx - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
+				);
+			}
+			if (DeathTimer > 219)
+			{
+				int worth = plr.Score;
+				string dollar = "\cd$";
+				if (worth < 0) {dollar = "\ca-$"; worth *= -1;}
+				string died = string.format("%sCurrent Worth: %s%d", spacing, dollar, worth);
+				int scaley = (32 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					startx2 - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
+				);
+			}
+			if (DeathTimer > 240)
+			{
+				spacing.appendformat("%s", "\n\n");
+				string totalcolor = "\cf";
+				if (finalscore < 0) {totalcolor = "\ca";}
+				string died = string.format("%s%sFinal Rating: %d", spacing, totalcolor, finalscore);
+				if (scoremult != 1.0) {died.AppendFormat("\n\cw(Score Mult: %.1f%%)", scoremult * 100);}
+				int scaley = (32 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					startx - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
+				);
+			}
+			if (DeathTimer > 240)
+			{	
+				string totalcolor = "\ci";
+				string newbest = "";
+				if (finalscore > prevscore) {newbest = "\n\cv(New Best!)";}
+				string died = string.format("%s%sPrevious Score: %d%s", spacing, totalcolor, prevscore, newbest);
+				int scaley = (32 * (CleanYFac * 2)) / 2;
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					startx2 - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.0)),
+					(Screen.GetHeight() / 2) - scaley,
+					died,
+					DTA_ScaleX, CleanXFac * 1.0,
+					DTA_ScaleY, CleanYFac * 1.0
+				);
+			}
+			if (DeathTimer > 268)
+			{
+				if (canprogress)
+				{
+					string died = string.format("%s \cb%d/%d", "\ctSwag Level:", lvl1, di_swaglevel_max);
+					if (lvlover > 0)
+					{
+						died.appendformat(" \cd(+%d)", lvlover);
+					}
+					int starty = (Screen.GetHeight() * 2) / 3;
+					Screen.DrawText(smallfont, Font.CR_WHITE,
+						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
+						starty,
+						died,
+						DTA_ScaleX, CleanXFac * 1.5,
+						DTA_ScaleY, CleanYFac * 1.5
+					);
+					
+					int startx3 = (Screen.GetWidth() / 2) - (80 * CleanXFac);
+					string fill1 = "9999ea";
+					string fill2 = "000073";
+					string fill3 = "f4ef6a";
+					string fill4 = "732b00";
+					string dim1 = "404040";
+					string dim2 = "121212";
+					starty += 16 * CleanYFac;
+					Screen.Dim(dim2, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
+						164 * CleanXFac, 
+						10 * CleanYFac
+					);
+					Screen.Dim(dim1, 1.0, startx3, starty, 
+						160 * CleanXFac, 
+						6 * CleanYFac
+					);
+					
+					float remainder = ((exp2 - exp1) / exp2) * (160.0 * CleanXFac);
+					float gained = ((exp2 - (exp1 - exp3 - exp4)) / exp2) * (160.0 * CleanXFac);
+					if (remainder > (160 * CleanXFac)) {remainder = 160 * CleanXFac;}
+					if (gained > (160 * CleanXFac)) {gained = 160 * CleanXFac;}
+					
+					if (remainder > 0)
+					{
+						Screen.Dim(fill4, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
+							(162 * CleanXFac) - remainder, 
+							10 * CleanYFac
+						);
+						Screen.Dim(fill3, 1.0, startx3, starty, 
+							(160 * CleanXFac) - remainder, 
+							6 * CleanYFac
+						);
+					}
+					
+					if (gained > 0)
+					{
+						Screen.Dim(fill2, 1.0, startx3 - (2 * CleanXFac), starty - (2 * CleanYFac), 
+							(162 * CleanXFac) - gained, 
+							10 * CleanYFac
+						);
+						Screen.Dim(fill1, 1.0, startx3, starty, 
+							(160 * CleanXFac) - gained, 
+							6 * CleanYFac
+						);
+					}
+					
+					string expstring = string.format("\cnExp: \cb%d\cn/\cb%d \cf(+%d)", exp1, exp2, exp3);
+					if (exp4 > 0) {expstring.AppendFormat(" \ct(+%d BONUS)", exp4);}
+					Screen.DrawText(smallfont, Font.CR_WHITE,
+						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(expstring) / 2) * CleanXFac),
+						starty + (12 * CleanYFac),
+						expstring,
+						DTA_ScaleX, CleanXFac,
+						DTA_ScaleY, CleanYFac
+					);
+					
+					string lvlstring = "";
+					if (lvl2 >= 1)
+					{
+						lvlstring = string.format("\n\n\cfYou gained %d swag this game.", lvl2);
+						Screen.DrawText(smallfont, Font.CR_WHITE,
+							(Screen.GetWidth() / 2) - ((smallfont.StringWidth(lvlstring) / 2) * CleanXFac),
+							starty + (12 * CleanYFac),
+							lvlstring,
+							DTA_ScaleX, CleanXFac,
+							DTA_ScaleY, CleanYFac
+						);
+					}
+				}
+				else
+				{
+					string died = "\caProgression is disabled.";
+					int starty = (Screen.GetHeight() * 2) / 3;
+					Screen.DrawText(smallfont, Font.CR_WHITE,
+						(Screen.GetWidth() / 2) - ((smallfont.StringWidth(died) / 2) * (CleanXFac * 1.5)),
+						starty,
+						died,
+						DTA_ScaleX, CleanXFac * 1.5,
+						DTA_ScaleY, CleanYFac * 1.5
+					);
+				}
+			}
+			if (DeathTimer > 289)
+			{
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					0,
+					Screen.GetHeight() - (smallfont.GetHeight() * CleanYFac),
+					"Press and hold the 'Activate' key to restart the game.",
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, 0.5
+				);
+				string curseed_txt = "Current Seed: ";
+				if (di_mod_dailyrun) {curseed_txt = "\czDaily Seed: ";}
+				string curseed = string.format("%s%d", curseed_txt, plr.thebrain.curseed);
+				Screen.DrawText(smallfont, Font.CR_WHITE,
+					Screen.GetWidth() - (CleanXFac * smallfont.StringWidth(curseed)),
+					Screen.GetHeight() - (smallfont.GetHeight() * CleanYFac),
+					curseed,
+					DTA_ScaleX, CleanXFac,
+					DTA_ScaleY, CleanYFac,
+					DTA_Alpha, 0.5
+				);
+			}
+		}
+		else if (!IsDead)
+		{
+			scoredone = false;
+			
+			if (newgametimer > 0)
+			{
+				let startx = Screen.GetWidth() / 3;
+				let startx2 = startx * 2;
+				let blackscreen = TexMan.CheckForTexture("textures/box/BLACK.png");
+				Screen.DrawTexture(blackscreen, false,
+					0, 0,
+					DTA_DestWidth, Screen.GetWidth(),
+					DTA_DestHeight, Screen.GetHeight(),
+					DTA_Alpha, 0.1 * newgametimer
+				);
+			}
+		}
+	}
+}

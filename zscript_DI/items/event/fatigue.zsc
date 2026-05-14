@@ -1,0 +1,27 @@
+//zscript_DI/items/event/fatigue.zsc
+//each fresh kill this wave grants a -1% weapon speed debuff.
+
+Class DI_Fatigue : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+	}
+
+	int fatiguenum;
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && plr.JustKilled)
+		{
+			fatiguenum += 1;
+		}
+	}
+	
+	override double GiveWeaponSpeed()
+	{
+		return 0.015 * fatiguenum;
+	}
+}

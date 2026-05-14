@@ -1,0 +1,68 @@
+//zscript_DI/items/modifiers/cursed.zsc
+
+//copy/pasted the debilitated code lmao
+
+Class DI_Cursed : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+		Inventory.MaxAmount 1;
+	}
+	
+	string newdebuff, newdebuff_name, newdebuff_desc, newdebuff2, newdebuff2_name, newdebuff2_desc;
+	bool debuffsgiven, updatedesc;
+	
+	DI_QuestDebuff realdebuff, realdebuff2;
+	
+	virtual void SpawnDebuff()
+	{
+		string objective, debuff;
+		[debuff, objective] = GetSideQuest();
+		newdebuff = debuff;
+		newdebuff_name = stringtable.localize(string.format("$SHOPITEM_%s", debuff));
+		newdebuff_desc = stringtable.localize(string.format("$SHOPDESC_%s", debuff));
+		plr.GiveInventory(debuff, 1);
+		
+		[debuff, objective] = GetSideQuest();
+		newdebuff2 = debuff;
+		newdebuff2_name = stringtable.localize(string.format("$SHOPITEM_%s", debuff));
+		newdebuff2_desc = stringtable.localize(string.format("$SHOPDESC_%s", debuff));
+		plr.GiveInventory(debuff, 1);
+		
+		ACS_ScriptCall("DI_Cursed", plr.tid);
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			if (!debuffsgiven)
+			{
+				SpawnDebuff();
+				debuffsgiven = true;
+			}
+			else if (!updatedesc)
+			{
+				realdebuff = DI_QuestDebuff(plr.FindInventory(newdebuff));
+				realdebuff2 = DI_QuestDebuff(plr.FindInventory(newdebuff2));
+				if (realdebuff) {realdebuff.itemdesc = "$SHOPDESC2_EVENTDEBUFF";}
+				if (realdebuff2) {realdebuff2.itemdesc = "$SHOPDESC2_EVENTDEBUFF";}
+			}
+		}
+	}
+	
+	override void DetachFromOwner()
+	{
+		if (plr && debuffsgiven)
+		{
+			if (realdebuff) {realdebuff.itemdesc = "";}
+			if (realdebuff2) {realdebuff2.itemdesc = "";}
+			plr.TakeInventory(newdebuff, 1);
+			plr.TakeInventory(newdebuff2, 1);
+		}
+		Super.DetachFromOwner();
+	}
+}

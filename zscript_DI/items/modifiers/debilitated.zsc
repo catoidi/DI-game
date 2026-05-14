@@ -1,0 +1,59 @@
+//zscript_DI/items/modifiers/debilitated.zsc
+
+Class DI_Debilitated : DIPassiveInventory
+{
+	Default
+	{
+		DIPassiveInventory.DIHidden true;
+		Inventory.MaxAmount 1;
+	}
+	
+	string newdebuff, newdebuff_name, newdebuff_desc;
+	int debuffnum, prevdebuffnum;
+	
+	virtual void SpawnDebuff()
+	{
+		string objective, debuff;
+		if (newdebuff && (random(0, 1) != 1))
+		{
+			debuff = newdebuff;
+		}
+		else
+		{
+			[debuff, objective] = GetSideQuest();
+			newdebuff = debuff;
+			newdebuff_name = stringtable.localize(string.format("$SHOPITEM_%s", debuff));
+			newdebuff_desc = stringtable.localize(string.format("$SHOPDESC_%s", debuff));
+		}
+		
+		plr.GiveInventory(debuff, 1);
+		ACS_ScriptCall("DI_Debilitated", plr.tid);
+		++debuffnum;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (plr && (prevdebuffnum != debuffnum))
+		{
+			let realdebuff = DI_QuestDebuff(plr.FindInventory(newdebuff));
+			if (realdebuff)
+			{
+				realdebuff.itemdesc = "$SHOPDESC2_MODIFIERDEBUFF";
+				prevdebuffnum = debuffnum;
+			}
+		}
+	}
+	
+	override bool EnterWave()
+	{
+		if (!plr || !plr.thebrain || !plr.popuphandler) {return false;}
+		if (plr.score >= 0) {SpawnDebuff();} //only applies to Wave 1, as the player spawns directly in the arena.
+		return true;
+	}
+	
+	override double MultiplyFinalScore()
+	{
+		return 1.0 + (0.05 * debuffnum);
+	}
+}

@@ -15,10 +15,4 @@ class DI_PlayerFredrick : DI_PlayerBase
 		DI_PlayerBase.AutoBlacklist "StarPistol";
 		DI_PlayerBase.PermaStart "StarPistol";
 	}
-	
-	override string ScoreUnlock()
-	{
-		if (GetScore() >= 10000) {return "diunlock_di_unlock_item_starpistol";}
-		else return "";
-	}
 }

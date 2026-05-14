@@ -1,0 +1,59 @@
+//zscript_DI/ui/newgame/updater.zsc
+
+extend class DINewGameMenu
+{
+	virtual void DIUpdater()
+	{
+		cvar dailyrun_enabled = cvar.getcvar("di_unlock_mod_dailyrun");
+		cvar dailyseed = cvar.getcvar("di_dailyseed");
+		string today = SystemTime.Format("%Y%m%d", SystemTime.Now());
+		dailyseed.SetInt(today.ToInt(10));
+		
+		if (today.ToInt(10) == di_dailyrun_prevday) {console.printf("Daily Run is disabled."); dailyrun_enabled.SetBool(false);}
+		else {console.printf("Daily Run is enabled."); dailyrun_enabled.SetBool(true);}
+	
+		//console.printf("attempting to run cvar updater script...");
+		cvar prevversion = cvar.getcvar("di_version");
+		array<string> filedata;
+		double curversion;
+		
+		int ThisLump = Wads.FindLump("DIUPDATE", 0, Wads.ANYNAMESPACE);
+		int NextLump = Wads.FindLump("DIUPDATE", ThisLump + 1, Wads.ANYNAMESPACE);
+		
+		while (ThisLump != -1)
+		{
+			Wads.ReadLump(ThisLump).Split(filedata, "\n", TOK_SKIPEMPTY);
+			ThisLump = NextLump;
+			NextLump = Wads.FindLump("DIUPDATE", ThisLump + 1, 1);
+		}
+		
+		bool doupdates = false;
+		
+		for (int i = 0; i < filedata.Size(); i++)
+		{
+			if (filedata[i].Left(2) == ">>") {continue;} //dont bother reading the next lines of code if it's a comment (starts with ">>")
+			if (filedata[i].Length() < 3) {continue;}
+			filedata[i] = filedata[i].Left(filedata[i].IndexOf(";"));
+			
+			if (filedata[i].Left(8) ~== "version ")
+			{
+				curversion = filedata[i].Mid(8).ToDouble();
+				
+				//console.printf("%.1f, %.1f", curversion, prevversion.GetFloat());
+				if (curversion > prevversion.GetFloat()) {doupdates = true;}
+				else {doupdates = false;}
+			}
+			else if (doupdates)
+			{
+				cvar curcvar = cvar.findcvar(filedata[i]);
+				if (curcvar)
+				{
+					curcvar.ResetToDefault();
+					console.printf("\cvDI Update Script: Reset '%s' to default value.", filedata[i]);
+				}
+			}
+		}
+		
+		prevversion.SetFloat(curversion);
+	}
+}

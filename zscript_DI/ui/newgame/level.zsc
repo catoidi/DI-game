@@ -4,7 +4,7 @@ extend class DINewGameMenu
 {
 	virtual void CreateLevelList()
 	{
-		background.SetImage("graphics/NEWGAMEBACK.png");
+		background.SetImage("graphics/NEWGAMEBACK1.png");
 		UpdateTopLabel("choose a level");
 		
 		vector2 levelsize = (128, 96);
@@ -74,7 +74,7 @@ extend class DINewGameMenu
 			{
 				currentcvar = Cvar.GetCVAR(levellock[i]);
 				//console.printf("%s", levellock[i]);
-				if (currentcvar.GetBool() == false) {isLocked = true;}
+				if (!cheatmode && currentcvar.GetBool() == false) {isLocked = true;}
 			}
 			
 			if (isLocked == true)
@@ -94,7 +94,7 @@ extend class DINewGameMenu
 				);
 				// Add the box image element into the main frame.
 				aBoxImage.Pack (mainFrame);
-				lvlboximages.Push(aBoxImage);
+				lvllockimages.Push(aBoxImage);
 			}
 			
 			//Get the level's high score for the current player.
@@ -219,6 +219,14 @@ extend class DINewGameMenu
             boximage.Unpack();
             boximage.Destroy();
         }
+		while (lvllockimages.Size() > 0)
+		{
+			let boximage = lvllockimages[0];
+            lvllockimages.Delete(0, 1);
+
+            boximage.Unpack();
+            boximage.Destroy();
+		}
 		while (heartboximages.Size() > 0)
 		{
 			let heartbox = heartboximages[0];

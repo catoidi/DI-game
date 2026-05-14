@@ -1,0 +1,52 @@
+//zscript_DI/items/passives/speeddemon.zsc
+
+Class DI_SpeedDemon : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Speed Fiend";
+		Inventory.Icon "POW3N0";
+		Inventory.PickupMessage "Speed Fiend acquired! (+15% Player Speed, gain DMG% the faster you move, take +35% more DMG from enemies.)";
+		Inventory.MaxAmount 4;
+	}
+	
+	double totalvel;
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr && !plr.IsFrozen())
+		{
+			totalvel = 0.0075 * amount * plr.vel.length();
+		}
+	}
+	
+	override double GivePlayerSpeed()
+	{
+		if (!plr) {return 0.0;}
+		else {return 0.15 * amount;}
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 1.0;}
+		else {return 1.0 + totalvel;}
+	}
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (plr && passive)
+		{
+			newdamage *= 1.0 + (0.35 * amount);
+		}
+		Super.ModifyDamage(damage, damageType, newdamage, passive, inflictor, source, flags);
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 N -1;
+			Loop;
+	}
+}

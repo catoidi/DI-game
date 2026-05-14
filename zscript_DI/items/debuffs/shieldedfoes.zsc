@@ -1,0 +1,64 @@
+//zscript_DI/items/debuffs/shieldedfoes.zsc
+
+Class DI_QuestDebuff_ShieldedFoes : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Shielded Foes)";
+	}
+
+	override string, int GiveEnemyItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_QuestDebuff_ShieldedFoes_Item", amount;
+	}
+	
+	States
+	{
+		Spawn:
+			POW3 C -1;
+			Stop;
+	}
+}
+
+Class DI_QuestDebuff_ShieldedFoes_Item : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 9999999;
+	}
+
+	bool hasdamaged;
+	
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (owner && passive && source && (source != owner) && (damage >= 1)) 
+		{
+			newdamage *= 1.0 - ((1.0 * amount) / (3.0 + amount));
+			if (newdamage < 1) {newdamage = 1;}
+			hasdamaged = true;
+		}
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (!Level.IsFrozen() && owner)
+		{
+			if (hasdamaged)
+			{
+				SpawnConfetti(5 * owner.countinv(self.getclassname()));
+				owner.TakeInventory(self.GetClassName(), 999999);
+			}
+		}
+	}
+	
+	virtual void SpawnConfetti(int connum)
+	{
+		for (int i = 0; i < connum; ++i)
+		{
+			owner.A_SpawnParticle(Color(107, 233, 238), 0, 35, 12, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, owner.height / 2), random(-4, 4), random(-4, 4), random(-2, 2), 0, 0, 0.33);
+		}
+	}
+}

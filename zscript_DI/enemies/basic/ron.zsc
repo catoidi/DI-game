@@ -5,9 +5,10 @@ Class Ron : DI_Monster
 	Default
 	{
 		Speed 5;
-		Health 50;
+		Health 500;
 		Radius 16;
 		Height 60;
+		Mass 1600;
 		//Species "Ron";
 		BloodColor "Blue";
 		DamageFactor "Poison", 1.2;
@@ -51,11 +52,13 @@ CLASS Ron_Bullet : DI_Bullet
 
 Class Ron2 : Ron
 {
+	mixin DI_FiendishMixin;
+
 	Default
 	{
-		Mass 35;
+		Mass 800;
 		Speed 10;
-		Health 150;
+		Health 1500;
 		Scale 1.25;
 		Radius 20;
 		Height 75;
@@ -85,7 +88,11 @@ Class Ron2 : Ron
 			#### FFGG 2 A_Chase();
 			Loop;
 		Missile:
-			#### HHH 5 A_DIScale(-0.05, 0.05);
+			#### HHH 5 
+			{
+				A_FaceTarget();
+				A_DIScale(-0.05, 0.05);
+			}
 			#### I 3 BRIGHT A_DIRon2Bullet();
 			#### H 4 A_DIScale(-0.075, 0.075);
 			#### I 3 BRIGHT A_DIRon2Bullet();
@@ -102,7 +109,7 @@ Class Ron2_Bullet : Ron_Bullet
 {
 	Default
 	{
-		DamageFunction (12);
+		DamageFunction (120);
 		Radius 15;
 		Height 30;
 		Scale 1.5;

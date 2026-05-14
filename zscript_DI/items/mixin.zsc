@@ -2,16 +2,97 @@
 
 mixin class DI_ConsumableMixin
 {
-	bool DIUsed(void)
+	DI_PlayerBase plr;
+
+	bool dopermacheck, blockinwave, blockinshop, isconsumable, forceblockuse, fakedeplete;
+	uint cooldowntics, currentcooldown;
+	
+	property FakeDeplete : fakedeplete;
+	property DoPermaCheck : dopermacheck;
+	property BlockInWave : blockinwave;
+	property BlockInShop : blockinshop;
+	property IsConsumable : isconsumable;
+	property CooldownTics : cooldowntics;
+	
+	void DIItemConsumed(void)
 	{
 		//allows eventhandlers to track consumable item usage.
 		string command = string.format("%s", "diplayeritemused ");
 		EventHandler.SendNetworkEvent(command);
-		return true;
+	}
+	
+	private bool ConsumableChecks(bool pickup)
+	{
+		if (forceblockuse) {console.printf(ForceBlockString()); return false;}
+		bool inwave = ACS_ScriptCall("DICheckWaveProgress");
+		if (inwave && blockinwave) {console.printf(StringTable.Localize("$DI_ITEM_BLOCKWAVE")); return false;}
+		if (!inwave && blockinshop) {console.printf(StringTable.Localize("$DI_ITEM_BLOCKSHOP")); return false;}
+		if (currentcooldown > 0) {console.printf(StringTable.Localize("$DI_ITEM_COOLDOWN")); return false;}
+		bool used = DIUse(pickup);
+		if (used && plr && plr.wpn)
+		{
+			if (isconsumable) {DIItemConsumed();}
+			currentcooldown = cooldowntics * plr.wpn.item_cooldown;
+		}
+		return used;
+	}
+	
+	virtual bool DIUse(bool pickup) {return true;}
+	
+	virtual string ForceBlockString() {return StringTable.Localize("$DI_ITEM_FORCEBLOCK");}
+	
+	override void AttachToOwner(Actor other)
+	{
+		if (other is "DI_PlayerBase")
+		{
+			plr = DI_PlayerBase(other);
+		}
+		
+		Super.AttachToOwner(other);
+	}
+	
+	clearscope bool PermaCheck()
+	{
+		return (plr && (plr.GetPermaItemAmount(self.GetClassName()) > 0) && di_depletedperma);
+	}
+	
+	override void DepleteOrDestroy()
+	{
+		if (PermaCheck()) {bKEEPDEPLETED = true;}
+		Super.DepleteOrDestroy();
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (plr)
+		{
+			if (!plr.IsFrozen() && (currentcooldown > 0)) {--currentcooldown;}
+			if (fakedeplete) 
+			{
+				bKEEPDEPLETED = true;
+				if ((amount < 1) && !PermaCheck()) 
+				{
+					bINVBAR = false;
+					//if (plr.InvSel == self) {plr.InvSel = null;}
+				}
+				else {bINVBAR = true;}
+			}
+		}
+		
 	}
 	
 	default
 	{
+		Self.IsConsumable true; //Is considered a "Consumable" item. Used for certain Passive effects like "Consumer".
+		Self.DoPermaCheck true; //Allow this item to remain in the player's hotbar even when depleted if the item is considered "Permanent".
+		Self.FakeDeplete true; //Prevent the item from being removed on depletion but will not appear on the hotbar, unless PermaCheck is true and the player has a permanent copy of the item.
+		Self.BlockInWave false; //Player cannot use this item while a wave is active.
+		Self.BlockInShop false; //Player cannot use this item while not in a wave.
+		Self.CooldownTics 35; //Delay in tics before player is allowed to use item again.
+		+INVENTORY.INVBAR; //If FakeDeplete is enabled, this flag will be toggled automatically.
+		+INVENTORY.KEEPDEPLETED; //Required for FakeDeplete and DoPermaCheck to work properly. 
 		+BRIGHT;
 		+FLOATBOB;
 	}

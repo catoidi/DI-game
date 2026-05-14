@@ -1,0 +1,25 @@
+//zscript_DI/items/passives/gunslinger.zsc
+
+Class DI_Gunslinger : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Gunslinger";
+		Inventory.Icon "POWRK0";
+		Inventory.PickupMessage "Gunslinger Acquired! (Gain +0.9 Base DMG for every extra weapon you own.)";
+		Inventory.MaxAmount 3;
+	}
+	
+	override int GiveBaseDamage()
+	{
+		if (!plr) {return 0;}
+		return 9 * (plr.weaponnum - 1) * amount;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR K -1;
+			Stop;
+	}
+}

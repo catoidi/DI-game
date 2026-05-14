@@ -4,8 +4,6 @@ OptionMenu "DIGraphics"
 {
 	//combination of Display, Hardware, and Post Processing options.
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "Graphics Options"
 
 	Submenu "$DSPLYMNU_GLOPT", 			"DIHardware"
@@ -41,25 +39,17 @@ OptionMenu "DIGraphics"
 	Tooltip "Higher settings will give the shadowmaps smoother edges."
 	StaticText ""
 	StaticText "DI-specific Options", "Purple"
-	Option "Blood/Casing Lifetime", "di_floortic", "bloodtic"
-	Tooltip "Controls how long blood and bullet casings will stay on the ground before despawning.\n\nCan potentially have a large impact on performance.\n\nChanging this setting only affects future blood/casings."
+	Slider "Max Floor Decals", "di_floordecals", 250, 5000, 250, 0
+	Tooltip "Controls how many blood, gibs, and bullet casings will stay on the ground before despawning.\n\nCan potentially have a large impact on performance."
 	Option "Projectile Lights", "di_fancylight", onoff
 	Tooltip "Enables dynamic lights for enemy projectiles.\n\nCan make spotting enemy attacks easier, but can also reduce performance."
-}
-
-OptionValue "bloodtic"
-{
-	35, "1 second"
-	1050, "30 seconds"
-	4200, "2 minutes"
-	21000, "10 minutes (Not Recommended)"
+	Option "Box Shadows", "di_enemyshadow", onoff
+	Tooltip "When enabled, replaces every enemy's default sprite shadows with a 3d square shadow, similar to the one below the player. Can help determine enemy hitbox size and the direction they're facing."
 }
 
 OptionMenu "DIVideo"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "Video Options"
 	
 	Option "$VIDMNU_PREFERBACKEND",		"vid_preferbackend", "PreferBackend"
@@ -72,7 +62,9 @@ OptionMenu "DIVideo"
 	}
 	StaticText " "
 	Option "$DSPLYMNU_VSYNC",					"vid_vsync", "OnOff"
+	Tooltip "Locks the framerate to your display's refresh rate, removing potential screen tearing, but can increase input latency."
 	Option "$VIDMNU_MAXFPS",					"vid_maxfps", "MaxFps"
+	Tooltip "The engine always runs at 35 ticks per second, and interpolates the movements of you and objects at higher framerates."
 	StaticText " "
 	Tooltip ""
 	Option "$VIDMNU_SCALEMODE",			"vid_scalemode", "ScaleModes"
@@ -91,8 +83,6 @@ OptionMenu "DIVideo"
 OptionMenu "DIHardware"
 {
 	class "DITF_TooltipOptionMenu"
-	TooltipAppearance "", "gold", "TFTTBG"
-	TooltipGeometry 1.0, 0.8, 0.33, -1, -1, 1.0
 	Title "$GLMNU_TITLE"
 	StaticText "$GLMNU_POSTPROCESS", "Purple"
 	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"
@@ -100,9 +90,9 @@ OptionMenu "DIHardware"
 	Option "$GLPREFMNU_SSAO",		 			gl_ssao,						"SSAOModes"
 	Tooltip "Adds a dark shadow effect to the edges of walls.\n\nThis will impact performance."
 	Option "$GLPREFMNU_FXAA",		 			gl_fxaa,						"FXAAQuality"
-	Tooltip "A 'fast' form of anti-aliasing.\n\nCan degrade the image quality."
+	Tooltip "A 'fast' form of anti-aliasing.\n\nPerformance impact is low, but it might degrade the image quality."
 	Option "$GLPREFMNU_MULTISAMPLE", 			gl_multisample,					"Multisample"
-	Tooltip "A more complex form of anti-aliasing.\n\nThis will massively impact performance."
+	Tooltip "An anti-aliasing method that works by rendering level geometry at a higher resolution.\n\nThis can massively impact performance."
 	Option "$GLPREFMNU_DITHER",		 			gl_dither_bpc,					"DitherModes"
 	Tooltip "Reduces light banding by adding smooth transitions between different colors."
 	StaticText " "

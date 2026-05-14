@@ -2,6 +2,8 @@
 
 Class DI_BonusArmor : DIPassiveInventory
 {
+	//handled within the loot.zsc portion of the main eventhandler.
+
 	Default
 	{
 		Tag "Bonus Armor";
@@ -18,21 +20,25 @@ Class DI_BonusArmor : DIPassiveInventory
 	}
 }
 
-Class DI_BonusArmorPickup : BasicArmorBonus
-{
-	mixin DI_ActorMixin;
-	
+Class DI_BonusArmorPickup : DI_ArmorPickup
+{	
 	Default
 	{
 		Radius 20;
 		Height 16;
 		Inventory.PickupMessage "+2 Armor";
 		Inventory.Icon "ARMOE0";
-		Armor.SavePercent 25;
-		Armor.MaxSaveAmount 100;
-		Armor.SaveAmount 2;
+		DI_ArmorPickup.GiveDurability 20;
+		DI_ArmorPickup.MaxArmor 2.0;
 		+BRIGHT;
 		+FLOATBOB;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		ChangeTID(7499);
 	}
 	
 	States

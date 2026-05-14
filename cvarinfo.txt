@@ -1,39 +1,95 @@
 //DI
 server bool di_fancylight = true; //enemy projectiles emit light, disable to save performance.
-server int di_floortic = 1050; //controls how long blood/casings are left on the ground. default is 30 seconds.
+server bool di_enemyshadow = true; //3d enemy shadows.
+//server int di_floortic = 1050; //controls how long blood/casings are left on the ground. default is 30 seconds.
+server int di_floordecals = 2000; //controls the max amount of blood/casings allowed to exist at once.
 server bool di_testcvar = true; //test cvar pls ignore
+server int di_testint = 0;
 server bool di_autosave = false; //game will save at the end of every wave (not recommended)
+server noarchive bool di_musicloaded = false; //this cvar is set to true if the di-music addon is loaded.
+server float di_version = "0"; //used to check what the last version of DI you played.
+server noarchive int di_randomseed = 0; //controls the outcome of certain RNG events. if set to 0, gets changed to something else.
+server noarchive int di_dailyseed = 0;
 
 //DI menu options
 user bool di_menu_dosave = false; //enable save/load options on main menu.
 user bool di_menu_gzdoom = false; //options button jumps straight to gzdoom options instead of DI options.
 user bool di_menu_asktutorial = false; //check if the player has been asked about the tutorial yet.
+server noarchive bool di_menu_forcelock = false; //use this when using difficulty modifiers that affect cvars like "di_unlock_cheat".
+user noarchive int di_menu_current_plr = 0; //currently selected player. remembers the selection even after closing/reopening the menu.
+user noarchive int di_menu_current_lvl = 0; //same as above, but for level.
+user noarchive int di_menu_current_skl = 1; //same as above, but for skill.
+user noarchive int di_menu_current_ep = 0; //same as above, but for episode. (not implemented yet.)
+server noarchive cheat float di_expmult = 1.0;
+
+//Difficulty Modifiers
+server noarchive bool di_mod_dailyrun = false; //Enables the "Daily Run" mode.
+server cheat bool di_unlock_mod_dailyrun = true;
+server cheat int di_dailyrun_prevday = 0; //tracks the last daily seed that was played. prevents you from playing the same run multiple times in one day.
+server cheat int di_dailyrun_played = 0; //tracks how many times you've died in a daily run.
+server noarchive bool di_mod_doubletrouble = false; //Enables the "Double Trouble" mode.
+server cheat bool di_unlock_mod_doubletrouble = false; //grants the player access to the Double Trouble difficulty modifier.
+server noarchive bool di_mod_debilitated = false; //yea.
+server cheat bool di_unlock_mod_debilitated = false; //yea.
+server noarchive bool di_mod_weaponized = false;
+server cheat bool di_unlock_mod_weaponized = false;
+server noarchive bool di_mod_starterpack = false;
+server cheat bool di_unlock_mod_starterpack = false;
+server noarchive bool di_mod_blindbox = false;
+server cheat bool di_unlock_mod_blindbox = false;
+server cheat int di_chestpurchases = 0;
 
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.
-server cheat bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
+server noarchive bool di_unlock_cheat = false; //cheat mode, enables all "di_unlock" cvars.
+server noarchive bool di_progression = true; //enables game progression.
+server bool di_unlock_showdefaults = false; //shows the default items in the unlocks menu.
 server cheat bool di_unlock_unfair = false; //unlocks "unfair" difficulty. unlocked through beating Wave 25 in Hard Mode.
 server cheat bool di_unlock_lvl_di01 = false; //unlocks Level 1. unlocked through playing/skipping the tutorial.
 server cheat bool di_unlock_lvl_di02 = false; //unlocks Level 2. unlocked through beating Wave 10 on Level 1.
 server cheat bool di_unlock_lvl_di03 = false; //unlocks Level 3. unlocked through beating Wave 10 on Level 2.
 server cheat bool di_unlock_lvl_di04 = false; //unlocks Level 4. unlocked through beating Wave 10 on Level 3.
+server cheat bool di_unlock_lvl_bonus01 = false;
 server cheat bool di_unlock_plr_box = false; //unlocks the Box Player. unlocked through purchasing 2 Box Party weapons at once.
 server cheat bool di_unlock_plr_burger = false; //unlocks the Burger Player.
 server noarchive cheat int di_burgercount = 0; //you must consume 5 burger in 1 game to unlock burger.
-user cheat string di_highscore = ""; //stores every high score for every level for every character.
+server cheat bool di_unlock_plr_hammer = false;
+server cheat string di_highscore = ""; //stores every high score for every level for every character.
+server cheat string di_playerdeaths = ""; //stores total number of deaths for every character.
+server cheat string di_playerkills = ""; //stores every kill the player got with every weapon.
+server cheat int di_experience = 0; //goes up based on your final score. high scores will give triple experience.
+server cheat int di_swaglevel = 0; //uses final scoring to gradually unlock new items for player over time.
+server cheat int di_swaglevel_over = 0; //how many levels the player has gained over the current max level.
+server noarchive cheat int di_swaglevel_max = 0; //autogenerated at runtime. used for calculating overleveling.
+server noarchive cheat int di_swaglevel_predicted = 0; //autogenerated at runtime. used to fix discrepancies between current levels and number of items unlocked.
 
+//Player Score Unlocks
+server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
+server cheat bool di_unlock_item_minifred = false; //LVL 2 Fredrick 10k points
+server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
+server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
+server cheat bool di_unlock_item_cheeseartifact = false; //LVL 2 Burger 10k points
+server cheat bool di_unlock_item_sledgehammer = false; //10k points as Hamill on Level 2.
+server cheat bool di_unlock_item_whoppeecushion = false; //10k points as Hamill on Level 1.
+server cheat bool di_unlock_item_banana = false; //10k points, box, level 1.
+server cheat bool di_unlock_item_bloodmoney = false; //10k points, fred, level 3.
+server cheat bool di_unlock_item_sesameseeds = false; //10k points, burger, level 3.
+server cheat bool di_unlock_item_beachball = false; //10k points, box, level 3.
+server cheat bool di_unlock_item_spring = false; //10k points, hamill, level 3.
+server cheat bool di_unlock_item_equalizer = false; //10k points, fred, bonus 1.
+server cheat bool di_unlock_item_socialsecurity = false; //10k points, burger, bonus 1.
+server cheat bool di_unlock_item_stopwatch = false; //10k points, box, bonus 1.
+server cheat bool di_unlock_item_sawblade = false; //10k points, hamill, bonus 1.
 //DI shop item unlocks (LEVEL 1)
 user bool di_unlock_tutorial = false; //do a menu tutorial the first time you open it.
 user bool di_unlock_morebuttons = true; //show 60 buttons at once instead of 15.
-server cheat bool di_unlock_item_starpistol = false; //unlock star pistol by reaching 10k points as Fredrick.
-server cheat bool di_unlock_item_glowstick = false; //unlock glowstick by reaching 10k points as Box Partyer.
-server cheat bool di_unlock_item_cheesegun = false; //unlock cheese gun by reaching 10k points as Burger.
 server cheat int di_fredcount = 0; //how many freds you killed.
 server cheat bool di_unlock_item_fred1 = false; //unlock the bonus armor item by getting 100 fred kills.
 server cheat bool di_unlock_item_fred2 = false; //unlock the firestarter item by getting 300 fred kills.
 server cheat bool di_unlock_item_fred3 = false; //unlock the last stand item by getting 600 fred kills.
 server cheat bool di_unlock_item_fred4 = false; //unlock the farsight item by getting 1000 fred kills.
-server cheat bool di_unlock_item_combobase = false; //unlock 30 shop items.
+server cheat bool di_unlock_item_starfruit = false; //unlock 30 shop items.
+server cheat bool di_unlock_item_explosiverounds = false; //unlock 45 shop items.
 server cheat bool di_unlock_item_combomult = false; //unlock the combo dmg mult item by getting +100% DMG Mult in 1 run.
 server cheat int di_debtwaves = 0; //how many waves you've completed while in debt.
 server cheat bool di_unlock_item_creditfraud = false; //unlock the credit fraud item by completing 5 rounds while in debt.
@@ -58,6 +114,7 @@ server cheat bool di_unlock_item_deathmark = false; //die 10 times to unlock thi
 server cheat bool di_unlock_item_acidblood = false; //die 20 times to unlock this.
 server cheat bool di_unlock_item_painstar = false; //die 30 times to unlock this.
 server cheat bool di_unlock_item_consumer = false; //consume 50 consumables.
+server cheat bool di_unlock_item_creditfreeze = false; //reach a 5x combo to unlock this.
 server cheat bool di_unlock_item_9leafclover = false; //reach a 9x combo to unlock this.
 server cheat bool di_unlock_item_dice = false; //reroll the shop 25 times.
 server cheat int di_rerollshop = 0; //how many times the shop has been rerolled.
@@ -67,22 +124,71 @@ server cheat bool di_unlock_item_toaster = false; //kill 25 THE HAMMERs.
 server cheat int di_hammercount = 0; //number of THE HAMMERs killed.
 server cheat bool di_unlock_item_bloodyheart = false; //get 10 tomahawk kills to unlock.
 server cheat int di_tomahawkcount = 0; //number of Tomahawk related kills.
-//shop unlocks (LEVEL 2)
+server cheat bool di_unlock_item_heartbomb = false; //pickup 100 hearts.
+server cheat int di_heartcount = 0;
 server cheat bool di_unlock_item_freshbullets = false; //get 10 fresh bonuses without reloading.
 server cheat bool di_unlock_item_freshcharger = false; //get 40 fresh bonuses in 1 run.
-server cheat bool di_unlock_item_bulletsplitter = false; //unlock 15 items.
-server cheat bool di_unlock_item_toomanybullets = false; //get 3 bullet splitters.
+server cheat bool di_unlock_item_bulletmitosis = false; //unlock 15 items.
+server cheat bool di_unlock_item_glassgem = false; //own at least $1200 at once.
+//shop unlocks (LEVEL 2)
 server cheat int di_sidequests = 0; //how many side quests you've completed.
 server cheat bool di_unlock_item_partyshotty = false; //complete 10 side quests in Level 2.
-server cheat bool di_unlock_item_laserpointer = false; //fully upgrade the shop in Level 2.
 server cheat bool di_unlock_item_popcorngun = false; //reach the first endless loop in Level 2.
-server cheat bool di_unlock_item_partyshotty2 = false; //unlocked by holding 4 Box Party weapons at once.
+server cheat bool di_unlock_item_partyshotty2 = false; //not used ingame.
+server cheat bool di_unlock_item_tomato = false; //defeat the big melon boss.
+server cheat bool di_unlock_item_trailblazer = false; //max out level 2's shop.
+server cheat bool di_unlock_item_questbook = false; //25 side quests in level 2.
+server cheat int di_onioncount = 0;
+server cheat bool di_unlock_item_minionion = false; //kill 100 onions.
+//Bonus Level 1 unlocks
+server cheat bool di_unlock_item_dishard = false; //beat wave 9.
+//weapon mastery unlocks
+server cheat bool di_unlock_item_raspberry = false; //star pistol mastery.
+server cheat bool di_unlock_item_compactgunpowder = false; //green shotgun.
+server cheat bool di_unlock_item_shellsling = false; //double shotgun.
+server cheat bool di_unlock_item_bottomlessclip = false; //blue smg.
+server cheat bool di_unlock_item_spraynpray = false; //pink rifle.
+server cheat bool di_unlock_item_jumpshot = false; //grenade launcher.
+server cheat bool di_unlock_item_fondueblood = false; //cheese cannon.
+server cheat bool di_unlock_item_overwhelmingfirepower = false; //minigun.
+server cheat bool di_unlock_item_organdonor = false; //sledgehammer.
+server cheat bool di_unlock_item_nugget = false; //glowstick.
+server cheat bool di_unlock_item_freshspray = false; //popcorngun.
+server cheat bool di_unlock_item_rubberbullets = false; //laser pointer.
+server cheat bool di_unlock_item_pow = false; //fingergun.
+server cheat bool di_unlock_item_processedore = false; //ore drill.
+server cheat bool di_unlock_item_partypopper = false; //party shotty.
+server cheat bool di_unlock_item_onionring = false; //stun bow.
+server cheat bool di_unlock_item_ruinedhat = false; //poison gun.
+//swag level unlocks
+server cheat bool di_unlock_item_bombbundle = false; //reach swag level 1.
+server cheat bool di_unlock_item_doubleshotgun = false; //reach swag level 1.
+server cheat bool di_unlock_item_bigbullet = false; //reach swag level 2.
+server cheat bool di_unlock_item_grenadelauncher = false; //reach swag level 2.
+server cheat bool di_unlock_item_gunslinger = false; //reach swag level 3.
+server cheat bool di_unlock_item_laserpointer = false; //reach swag level 3.
+server cheat bool di_unlock_item_bowtie = false; //swag 4.
+server cheat bool di_unlock_item_fingergun = false; //swag 4.
+server cheat bool di_unlock_item_depletedmag = false; //swag 5.
+server cheat bool di_unlock_item_oredrill = false; //swag 5.
+server cheat bool di_unlock_item_directdeposit = false; //swag 6.
+server cheat bool di_unlock_item_stunbow = false; //swag 6.
+server cheat bool di_unlock_item_speeddemon = false; //swag 7.
+server cheat bool di_unlock_item_poisongun = false; //swag 7.
+server cheat bool di_unlock_item_swagshells = false; //swag 10.
+//modifier unlocks
+server cheat bool di_unlock_item_modifiedstomach = false;
+server cheat bool di_unlock_item_quantumbullets = false;
+server cheat bool di_unlock_item_freshfrenzy = false;
+server cheat bool di_unlock_item_goldhat = false;
+server cheat bool di_unlock_item_toomanybullets = false;
 
 //DI crosshair
-user int di_xhair_toggle = 2; //0 is disabled. 1 is static crosshair. 2 is dynamic crosshair (shows weapon accuracy).
-user float di_xhair_scale = 2.0; //the size of the di crosshair.
-user float di_xhair_alpha = 1.0; //guess what this does.
-user color di_xhair_color = "FF FF FF"; //the default color of the crosshair.
+user int di_xhair_toggle = 1; //0 is disabled. 1 is simple crosshair. 2 is detailed crosshair.
+user float di_xhair_scale = 1.0; //the size of the di crosshair.
+user float di_xhair_alpha = 0.75; //guess what this does.
+user color di_xhair_color = "DamWhite"; //the default color of the crosshair.
+user bool di_xhair_color_fresh = true; //changes the color of the crosshair to match the status of the fresh bonus.
 user bool di_xhair_fresh_toggle = true; //fresh meter below crosshair.
 user float di_xhair_fresh_scale = 1.0; //how long the meter can grow.
 user float di_xhair_fresh_alpha = 0.65; //another alpha cvar, combined with the crosshair's alpha.
@@ -90,14 +196,20 @@ user bool di_xhair_precise = false; //toggles the precise crosshair mode.
 user bool di_xhair_dot = false; //toggles the dot in the middle.
 
 //DI item hud
-user bool di_itemhud_toggle = true; //enables the item hud.
+user int di_itemhud_toggle = 1; //enables the item hud.
 user float di_itemhud_scale = 0.75; //controls the size of the passive items shown at the top left of the screen.
 user float di_itemhud_alpha = 0.75; //opacity of the item hud.
+
+//DI Quest/Event scale
+user float di_questscale = 1.0; //scale of the quest/event hud.
+user float di_questalpha = 1.0; //alpha of the above thing.
 
 //boxhud
 user int box_hudshake = 2; //how much hud shakes when taking damage
 user bool di_showfreshtimer = false;
 user noarchive bool di_photomode = false; //hides all HUD elements. gets reset on game restart.
+server bool di_depletedperma = true; //show perma consumables in item hud, even if item is fully depleted.
+user bool di_hudnumbers = true; //show more detailed health/ammo numbers on hud
 
 //nashhpbar
 user bool nashhpbar_enable = true;
@@ -182,3 +294,16 @@ user float pc_y;
 	user bool rc_enabled = false;
 	user float rc_step = 1.0;
 	user bool rc_always_enabled = false;
+	
+//kMinimap
+user bool ATMP_MapRotates = true;
+user bool ATMP_MapBackground = true;
+user bool ATMP_EnableMap = true;
+user int ATMP_MapX = 10;
+user int ATMP_MapY = 10;
+user int ATMP_MapSizeX = 80;
+user int ATMP_MapSizeY = 80;
+user float ATMP_MapScale = 0.1;
+user float ATMP_BackgroundAlpha = 0.25;
+user float ATMP_MapAlpha = 1.0;
+user bool ATMP_Enemies = true;

@@ -1,0 +1,16 @@
+//zscript_DI/items/debuffs/martyr.zsc
+
+Class DI_QuestDebuff_Martyr : DI_QuestDebuff
+{
+    default 
+	{
+		Tag "\cgCurse (Martyr)";
+	}
+
+    override string, int GiveEnemyItem()
+    {
+		int num = random(0, amount);
+        if (owner && (num > 0)) {return "DI_BulletDeathGiver", num;}
+        else return "", 0;
+    }
+}

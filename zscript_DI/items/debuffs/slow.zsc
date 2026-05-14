@@ -1,0 +1,14 @@
+//zscript_DI/items/debuffs/slow.zsc
+
+Class DI_QuestDebuff_Slow : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (Food Coma)";
+	}
+	override double GivePlayerSpeed() 
+	{
+		if (!plr) {return 0.0;}
+		else {return -0.15 * amount * ((0.0 + plr.health) / (0.01 + plr.DIMaxHealth()));}
+	}
+}

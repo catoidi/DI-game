@@ -3,18 +3,25 @@
 class DIPassiveInventory : Inventory 
 {
 	//this is used for tracking purposes for the Item HUD.
-	bool dipassive_hidden; //if enabled, this item is not shown on the item hud.
+	bool dipassive_hidden; //if enabled, this item is not shown on the item hud or the catalogue.
+	bool dipassive_nobar; //if enabled, this item will not appear on the item hud, but will still appear in the catalogue.
 	
 	DI_PlayerBase plr;
 	DI_Weapon wpn;
 	
+	string itemdesc; //default item description. blank by default. allows scripts to overwrite item descriptions in the Catalogue Menu.
+	
 	property DIHidden: dipassive_hidden;
+	property DINoBar: dipassive_nobar;
 	
 	default
 	{
 		+BRIGHT;
 		+FLOATBOB;
 	}
+
+	//Called in "AttachToOwner".
+	virtual int ItemPriority() {return 0;} //Used for determining which passive item's functions are ran first. Set to a high positive number to ensure your item's code is ran after everything else.
 	
 	override void AttachToOwner(Actor other)
 	{
@@ -22,10 +29,25 @@ class DIPassiveInventory : Inventory
 		
 		if (other is "DI_PlayerBase")
 		{
-			let plr = DI_PlayerBase(other);
+			plr = DI_PlayerBase(other);
 			if (plr.knownpassives.Find(GetClassName()) == plr.knownpassives.Size())
 			{
-				plr.knownpassives.Push(GetClassName());
+				//plr.knownpassives.Push(GetClassName());
+				int insertnum = -1;
+				for (int i = 0; i < plr.knownpassives.Size(); ++i)
+				{
+					let curitem = DIPassiveInventory(plr.FindInventory(plr.knownpassives[i]));
+					if (!curitem) {continue;}
+					if (ItemPriority() >= curitem.ItemPriority()) {continue;}
+					else
+					{
+						insertnum = i;
+						i = plr.knownpassives.Size();
+					}
+				}
+
+				if (insertnum == -1) {plr.knownpassives.Push(GetClassName());}
+				else {plr.knownpassives.Insert(insertnum, GetClassName());}
 			}
 		}
 	}
@@ -47,51 +69,193 @@ class DIPassiveInventory : Inventory
 		
 		if (owner is "DI_PlayerBase")
 		{
-			let playerbase = DI_PlayerBase(owner);
-			plr = playerbase;
-			if (playerbase.player.ReadyWeapon is "DI_Weapon")
+			plr = DI_PlayerBase(owner);
+			if (plr.player.ReadyWeapon is "DI_Weapon")
 			{
-				let playerweapon = DI_Weapon(playerbase.player.ReadyWeapon);
-				wpn = playerweapon;
+				wpn = DI_Weapon(plr.player.ReadyWeapon);
 			}
 		}
 	}
 	
-	virtual int GiveExtraCoin() {return 0;}
-	virtual int GiveFreshBonus() {return 0;}
-	virtual int GiveFreshCharge() {return 0;}
-	virtual int GiveBaseDamage() {return 0;}
-	virtual double GiveDamageMult() {return 0.0;}
-	virtual double GiveAccuracy() {return 0.0;}
-	virtual double GiveRecoil() {return 0.0;}
-	virtual double GiveRecoilRecover() {return 0.0;}
-	virtual int GiveProjectiles() {return 0;}
-	virtual double GiveWeaponSpeed() {return 0.0;}
-	virtual double GiveFirerate() {return 0.0;}
-	virtual double GiveReloadSpeed() {return 0.0;}
-	virtual int GiveMaxAmmo1() {return 0;}
-	virtual int GiveMaxAmmo2() {return 0;}
-	virtual double GivePlayerSpeed() {return 0.0;}
+	//Stat Upgrades.
+	virtual int GiveExtraCoin() {return 0;} //Makes all enemies drop more coins.
+	virtual int GiveFreshBonus() {return 0;} //Increases coin drops from fresh weapon bonus.
+	virtual int GiveFreshCharge() {return 0;} //Makes fresh bonus recharge faster.
+	virtual int GiveBaseDamage() {return 0;} //Adds to the current weapon, before multipliers are applied.
+	virtual double GiveDamageMult() {return 1.0;} //Multiplies the weapon's base damage.
+	virtual double GiveAccuracy() {return 0.0;} //Lower numbers improve base acccuracy, and vice versa.
+	virtual double GiveMaxSpread() {return 1.0;} //Maximum amount of inaccuracy given from spray patterns.
+	virtual double GiveBonusSpread() {return 0.0;} //Applies extra spread to the MaxSpread value for every projectile on the weapon, excluding the first one.
+	virtual double GiveSpreadX() {return 1.0;} //Multiplier of horizontal spread.
+	virtual double GiveSpreadY() {return 1.0;} //Multiplier of vertical spread.
+	virtual double GiveRecoil() {return 1.0;} //Increases accuracy loss from each attack.
+	virtual double GiveRecoilRecover() {return 1.0;} //Allows weapon to recover from recoil faster.
+	virtual int GiveProjectiles() {return 0;} //Increases the number of attacks for all hitscan/projectile-based weapons.
+	virtual int GiveFakeProjectiles() {return 0;} //Not real projectiles, used for calculation of Bullet Spread. Meant for items that dynamically update the player's projectiles so that the player's crosshair isn't constantly moving.
+	virtual double GiveWeaponSpeed() {return 0.0;} //Lower numbers improve weapon's animation speed at diminishing rates, and vice versa.
+	virtual double GiveFirerate() {return 0.0;} //Weapon Speed again, but only while the weapon is being fired.
+	virtual double GiveReloadSpeed() {return 0.0;} //Weapon Speed again, but only while the weapon is being reloaded.
+	virtual int GiveAmmoUse1() {return 0;} //Control how much ammo is required to fire the current weapon. Is hard-capped to never exceed the max ammo.
+	virtual int GiveAmmoUse2() {return 0;} //2nd ammo control
+	virtual int GiveMaxAmmo1() {return 0;} //Controls the max primary ammo. Can't go below the minimum ammo requirement for ammo type.
+	virtual int GiveMaxAmmo2() {return 0;} //Same as above, but for secondary ammo.
+	virtual double GivePlayerSpeed() {return 0.0;} //Adds movement speed to the player. Has a lower cap of 0.1.
+	virtual double GiveComboDrain() {return 1.0;} //Multiplies the speed of the combo drain.
+	virtual double GiveRegenSpeed() {return 1.0;} //Multiplies the speed of health regeneration.
+	virtual double GiveHealingPower() {return 1.0;} //Multiplies the efficacy of healing/regen items. 
+	virtual double GiveMaxHealth() {return 1.0;} //Multiplies the player's max health.
+	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
+	virtual string ReplaceGunSound() {return "";} //changes the sound that plays when DI_GunSound is called. the sound loaded last will be chosen.
+	virtual double GiveConsumableCooldown() {return 1.0;} //multiplies the cooldowns when using consumables. setting to 0 will disable the cooldown entirely.
+
+	//Called by thebrain handler's monster code.
+	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item and its quantity to make enemies spawn with.
+	virtual string, int, int GiveEnemyDrop(DI_Monster mon) {return "", 0, 0;} //Add new drops to killed enemies. Outputs item name, quantity, and failchance (like A_SpawnItemEX).
+	
+	//Called by thebrain handler as well.
+	virtual string, int GiveProjectileItem() {return "", 0;} //Specify an inventory item and its quantity to make player projectiles spawn with. Only works on projectiles that explicitly mark the player as it's target.
+	
+	
+	//Called by thebrain handler's wave code. Handle with care.
+	virtual uint MultiplyEnemies() {return 0;} //Multiplies the amount of enemies that can spawn.
+	virtual uint MultiplySpawnRate() {return 0;} //Multiplies how quickly enemies will spawn in.
+	virtual uint MultiplySpawnCap() {return 0;} //Multiplies the total number of enemies allowed to spawn in at once.
+	
+	//Functions activated by scripts or events. Returns true if item is activated.
+	virtual bool EnterWave() {return false;} //called once a new wave is started.
+	virtual bool EnterShop() {return false;} //called once the player returns to the shop. this is called right before rental items are removed. if you wish for your code to run after rentals are returned, have this function call your code after 1 tic.
+	
+	//Activated by the DIShop_Base actors. Can increase/decrease base shop prices. Shop prices cannot go below 1.
+	virtual double MultiplyShopPrices(DIShop_Base shop) {return 1.0;} //Multiplies the prices of shops. For performance reasons, only called once per wave.
+	virtual double MultiplyShopDebt() {return 1.0;} //Multiplies the amount of HP Debt given to you by shops.
+	
+	//Ran once upon the player dying, to calculate Final Score with.
+	clearscope virtual double MultiplyFinalScore() {return 1.0;}
+	
+	//Called by the current weapon instantly the moment a new weapon is selected, meaning that this function is called before the new weapon is ready. Can be useful for functions that need to clear weapon-specific data before switching to new weapons.
+	virtual void SwappedWeapons() {}
+	
+	//Allows any passive item to get a random Side Quest Objective and Debuff, without calling the rest of the Side Quest code in the process.
+	virtual string, string GetSideQuest()
+	{
+		if (plr && plr.popuphandler)
+		{
+			string objective, debuff;
+			[objective, debuff] = plr.popuphandler.ChooseQuestAlt();
+			return objective, debuff;
+		}
+		else {return "", "";}
+	}
+	
+	//the text description given to the player when viewing this item in the Catalogue Menu.
+	//if using LANGUAGE lumps, do not localize it here, it will be done within the menu itself.
+	clearscope virtual string CatalogueDescription()
+	{
+		if (itemdesc ~== "")
+		{
+			return string.format("$SHOPDESC2_%s", self.getclassname());
+		}
+		else {return itemdesc;}
+	}
+	
+	//Used to add custom code to item pages in the Catalogue Menu.
+	//I recommend adding any new elements you create to the menu's "itemextras" array, so it can be properly discarded when changing pages.
+	ui virtual void CustomCataloguePage(DICatalogueMenu catalogue, string curitem) {}
 }
 
 class DIPowerup : DIPassiveInventory
 {
 	//behaves exactly like a passive, but removes 1 of itself every second.
-
+	
+	bool pauseinshops;
+	int maxtimer, powerupdrain;
+	Property MaxTimer : maxtimer;
+	Property PowerupDrain : powerupdrain;
+	Property PauseInShops : pauseinshops;
+	
 	int poweruptimer;
+	
+	Default
+	{
+		DIPowerup.MaxTimer 35;
+		DIPowerup.PowerupDrain 1;
+		DIPowerup.PauseInShops true;
+	}
 
 	override void DoEffect()
 	{
 		Super.DoEffect();
 		
-		if (plr)
+		if (plr && (plr.isFrozen() == false)) 
 		{
-			++poweruptimer;
-			if (poweruptimer >= 35)
-			{
-				plr.A_TakeInventory(GetClassName(), 1);
-				poweruptimer = 0;
-			}
+			if (!pauseinshops || plr.inwave) {PowerupTick();}
 		}
+	}
+	
+	virtual void PowerupTick()
+	{
+		++poweruptimer;
+		if (poweruptimer >= maxtimer)
+		{
+			plr.A_TakeInventory(GetClassName(), powerupdrain);
+			poweruptimer = 0;
+		}
+	}
+}
+
+class DIBundle : Inventory
+{
+	//instantly gives the player a set amount of items on pickup.
+	//if the item is meant to be permanent, will remove itself and add the corresponding item as permanent to the player.
+	
+	int bundleamount;
+	string bundleitem;
+	
+	property BundleAmount : bundleamount;
+	property BundleItem : bundleitem;
+	
+	Default
+	{
+		DIBundle.BundleAmount 1;
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner is "DI_PlayerBase")
+		{
+			let plr = DI_PlayerBase(owner);
+			
+			if (plr.GetPermaItemAmount(self.GetClassName()) > 0)
+			{
+				plr.BuyPermaItem(bundleitem, BundleAmount * amount);
+				plr.BuyPermaItem(self.GetClassName(), -amount);
+			}
+			
+			plr.GiveInventory(bundleitem, BundleAmount);
+			plr.TakeInventory(self.GetClassName(), 1);
+		}
+	}
+}
+
+class DIConsumable : Inventory
+{
+	mixin DI_ConsumableMixin;
+	
+	override bool Use(bool pickup)
+	{
+		return ConsumableChecks(pickup);
+	}
+}
+
+class DICustomConsumable : CustomInventory
+{
+	mixin DI_ConsumableMixin;
+	
+	override bool Use(bool pickup)
+	{
+		if (ConsumableChecks(pickup)) {return Super.Use(pickup);}
+		return false;
 	}
 }

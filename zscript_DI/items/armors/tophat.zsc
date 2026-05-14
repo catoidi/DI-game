@@ -1,0 +1,22 @@
+//zscript_DI/items/armors/tophat.zsc
+
+Class DI_TopHat : DI_Armor
+{
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "Top Hat equipped! (+25% Protection, +50 Durability)";
+		Inventory.Icon "ARMOA0";
+		DI_Armor.Protection 0.25;
+		DI_Armor.Durability 500;
+		DI_Armor.MaxDurability 500;
+	}
+	
+	States
+	{
+		Spawn:
+			ARMO A -1;
+			Stop;
+	}
+}
