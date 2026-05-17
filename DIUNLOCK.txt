@@ -42,97 +42,18 @@ di_unlock_item_fred4 DI_Farsight 2 di_fredcount 1;
 di_unlock_item_shoe DI_Shoe 2 di_roncount 1;
 di_unlock_item_coinmagnet DI_CoinMagnet 2 di_coinbags 1;
 di_unlock_item_wealthjar DI_WealthJar 2  1;
-di_unlock_item_starpistol StarPistol 1  2;
-di_unlock_item_cheesegun CheeseGun 1  2;
-di_unlock_item_banana DI_Banana_Bundle 3  2;
-di_unlock_item_whoppeecushion DI_WhoppeeCushion 2  2;
->>LEVEL TWO ITEMS:
-di_unlock_item_partyshotty PartyShotty 1 di_sidequests 3;
-di_unlock_item_popcorngun PopcornGun 1 di_sidequests 3;
-di_unlock_item_questbook DI_QuestBook 3 di_sidequests 3;
-di_unlock_item_melon DI_Melon 3 di_meloncount 3;
-di_unlock_item_minionion DI_MiniOnion 2 di_onioncount 3;
-di_unlock_item_toaster DI_Toaster 2 di_hammercount 3;
-di_unlock_item_tomato DI_Tomato 3  3;
-di_unlock_item_trailblazer DI_Trailblazer 2  3;
-di_unlock_item_minifred DI_MiniFred 2  4;
-di_unlock_item_cheeseartifact DI_CheeseArtifact 3  4;
-di_unlock_item_glowstick Glowstick 1  4;
-di_unlock_item_sledgehammer Sledgehammer 1  4;
->>LEVEL THREE ITEMS:
-di_unlock_item_icebullet DI_StatusGiver_Ice 2 di_icekills 5;
-di_unlock_item_firebullet DI_StatusGiver_Fire 2 di_firekills 5;
-di_unlock_item_shockbullet DI_StatusGiver_Lightning 2 di_shockkills 5;
-di_unlock_item_poisonbullet DI_StatusGiver_Poison 2 di_poisonkills 5;
-di_unlock_item_rainbowbullet DI_StatusGiver_Rainbow 2 di_statuskills 5;
-di_unlock_item_bloodmoney DI_BloodMoney 2  6;
-di_unlock_item_sesameseeds DI_SesameSeeds 2  6;
-di_unlock_item_beachball DI_BeachBall 3  6;
-di_unlock_item_spring DI_Spring 2  6;
->>BONUS LEVEL ONE ITEMS:
-di_unlock_item_dishard DI_DIShard 2  21;
-di_unlock_item_equalizer DI_Equalizer 2  22;
-di_unlock_item_socialsecurity DI_SocialSecurity 2  22;
-di_unlock_item_stopwatch DI_Stopwatch 3  22;
-di_unlock_item_sawblade DI_Sawblade 2  22;
->>MODIFIER ITEMS:
-di_unlock_item_goldhat DI_GoldHat 3  300;
-di_unlock_item_quantumbullets DI_QuantumBullets 2  300;
-di_unlock_item_freshfrenzy DI_FreshFrenzy 2  300;
-di_unlock_item_toomanybullets DI_TooManyBullets 2  300;
-di_unlock_item_modifiedstomach DI_ModifiedStomach 2  300;
->>MISCELLANEOUS ITEMS:
-di_unlock_item_freshcharger DI_FreshBonusCharger 2  333;
-di_unlock_item_freshbullets DI_FreshBullets 2  333;
-di_unlock_item_deathmark DI_DeathMark 2 di_deathcounter 666;
-di_unlock_item_acidblood DI_AcidBlood 2 di_deathcounter 666;
-di_unlock_item_painstar DI_PainStar 2 di_deathcounter 666;
-di_unlock_item_rewardsprogram DI_RewardsProgram 2 di_debtwaves 667;
-di_unlock_item_creditfraud DI_CreditFraud 2 di_debtwaves 667;
-di_unlock_item_creditfreeze DI_CreditFreeze 2  777;
-di_unlock_item_9leafclover DI_9LeafClover 3  777;
-di_unlock_item_glassgem DI_GlassGem 2  777;
-di_unlock_item_bloodyheart DI_BloodyHeart 2 di_tomahawkcount 50000;
-di_unlock_item_heartbomb DI_HeartBomb 3 di_heartcount 50000;
-di_unlock_item_consumer DI_Consumer 2  50000;
-di_unlock_item_dice DI_Dice 3 di_rerollshop 50000;
 >>Weapon Mastery
 di_unlock_item_compactgunpowder DI_CompactGunpowder 2 di_playerkills 66666;
 di_unlock_item_bottomlessclip DI_BottomlessClip 2 di_playerkills 66666;
 di_unlock_item_spraynpray DI_SprayNPray 2 di_playerkills 66666;
 di_unlock_item_overwhelmingfirepower DI_OverwhelmingFirepower 2 di_playerkills 66666;
 di_unlock_item_raspberry DI_Raspberry 3 di_playerkills 66666;
-di_unlock_item_fondueblood DI_FondueBlood 2 di_playerkills 66666;
-di_unlock_item_nugget DI_Nugget 3 di_playerkills 66666;
-di_unlock_item_organdonor DI_OrganDonor 2 di_playerkills 66666;
-di_unlock_item_partypopper DI_PartyPopper 2 di_playerkills 66666;
-di_unlock_item_freshspray DI_FreshSpray 2 di_playerkills 66666;
-di_unlock_item_shellsling DI_ShellSling 2 di_playerkills 66666;
-di_unlock_item_jumpshot DI_JumpShot 2 di_playerkills 66666;
-di_unlock_item_rubberbullets DI_RubberBullets 2 di_playerkills 66666;
-di_unlock_item_pow DI_POW 2 di_playerkills 66666;
-di_unlock_item_processedore DI_ProcessedOre 2 di_playerkills 66666;
-di_unlock_item_onionring DI_OnionRing 2 di_playerkills 66666;
-di_unlock_item_ruinedhat DI_RuinedHat 2 di_playerkills 66666;
 >>15x Unlock Reward
 di_unlock_item_bulletmitosis DI_BulletMitosis 2  999999;
-di_unlock_item_starfruit DI_Starfruit 2  999999;
-di_unlock_item_explosiverounds DI_ExplosiveRounds 2  999999;
->>di_unlock_item_combomult DI_ComboDamageMult 2  999999;
 >>Swag Level Unlocks
 di_unlock_item_bombbundle DI_ThrowBomb_Bundle 3 di_swaglevel 1000001;
-di_unlock_item_doubleshotgun DoubleShotgun 1 di_swaglevel 1000001;
 di_unlock_item_bigbullet DI_BigBullets 2 di_swaglevel 1000002;
-di_unlock_item_grenadelauncher GrenadeLauncher 1 di_swaglevel 1000002;
 di_unlock_item_gunslinger DI_Gunslinger 2 di_swaglevel 1000003;
-di_unlock_item_laserpointer LaserPointer 1 di_swaglevel 1000003;
 di_unlock_item_bowtie DI_BowTie 3 di_swaglevel 1000004;
-di_unlock_item_fingergun FingerGun 1 di_swaglevel 1000004;
 di_unlock_item_depletedmag DI_DepletedMag 2 di_swaglevel 1000005;
-di_unlock_item_oredrill DI_OreDrill 1 di_swaglevel 1000005;
-di_unlock_item_directdeposit DI_DirectDeposit 2 di_swaglevel 1000006;
-di_unlock_item_stunbow StunCrossbow 1 di_swaglevel 1000006;
-di_unlock_item_speeddemon DI_SpeedDemon 2 di_swaglevel 1000007;
-di_unlock_item_poisongun PoisonGun 1 di_swaglevel 1000007;
-di_unlock_item_swagshells DI_SwagShells 2 di_swaglevel 1000010;
 >>Unorganized Unlocks

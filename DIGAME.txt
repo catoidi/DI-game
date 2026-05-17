@@ -26,11 +26,11 @@
 >>Player 1, Fredrick, always unlocked.
 Add, Player, DI_PlayerFredrick;
 >>Player 2, Burger.
-Add, Player, DI_PlayerBurger, di_unlock_plr_burger;
+>>Add, Player, DI_PlayerBurger, di_unlock_plr_burger;
 >>Player 3, Box.
-Add, Player, DI_PlayerBox, di_unlock_plr_box;
+>>Add, Player, DI_PlayerBox, di_unlock_plr_box;
 >>Player 4, Hamill.
-Add, Player, DI_PlayerHam, di_unlock_plr_hammer;
+>>Add, Player, DI_PlayerHam, di_unlock_plr_hammer;
 >>
 >>[EPISODES]
 >>Tutorial Level.
@@ -38,17 +38,17 @@ Add, Player, DI_PlayerHam, di_unlock_plr_hammer;
 >>First REAL Level.
 Add, Level, di01;
 >>Box Party Level.
-Add, Level, di02, di_unlock_lvl_di02;
+>>Add, Level, di02, di_unlock_lvl_di02;
 >>Castle Level.
-Add, Level, di03, di_unlock_lvl_di03;
+>>Add, Level, di03, di_unlock_lvl_di03;
 >>Sectors.
-Add, Level, bonus01, di_unlock_lvl_bonus01;
+>>Add, Level, bonus01, di_unlock_lvl_bonus01;
 >>
 >>[MODIFIERS]
 >>Double Trouble.
-Add, CheatMod, di_mod_dailyrun, di_unlock_mod_dailyrun;
-Add, Modifier, di_mod_starterpack, di_unlock_mod_starterpack, 0.6;
-Add, Modifier, di_mod_weaponized, di_unlock_mod_weaponized;
+>>Add, CheatMod, di_mod_dailyrun, di_unlock_mod_dailyrun;
+>>Add, Modifier, di_mod_starterpack, di_unlock_mod_starterpack, 0.6;
+>>Add, Modifier, di_mod_weaponized, di_unlock_mod_weaponized;
 Add, Modifier, di_mod_blindbox, di_unlock_mod_blindbox, 1.15;
-Add, Modifier, di_mod_doubletrouble, di_unlock_mod_doubletrouble, 0.6;
-Add, Modifier, di_mod_debilitated, di_unlock_mod_debilitated;
+>>Add, Modifier, di_mod_doubletrouble, di_unlock_mod_doubletrouble, 0.6;
+>>Add, Modifier, di_mod_debilitated, di_unlock_mod_debilitated;

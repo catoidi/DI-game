@@ -224,6 +224,7 @@ version "4.14"
 #include "zscript_DI/items/passives/equalizer.zsc"
 #include "zscript_DI/items/passives/sawblade.zsc"
 #include "zscript_DI/items/passives/socialsecurity.zsc"
+#include "zscript_DI/items/passives/smallbullets.zsc"
 //armors
 #include "zscript_DI/items/armors/tophat.zsc"
 #include "zscript_DI/items/armors/tophat2.zsc"
