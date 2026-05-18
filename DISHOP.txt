@@ -112,6 +112,7 @@ DamagePassive DI_KnifeBullets POWRA 10;
 DamagePassive DI_PainStar POWRJ 10 192 di_unlock_item_painstar;
 DamagePassive DI_Gunslinger POWRK 10 192 di_unlock_item_gunslinger;
 DamagePassive DI_BigBullets POWRR 5 256 di_unlock_item_bigbullet;
+DamagePassive DI_SmallBullets POW3Z 5 192 di_unlock_item_smallbullets; 
 DamagePassive DI_Shoe POWRY 5 256 di_unlock_item_shoe;
 DamagePassive DI_BulletMitosis POWRG 20 128 di_unlock_item_bulletmitosis;
 DamagePassive DI_TooManyBullets POWRH 20 64 di_unlock_item_toomanybullets;

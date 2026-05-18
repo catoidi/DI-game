@@ -102,3 +102,4 @@ DI_Equalizer;
 DI_Sawblade;
 DI_SocialSecurity;
 DI_DIShard;
+DI_SmallBullets;

@@ -632,6 +632,10 @@ SHOPITEM_DI_SOCIALSECURITY = "Social Security";
 SHOPDESC_DI_SOCIALSECURITY = "\ca-10% Player Speed.\n\cl+1.625% Firerate per wave completed,\nhard capped at +65%.";
 SHOPDESC2_DI_SOCIALSECURITY = "\cbItem stacks will increase the bonus from each wave and the player speed debuff, but DOES NOT raise the 65% cap for the firerate.";
 SHOPTYPE_DI_SOCIALSECURITY = "\cd[Passive] \cd[Uncommon] \cl[Max: 3]";
+SHOPITEM_DI_SMALLBULLETS = "Small Bullets";
+SHOPDESC_DI_SMALLBULLETS = "+15% Firerate and Recoil Recovery.\n\ca-6% DMG and -8% Bullet Size/Speed.";
+SHOPDESC2_DI_SMALLBULLETS = "\cbFor when you need to focus more on bullets per minute rather than raw damage. Has diminishing returns.";
+SHOPTYPE_DI_SMALLBULLETS = "\cd[Passive] \cd[Uncommon] \cl[Max: 10]";
 
 //Fake Shop Items
 SHOPITEM_DI_FASTFORWARD_POWERUP = "\cvFast Forward (Active)";

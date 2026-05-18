@@ -1,0 +1,68 @@
+//zscript_DI/items/passives/smallbullets.zsc
+
+//+15% better Firerate and Recoil. -5% DMG, and -10% Projectile Speed.
+
+Class DI_SmallBullets : DIPassiveInventory
+{
+	Default
+	{
+		Tag "Small Bullets";
+		Inventory.Icon "POWRR0";
+		Inventory.PickupMessage "Acquired Small Bullets! (+15% Firerate and Recoil Recovery. -6% DMG and -8% Bullet Speed/Size.)";
+		Inventory.MaxAmount 10;
+	}
+	
+	override double GiveFirerate()
+	{
+		if (!plr || !wpn) {return 0.0;}
+		return -0.15 * amount;
+	}
+	
+	override double GiveDamageMult()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 - (0.06 * amount);
+	}
+
+	override double GiveBulletSize()
+	{
+		if (!plr) {return 0.0;}
+		return -0.08 * amount;
+	}
+
+	override double GiveRecoilRecover()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.15 * amount);
+	}
+	
+	override string, int GiveProjectileItem()
+	{
+		if (!plr) {return "", 0;}
+		return "DI_SmallBullets_Item", amount;
+	}
+	
+	States
+	{
+		Spawn:
+			POWR R -1;
+			Stop;
+	}
+}
+
+Class DI_SmallBullets_Item : Inventory
+{
+	bool doneeffect;
+	override void DoEffect()
+	{
+		if (owner && owner.target && !doneeffect)
+		{
+			int itemnum = owner.target.countinv("DI_SmallBullets");
+			double newspeed = 1.0 - (0.08 * itemnum);
+			owner.vel.x *= newspeed;
+			owner.vel.y *= newspeed;
+			owner.vel.z *= newspeed;
+			doneeffect = true;
+		}
+	}
+}

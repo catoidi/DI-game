@@ -12,4 +12,5 @@
 6 di_unlock_item_stunbow;
 7 di_unlock_item_speeddemon;
 7 di_unlock_item_poisongun;
+8 di_unlock_item_smallbullets;
 10 di_unlock_item_swagshells;

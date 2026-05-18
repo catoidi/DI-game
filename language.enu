@@ -208,6 +208,7 @@ DIPOPUP_di_unlock_item_equalizer = "Equalizer";
 DIPOPUP_di_unlock_item_dishard = "DI Shard";
 DIPOPUP_di_unlock_item_socialsecurity = "Social Security";
 DIPOPUP_di_unlock_item_stopwatch = "Stopwatch";
+DIPOPUP_di_unlock_item_smallbullets = "Small Bullets";
 //Locked Messages
 SHOPLOCK_STARPISTOL = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 1 \cbto unlock this weapon.";
 SHOPLOCK_DI_MINIFRED = "\cbReach 10k score as \cvFredrick \cbon \cfLVL 2 \cbto unlock this item.";
@@ -274,6 +275,7 @@ SHOPLOCK_DI_DIRECTDEPOSIT = "\cbReach \cfSwag Level 6 \cbor higher to unlock thi
 SHOPLOCK_STUNCROSSBOW = "\cbReach \cfSwag Level 6 \cbor higher to unlock this weapon.";
 SHOPLOCK_DI_SPEEDDEMON = "\cbReach \cfSwag Level 7 \cbor higher to unlock this item.";
 SHOPLOCK_POISONGUN = "\cbReach \cfSwag Level 7 \cbor higher to unlock this weapon.";
+SHOPLOCK_DI_SMALLBULLETS = "\cbReach \cfSwag Level 8 \cbor higher to unlock this item.";
 SHOPLOCK_DI_SWAGSHELLS = "\cbReach \cfSwag Level 10 \cbor higher to unlock this item.";
 SHOPLOCK_DI_TOMATO = "\cbDefeat the \cfMelon Boss \cbin \cfLevel 2 \cbto unlock this consumable.";
 SHOPLOCK_DI_TRAILBLAZER = "\cbFully upgrade Level 2's Shop to unlock this item.";
