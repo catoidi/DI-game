@@ -45,14 +45,16 @@ Class DI_BulletSponge_Buff : DIEnemyEffect
 
     override void DoEffect()
     {
-        if (owner && (healnum > 0) && (owner.health > 0))
+        if (owner && !Level.IsFrozen() && (healnum > 0) && (owner.health > 0))
         {
             ++healtime;
             if (healtime >= 30)
             {
                 int healamount = healnum / 20;
                 
-                for (int i = 0; i < healamount; ++i)
+				int particlenum = healamount;
+				if (particlenum > 20) {particlenum = 20;}
+                for (int i = 0; i < particlenum; ++i)
                 {
                     owner.A_SpawnParticle("6be9ee", SPF_FULLBRIGHT, 30, 5, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), random(0, owner.height), 0, 0, 0, 0, 0, 0.33);
                 }
