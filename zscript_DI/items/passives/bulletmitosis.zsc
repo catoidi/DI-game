@@ -7,7 +7,7 @@ Class DI_BulletMitosis : DIPassiveInventory
 	{
 		Tag "Bullet Mitosis";
 		Inventory.Icon "POWRG0";
-		Inventory.PickupMessage "Bullet Mitosis Acquired! (+1 Projectile, +1 Ammo Consumption.)";
+		Inventory.PickupMessage "Bullet Mitosis Acquired! (+1 Projectile, +1 Ammo Consumption, -25% Weapon Speed.)";
 		Inventory.MaxAmount 3;
 	}
 
@@ -41,6 +41,12 @@ Class DI_BulletMitosis : DIPassiveInventory
 		if (!wpn) {return 0;}
 		if (wpn.wpn_dontgiveammo2) {return 0;}
 		return returnvalue;
+	}
+	
+	override double GiveWeaponSpeed()
+	{
+		if (!wpn) {return 0;}
+		return 0.25 * amount;
 	}
 	
 	States
