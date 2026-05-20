@@ -43,8 +43,8 @@ Class DI_Firestarter_Enemy : Inventory
 			let firechance = 3 + (amount * 3);
 			if ((random(1, 20) <= firechance) || (owner.CheckRange(192) == false))
 			{
-				let firedmg = 40 + (amount * 40);
-				if (firedmg >= owner.Health) {firedmg = owner.Health - 1;}
+				let firedmg = 20 + (amount * 20);
+				if (firedmg > (owner.Health / (11 - amount))) {firedmg = (owner.Health / (11 - amount));}
 				owner.A_DamageSelf(firedmg, "Fire");
 			}
 		}
