@@ -6,8 +6,14 @@ Class DI_CarbonatedDrink : DIPassiveInventory
 	{
 		Tag "Carbonated Drink";
 		Inventory.Icon "POWRX0";
-		Inventory.PickupMessage "Acquired Carbonated Drink! (Enemies have a chance to drop Regen on fresh weapon kills.)";
+		Inventory.PickupMessage "Acquired Carbonated Drink! (Regen is 30% slower. Enemies have a chance to drop Regen on fresh weapon kills.)";
 		Inventory.MaxAmount 4;
+	}
+	
+	override double GiveRegenSpeed()
+	{
+		if (!plr) {return 1.0;}
+		return 1.0 + (0.3 * amount);
 	}
 
 	override string, int, int GiveEnemyDrop(DI_Monster mon)
@@ -21,8 +27,11 @@ Class DI_CarbonatedDrink : DIPassiveInventory
 				//console.printf("%d", failure);
 				if (failure > 256) {failure = 256;}
 				
-				
-				return "DI_CarbonatedDrink_Pickup", amount, failure;
+				int returnvalue = random(1, amount);
+				if (returnvalue > 0)
+				{
+					return "DI_CarbonatedDrink_Pickup", returnvalue, failure;
+				}
 			}
 		}
 		
