@@ -17,6 +17,17 @@ Class DIEnemyEffect : Inventory abstract
 		}
 	}
 	
+	override void DetachFromOwner()
+	{
+		if (owner is "DI_Monster")
+		{
+			let mon = DI_Monster(owner);
+			mon.effects.Delete(mon.effects.Find(self));
+		}
+		
+		Super.DetachFromOwner();
+	}
+	
 	clearscope virtual int EffectAmount()
 	{
 		return amount;

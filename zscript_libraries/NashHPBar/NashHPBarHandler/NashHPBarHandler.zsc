@@ -606,6 +606,7 @@ class NashHPBarHandler : EventHandler
 					}
 					for (int i = 0; i < DITarget.effects.Size(); ++i)
 					{
+						if (!DITarget.effects[i].icon) {continue;}
 						let effectTex = DITarget.effects[i].icon;
 						if (effectTex.IsValid())
 						{
