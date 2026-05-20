@@ -8,21 +8,32 @@ Class DI_Shoe : DIPassiveInventory
 	{
 		Tag "Shoe";
 		Inventory.Icon "POWRY0";
-		Inventory.PickupMessage "Shoe Acquired! (Shooting has a 1/8 chance to fire a shoe.)";
+		Inventory.PickupMessage "Shoe Acquired! (Shooting has an up to 1/8 chance to fire a shoe. Reduce Firerate by 4%.)";
 		Inventory.MaxAmount 8;
+	}
+	
+	int shoecooldown;
+	
+	override double GiveFirerate()
+	{
+		if (!plr && !wpn) {return 0.0;}
+		return 0.04 * amount;
 	}
 	
 	override void DoEffect(void)
 	{
 		Super.DoEffect();
 		
+		
 		if (plr && wpn)
 		{
+			if (!plr.IsFrozen() && (shoecooldown > 0)) {--shoecooldown;}
 			if (plr.justfired)
 			{
-				if (random(1, 8) <= amount)
+				if ((random(1, 8) <= amount) && (random(1, 100) > shoecooldown))
 				{
 					plr.A_SpawnItemEX("DI_Shoe_Throw", 0, 0, plr.Height / 2, cos(plr.pitch - 10)*16, 0, -sin(plr.pitch - 10)*16, 0, SXF_SETTARGET | SXF_TRANSFERPITCH);
+					shoecooldown += 25;
 				}
 			}
 		}
@@ -67,8 +78,8 @@ Class DI_Shoe_Throw : DI_Projectile
 
 	override int GetWeaponDamage()
 	{
-		if (plr) {return 200 + (plr.CountInv("DI_Shoe") * 50) + (plr.CountInv("DI_LavaBoot") * 150);}
-		else return 250;
+		if (plr) {return 120 + (plr.CountInv("DI_Shoe") * 40) + (plr.CountInv("DI_LavaBoot") * 160);}
+		else return 160;
 	}
 	
 	action void ShoeParticle()
