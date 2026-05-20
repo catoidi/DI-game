@@ -1,9 +1,10 @@
 //zscript_DI/effects/deathbullet.zsc
 
-Class DI_BulletDeathGiver : Inventory
+Class DI_BulletDeathGiver : DIEnemyEffect
 {
 	Default
 	{
+		Inventory.Icon "BDIEA0";
 		inventory.maxamount 999;
 	}
 

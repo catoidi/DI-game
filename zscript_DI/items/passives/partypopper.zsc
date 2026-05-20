@@ -24,10 +24,11 @@ Class DI_PartyPopper : DIPassiveInventory
 	}
 }
 
-Class DI_PartyPopper_Item : Inventory
+Class DI_PartyPopper_Item : DIEnemyEffect
 {
 	Default
 	{
+		Inventory.Icon "POW3C0";
 		Inventory.MaxAmount 5;
 	}
 

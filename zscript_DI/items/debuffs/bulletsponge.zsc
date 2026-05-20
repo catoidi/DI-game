@@ -14,15 +14,21 @@ Class DI_QuestDebuff_BulletSponge : DI_QuestDebuff
     }
 }
 
-Class DI_BulletSponge_Buff : Inventory
+Class DI_BulletSponge_Buff : DIEnemyEffect
 {
     default
     {
+		Inventory.Icon "POW2F0";
         inventory.maxamount 999999;
     }
 
     int healnum;
     int healtime;
+	
+	override int EffectAmount()
+	{
+		return healnum / 10;
+	}
 
     override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
     {

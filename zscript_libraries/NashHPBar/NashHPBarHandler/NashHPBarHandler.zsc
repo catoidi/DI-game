@@ -572,25 +572,72 @@ class NashHPBarHandler : EventHandler
 					
 				if (prevAimTarget is "DI_Monster")
 				{
-					string fired, poisoned, iced, shocked, charmed, marked = "";
 					DI_Monster DITarget = DI_Monster(prevAimTarget);
-					if (DITarget.icenum > 0) {iced = "\cv[FREEZE]";}
-					if (DITarget.firenum > 0) {fired = "\cx[BURN]";}
-					if (DITarget.poisonnum > 0) {poisoned = "\cd[POISON]";}
-					if (DITarget.isshocked == true) {shocked = "\ck[STUN]";}
-					if (DITarget.hearted == true) {charmed = "\ct[ANXIOUS]";}
-					if (DITarget.CountInv("DI_DeathMark_Enemy") > 0) {marked = "\cr[MARKED]";}
-					
-					txt = String.Format("%s%s%s%s%s%s", fired, poisoned, iced, shocked, charmed, marked);
-					Screen.DrawText(fnt, Font.CR_UNTRANSLATED,
-						(Screen.GetWidth() / 2) - ((fnt.StringWidth(txt) / 2) * CleanXFac),
-						(baseYPos * CleanYFac) + (fnt.GetHeight() * CleanYFac) - (fnt.GetHeight() * CleanYFac) + (10 * CleanYFac),
-						txt,
-						DTA_CleanNoMove, true,
-						DTA_KeepRatio, true,
-						DTA_Alpha, healthBarAlpha);
+					int statuses = 0;
+					if (DITarget.icenum > 0)
+					{
+						let effectTex = TexMan.CheckForTexture("sprites/effects/PUFFD0.png");
+						DrawEnemyEffect(0, effectTex, DITarget.icenum, baseYPos, fnt);
+						++statuses;
+					}
+					if (DITarget.firenum > 0) 
+					{
+						let effectTex = TexMan.CheckForTexture("sprites/effects/PUFFE0.png");
+						DrawEnemyEffect(statuses, effectTex, DITarget.firenum / 10, baseYPos, fnt);
+						++statuses;
+					}
+					if (DITarget.poisonnum > 0) 
+					{
+						let effectTex = TexMan.CheckForTexture("sprites/effects/PUFFG0.png");
+						DrawEnemyEffect(statuses, effectTex, DITarget.poisonnum / 10, baseYPos, fnt);
+						++statuses;
+					}
+					if (DITarget.isshocked == true) 
+					{
+						let effectTex = TexMan.CheckForTexture("sprites/effects/PUFFF0.png");
+						DrawEnemyEffect(statuses, effectTex, 0, baseYPos, fnt);
+						++statuses;
+					}
+					if (DITarget.hearted == true) 
+					{
+						let effectTex = TexMan.CheckForTexture("sprites/effects/PUFFH0.png");
+						DrawEnemyEffect(statuses, effectTex, 0, baseYPos, fnt);
+						++statuses;
+					}
+					for (int i = 0; i < DITarget.effects.Size(); ++i)
+					{
+						let effectTex = DITarget.effects[i].icon;
+						if (effectTex.IsValid())
+						{
+							DrawEnemyEffect(i + statuses, effectTex, DITarget.effects[i].EffectAmount(), baseYPos, fnt);
+						}
+					}
 				}
 			}
+		}
+	}
+	
+	ui void DrawEnemyEffect(int pos, TextureID tex, int amount, double baseYPos, Font fnt)
+	{			
+		Screen.DrawTexture(tex, false,
+			(Screen.GetWidth() / 2) - ((86 - ((pos % 7) * 24)) * CleanXFac),
+			((baseYPos - 12 + (24 * (1 + (pos / 7)))) * CleanYFac),
+			DTA_DestWidth, 16 * CleanXFac,
+			DTA_DestHeight, 16 * CleanYFac,
+			DTA_KeepRatio, true,
+			DTA_TopLeft, true,
+			DTA_Alpha, healthBarAlpha * 0.65);
+			
+		if (amount > 0)
+		{
+			string amounttxt = string.format("%d", amount);
+			Screen.DrawText(fnt, Font.CR_WHITE, 
+				(Screen.GetWidth() / 2) - ((74 - ((pos % 7) * 24) + (fnt.StringWidth(amounttxt) / 2)) * CleanXFac),
+				((baseYPos + (24 * (1 + (pos / 7)))) * CleanYFac),
+				amounttxt,
+				DTA_CleanNoMove, true,
+				DTA_KeepRatio, true,
+				DTA_Alpha, healthBarAlpha);
 		}
 	}
 }

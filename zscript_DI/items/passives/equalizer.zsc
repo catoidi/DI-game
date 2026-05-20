@@ -36,11 +36,18 @@ Class DI_Equalizer : DIPassiveInventory
 	}
 }
 
-Class DI_Equalizer_Enemy : Inventory
+Class DI_Equalizer_Enemy : DIEnemyEffect
 {
 	Default
 	{
+		Inventory.Icon "POW3U0";
 		Inventory.MaxAmount 3;
+	}
+	
+	override int EffectAmount()
+	{
+		if (owner) {return 0.003 * amount * owner.health;}
+		return 0;
 	}
 
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)

@@ -1,0 +1,24 @@
+//zscript_DI/enemies/enemyeffect.zsc
+
+Class DIEnemyEffect : Inventory abstract
+{
+	//this class (and anything inheriting from it) will have it's icon and amount displayed below the enemy health bar.
+	//meant to be used to display custom status effects on enemies.
+	//otherwise, behaves exactly like any other inventory item.
+	
+	override void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		
+		if (other is "DI_Monster")
+		{
+			let mon = DI_Monster(other);
+			mon.effects.Push(self);
+		}
+	}
+	
+	clearscope virtual int EffectAmount()
+	{
+		return amount;
+	}
+}

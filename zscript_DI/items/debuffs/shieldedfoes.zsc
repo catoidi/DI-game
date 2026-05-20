@@ -21,10 +21,11 @@ Class DI_QuestDebuff_ShieldedFoes : DI_QuestDebuff
 	}
 }
 
-Class DI_QuestDebuff_ShieldedFoes_Item : Inventory
+Class DI_QuestDebuff_ShieldedFoes_Item : DIEnemyEffect
 {
 	Default
 	{
+		Inventory.Icon "BOOKB0";
 		Inventory.MaxAmount 9999999;
 	}
 

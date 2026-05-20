@@ -28,16 +28,22 @@ Class DI_RuinedHat : DIPassiveInventory
 	}
 }
 
-class DI_RuinedHat_Enemy: Inventory
+class DI_RuinedHat_Enemy: DIEnemyEffect
 {
 	Default
 	{
 		Inventory.MaxAmount 3;
+		Inventory.Icon "POW3K0";
 	}
 	
 	int dmgtimer;
 	int dmgstacks;
 	bool dmgdealt;
+	
+	override int EffectAmount()
+	{
+		return dmgstacks;
+	}
 
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{

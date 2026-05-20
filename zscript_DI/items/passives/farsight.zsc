@@ -28,11 +28,24 @@ class DI_Farsight : DIPassiveInventory
 	}
 }
 
-class DI_Farsight_Enemy: Inventory
+class DI_Farsight_Enemy: DIEnemyEffect
 {
 	Default
 	{
+		Inventory.Icon "POW1M0";
 		Inventory.MaxAmount 5;
+	}
+	
+	override int EffectAmount()
+	{
+		if (owner && owner.target) 
+		{
+			int dmgdist = owner.Distance3D(owner.target);
+			double dmgmult = (0.05 * dmgdist * amount);
+			if (dmgmult > (amount * 100)) {dmgmult = (amount * 100);}
+			return dmgmult;
+		}
+		return 0;
 	}
 
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)

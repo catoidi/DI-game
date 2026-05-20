@@ -34,10 +34,11 @@ Class DI_DeathMark : DIPassiveInventory
 	}
 }
 
-Class DI_DeathMark_Enemy : Inventory
+Class DI_DeathMark_Enemy : DIEnemyEffect
 {
 	default
 	{
+		Inventory.Icon "POW1J0";
 		inventory.maxamount 1;
 	}
 

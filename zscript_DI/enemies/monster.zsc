@@ -35,6 +35,8 @@ Class DI_Monster : DI_Actor abstract
 	Property CanSwim: CanSwim;
 	
 	string spawnspotted; //keep track of what type of spawner this enemy originated from.
+	
+	Array<DIEnemyEffect> effects;
 
 	//Called by all of DI's enemies.
 	Default
