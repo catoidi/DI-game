@@ -7,7 +7,7 @@ Class DI_Tomato : DI_ThrowBomb
 		Tag "Tomato";
 		Inventory.MaxAmount 100;
 		Inventory.Icon "POW1Z0";
-		Inventory.PickupMessage "You got the tomato. (Throw at an enemy to mark them, making them take 50% more damage.)";
+		Inventory.PickupMessage "You got the tomato. (Throw at an enemy to mark them, making them take up to 50% more damage.)";
 	}
 	
 	States
@@ -33,7 +33,7 @@ Class DI_Tomato_Projectile : DI_ThrowBomb_Projectile
 	{
 		if (target && (target.CountInv("DI_DeathMark_Enemy") == 0))
 		{
-			target.A_GiveInventory("DI_DeathMark_Enemy", 1);
+			target.A_GiveInventory("DI_DeathMark_Enemy", 50);
 		}
 		
 		return Super.DoSpecialDamage(target, damage, damagetype);
