@@ -445,7 +445,7 @@ Class DINewGameMenu : boxparty_ZF_GenericMenu
 	
 		float finalmult = skillmult;
 		
-		if (cheatmodsactive > 0) {return 0.0;}
+		//if (cheatmodsactive > 0) {return 0.0;}
 	
 		for (int i = 0; i < filedata.Size(); i++)
 		{
