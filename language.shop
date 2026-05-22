@@ -189,7 +189,7 @@ SHOPDESC2_FINGERGUN = "\cbEach bullet does 30 DMG. Bullets are also slightly lar
 //This is shown at the bottom of the shop UI. Also displays other important info, like whether or not the player already owns this item.
 SHOPTYPE_FINGERGUN = "\cb[Weapon] \cd[Uncommon]";
 //This is shown when viewing the locked item in the unlocks menu.
-SHOPLOCK_FINGERGUN = "\cbReach \cfSwag Level 4 \cbor higher to unlock this item.";
+SHOPLOCK_FINGERGUN = "\cbReach \cfSwag Level 11 \cbor higher to unlock this item.";
 
 //Super Weapons
 SHOPITEM_DI_MINIGUN = "Minigun";
@@ -322,6 +322,10 @@ SHOPITEM_DI_STOPWATCH = "Stopwatch";
 SHOPDESC_DI_STOPWATCH = "Immobilizes all living enemies for 10 seconds.";
 SHOPDESC2_DI_STOPWATCH = "\cbOnly stops things classified as monsters, does not freeze projectiles or pickups. Has a cooldown of 20 seconds.";
 SHOPTYPE_DI_STOPWATCH = "\ct[Consumable] \cv[Rare] \cl[Max: 3]";
+SHOPITEM_DI_BUGZAPPER = "Bug Zapper";
+SHOPDESC_DI_BUGZAPPER = "Spawns a zapper which deals 10 Shock DMG\nto nearby enemies every second.\nFragile.";
+SHOPDESC2_DI_BUGZAPPER = "\cbCan easily stunlock crowds of enemies if used effectively. Enemies will attempt to attack the zapper when damaged. Stronger enemies will be harder to stunlock than others.";
+SHOPTYPE_DI_BUGZAPPER = "\ct[Consumable] \cc[Common] \cl[Max: 5]";
 
 //Passives
 SHOPITEM_DI_KNIFEBULLETS = "Knife Bullets";

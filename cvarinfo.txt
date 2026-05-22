@@ -177,6 +177,7 @@ server cheat bool di_unlock_item_speeddemon = false; //swag 7.
 server cheat bool di_unlock_item_poisongun = false; //swag 7.
 server cheat bool di_unlock_item_smallbullets = false; //swag 8.
 server cheat bool di_unlock_item_swagshells = false; //swag 10.
+server cheat bool di_unlock_item_bugzapper = false;
 //modifier unlocks
 server cheat bool di_unlock_item_modifiedstomach = false;
 server cheat bool di_unlock_item_quantumbullets = false;

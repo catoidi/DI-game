@@ -1,0 +1,130 @@
+//zscript_DI/items/consumables/bugzapper.zsc
+
+//spawn a zapper on the ground that continuously does 3 Shock DMG in an area.
+
+//is shootable by enemies or the player.
+
+Class DI_BugZapper : DIConsumable
+{
+	Default
+	{
+		Tag "Bug Zapper";
+		DIConsumable.BlockInShop true;
+		Inventory.MaxAmount 5;
+		Inventory.Icon "POW4A0";
+		Inventory.PickupMessage "Got a Bug Zapper. Will zap nearby enemies when placed.";
+	}
+	
+	override bool DIUse(bool pickup)
+	{
+		bool spawned = false;
+		if (owner) 
+		{
+			if (owner.A_SpawnItemEX("DI_BugZapper_Actor", 24, 0, 16))
+			{
+				owner.A_SpawnItemEX("DI_Teleport", 24);
+				spawned = true;
+			}
+			else
+			{
+				console.printf("%s", "\cgThere's not enough room to spawn this here!");
+			}
+		}
+		
+		return spawned;
+	}
+	
+	States
+	{
+		Spawn:
+			POW4 A -1;
+			Stop;
+	}
+}
+
+Class DI_BugZapper_Actor : DI_Actor
+{
+	Default
+	{
+		Mass 2000;
+		Health 500;
+		Radius 11;
+		Height 22;
+		Tag "Bug Zapper";
+		DI_Actor.NoHPBar false;
+		+SOLID;
+		+SHOOTABLE;
+		+FRIENDLY;
+		+NOBLOOD;
+	}
+	
+	int hptime;
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		A_AttachLightDef("glower", "BUGZAPPER");
+	}
+	
+	override void tick()
+	{
+		super.tick();
+
+		if (level.IsFrozen() == false)
+		{
+			++hptime;
+			if (hptime >= 3)
+			{
+				if (health < default.health) {health += 1;}
+				hptime = 0;
+			}
+		}
+	}
+	
+	action void A_BugZap()
+	{
+		invoker.RadiusAttack(invoker, 100, 64, "Lightning", RADF_SOURCEISSPOT | RADF_NOALLIES | RADF_THRUSTLESS | RADF_CIRCULAR, 64);
+		invoker.A_BowShocked();
+		invoker.A_BowShocked();
+		invoker.A_BowShocked();
+		invoker.A_BowShocked();
+		invoker.A_BowShocked();
+	}
+	
+	action void A_BowShocked (double shosize = 1.0)
+	{
+		string shockstr;
+		int ht = invoker.height;
+		int rd = invoker.radius;
+		int stroll = random(0, 359);
+		switch(random(0, 2))
+		{
+			case 0: shockstr = "ELECA0";
+			case 1: shockstr = "ELECB0";
+			case 2: shockstr = "ELECC0";
+		}
+		A_SpawnParticleEX("White", TexMan.CheckForTexture(shockstr), 0, SPF_FULLBRIGHT | SPF_ROLL | SPF_RELVEL, 20, ((ht + rd) / 2) * shosize, random(0, 359), random(-64, 64), random(-rd, rd), random(-64, 64), random(-2, 2), 0, random(-1, 1), 0, 0, 0, 1.0, -1, 0, stroll);
+	}
+
+	States
+	{
+		Spawn:
+			POW4 A 35 A_BugZap();
+			Loop;
+		Death:
+			#### # 1 
+			{
+				A_SpawnItemEX("SafeBoomSmall", 0, 0, 11, flags: SXF_NOCHECKPOSITION);
+				A_RemoveLight("glower");
+				console.printf("%s", "\cga bug zapper has been destroyed.");
+			}
+			Goto DeathLoop;
+		DeathLoop:
+			#### # 1 
+			{
+				A_DIScale(1.01, 0.95, true);
+				A_FadeOut(0.03);
+			}
+			Loop;
+	}
+}
