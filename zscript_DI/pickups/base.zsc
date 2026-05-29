@@ -1,4 +1,21 @@
-Class DI_Pickup : ScoreItem abstract
+Class DI_Pickup : Actor abstract
+{
+	float pickuptimer;
+	int pickupdelay;
+	
+	Property PickupTimer : pickuptimer;
+	Property PickupDelay : pickupdelay;
+
+	Default
+	{
+		DI_Pickup.PickupTimer 1.0; //multiplies the amount of tics in each frame. can't reduce frames below 1.
+		DI_Pickup.PickupDelay 17; //tic delay before player is allowed to pickup the item
+		Inventory.Amount 1;
+		+Inventory.ALWAYSPICKUP;
+	}
+}
+
+Class DI_CashPickup : DI_Pickup abstract
 {
 	string parcolor;
 	
@@ -12,7 +29,6 @@ Class DI_Pickup : ScoreItem abstract
 		Height 20;
 		Radius 10;
 		Inventory.PickupFlash "DI_PickupFlash";
-		-COUNTITEM;
 		+INTERPOLATEANGLES;
 		+WALLSPRITE;
 		+FLOATBOB;
@@ -61,7 +77,8 @@ Class DI_Pickup : ScoreItem abstract
 			ispicked = true;
 		}
 		
-		Super.TryPickup(toucher);
+		toucher.Score += Amount;
+		GoAwayAndDie();
 		return true;
 	}
 	
