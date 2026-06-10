@@ -46,7 +46,7 @@ Class DIShop : DIShop_Base
 		DIShop_Base.AllowDebt true;
 		DIShop_Base.DebtHP 1;
 		DIShop.ReducePriceRound 2;
-		DIShop.ReducePriceBase 5;
+		DIShop.ReducePriceBase 1;
 		DIShop.ReducePriceMult 0.95;
 		//$Title "Shop (Instant Use)"
 	}
@@ -497,7 +497,7 @@ Class DIShop : DIShop_Base
 		if (dosale)
 		{
 			float minsale = user_salemin + (0.01 * LevelSale);
-			float maxsale = user_salemax + (0.03 * (extrasale + lastsale)) + (0.01 * LevelSale);
+			float maxsale = user_salemax + (0.01 * (extrasale + lastsale)) + (0.01 * LevelSale);
 			int based = shop_baseprice * user_pricemult;
 			if (based <= 0) {based = 1;}
 			float overpricesale = (0.1 * ((currentprice + based) / based)) - 0.1;

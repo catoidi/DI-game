@@ -20,7 +20,7 @@ Class DIShopController : DIShop_Base
 		DIShop_Base.AllowDebt true;
 		DIShop_Base.DebtHP 1;
 		DIShopController.ReducePriceRound 2;
-		DIShopController.ReducePriceBase 5;
+		DIShopController.ReducePriceBase 1;
 		DIShopController.ReducePriceMult 0.95;
 		//$Title "Script-activator (ZScript)"
 	}

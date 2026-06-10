@@ -693,6 +693,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 	{
 		//forgive some debts
 		int scoregained = invoker.score - invoker.lastscore; //how much money you earned this round.
+		/*
 		float interestrate = 1.2 - (0.002 * (invoker.GetMaxHealth(true) - invoker.CountInv("DI_Degen"))); //intrest on borrowed health is itself to the power of 1.4, subtracted by your max health.
 		if (interestrate < 0.6) {interestrate = 0.6;} //dont let interest get too stupidly low.
 		else if (interestrate > 1.4) {interestrate = 1.4;} //interest cant go above 40%.
@@ -712,6 +713,7 @@ Class DI_PlayerBase : PlayerPawn abstract
 			console.printf("\cx%d borrowed health has been returned.", invoker.CountInv("DI_Degen") - curdegen); //return 10% of borrowed health to players with no debts.
 			invoker.A_SetInventory("DI_Degen", curdegen);
 		}
+		*/
 		
 		//let all passives run enter shop functions before items get cleared.
 		for (int i = 0; i < invoker.knownpassives.Size(); ++i)
