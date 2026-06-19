@@ -15,19 +15,20 @@ class DI_CoinBag : DI_Actor
 		+PUSHABLE;
 	}
 	
-	action void A_ScatterCoins(int numcoins = 21, int basechance = 256)
+	action void A_ScatterCoins(int numcoins = 21, uint basechance = 256)
 	{
 		for (int i = 0; i < numcoins; ++i)
 		{
 			string curcoin = "DI_Coin";
-			float chancemult = 1.0;
-			if (i % 7 == 6)	{curcoin = "DI_Gem"; chancemult = 0.0625;} //requires minimum basechance of 16
-			else if ((i % 7 == 4) || (i % 7 == 5))	{curcoin = "DI_Money"; chancemult = 0.25;} //requires minimum basechance of 4
-			else if (i % 7 > 0) {chancemult = 0.75;} //requires minimum basechance of 2
+			float chancemult = 0.0;
+			int truefail = 256 - basechance;
+			if (i % 7 == 6)	{curcoin = "DI_Gem"; chancemult = 0.9375;} //requires maximum basechance of 240
+			else if ((i % 7 == 4) || (i % 7 == 5))	{curcoin = "DI_Money"; chancemult = 0.75;} //requires maximum basechance of 252
+			else if (i % 7 > 0) {chancemult = 0.25;} //requires maximum basechance of 254
 			
 			bool spawned;
 			actor coined;
-			[spawned, coined] = A_SpawnItemEX(curcoin,  0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, basechance * chancemult);
+			[spawned, coined] = A_SpawnItemEX(curcoin,  0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, truefail + (basechance * chancemult));
 			
 			if (spawned && (coined is "DI_CashPickup"))
 			{
