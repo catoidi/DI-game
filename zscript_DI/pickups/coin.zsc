@@ -1,10 +1,10 @@
 //zscript_DI/pickups/coin.zsc
 
-Class DI_Coin : DI_Pickup
+Class DI_Coin : DI_CashPickup
 {
 	Default
 	{
-		DI_Pickup.DespawnColor "ffe31e";
+		DI_CashPickup.DespawnColor "ffe31e";
 	}
 
 	States
@@ -15,12 +15,12 @@ Class DI_Coin : DI_Pickup
 	}
 }
 
-Class DI_Money : DI_Pickup
+Class DI_Money : DI_CashPickup
 {
 	Default 
 	{
 		Inventory.Amount 3;
-		DI_Pickup.DespawnColor "529c54";
+		DI_CashPickup.DespawnColor "529c54";
 	}
 	
 	States
@@ -31,12 +31,12 @@ Class DI_Money : DI_Pickup
 	}
 }
 
-Class DI_Gem : DI_Pickup
+Class DI_Gem : DI_CashPickup
 {
 	Default 
 	{
 		Inventory.Amount 5;
-		DI_Pickup.DespawnColor "94c5ea";
+		DI_CashPickup.DespawnColor "94c5ea";
 	}
 	
 	States

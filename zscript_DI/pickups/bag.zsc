@@ -15,16 +15,39 @@ class DI_CoinBag : DI_Actor
 		+PUSHABLE;
 	}
 	
+	action void A_ScatterCoins(int numcoins = 21, int basechance = 256)
+	{
+		for (int i = 0; i < numcoins; ++i)
+		{
+			string curcoin = "DI_Coin";
+			float chancemult = 1.0;
+			if (i % 7 == 6)	{curcoin = "DI_Gem"; chancemult = 0.0625;} //requires minimum basechance of 16
+			else if ((i % 7 == 4) || (i % 7 == 5))	{curcoin = "DI_Money"; chancemult = 0.25;} //requires minimum basechance of 4
+			else if (i % 7 > 0) {chancemult = 0.75;} //requires minimum basechance of 2
+			
+			bool spawned;
+			actor coined;
+			[spawned, coined] = A_SpawnItemEX(curcoin,  0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, basechance * chancemult);
+			
+			if (spawned && (coined is "DI_CashPickup"))
+			{
+				let newcoin = DI_CashPickup(coined);
+				newcoin.pickupdelay += 35;
+			}
+		}
+	}
+	
 	States
 	{
 		Spawn:
 			COIN D -1;
 			Stop;
 		Death:
-			TNT1 AAA 0 A_SpawnItemEX("DI_Coin", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION);
-			TNT1 AAAAAAAAA 0 A_SpawnItemEX("DI_Coin", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, 64);
-			TNT1 AAAAAA 0 A_SpawnItemEX("DI_Money", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, 192);
-			TNT1 AAA 0 A_SpawnItemEX("DI_Gem", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, 240);
+			TNT1 A 0 A_ScatterCoins();
+			//TNT1 AAA 0 A_SpawnItemEX("DI_Coin", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION);
+			//TNT1 AAAAAAAAA 0 A_SpawnItemEX("DI_Coin", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, 64);
+			//TNT1 AAAAAA 0 A_SpawnItemEX("DI_Money", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, 192);
+			//TNT1 AAA 0 A_SpawnItemEX("DI_Gem", 0, 0, 0, frandom(-6, 6), frandom(-6, 6), frandom(4, 12), random(0, 359), SXF_NOCHECKPOSITION, 240);
 			TNT1 A 0 A_SpawnItemEX("SafeBoomSmall", 0, 0, 8, flags: SXF_NOCHECKPOSITION);
 			TNT1 A 0 ACS_ScriptCall("CoinBagPopped", 0, 0, 0, 0);
 			TNT1 A 5;

@@ -1,4 +1,4 @@
-Class DI_Pickup : Actor abstract
+Class DI_Pickup : Inventory abstract
 {
 	float pickuptimer;
 	int pickupdelay;
@@ -9,9 +9,31 @@ Class DI_Pickup : Actor abstract
 	Default
 	{
 		DI_Pickup.PickupTimer 1.0; //multiplies the amount of tics in each frame. can't reduce frames below 1.
-		DI_Pickup.PickupDelay 17; //tic delay before player is allowed to pickup the item
+		DI_Pickup.PickupDelay 35; //tic delay before player is allowed to pickup the item
 		Inventory.Amount 1;
-		+Inventory.ALWAYSPICKUP;
+		//+Inventory.ALWAYSPICKUP;
+	}
+	
+	bool PickupDelayed()
+	{
+		if (SpawnTime > (Level.MapTime - pickupdelay)) {return false;}
+		
+		return true;
+	}
+	
+	override bool TryPickup(in out Actor toucher)
+	{
+		if (!PickupDelayed()) {return false;}
+	
+		return Super.TryPickup(toucher);
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (!PickupDelayed()) {A_FadeTo(0.5, 0.5);}
+		else if (SpawnTime == (Level.MapTime - pickupdelay)) {A_FadeIn(0.5);}
 	}
 }
 
@@ -29,6 +51,7 @@ Class DI_CashPickup : DI_Pickup abstract
 		Height 20;
 		Radius 10;
 		Inventory.PickupFlash "DI_PickupFlash";
+		DI_Pickup.PickupDelay 0; //no pickup delay on coins by default...
 		+INTERPOLATEANGLES;
 		+WALLSPRITE;
 		+FLOATBOB;
@@ -70,16 +93,17 @@ Class DI_CashPickup : DI_Pickup abstract
 	
 	override bool TryPickup (in out Actor toucher)
 	{
-		if (toucher is "DI_PlayerBase")
+		if (Super.TryPickup(toucher) && (toucher is "DI_PlayerBase"))
 		{
 			DI_PlayerBase ditoucher = DI_PlayerBase(toucher);
 			ditoucher.GiveInventory("DI_TokenComboTimer", (12 + (ditoucher.cointimer / 4) + (ditoucher.combonum * 4)) * Amount);
 			ispicked = true;
-		}
 		
-		toucher.Score += Amount;
-		GoAwayAndDie();
-		return true;
+			toucher.Score += Amount;
+			GoAwayAndDie();
+			return true;
+		}
+		return false;
 	}
 	
 	override void PlayPickupSound(Actor toucher)
@@ -129,7 +153,7 @@ Class DI_CashPickup : DI_Pickup abstract
 		return "";
 	}
 	
-	int pickuptimer;
+	int oldpickuptimer;
 	bool blinktoggle;
 
 	States
@@ -140,11 +164,11 @@ Class DI_CashPickup : DI_Pickup abstract
 			#### #################### 35 BRIGHT
 			{
 				self.angle += 8;
-				++pickuptimer;
-				if (pickuptimer >= 10)
+				++oldpickuptimer;
+				if (oldpickuptimer >= 10)
 				{
 					A_FadeOut(0.4);
-					pickuptimer = 0;
+					oldpickuptimer = 0;
 				}
 			}
 			#### ##### 10 BRIGHT
