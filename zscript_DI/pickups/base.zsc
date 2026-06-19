@@ -32,8 +32,8 @@ Class DI_Pickup : Inventory abstract
 	{
 		Super.Tick();
 		
-		if (!PickupDelayed()) {A_FadeTo(0.5, 0.5);}
-		else if (SpawnTime == (Level.MapTime - pickupdelay)) {A_FadeIn(0.5);}
+		if (!PickupDelayed()) {A_FadeTo(0.25, 0.75);}
+		else if (SpawnTime == (Level.MapTime - pickupdelay)) {A_FadeIn(0.75);}
 	}
 }
 
@@ -53,7 +53,7 @@ Class DI_CashPickup : DI_Pickup abstract
 		Inventory.PickupFlash "DI_PickupFlash";
 		DI_Pickup.PickupDelay 0; //no pickup delay on coins by default...
 		+INTERPOLATEANGLES;
-		+WALLSPRITE;
+		//+WALLSPRITE;
 		+FLOATBOB;
 		+INVENTORY.NOSCREENFLASH;
 	}
@@ -68,6 +68,9 @@ Class DI_CashPickup : DI_Pickup abstract
 	override void tick()
 	{
 		super.tick();
+		
+		if (!PickupDelayed()) {bWALLSPRITE = false;}
+		else {bWALLSPRITE = true;}
 	
 		if ((ispicked == false) && (target is "DI_PlayerBase"))
 		{

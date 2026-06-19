@@ -22,9 +22,9 @@ class DI_CoinBag : DI_Actor
 			string curcoin = "DI_Coin";
 			float chancemult = 0.0;
 			int truefail = 256 - basechance;
-			if (i % 7 == 6)	{curcoin = "DI_Gem"; chancemult = 0.9375;} //requires maximum basechance of 240
-			else if ((i % 7 == 4) || (i % 7 == 5))	{curcoin = "DI_Money"; chancemult = 0.75;} //requires maximum basechance of 252
-			else if (i % 7 > 0) {chancemult = 0.25;} //requires maximum basechance of 254
+			if (i % 7 == 6)	{curcoin = "DI_Gem"; chancemult = 0.9375;} //93.8% chance of failing to spawn Gems.
+			else if ((i % 7 == 4) || (i % 7 == 5))	{curcoin = "DI_Money"; chancemult = 0.75;} //75% chance of failing to spawn Dollars.
+			else if (i % 7 > 0) {chancemult = 0.25;} //25% chance of failing to spawn 2/3rds of the Coins.
 			
 			bool spawned;
 			actor coined;
