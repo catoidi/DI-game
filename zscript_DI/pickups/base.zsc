@@ -3,6 +3,8 @@ Class DI_Pickup : Inventory abstract
 	float pickuptimer;
 	int pickupdelay;
 	
+	State oldstate;
+	
 	Property PickupTimer : pickuptimer;
 	Property PickupDelay : pickupdelay;
 
@@ -21,6 +23,32 @@ Class DI_Pickup : Inventory abstract
 		return true;
 	}
 	
+	virtual void DelayFade()
+	{
+		if (!PickupDelayed()) {A_FadeTo(0.25, 0.75);}
+		else if (SpawnTime == (Level.MapTime - pickupdelay)) {A_FadeIn(0.75);}
+	}
+	
+	virtual void AdjustTics()
+	{
+		if (PickupTimer != 1.0)
+		{
+			if (oldstate != curstate) //Don't run on the same frame twice
+			{
+				int newtics = tics * pickuptimer;
+				if ((tics > 0) && (newtics < 1)) {newtics = 1;} //
+				A_SetTics(newtics);
+			}
+			oldstate = curstate;
+		}
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		ChangeTID(7499); //Pickups are removed upon wave completion.
+	}
+	
 	override bool TryPickup(in out Actor toucher)
 	{
 		if (!PickupDelayed()) {return false;}
@@ -32,8 +60,8 @@ Class DI_Pickup : Inventory abstract
 	{
 		Super.Tick();
 		
-		if (!PickupDelayed()) {A_FadeTo(0.25, 0.75);}
-		else if (SpawnTime == (Level.MapTime - pickupdelay)) {A_FadeIn(0.75);}
+		DelayFade();
+		AdjustTics();
 	}
 }
 
@@ -62,7 +90,6 @@ Class DI_CashPickup : DI_Pickup abstract
 	{
 		super.postbeginplay();
 		if (!(target is "DI_PlayerBase")) {A_LookEX(LOF_NOJUMP, 0, 512, 512, 360);}
-		ChangeTID(7499);
 	}
 	
 	override void tick()
