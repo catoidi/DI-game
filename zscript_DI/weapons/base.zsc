@@ -135,7 +135,7 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.PickupTime 1.0;
 		DI_Weapon.CashPickupTime 1.0;
 		DI_Weapon.PickupDelay 0;
-		DI_Weapon.CashPickupDelay 100;
+		DI_Weapon.CashPickupDelay 0;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.NoProjectiles false;
