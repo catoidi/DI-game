@@ -1,0 +1,18 @@
+//zscript_DI/items/debuffs/fomo.zsc
+
+//pickups will despawn slightly quicker.
+//cannot reduce tic speed for pickups below 1.
+
+Class DI_QuestDebuff_Fomo : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (FOMO)";
+	}
+	
+	override float GivePickupTime(bool iscoin)
+	{
+		if (!plr) {return 1.0;}
+		return (1.0 / (1.0 + (0.15 * amount)));
+	}
+}

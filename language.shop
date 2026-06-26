@@ -90,6 +90,12 @@ SHOPTYPE_DI_QUESTDEBUFF_BRITTLE = "\cg[Cursed Item]";
 SHOPITEM_DI_QUESTDEBUFF_MARTYR = "\cgCurse of Martyr";
 SHOPDESC_DI_QUESTDEBUFF_MARTYR = "Enemies gain a random chance to fire\na projectile on death.";
 SHOPTYPE_DI_QUESTDEBUFF_MARTYR = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_FOMO = "\cgCurse of FOMO";
+SHOPDESC_DI_QUESTDEBUFF_FOMO = "Pickups will despawn slightly faster.\nThis includes coins.";
+SHOPTYPE_DI_QUESTDEBUFF_FOMO = "\cg[Cursed Item]";
+SHOPITEM_DI_QUESTDEBUFF_FREEDOWNLOADNOVIRUS = "\cgCurse of FREEDOWNLOADNOVIRUS";
+SHOPDESC_DI_QUESTDEBUFF_FREEDOWNLOADNOVIRUS = "While in debt, add a 1 second delay\nbefore pickups can be obtained.";
+SHOPTYPE_DI_QUESTDEBUFF_FREEDOWNLOADNOVIRUS = "\cg[Cursed Item]";
 
 //Script Activator Descriptions.
 SHOPITEM_DIREROLLSHOPS = "\ctReroll";

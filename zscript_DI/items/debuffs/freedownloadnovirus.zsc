@@ -1,0 +1,18 @@
+//zscript_DI/items/debuffs/freedownloadnovirus.zsc
+
+//increased pickup delay while in debt.
+
+Class DI_QuestDebuff_FREEDOWNLOADNOVIRUS : DI_QuestDebuff
+{
+	default 
+	{
+		Tag "\cgCurse (FREEDOWNLOADNOVIRUS)";
+	}
+	
+	override int GivePickupDelay(bool iscoin)
+	{
+		if (!plr) {return 0;}
+		if (plr.score >= 0) {return 0;}
+		return amount * 35;
+	}
+}
