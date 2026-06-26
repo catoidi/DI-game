@@ -107,6 +107,8 @@ class DIPassiveInventory : Inventory
 	virtual double GiveBulletSize() {return 0.0;} //change projectile hitbox size.
 	virtual string ReplaceGunSound() {return "";} //changes the sound that plays when DI_GunSound is called. the sound loaded last will be chosen.
 	virtual double GiveConsumableCooldown() {return 1.0;} //multiplies the cooldowns when using consumables. setting to 0 will disable the cooldown entirely.
+	virtual float GivePickupTime(bool iscoin) {return 1.0;} //controls the tic speed of DI_Pickup items. has an extra bool if the pickup is DI_CashPickup.
+	virtual int GivePickupDelay(bool iscoin) {return 0;} //adds/removes delay before player is allowed to pickup items. has an extra bool if pickup is DI_CashPickup.
 
 	//Called by thebrain handler's monster code.
 	virtual string, int GiveEnemyItem() {return "", 0;} //Specify an inventory item and its quantity to make enemies spawn with.

@@ -1,5 +1,28 @@
 extend class DIHandler
 {
+	virtual void PickupSpawned(WorldEvent e)
+	{
+		DI_Pickup item = DI_Pickup(e.Thing);
+		
+		for (int i = 0; i < diplayers.Size(); ++i)
+		{
+			let wpn = diplayers[i].wpn;
+			if (wpn)
+			{
+				if (item is "DI_CashPickup")
+				{
+					item.pickuptimer *= wpn.cashpickup_time;
+					item.pickupdelay += wpn.cashpickup_delay;
+				}
+				else
+				{
+					item.pickuptimer *= wpn.pickup_time;
+					item.pickupdelay += wpn.pickup_delay;
+				}
+			}
+		}
+	}
+
 	virtual void CoinDropper(WorldEvent e)
 	{
 		DI_Drop dropper = DI_Drop(e.Thing);

@@ -6,6 +6,7 @@ class DIHandler : EventHandler
 	
 	int curseed;
 	
+	Array<DI_PlayerBase> diplayers; //list of all alive players.
 	Array<DI_Monster> monsters; //list of all alive monsters.
 	Array<Actor> spotarray; //list of available spawn spots.
 	Array<String> spawnqueue; //list of enemies waiting to spawn.

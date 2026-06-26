@@ -27,6 +27,9 @@ Class DI_Weapon : Weapon abstract
 	int maxammouse; //the max amount inventory items can increase ammo.
 	string gunsound; //replacement gun sound from inventory items.
 	
+	float pickup_time, cashpickup_time; //default is 1.0. controls the speed of tics for DI_Pickup items.
+	int pickup_delay, cashpickup_delay; //default is 0. controls how much delay in tics before player is allowed to get pickups.
+	
 	double plr_speed; //player movement speed.
 	double plr_combodrainbonus; //combo drain speed.
 	double plr_regen; //regeneration speed, in tics.
@@ -79,6 +82,10 @@ Class DI_Weapon : Weapon abstract
 	property PlayerHealth: plr_maxhp;
 	property ShopDebtMult: shop_debtmult;
 	property ItemCooldown: item_cooldown;
+	property PickupTime: pickup_time;
+	property CashPickupTime: cashpickup_time;
+	property PickupDelay: pickup_delay;
+	property CashPickupDelay: cashpickup_delay;
 	
 	property DontGiveAmmo1: wpn_dontgiveammo1;
 	property DontGiveAmmo2: wpn_dontgiveammo2;
@@ -125,6 +132,10 @@ Class DI_Weapon : Weapon abstract
 		DI_Weapon.PlayerHealth 1.0;
 		DI_Weapon.ShopDebtMult 1.0;
 		DI_Weapon.ItemCooldown 1.0;
+		DI_Weapon.PickupTime 1.0;
+		DI_Weapon.CashPickupTime 1.0;
+		DI_Weapon.PickupDelay 0;
+		DI_Weapon.CashPickupDelay 100;
 		DI_Weapon.DontGiveAmmo1 false;
 		DI_Weapon.DontGiveAmmo2 false;
 		DI_Weapon.NoProjectiles false;
@@ -270,6 +281,10 @@ Class DI_Weapon : Weapon abstract
 		plr_healing = Default.plr_healing;
 		plr_maxhp = Default.plr_maxhp;
 		item_cooldown = Default.item_cooldown;
+		pickup_time = Default.pickup_time;
+		cashpickup_time = Default.cashpickup_time;
+		pickup_delay = Default.pickup_delay;
+		cashpickup_delay = Default.cashpickup_delay;
 		shop_debtmult = Default.shop_debtmult;
 		gunsound = Default.gunsound;
 		
@@ -313,6 +328,10 @@ Class DI_Weapon : Weapon abstract
 				plr_healing *= curinv.GiveHealingPower();
 				plr_maxhp *= curinv.GiveMaxHealth();
 				item_cooldown *= curinv.GiveConsumableCooldown();
+				pickup_time *= curinv.GivePickupTime(false);
+				cashpickup_time *= curinv.GivePickupTime(true);
+				pickup_delay += curinv.GivePickupDelay(false);
+				cashpickup_delay += curinv.GivePickupDelay(true);
 				shop_debtmult *= curinv.MultiplyShopDebt();
 				string replacesound = curinv.ReplaceGunSound();
 				if (replacesound != "") {gunsound = replacesound;}
