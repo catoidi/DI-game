@@ -7,6 +7,10 @@ extend class DIHandler
 
 	virtual void DIModifierHandler(DI_PlayerBase plr)
 	{
+		if (di_mod_ngu)
+		{
+			plr.GiveInventory("DI_NGU_Player", 1);
+		}
 		if (di_mod_doubletrouble)
 		{
 			plr.GiveInventory("di_enemydoubler", 1);

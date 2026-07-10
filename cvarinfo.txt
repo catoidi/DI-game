@@ -38,6 +38,8 @@ server cheat bool di_unlock_mod_starterpack = false;
 server noarchive bool di_mod_blindbox = false;
 server cheat bool di_unlock_mod_blindbox = false;
 server cheat int di_chestpurchases = 0;
+server noarchive bool di_mod_ngu = false;
+server cheat bool di_unlock_mod_ngu = false;
 
 //DI menu unlocks
 server cheat string di_unlock_blacklist = ""; //items listed in this CVAR cannot appear in shops.

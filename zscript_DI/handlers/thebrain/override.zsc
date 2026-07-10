@@ -63,6 +63,7 @@ extend class DIHandler
 			}
 			if (e.Thing is "DI_Monster")
 			{
+				if (di_mod_ngu) {e.Thing.GiveInventory("DI_NGU_Monster", 1);}
 				DIMonsterHandler(e);
 			}
 			if (e.Thing is "DI_Boss")
