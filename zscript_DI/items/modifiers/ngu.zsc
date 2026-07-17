@@ -32,8 +32,8 @@ Class DI_NGU_Monster : Inventory
 			default: lvlcolor = "\ct"; break;
 		}
 		
-		mon.health *= 1.00 + (wavenum * 0.05);
-		mon.StartHealth = mon.health;
+		int oghealth = mon.GetMaxHealth(true);
+		mon.SetMaxHealth(oghealth * (1.00 + (wavenum * 0.05)));
 		mon.speedmult *= 1.0 + (wavenum * 0.025);
 		mon.mass *= 1.0 + (wavenum * 0.05);
 		

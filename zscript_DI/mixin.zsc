@@ -16,6 +16,16 @@ mixin class DI_ActorMixin
 	int di_hpbardistance;
 	property HPBarDistance: di_hpbardistance;
 	
+	
+	void SetMaxHealth(uint newvalue, bool currenthealth = true)
+	{
+		//quick n ez way to modify max health, while also not forgetting the skill multiplier.
+		if (newvalue < 1) {return;}
+		StartHealth = newvalue / G_SkillPropertyFloat(SKILLP_MonsterHealth);
+		if (GetMaxHealth(true) < 1) {StartHealth = 1;}
+		if (currenthealth) {health = newvalue;}
+	}
+	
 	action void A_DIScale (double ScaleAmountX, double ScaleAmountY, bool IsMultiply = false, bool DoSize = false)
 	{
 	

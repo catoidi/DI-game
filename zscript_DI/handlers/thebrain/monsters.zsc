@@ -56,8 +56,7 @@ extend class DIHandler
 		{
 			int starthp = mon.Health * endless_healthmult;
 			if (starthp < 1) {starthp = 1;}
-			mon.Health = starthp;
-			mon.StartHealth = starthp  / G_SkillPropertyFloat(SKILLP_MonsterHealth);
+			mon.SetMaxHealth(starthp);
 		}
 		if (endless_damagemult != 1.0)
 		{

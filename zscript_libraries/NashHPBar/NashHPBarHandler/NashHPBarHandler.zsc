@@ -230,6 +230,13 @@ class NashHPBarHandler : EventHandler
 			// retrieve target health
 			int health = prevAimTarget.Health;
 			int maxHealth = prevAimTarget.GetMaxHealth(true);
+			int defaulthealth = maxHealth;
+			if (prevAimTarget is "DI_Actor") 
+			{
+				let diactor = DI_Actor(prevaimtarget);
+				defaulthealth = diactor.di_health100;
+				if (defaulthealth <= 0) return;
+			}
 
 			// no need to draw 0 or negative health
 			if (health <= 0) return;
@@ -508,33 +515,51 @@ class NashHPBarHandler : EventHandler
 				}
 
 				String txt;
-
-				// draw health bar
-				let barTex = TexMan.CheckForTexture("graphics/hpbar/HBARTOP.png");
-				if (barTex.IsValid())
+				
+				int maxbars;
+				int barcounter = maxhealth;
+				while (barcounter > 0)
 				{
-					Vector2 barTexSize = TexMan.GetScaledSize(barTex);
+					++maxbars;
+					barcounter -= defaulthealth;
+				}
+				for (int i = 0; i < maxbars; ++i)
+				{
+					string texstring;
+					switch(i % 10)
+					{
+						case 0: texstring = "graphics/hpbar/HBARTOP.png"; break;
+						case 9: texstring = "graphics/hpbar/HBARTOPX.png"; break;
+						default: texstring = string.format("%s%d%s", "graphics/hpbar/HBARTOP", i + 1, ".png"); break;
+					}
+					
+					// draw health bar
+					let barTex = TexMan.CheckForTexture(texstring);
+					if (barTex.IsValid())
+					{
+						Vector2 barTexSize = TexMan.GetScaledSize(barTex);
 
-					// get the starting X pos to clip to
-					int clipX = (Screen.GetWidth() / 2) - ((int(barTexSize.X) / 2) * CleanXFac);
-	
-					// get the full X size of the texture
-					int fullClip = (int(barTexSize.X) * CleanXFac);
+						// get the starting X pos to clip to
+						int clipX = (Screen.GetWidth() / 2) - ((int(barTexSize.X) / 2) * CleanXFac);
+		
+						// get the full X size of the texture
+						int fullClip = (int(barTexSize.X) * CleanXFac);
 
-					// get health percentage
-					int healthPercent = 100 * health / maxHealth;
-					int maxClip = fullClip * healthPercent / 100;
+						// get health percentage
+						int healthPercent = ((100 * health) - (defaulthealth * i * 100)) / defaulthealth;
+						int maxClip = fullClip * healthPercent / 100;
 
-					// set the clipping
-					clipX += maxClip;
+						// set the clipping
+						clipX += maxClip;
 
-					Screen.DrawTexture(barTex, false,
-						(Screen.GetWidth() / 2) - ((barTexSize.X / 2) * CleanXFac),
-						(baseYPos * CleanYFac),
-						DTA_ClipRight, int(clipX),
-						DTA_CleanNoMove, true,
-						DTA_KeepRatio, true,
-						DTA_Alpha, healthBarAlpha);
+						Screen.DrawTexture(barTex, false,
+							(Screen.GetWidth() / 2) - ((barTexSize.X / 2) * CleanXFac),
+							(baseYPos * CleanYFac),
+							DTA_ClipRight, int(clipX),
+							DTA_CleanNoMove, true,
+							DTA_KeepRatio, true,
+							DTA_Alpha, healthBarAlpha);
+					}
 				}
 
 				// get font colours

@@ -8,6 +8,14 @@ Class DI_Actor : Actor abstract
 	
 	mixin DI_ActorMixin;
 	
+	int di_health100; //used internally by the HP Bar to determine the 'default' max health.
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		di_health100 = default.GetMaxHealth(true);
+	}
+	
 	Default
 	{
 		Self.NoHPBar true;
