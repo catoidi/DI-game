@@ -3,7 +3,7 @@
 OptionMenu "DIGraphics"
 {
 	//combination of Display, Hardware, and Post Processing options.
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "Graphics Options"
 
 	Submenu "$DSPLYMNU_GLOPT", 			"DIHardware"
@@ -49,7 +49,7 @@ OptionMenu "DIGraphics"
 
 OptionMenu "DIVideo"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "Video Options"
 	
 	Option "$VIDMNU_PREFERBACKEND",		"vid_preferbackend", "PreferBackend"
@@ -82,7 +82,7 @@ OptionMenu "DIVideo"
 
 OptionMenu "DIHardware"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "$GLMNU_TITLE"
 	StaticText "$GLMNU_POSTPROCESS", "Purple"
 	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"

@@ -370,9 +370,9 @@ version "4.14"
 //////////////////////////////////////////////////////////////
 
 //libtooltipmenu
-#include "zscript_libraries/libtooltipmenu/Tooltips.zsc"
-#include "zscript_libraries/libtooltipmenu/TooltipOptionMenu.zsc"
-#include "zscript_libraries/libtooltipmenu/TooltipListMenu.zsc"
+//#include "zscript_libraries/libtooltipmenu/Tooltips.zsc"
+//#include "zscript_libraries/libtooltipmenu/TooltipOptionMenu.zsc"
+//#include "zscript_libraries/libtooltipmenu/TooltipListMenu.zsc"
 
 //nashhpbar
 #include "zscript_libraries/NashHPBar/NashHPBarOptionMenu/NashHPBarOptionMenu.zsc"

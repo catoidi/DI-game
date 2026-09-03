@@ -2,9 +2,9 @@
 
 OptionMenu "DIHudOptions"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "HUD Options"
-	Tooltip ""
+	//Tooltip ""
 	StaticText "-= Main HUD =-", "Purple"
 	Slider "Scale", "hud_scalefactor", 0.0, 1.0, 0.025, 3
 	Tooltip "Controls the size of the main HUD elements."
@@ -35,9 +35,9 @@ OptionMenu "DIHudOptions"
 
 OptionMenu "DIHUDOptions_Extra"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "HUD Options (Extra)"
-	Tooltip ""
+	//Tooltip ""
 	StaticText "Passive Hotbar", "Purple"
 	Option "Enabled?", "di_itemhud_toggle", "passivevalues"
 	Tooltip "Shows you your Passive items and Powerups at the top right of the screen.\n\nSetting to 'Powerups Only' prevents Passives from being rendered.\n\nIt also shows the item quantity and whether or not it's 'permanent'.\n\nYou can also see these at anytime from the Catalogue Menu."
@@ -56,9 +56,9 @@ OptionMenu "DIHUDOptions_Extra"
 
 OptionMenu "DIHUDOptions_Crosshair"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "HUD Options (Crosshair)"
-	Tooltip ""
+	//Tooltip ""
 	//StaticText "Crosshair Options", "Purple"
 	Option "Enabled?", "di_xhair_toggle", "xhairvalues"
 	Tooltip "Toggles the crosshair's visibility.\n\nSet to 'Simple' by default.\n\n'Detailed' will separate inaccuracy/recoil from the bullet spread."
@@ -85,9 +85,9 @@ OptionMenu "DIHUDOptions_Crosshair"
 
 OptionMenu "DIHUDOptions_Minimap"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "HUD Options (Minimap)"
-	Tooltip ""
+	//Tooltip ""
 	//StaticText "Minimap", "Purple"
 	Option "Enabled?", "atmp_enablemap", "onoff"
 	Tooltip "Toggles the minimap. Matches the behavior of the fullscreen map.\n\nMinimap is always displayed below other HUD elements, in case of conflicts."
@@ -112,9 +112,9 @@ OptionMenu "DIHUDOptions_Minimap"
 
 OptionMenu "DIHUDOptions_DamNums"
 {
-	class "DITF_TooltipOptionMenu"
+	//class "DITF_TooltipOptionMenu"
 	Title "HUD Options (Damage Numbers)"
-	Tooltip ""
+	//Tooltip ""
 	//StaticText "Damage Numbers Options", "Purple"
 	Option		"Enabled?"       , "dam_enabled"  , "DamEnabled"
 	Tooltip "Shows damage numbers above enemies heads (and yours) when they take damage."
