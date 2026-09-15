@@ -39,8 +39,12 @@ Add, Player, DI_PlayerHam, di_unlock_plr_hammer;
 Add, Level, di01;
 >>Box Party Level.
 Add, Level, di02, di_unlock_lvl_di02;
+>>City Level.
+Add, Level, di04, di_unlock_lvl_di04;
 >>Castle Level.
 Add, Level, di03, di_unlock_lvl_di03;
+>>Demonic Temple Level.
+Add, Level, di05, di_unlock_lvl_di05;
 >>Sectors.
 Add, Level, bonus01, di_unlock_lvl_bonus01;
 >>

@@ -26,17 +26,27 @@ Episode di00
 //DIGAME.txt must match these EPISODES or the game will EXPLODE AND DIE.
 Episode di01
 {
-	Name = "Your first death"
+	Name = "Rec Center"
 }
 
 Episode di02
 {
-	Name = "Where the boxes go party"
+	Name = "Afterparty"
+}
+
+Episode di04
+{
+	Name = "???"
 }
 
 Episode di03
 {
-	Name = "castlephobia"
+	Name = "???"
+}
+
+Episode di05
+{
+	Name = "???"
 }
 
 Episode bonus01
@@ -50,19 +60,29 @@ Map "titlemap" "Title Screen"
 	//Music = "titlesong"
 }
 
-Map "di01" "Your first death"
+Map "di01" "rec center"
 {
 	//Music = "music01"
 	Sky1 = "textures/sky1.png"
 }
 
-Map "di02" "The afterparty"
+Map "di02" "afterparty"
 {
 	//Music = "music02"
 	Sky1 = "textures/boxsky1.png"
 }
 
-Map "di03" "castlephobia"
+Map "di03" "_______ ______"
+{
+	Sky1 = "textures/sky1.png"
+}
+
+Map "di04" "____ __ ___ _____"
+{
+	Sky1 = "textures/sky1.png"
+}
+
+Map "di05" "___________"
 {
 	Sky1 = "textures/sky1.png"
 }

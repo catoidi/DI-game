@@ -21,10 +21,12 @@ DI_OPENCATALOGUE = "Open Catalogue";
 
 //NewGameMenu
 DIMENU_SELECT_DI00 = "Tutorial";
-DIMENU_SELECT_DI01 = "\cfLVL 1: \cbur 1st death";
-DIMENU_SELECT_DI02 = "\cfLVL 2: \cbthe afterparty";
-DIMENU_SELECT_DI03 = "\cfLVL 3: \cbcastlephobia";
-DIMENU_SELECT_BONUS01 = "\cy???: \cbnine sectors";
+DIMENU_SELECT_DI01 = "\cfLVL 1: \cbrec center";
+DIMENU_SELECT_DI02 = "\cfLVL 2: \cbafterparty";
+DIMENU_SELECT_DI03 = "\caLVL 4: _______ ______";
+DIMENU_SELECT_DI04 = "\caLVL 3: ____ __ ___ _____";
+DIMENU_SELECT_DI05 = "\caLVL 5: ___________";
+DIMENU_SELECT_BONUS01 = "\cyBONUS 1: \cbnine sectors";
 DIMENU_SELECT_DI_PLAYERFREDRICK = "Fredrick";
 DIMENU_SELECT_DI_PLAYERBOX = "Box Partyer";
 DIMENU_SELECT_DI_PLAYERBURGER = "Cheeseburger";
