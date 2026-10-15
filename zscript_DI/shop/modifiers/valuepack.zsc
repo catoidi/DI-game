@@ -4,7 +4,7 @@ Class DI_ShopMod_ValuePack : DI_ShopMod
 {
 	Default
 	{
-		//DIShopInventory.ForceReroll true;
+		DI_ShopMod.ParticleColor "5cac5c";
 	}
 
 	override string SimpleShopPopup()

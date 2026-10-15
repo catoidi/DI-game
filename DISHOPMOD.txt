@@ -20,7 +20,7 @@
 *, DIConsumableShop, DI_ShopMod_ValuePack;
 *, DIChest, DI_ShopMod_ValuePack;
 >>*, *, DI_ShopMod_Discontinued,,,,,,, 1;
->>*, *, DI_ShopMod_Recalled;
+*, *, DI_ShopMod_Recalled;
 >>*, *, DI_ShopMod_BOGO;
 >>*, *, DI_ShopMod_DoubleOrNothing, [Passive];
 >>*, *, DI_ShopMod_DoubleOrNothing, [PermaPassive];

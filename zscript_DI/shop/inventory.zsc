@@ -81,9 +81,27 @@ Class DI_ShopMod : DIShopInventory
 	//special modifiers added to the shops at random via the DISHOPMOD file.
 	//must inherit from DIShop, not the controller or the base actors.
 	
+	color shopparticle;
+	
+	Property ParticleColor : shopparticle;
+	
 	Default
 	{
 		DIShopInventory.AddController false;
 		DIShopInventory.AddShopBase false;
+		DI_ShopMod.ParticleColor "FFFFFF";
+	}
+	
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		
+		if (owner && CheckRange(512))
+		{
+			if (Level.MapTime % 5 == 0)
+			{
+				owner.A_SpawnParticle(shopparticle, 0, TICRATE, 4, 0, random(-owner.radius, owner.radius), random(-owner.radius, owner.radius), 0, 0, 0, 0, 0, 0, 0.25);
+			}
+		}
 	}
 }
