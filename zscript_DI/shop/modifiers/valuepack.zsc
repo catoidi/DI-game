@@ -4,7 +4,7 @@ Class DI_ShopMod_ValuePack : DI_ShopMod
 {
 	Default
 	{
-		DIShopInventory.ForceReroll true;
+		//DIShopInventory.ForceReroll true;
 	}
 
 	override string SimpleShopPopup()

@@ -32,6 +32,7 @@ Class DIShopInventory : Inventory
 		{
 			shop = DIShop(other);
 			shop.shopinv.Push(self);
+			shop.AddPriceMult(0);
 			//console.printf("Added to shop.");
 		}
 		else if (addcontroller && (other is "DIShopController"))
@@ -58,7 +59,7 @@ Class DIShopInventory : Inventory
 	
 	override void DetachFromOwner()
 	{
-		if (shop) {shop.shopinv.Delete(shop.shopinv.Find(self));}
+		if (shop) {shop.shopinv.Delete(shop.shopinv.Find(self)); shop.AddPriceMult(0);}
 		else if (controller) {controller.shopinv.Delete(controller.shopinv.Find(self));}
 		else if (shopbase) {shopbase.shopinv.Delete(shopbase.shopinv.Find(self));}
 		

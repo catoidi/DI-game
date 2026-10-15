@@ -709,6 +709,10 @@ Class DIRentShop : DIShop
 Class DIRentWeaponShop : DIRentShop
 {
 	//Functionally the same as a DIRentShop, but meant to be used for weapons. Helps scripts differentiate shops when used properly.
+	Default
+	{
+		//$Title "Shop (Rent Weapon)"
+	}
 	
 	override void PurchaseMessage(int price)
 	{
@@ -754,6 +758,11 @@ Class DIPermaShop : DIShop
 Class DIPermaWeaponShop : DIPermaShop
 {
 	//...ditto.
+	Default
+	{
+		//$Title "Shop (Perma Weapon)"
+	}
+	
 	override void PurchaseMessage(int price)
 	{
 		console.printf("\cfPurchased a \czpermanent \cfweapon for %d coins.", price);

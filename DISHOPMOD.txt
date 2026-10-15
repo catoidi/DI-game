@@ -14,9 +14,11 @@
 >>#9 (optional): TID number to check for. default is '*', which accepts all shops regardless of TID. if needed, mods for specific shops can be disabled entirely in the level editor via the 'user_allowmods' boolean.
 >>#10 (optional): boolean value, when set to 1, this modifier cannot be combined with other modifiers. this effectively reduces the chance of this mod occuring, as the mod will only have a chance of occuring when all other mods fail. '0' by default.
 
+*, DIShop, DI_ShopMod_ValuePack;
 *, DIRentShop, DI_ShopMod_ValuePack;
 *, DIPermaShop, DI_ShopMod_ValuePack;
 *, DIConsumableShop, DI_ShopMod_ValuePack;
+*, DIChest, DI_ShopMod_ValuePack;
 >>*, *, DI_ShopMod_Discontinued,,,,,,, 1;
 >>*, *, DI_ShopMod_Recalled;
 >>*, *, DI_ShopMod_BOGO;
