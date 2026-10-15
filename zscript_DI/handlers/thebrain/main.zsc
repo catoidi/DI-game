@@ -12,6 +12,7 @@ class DIHandler : EventHandler
 	Array<String> spawnqueue; //list of enemies waiting to spawn.
 	Array<String> spawnqueue_spawner; //what spawner each enemy in the spawnqueue can spawn from.
 	Array<String> filedata; //all text from the DIWAVE file.
+	Array<String> shopmoddata; //stuff from DISHOPMODS file.
 	Array<String> leveldata; //all text for the current level.
 	Array<String> wavedata; //all data for current wave.
 	Array<String> endlessdata; //all data for endless stuff.

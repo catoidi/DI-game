@@ -16,7 +16,6 @@ extend class DIHandler
 		++endless_speedmult;
 		
 		ParseDIWAVE(e);
-		ParseDISHOPMODS(e);
 		//GetWaveData(e);
 		//ParseWaveData(e);
 	}
@@ -78,6 +77,7 @@ extend class DIHandler
 			if (e.Thing is "DIShop")
 			{
 				shoparray.Push(DIShop(e.Thing));
+				GiveShopMods(DIShop(e.Thing));
 				if (di_mod_weaponized)
 				{
 					Weaponized_AddShop(DIShop(e.Thing));

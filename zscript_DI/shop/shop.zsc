@@ -8,7 +8,7 @@ Class DIShop : DIShop_Base
 	Array<String> blacklist; //a list of items that cannot be added to the shop pool.
 	Array<String> itempool_blacklist; //a list of blacklisted items that were removed from the item pool.
 	
-	Array<String> shopmoddata;
+	Array<String> shopmodfile;
 	Array<String> shopmodpool;
 
 	//these start with "user_" so that Ultimate Doom Builder is able to manually add in stuff here.
@@ -75,6 +75,7 @@ Class DIShop : DIShop_Base
 		if (IsBlacklisted(shop_currentitem) == false) {canshop = true;}
 		
 		if (!plr) {plr = players[consoleplayer].mo;} //NOT MULTIPLAYER COMPATIBLE!!!!!!!!!!!!
+		
 	}
 	
 	override void tick(void)

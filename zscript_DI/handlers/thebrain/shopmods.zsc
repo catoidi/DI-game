@@ -1,0 +1,45 @@
+//zscript_DI/handlers/thebrain/shopmods.zsc
+
+extend class DIHandler
+{
+	virtual void GiveShopMods(DIShop shop)
+	{
+		if (shop.shopmodfile.size() > 0) {shop.shopmodfile.clear();}
+	
+		if (shopmoddata.size() == 0)
+		{
+			int ThisLump = Wads.FindLump("DISHOPMOD", 0, Wads.ANYNAMESPACE);
+			int NextLump = Wads.FindLump("DISHOPMOD", ThisLump + 1, Wads.ANYNAMESPACE);
+			
+			while (ThisLump != -1)
+			{
+				Wads.ReadLump(ThisLump).Split(shopmoddata, "\n", TOK_SKIPEMPTY);
+				ThisLump = NextLump;
+				NextLump = Wads.FindLump("DISHOPMOD", ThisLump + 1, 1);
+			}
+		}
+		
+		string currentlevel = Level.MapName;
+		currentlevel = currentlevel.MakeLower();
+		
+		for (int i = 0; i < shopmoddata.Size(); i++)
+		{
+			string currentline = shopmoddata[i];
+			if (currentline.Left(2) == ">>") {continue;}
+			currentline.Replace("	", "");
+			currentline.Replace(" ", "");
+			currentline = currentline.Left(currentline.IndexOf(";"));
+			
+			array<string> linedata;
+			currentline.split(linedata, ",");
+			
+			linedata[0] = linedata[0].makelower();
+			//console.printf("checking: '%s' - '%s'", currentlevel, linedata[0]);
+			if ((currentlevel ~== linedata[0]) || (linedata[0] == "*"))
+			{	
+				//console.printf("ADDING TO SHOPMODPOOL.");
+				shop.shopmodfile.push(currentline);
+			}
+		}
+	}
+}
