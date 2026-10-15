@@ -10,6 +10,9 @@ WARN_NOWEAPONS = "\caWarning: You only have 1 weapon equipped.";
 WARN_NOQUEST = "\caWarning: You do not have a Side Quest.";
 WARN_NOARMOR = "\caWarning: You do not have any armor equipped.";
 
+//Shop Modifiers.
+DI_SHOPMOD_VALUEPACK = "\cp[VALUE PACK]\n\clYou get double the item,\nbut at double the price.";
+
 //Quest Objectives.
 DIQUEST_DI_QUESTOBJECTIVE_FRESH = "You have 7 seconds. Getting Fresh Weapon\nBonuses adds more time. Don't run out.";
 DIQUEST_DI_QUESTOBJECTIVE_BLOODDRIVE = "Complete the wave while not losing\nmore than 40 points of health.";

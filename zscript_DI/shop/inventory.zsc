@@ -9,17 +9,19 @@ Class DIShopInventory : Inventory
 	DIShopController controller;
 	DIShop_Base shopbase; //compatibility with modded stuff maybe
 	
-	bool addshop, addcontroller, addshopbase;
+	bool addshop, addcontroller, addshopbase, forcereroll;
 	
 	Property AddShop : addshop;
 	Property AddController : addcontroller;
 	Property AddShopBase : addshopbase;
+	Property ForceReroll : forcereroll;
 	
 	Default
 	{
 		DIShopInventory.AddShop true; //Add to all actors inheriting from DIShop.
 		DIShopInventory.AddController true; //Add to all actors inheriting from DIShopController.
 		DIShopInventory.AddShopBase false; //Add to all actors inheriting from DIShop_Base. Called after the above 2 checks.
+		DIShopInventory.ForceReroll false; //Force the shop to reroll itself upon acquisition of item.
 	}
 
 	override void AttachToOwner(Actor other)
@@ -45,6 +47,22 @@ Class DIShopInventory : Inventory
 			//console.printf("Added to shopbase.");
 		}
 		else {other.TakeInventory(self.GetClassName(), 999999);}
+		
+		if (forcereroll)
+		{
+			if (shop) {shop.RerollShopItem(); shop.A_ResetScale();}
+			else if (controller) {controller.RerollShopItem(); controller.A_ResetScale();}
+			else if (shopbase) {shopbase.RerollShopItem(); shopbase.A_ResetScale();}
+		}
+	}
+	
+	override void DetachFromOwner()
+	{
+		if (shop) {shop.shopinv.Delete(shop.shopinv.Find(self));}
+		else if (controller) {controller.shopinv.Delete(controller.shopinv.Find(self));}
+		else if (shopbase) {shopbase.shopinv.Delete(shopbase.shopinv.Find(self));}
+		
+		Super.DetachFromOwner();
 	}
 	
 	virtual void ShopInit() {} //Called when the shop generates it's first set of items (~35 ticks after creation).

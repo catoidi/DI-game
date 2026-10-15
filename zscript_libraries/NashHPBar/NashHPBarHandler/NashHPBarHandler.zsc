@@ -165,7 +165,7 @@ class NashHPBarHandler : EventHandler
 			posoffset.x = (pos % 2 == 0) ? (brdTexSize.X / 2) : 0;
 			if ((pos >= (maxpos - 1)) && (pos % 2 == 0)) {posoffset.x = brdTexSize.X / 4;}
 			int pos2 = pos / 2;
-			posoffset.y = pos2 * 24;
+			posoffset.y = pos2 * 36;
 			
 			
 			Screen.DrawTexture(brdTex, false,
@@ -174,7 +174,7 @@ class NashHPBarHandler : EventHandler
 				DTA_KeepRatio, true,
 				DTA_Alpha, baralpha,
 				DTA_ScaleX, 0.5 * CleanXFac,
-				DTA_ScaleY, 0.3 * CleanYFac);
+				DTA_ScaleY, 0.45 * CleanYFac);
 			
 			Screen.DrawText(smallFont, Font.CR_WHITE,
 				(Screen.GetWidth() / 2) - (((-brdTexSize.X / 4) + posoffset.x + (smallFont.StringWidth(txt) / 2)) * CleanXFac),

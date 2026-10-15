@@ -427,7 +427,7 @@ Class DI_Weaponized_Shop : DIShopInventory
 	{
 		if (thebrain.Weaponized_CheckWeapon(shop.shop_currentitem))
 		{
-			return string.format("%s\n%s", FancyTrait(buff, false), FancyTrait(nerf, true));
+			return string.format("\cbBonus Traits:\n%s\n%s", FancyTrait(buff, false), FancyTrait(nerf, true));
 		}
 		return "";
 	}

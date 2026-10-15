@@ -55,4 +55,6 @@ DoomEdNums
 	20052 = DIProgressPopup
 	20053 = DISingleShop
 	20054 = DIExitPopup_Armor
+	20055 = DIRentWeaponShop
+	20056 = DIPermaWeaponShop
 }

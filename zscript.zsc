@@ -333,7 +333,7 @@ version "4.14"
 #include "zscript_DI/shop/fakeshop.zsc" //invisible actor to display custom Shop UI text with. meant for wall buttons.
 #include "zscript_DI/shop/inventory.zsc" //DIShopInventory items.
 //shop modifiers
-//#include "zscript_DI_shop/modifiers/
+#include "zscript_DI/shop/modifiers/valuepack.zsc"
 
 //secret (shh don't tell anyone ok???)
 #include "zscript_DI/secret/cats.zsc"

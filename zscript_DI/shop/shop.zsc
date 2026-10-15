@@ -354,7 +354,7 @@ Class DIShop : DIShop_Base
 		for (int i = 0; i < shopmodpool.size(); ++i)
 		{
 			let inv = FindInventory(shopmodpool[i]);
-			if (inv) {RemoveInventory(inv);}
+			if (inv) {TakeInventory(shopmodpool[i], 999999);}
 		}
 		shopmodpool.clear();
 		
@@ -426,7 +426,7 @@ Class DIShop : DIShop_Base
 		{
 			lastmod -= 3;
 			GiveInventory(shopmodpool[i], 1);
-			//console.printf("%s", shopmodpool[i]);
+			console.printf("adding %s to shop", shopmodpool[i]);
 		}
 	}
 	
@@ -706,6 +706,16 @@ Class DIRentShop : DIShop
 	}
 }
 
+Class DIRentWeaponShop : DIRentShop
+{
+	//Functionally the same as a DIRentShop, but meant to be used for weapons. Helps scripts differentiate shops when used properly.
+	
+	override void PurchaseMessage(int price)
+	{
+		console.printf("\cfRented a weapon for %d coins.", price);
+	}
+}
+
 Class DIPermaShop : DIShop
 {	
 	override void DoPurchase(int buyprice)
@@ -738,6 +748,15 @@ Class DIPermaShop : DIShop
 		Active:
 			SHOP E 1 A_Jump(256, "Purchase");
 			Stop;
+	}
+}
+
+Class DIPermaWeaponShop : DIPermaShop
+{
+	//...ditto.
+	override void PurchaseMessage(int price)
+	{
+		console.printf("\cfPurchased a \czpermanent \cfweapon for %d coins.", price);
 	}
 }
 
