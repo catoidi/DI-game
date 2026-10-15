@@ -16,6 +16,7 @@ extend class DIHandler
 		++endless_speedmult;
 		
 		ParseDIWAVE(e);
+		ParseDISHOPMODS(e);
 		//GetWaveData(e);
 		//ParseWaveData(e);
 	}

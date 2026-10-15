@@ -146,7 +146,7 @@ version "4.14"
 #include "zscript_DI/items/event/slowhealing.zsc"
 #include "zscript_DI/items/event/fatigue.zsc"
 #include "zscript_DI/items/event/incrementalinjuries.zsc"
-//modifiers
+//game modifiers
 #include "zscript_DI/items/modifiers/doubletrouble.zsc"
 #include "zscript_DI/items/modifiers/debilitated.zsc"
 #include "zscript_DI/items/modifiers/weaponized.zsc"
@@ -331,6 +331,8 @@ version "4.14"
 #include "zscript_DI/shop/questgiver.zsc" //gives the player quests.
 #include "zscript_DI/shop/fakeshop.zsc" //invisible actor to display custom Shop UI text with. meant for wall buttons.
 #include "zscript_DI/shop/inventory.zsc" //DIShopInventory items.
+//shop modifiers
+//#include "zscript_DI_shop/modifiers/
 
 //secret (shh don't tell anyone ok???)
 #include "zscript_DI/secret/cats.zsc"

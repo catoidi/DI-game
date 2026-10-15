@@ -1,0 +1,31 @@
+>>dishopmod.txt
+
+>>shop modifiers are refreshed once per wave, separate from item rerolls.
+
+>>all arguments are strings unless specified otherwise.
+>>#1: level name that modifier appears in. '*' stands for 'every level'. can allow for level-specific effects.
+>>#2: class name of shop that modifier appears in. '*' are considered universal and will apply to all 'DIShop' based actors. this behavior can be disabled on a shop-by-shop basis through the 'user_universalmods' boolean, which is true by default.
+>>#3: class name of modifier inventory item.
+>>#4 (optional): item pool name of current shop. allows modifiers to only apply to specific pools of items, like weapons. default is '*', which ignores item pools entirely.
+>>#5 (optional): minimum decimal chance of item appearing. default is 0.01. anything at or below 0.0 means the modifier will never appear under any circumstances. (setting this below 0.0 effectively prevents the modifier from appearing until the incremental value reaches above 0.0.)
+>>#6 (optional): maximum decimal chance of item appearing. default is 1.0, which is guaranteed to occur.
+>>#7 (optional): decimal value to increment modifier chance by each wave. default is 0.01. capped at max chance value. any modifier being chosen for this shop reduces this incremental value by itself * 3. if the current modifier was previously selected, then this reduction is multiplied by 3. this effect lasts until every modifier has been chosen at least once for the current shop.
+>>#8 (optional): boolean CVAR to check for before using this modifier. checked once per wave, allowing for modifiers to be added/removed mid-game adding an '!' to the beginnging of the cvar will invert the required value.
+>>#9 (optional): TID number to check for. default is '*', which accepts all shops regardless of TID. if needed, mods for specific shops can be disabled entirely in the level editor via the 'user_allowmods' boolean.
+>>#10 (optional): boolean value, when true, this modifier cannot be combined with other modifiers. this effectively reduces the chance of this mod occuring, as the mod will only have a chance of occuring when all other mods fail. 'false' by default.
+
+*, *, DI_ShopMod_ValuePack, [Passive];
+*, *, DI_ShopMod_ValuePack, [PermaPassive];
+*, *, DI_ShopMod_Discontinued,,,,,,, true;
+*, *, DI_ShopMod_Recalled;
+*, *, DI_ShopMod_BOGO;
+*, *, DI_ShopMod_DoubleOrNothing, [Passive];
+*, *, DI_ShopMod_DoubleOrNothing, [PermaPassive];
+*, *, DI_ShopMod_Refurbished, [Passive];
+*, *, DI_ShopMod_Refurbished, [PermaPassive];
+*, *, DI_ShopMod_Imported;
+*, *, DI_ShopMod_BlindBox,,,,, !di_mod_blindbox;
+*, *, DI_ShopMod_LowDemand;
+*, *, DI_ShopMod_Fragile;
+*, *, DI_ShopMod_ExplosiveDeal;
+*, *, DI_ShopMod_FOMO;

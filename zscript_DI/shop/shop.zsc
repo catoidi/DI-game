@@ -7,6 +7,9 @@ Class DIShop : DIShop_Base
 	Array<String> groupdata; //used mainly if the shop is using a group instead of a standard item category. groups will inherit all items for each category it calls.
 	Array<String> blacklist; //a list of items that cannot be added to the shop pool.
 	Array<String> itempool_blacklist; //a list of blacklisted items that were removed from the item pool.
+	
+	Array<String> shopmoddata;
+	Array<String> shopmodpool;
 
 	//these start with "user_" so that Ultimate Doom Builder is able to manually add in stuff here.
 	//the ones with "shop_" are the ones that this actor actually uses.

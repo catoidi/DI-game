@@ -403,7 +403,7 @@ Class DI_Weaponized_Shop : DIShopInventory
 	
 	override void ShopInit() {GenerateNewTraits(shop.shop_currentitem);}
 	override double MultiplyPrice(string curitem) {return pricemult;}
-	override void ChoseNewShopItem(string newitem) {GenerateNewTraits(newitem);}
+	override string ChoseNewShopItem(string newitem) {GenerateNewTraits(newitem); return Super.ChoseNewShopItem(newitem);}
 	virtual void GenerateNewTraits(string newitem)
 	{
 		buff = "";
