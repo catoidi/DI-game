@@ -1,0 +1,22 @@
+//zscript_DI/shop/modifiers/valuepack.zsc
+
+Class DI_ShopMod_ValuePack : DI_ShopMod
+{
+	override string SimpleShopPopup(curplr)
+	{
+		return "$DI_SHOPMOD_VALUEPACK";
+	}
+	
+	override double MultiplyPrice(curitem)
+	{
+		return 2.0;
+	}
+	
+	override void DidPurchase(buyer, newitem)
+	{
+		if (newitem)
+		{
+			newitem.amount *= 2;
+		}
+	}
+}

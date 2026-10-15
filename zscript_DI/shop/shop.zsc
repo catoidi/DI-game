@@ -390,7 +390,7 @@ Class DIShop : DIShop_Base
 			if ((linedata.size() >= 9) && (linedata[8] != "*") && (linedata[8].ToInt(10) != self.tid)) {continue;} //check for TID exclusivity.
 			if ((linedata.size() >= 10) && (linedata[9] == "1")) {isexclusive = true;} //set to exclusive mode if this returns 1.
 			
-			//random chance
+			//random chance (this was meant to be in the handler code whoops)
 			if (previousmods.find(linedata[2]) != previousmods.size()) {incchance *= 3;}
 			minchance += (incchance * (lastmod + shopmodpool.size() - exclusivemods.size()));
 			if (minchance > maxchance) {minchance = maxchance;}

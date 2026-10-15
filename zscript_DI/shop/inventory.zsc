@@ -56,3 +56,15 @@ Class DIShopInventory : Inventory
 	ui virtual void CustomShopPopup(NashHPBarHandler handler, RenderEvent e, double baseYPos, double baralpha) {} //Called by NashHPBar when viewing the shop. Can be used to add custom UI elements to the shop.
 	ui virtual string SimpleShopPopup() {return "";} //Also called by NashHPBar. Meant for simple small additional popups to the Shop UI with support for multiple popups at a time.
 }
+
+Class DI_ShopMod : DIShopInventory
+{
+	//special modifiers added to the shops at random via the DISHOPMOD file.
+	//must inherit from DIShop, not the controller or the base actors.
+	
+	Default
+	{
+		DIShopInventory.AddController false;
+		DIShopInventory.AddShopBase false;
+	}
+}
