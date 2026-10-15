@@ -8,8 +8,10 @@ Class DIShop : DIShop_Base
 	Array<String> blacklist; //a list of items that cannot be added to the shop pool.
 	Array<String> itempool_blacklist; //a list of blacklisted items that were removed from the item pool.
 	
-	Array<String> shopmodfile;
-	Array<String> shopmodpool;
+	Array<String> shopmodfile; //raw DISHOPMOD file data given via thebrain handler. does not include comment lines or mods for other levels/shops.
+	Array<String> shopmodpool; //the shop mod inventory items chosen this wave.
+	Array<String> previousmods; //previously chosen mods at this shop. makes the mod less likely to appear in the future.
+	int lastmod;
 
 	//these start with "user_" so that Ultimate Doom Builder is able to manually add in stuff here.
 	//the ones with "shop_" are the ones that this actor actually uses.
@@ -121,6 +123,7 @@ Class DIShop : DIShop_Base
 						for (int i = 0; i < shopinv.Size(); ++i) {shopinv[i].ShopInit();}
 						shopinv_init = true;
 					}
+					RerollModifiers();
 					curround = newround;
 				}
 			}
@@ -339,6 +342,91 @@ Class DIShop : DIShop_Base
 		{
 			console.printf("\ck%d DISHOP lines skipped.\n\ctDEBUG: Shop has completed parsing data.", debugline);
 			debugline = 0;
+		}
+	}
+	
+	virtual void RerollModifiers(void)
+	{
+		//generate list of valid modifiers. updates once per wave.
+		array<string> exclusivemods;
+		
+		//clear old mods
+		for (int i = 0; i < shopmodpool.size(); ++i)
+		{
+			let inv = FindInventory(shopmodpool[i]);
+			if (inv) {RemoveInventory(inv);}
+		}
+		shopmodpool.clear();
+		
+		//scan for new mods
+		for (int i = 0; i < shopmodfile.size(); ++i)
+		{
+			array<string> linedata;
+			shopmodfile[i].split(linedata, ",");
+			
+			double minchance = 0.0;
+			double maxchance = 0.1;
+			double incchance = 0.01;
+			bool isexclusive = false;
+			
+			//checking optional args
+			if ((linedata.size() >= 4) && (linedata[3] != "") && (linedata[3] != "*") && (linedata[3] != user_shoptype.makelower())) {continue;} //item pool check
+			if ((linedata.size() >= 5) && (linedata[4] != "")) {minchance = linedata[4].ToDouble();}
+			if ((linedata.size() >= 6) && (linedata[5] != "")) {maxchance = linedata[5].ToDouble();}
+			if ((linedata.size() >= 7) && (linedata[6] != "")) {incchance = linedata[6].ToDouble();} //min/max/inc chances
+			if ((linedata.size() >= 8) && (linedata[7] != "")) //boolean CVAR check
+			{
+				string currentline = linedata[7];
+				bool linecheck = true;
+				if (currentline.Left(1) == "!") //do inverse check instead
+				{
+					linecheck = false;
+					currentline = currentline.Mid(1);
+				}
+				cvar linecvar = cvar.getcvar(currentline);
+				if (!linecvar) {ThrowAbortException("Invalid CVAR found in DISHOPMOD.\n\nAffected line:\n'%s'", shopmodfile[i]);} //you fucked up
+				if (!linecvar.getint() == linecheck) {continue;}
+			}
+			if ((linedata.size() >= 9) && (linedata[8] != "*") && (linedata[8].ToInt(10) != self.tid)) {continue;} //check for TID exclusivity.
+			if ((linedata.size() >= 10) && (linedata[9] == "1")) {isexclusive = true;} //set to exclusive mode if this returns 1.
+			
+			//random chance
+			if (previousmods.find(linedata[2]) != previousmods.size()) {incchance *= 3;}
+			minchance += (incchance * (lastmod + shopmodpool.size() - exclusivemods.size()));
+			if (minchance > maxchance) {minchance = maxchance;}
+			double finalchance = frandom[dishop](minchance, maxchance);
+			if (frandom[dishop](0.0, 1.0) > (1.0 - finalchance)) 
+			{
+				if (isexclusive)
+				{
+					exclusivemods.push(linedata[2]);
+				}
+				shopmodpool.push(linedata[2]);
+			} //add mod to pool.
+		}
+		
+		if ((exclusivemods.size() > 0) && (exclusivemods.size() < shopmodpool.size())) //exclusive mods found alongside non-exclusive mods. exclusive mods must be removed.
+		{
+			for (int i = 0; i < exclusivemods.size(); ++i)
+			{
+				int poolspot = shopmodpool.find(exclusivemods[i]);
+				shopmodpool.delete(poolspot);
+			}
+		}
+		else if (exclusivemods.size() > 1) //more than one exclusive mod detected. cannot have more than one at a time.
+		{
+			int randommod = random[dishop](0, exclusivemods.size() - 1);
+			shopmodpool.clear();
+			shopmodpool.push(exclusivemods[randommod]);
+		}
+		
+		++lastmod;
+		//console.printf("> checking shop's mods...");
+		for (int i = 0; i < shopmodpool.size(); ++i)
+		{
+			lastmod -= 3;
+			GiveInventory(shopmodpool[i], 1);
+			//console.printf("%s", shopmodpool[i]);
 		}
 	}
 	

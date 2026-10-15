@@ -26,6 +26,7 @@ extend class DIHandler
 		{
 			string currentline = shopmoddata[i];
 			if (currentline.Left(2) == ">>") {continue;}
+			currentline = currentline.makelower();
 			currentline.Replace("	", "");
 			currentline.Replace(" ", "");
 			currentline = currentline.Left(currentline.IndexOf(";"));
@@ -33,12 +34,13 @@ extend class DIHandler
 			array<string> linedata;
 			currentline.split(linedata, ",");
 			
-			linedata[0] = linedata[0].makelower();
 			//console.printf("checking: '%s' - '%s'", currentlevel, linedata[0]);
 			if ((currentlevel ~== linedata[0]) || (linedata[0] == "*"))
 			{	
-				//console.printf("ADDING TO SHOPMODPOOL.");
-				shop.shopmodfile.push(currentline);
+				if ((linedata[1] == shop.getclassname()) || (linedata[1] == "*"))
+				{
+					shop.shopmodfile.push(currentline);
+				}
 			}
 		}
 	}
